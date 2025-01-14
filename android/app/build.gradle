@@ -2,6 +2,17 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+project.ext.envConfigFiles = [
+   productiondebug: ".env.production",
+   productionrelease: ".env.production",
+   developmentrelease: ".env.development",
+   developmentdebug: ".env.development",
+   stagingrelease: ".env.staging",
+   stagingdebug: ".env.staging"
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply plugin: 'com.google.gms.google-services'
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -82,10 +93,19 @@ android {
         applicationId "mx.medsi.medsicheck"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 56
+        versionName "4.2.5"
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -96,13 +116,49 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release'] 
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            // signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+
+        flavorDimensions "env"
+    // flavorDimensions "default"
+    productFlavors {
+        staging {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "mx.medsi.medsicheck.staging"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "mx.medsi.medsicheck"
+            manifestPlaceholders = [appHost: "staging.d1p9s5r42tah7c.amplifyapp.com"]
+            // resValue "string", "app_name", "Medsi Check Staging"
+        }
+        development {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "mx.medsi.medsicheck.dev"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "mx.medsi.medsicheck"
+            manifestPlaceholders = [appHost: "dev.d1p9s5r42tah7c.amplifyapp.com"]
+            // resValue "string", "app_name", "Medsi Check Dev"
+        }
+        production {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "mx.medsi.medsicheck"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "mx.medsi.medsicheck"
+            manifestPlaceholders = [appHost: "main.d1p9s5r42tah7c.amplifyapp.com"]
+            // resValue "string", "app_name", "Medsi Check"
+        }
+    }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
         }
     }
 }
@@ -110,6 +166,9 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation 'org.jetbrains:annotations:16.0.2'
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    implementation("com.google.firebase:firebase-analytics")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -117,3 +176,4 @@ dependencies {
         implementation jscFlavor
     }
 }
+

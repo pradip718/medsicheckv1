@@ -1,0 +1,111 @@
+{
+  "confg": {
+    "Vital Signs": {
+      "Diastolic": {
+        "unit": "mmHg",
+        "scale": {
+          "min": 12,
+          "max": 20
+        },
+        "Scale Criteria": {
+          "Low": "<60",
+          "High": ">100",
+          "Normal": [60, 100],
+          "overall": [20, 150],
+          "measuredValue": 80
+        },
+        "score": 10,
+        "scale_type": 1,
+        "short_intro": "Diastolic blood pressure measures the pressure in your blood vessels when your heart rests between beats.",
+        "long_intro": "Diastolic blood pressure is one of the two numbers in a blood pressure reading, representing the pressure in your blood vessels when your heart rests between beats. It's the bottom number of a blood pressure reading and indicates the pressure in the arteries when the heart is at rest, refilling with blood. A normal diastolic blood pressure is typically below 80 mmHg.\n\nHigh diastolic blood pressure, known as diastolic hypertension, can increase the risk of heart disease and stroke. Conversely, low diastolic blood pressure may indicate issues such as dehydration, heart problems, or hormonal imbalances. Monitoring diastolic blood pressure, along with systolic blood pressure, is crucial for assessing overall cardiovascular health and the risk of associated conditions."
+      },
+      "Systolic": {
+        "unit": "mmHg",
+        "scale": {
+          "min": 120,
+          "max": 200
+        },
+        "Scale Criteria": {
+          "Low": "<80",
+          "Normal": [110, 130],
+          "High": ">200",
+          "overall": [80, 200],
+          "measuredValue": 150
+        },
+        "scale_type": 1,
+        "score": 6,
+        "short_intro": "Systolic blood pressure measures the pressure in your blood vessels when your heart beats.",
+        "long_intro": "Systolic blood pressure is the top number in a blood pressure reading, representing the pressure in your blood vessels when your heart beats. It's the higher of the two numbers in a blood pressure measurement and reflects the force of the blood against the artery walls when the heart contracts. A normal systolic blood pressure reading is typically below 120 mmHg.\n\nElevated systolic blood pressure can increase the risk of cardiovascular diseases such as heart attack and stroke. Low systolic blood pressure may indicate reduced heart function, dehydration, or other underlying health conditions. Monitoring systolic blood pressure, along with diastolic blood pressure, is essential for assessing overall cardiovascular health and managing potential risks."
+      },
+      "Stress level": {
+        "scale": ["Low", "Med", "High"],
+        "scale_type": 3,
+        "score": 4,
+        "short_intro": "Stress level indicates the degree of mental or emotional strain experienced by an individual.",
+        "long_intro": "Stress level is a measure indicating the degree of mental or emotional strain experienced by an individual. It reflects the body's response to various stressors, which can be physical, emotional, or environmental. Stress can manifest in different ways and may impact overall well-being and health.\n\nLow stress levels suggest minimal strain or tension, whereas high stress levels indicate significant pressure or distress. Chronic stress can have detrimental effects on both physical and mental health, leading to conditions such as anxiety, depression, hypertension, and cardiovascular diseases. Managing stress through relaxation techniques, exercise, healthy lifestyle habits, and seeking support when needed is crucial for maintaining overall well-being."
+      },
+      "Baevsky Stress index": {
+        "scale": {
+          "min": 50,
+          "max": 900
+        },
+        "score": 2,
+        "scale_type": 1,
+        "short_intro": "The Baevsky Stress index measures stress levels based on heart rate variability and rhythm.",
+        "long_intro": "The Baevsky Stress index is a measure that assesses stress levels derived from physiological conditions, particularly heart rate variability and rhythm. It provides insight into the body's response to stressors and can help identify periods of increased physiological strain.\n\nThis index ranges from 50 to >900, with lower values indicating lower stress levels and higher values suggesting higher levels of stress. Monitoring the Baevsky Stress index can be useful in identifying patterns of stress and implementing strategies to mitigate its effects. By understanding and managing stress levels effectively, individuals can promote better overall health and well-being."
+      },
+      "HRV SDNN": {
+        "unit": "ms",
+        "scale": {
+          "min": 50
+        },
+        "scale_type": 1,
+        "score": 10,
+        "short_intro": "HRV SDNN represents the standard deviation of NN intervals, reflecting overall heart rate variability and autonomic nervous system activity.",
+        "long_intro": "HRV SDNN, or standard deviation of NN intervals, is a measure used to assess heart rate variability (HRV) and autonomic nervous system activity. It represents the variation in time intervals between consecutive heartbeats, reflecting the balance between sympathetic and parasympathetic nervous system activity.\n\nHigher HRV SDNN values indicate greater variability in heart rate and are associated with better cardiovascular health and adaptability to stress. Lower HRV SDNN values may suggest decreased autonomic function and increased risk of cardiovascular events.\n\nMonitoring HRV SDNN over time can provide valuable insights into changes in autonomic function and overall health. Factors such as age, physical fitness, and stress levels can influence HRV SDNN. By understanding HRV patterns and their implications, individuals can take proactive steps to support cardiovascular wellness and stress management."
+      },
+      "Mean RRi": {
+        "unit": "ms",
+        "scale": {
+          "min": 600,
+          "max": 1200
+        },
+        "scale_type": 1,
+        "score": 5,
+        "short_intro": "Mean RRi represents the average interval between heartbeats, used to assess heart rhythm and autonomic nervous system activity.",
+        "long_intro": "Mean RRi, or mean R-R interval, is a measure that represents the average interval between successive heartbeats. It is commonly used to assess heart rhythm and autonomic nervous system activity, reflecting the balance between sympathetic and parasympathetic influences on the heart.\n\nA normal Mean RRi typically falls within the range of 600 to 1200 milliseconds (ms), although individual variability may exist. Higher Mean RRi values indicate slower heart rates and may suggest increased parasympathetic dominance or relaxation. Lower Mean RRi values may indicate higher sympathetic activity or stress.\n\nMonitoring Mean RRi can provide insights into autonomic nervous system function and cardiovascular health. Changes in Mean RRi over time may be indicative of physiological adaptations or imbalances, warranting further investigation or intervention."
+      },
+      "RMSSD": {
+        "unit": "ms",
+        "scale": {
+          "min": 13,
+          "max": 107
+        },
+        "scale_type": 1,
+        "score": 7,
+        "short_intro": "RMSSD represents the Root Mean Square of Successive Differences between heartbeats, indicating heart rate variability and autonomic balance.",
+        "long_intro": "RMSSD, or Root Mean Square of Successive Differences, is a measure used to assess heart rate variability (HRV) and autonomic nervous system balance. It quantifies the extent of variability in the time intervals between consecutive heartbeats, reflecting the influence of both sympathetic and parasympathetic nervous systems on heart rate.\n\nHigher RMSSD values indicate greater heart rate variability and are associated with better cardiovascular health and adaptability to stress. Lower RMSSD values may suggest reduced HRV and increased risk of cardiovascular events.\n\nMonitoring RMSSD over time can provide valuable insights into autonomic function and overall health. Factors such as age, fitness level, and stress can influence RMSSD values. By understanding RMSSD patterns and their implications, individuals can take proactive steps to support cardiovascular wellness and stress management."
+      },
+      "SD1": {
+        "unit": "ms",
+        "scale": {
+          "min": 63
+        },
+        "scale_type": 1,
+        "score": 7,
+        "short_intro": "SD1 is a short-term heart rate variability metric, reflecting beat-to-beat variation and autonomic nervous system activity.",
+        "long_intro": "SD1 is a short-term heart rate variability (HRV) metric that reflects beat-to-beat variation in heart rate. It is calculated based on the standard deviation of points perpendicular to the line of identity in a Poincaré plot, representing changes in heart rate over short time intervals.\n\nSD1 is influenced by the interplay between sympathetic and parasympathetic nervous system activity, providing insights into autonomic function and cardiovascular health. Higher SD1 values indicate greater beat-to-beat variability and are associated with better HRV and adaptability to stress. Lower SD1 values may suggest decreased HRV and increased sympathetic dominance.\n\nMonitoring SD1 alongside other HRV metrics can provide a comprehensive assessment of autonomic balance and cardiovascular wellness. Understanding SD1 patterns and their relationship to physiological and environmental factors can inform strategies for managing stress and promoting overall health and well-being."
+      },
+      "SD2": {
+        "unit": "ms",
+        "scale": {
+          "min": 71
+        },
+        "scale_type": 1,
+        "score": 7,
+        "short_intro": "SD2 is a long-term heart rate variability measure, indicating overall heart rate rhythm and stress levels.",
+        "long_intro": "SD2 is a long-term heart rate variability (HRV) measure that provides insights into overall heart rate rhythm and stress levels. It is calculated based on the standard deviation of points along the line of identity in a Poincaré plot, representing changes in heart rate over longer time intervals.\n\nSD2 reflects the interplay between sympathetic and parasympathetic nervous system activity and provides information about autonomic balance and cardiovascular health. Higher SD2 values indicate greater overall HRV and are associated with better adaptability to stress and cardiovascular wellness. Lower SD2 values may suggest decreased HRV and increased sympathetic dominance.\n\nMonitoring SD2 alongside other HRV metrics can offer a comprehensive assessment of autonomic function and stress resilience. Understanding SD2 patterns and their relationship to lifestyle factors and stressors can inform strategies for promoting cardiovascular health and well-being."
+      }
+    }
+  }
+}

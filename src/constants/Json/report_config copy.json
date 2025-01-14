@@ -1,0 +1,193 @@
+{
+  "confg": {
+    "Vital Signs": {
+      "Heart Rate": {
+        "unit": "bpm",
+        "scale": {
+          "min": 60,
+          "max": 100
+        },
+        "scale_type": 1,
+        "short_intro": "Indicates the number of heartbeats per minute, reflecting cardiac function and overall health",
+        "long_intro": "Heart rate, measured in beats per minute (bpm), is a critical indicator of heart health and overall well-being. It represents the number of times your heart beats in one minute. A normal resting heart rate for adults ranges from 60 to 100 bpm.\n\nFactors like physical activity, stress, hormones, medication, and how physically fit one is can influence heart rate. A lower resting heart rate typically indicates more efficient heart function and better cardiovascular fitness. For instance, athletes often have a resting heart rate well below 60 bpm. It's important to note that heart rate varies from person to person and can change throughout the day.\n\nMonitoring your heart rate can help in detecting health issues such as heart disease or arrhythmias. If you notice significant changes in your heart rate or if it consistently falls outside the normal range, it is advisable to seek medical attention.\n\nRegular monitoring of heart rate, especially during exercise, can also provide insight into your physical fitness level and how your heart is responding to the stress of exercise."
+      },
+      "Breathing Rate": {
+        "unit": "brpm",
+        "scale": {
+          "min": 12,
+          "max": 20
+        },
+        "scale_type": 1,
+        "short_intro": "The number of breaths taken per minute. Normal at-rest breathing rate is 12 to 20 brpm.   Breathing rates are slightly faster in women than in men.",
+        "long_intro": "The breathing rate, typically measured in breaths per minute (brpm), indicates respiratory health and function. The normal range for an adult at rest is 12 to 20 breaths per minute. \n\nThis rate may be influenced by factors like physical activity, emotional state, air quality, and overall health. A higher or lower resting respiratory rate can signal potential health issues. For example, a lower rate may be observed in well-trained athletes, whereas a higher rate might indicate respiratory or cardiac problems, anxiety, or other medical conditions. \n\nMonitoring breathing rate can be a crucial part of assessing overall health, particularly in the management of respiratory conditions such as asthma or chronic obstructive pulmonary disease (COPD). It's important for individuals to be aware of their normal breathing rate and to consult healthcare professionals if they notice significant or consistent deviations from their normal rate."
+      },
+      "PRQ": {
+        "scale": {
+          "min": 4,
+          "max": 5
+        },
+        "scale_type": 1,
+        "short_intro": "A measure combining pulse and respiratory rates, used to assess overall cardiorespiratory health.  PRQ captures the states of cardiorespiratory integrative activity.",
+        "long_intro": "The Pulse Respiratory Quotient (PRQ) is a composite measure that combines pulse and respiratory rates to assess cardiorespiratory health. It is particularly useful for evaluating the integrative activity between the cardiovascular and respiratory systems. A normal PRQ range is typically between 4 to 5. \n\nThis quotient can offer insights into the efficiency and coordination of heart and lung functions. Abnormal PRQ values may indicate potential issues in cardiorespiratory integration, necessitating further medical evaluation. PRQ is especially valuable in monitoring individuals with conditions affecting heart and lung efficiency, such as heart failure or chronic obstructive pulmonary disease (COPD)."
+      },
+      "Blood": {
+        "O2 Saturation": {
+          "unit": "%",
+          "scale": {
+            "min": 95
+          },
+          "scale_type": 1,
+          "short_intro": "Reflects the percentage of oxygen-carrying hemoglobin in the blood. ",
+          "long_intro": "Oxygen saturation is a key indicator of respiratory and circulatory health. It represents the percentage of oxygen-carrying hemoglobin in the blood relative to the total hemoglobin that could potentially carry oxygen. Normal oxygen saturation levels typically range from 95% to 100% in healthy individuals.\n\nThis vital sign is crucial because oxygen is essential for the functioning of organs and tissues. Levels below the normal range can indicate problems such as hypoxemia, a condition where the blood does not carry enough oxygen to meet the body's needs. Causes of low oxygen saturation include lung diseases like COPD or asthma, heart problems, and obstructive sleep apnea.\n\nSymptoms of low oxygen saturation might include shortness of breath, chest pain, confusion, and in severe cases, cyanosis (a bluish tint to the skin, lips, or nails). It's particularly important to monitor oxygen saturation in individuals with respiratory or cardiac conditions, smokers, and people living at high altitudes where oxygen levels are lower.\n\nPreventive measures to maintain healthy oxygen saturation include not smoking, getting regular exercise, maintaining a healthy weight, and managing underlying health conditions effectively. In cases of low oxygen saturation, supplemental oxygen, medication, or treatment of the underlying condition might be necessary. Regular monitoring is crucial for patients with known respiratory or cardiac conditions, as it can provide early warning signs of deterioration."
+        },
+        "Blood Pressure": {
+          "short_intro": "",
+          "long_intro": "",
+          "sub_measurement": {
+            "Diastolic": {
+              "unit": "mmHg",
+              "scale": {
+                "min": 12,
+                "max": 20
+              },
+              "scale_type": 1
+            },
+            "Systolic": {
+              "unit": "mmHg",
+              "scale": {
+                "min": 4,
+                "max": 5
+              },
+              "scale_type": 1
+            }
+          }
+        }
+      },
+      "Stress & Heart Rate Variability": {
+        "Stress": {
+          "Stress level": {
+            "scale": ["Low", "Med", "High"],
+            "scale_type": 3
+          },
+          "Baevsky Stress index": {
+            "scale": {
+              "min": 50,
+              "max": 900
+            },
+            "scale_type": 1,
+            "short_intro": "",
+            "long_intro": ""
+          }
+        },
+        "Heart Rate Variability": {
+          "HRV SDNN": {
+            "unit": "ms",
+            "scale": {
+              "min": 50
+            },
+            "scale_type": 1,
+            "short_intro": "",
+            "long_intro": ""
+          },
+          "Mean RRi": {
+            "unit": "ms",
+            "scale": {
+              "min": 600,
+              "max": 1200
+            },
+            "scale_type": 1,
+            "short_intro": "",
+            "long_intro": ""
+          },
+          "RMSSD": {
+            "unit": "ms",
+            "scale": {
+              "min": 13,
+              "max": 107
+            },
+            "scale_type": 1,
+            "short_intro": "",
+            "long_intro": ""
+          },
+          "SD1": {
+            "unit": "ms",
+            "short_intro": "",
+            "long_intro": ""
+          },
+          "SD2": {
+            "unit": "ms",
+            "short_intro": "",
+            "long_intro": ""
+          },
+          "LF/HF": {
+            "short_intro": "",
+            "long_intro": ""
+          }
+        },
+        "Energy": {
+          "PNS Zone": {
+            "scale": ["Low", "Med", "High"],
+            "scale_type": 3
+          },
+          "PNS Index": {
+            "scale": {
+              "min": -1,
+              "max": 1
+            },
+            "scale_type": 1,
+            "short_intro": "",
+            "long_intro": ""
+          },
+          "SNS Zone": {
+            "scale": ["Low", "Med", "High"],
+            "scale_type": 3
+          },
+          "SNS Index": {
+            "scale": {
+              "min": -1,
+              "max": 1
+            },
+            "scale_type": 1,
+            "short_intro": "",
+            "long_intro": ""
+          }
+        }
+      },
+      "Bloodless - Blood Tests": {
+        "Heamoglobin": {
+          "unit": "g/dL",
+          "scale": {
+            "male": [14, 18],
+            "female": [12, 16]
+          },
+          "scale_type": 6,
+          "short_intro": "",
+          "long_intro": ""
+        },
+        "Heamoglobin A1C": {
+          "unit": "%",
+          "scale": {
+            "Low": "<4",
+            "Normal": [4, 5.6],
+            "Prediabetic": [5.7, 6.4],
+            "Diabetic": ">6.4"
+          },
+          "scale_type": 5,
+          "short_intro": "",
+          "long_intro": ""
+        },
+        "Total Cholesterol": {
+          "unit": "g/dL",
+          "scale": {
+            "Normal": "<200",
+            "Borderline High": [200, 239],
+            "High": ">239"
+          },
+          "scale_type": 5,
+          "short_intro": "",
+          "long_intro": ""
+        }
+      }
+    }
+  }
+}

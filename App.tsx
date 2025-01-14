@@ -5,114 +5,121 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import * as Sentry from '@sentry/react-native';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import React, {useEffect, useState} from 'react';
+import {LogBox, StatusBar, useColorScheme} from 'react-native';
+import ErrorBoundary from 'react-native-error-boundary';
+import 'react-native-gesture-handler';
+import {PaperProvider} from 'react-native-paper';
+import 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
+import RootNavigator from './navigation';
+import {getAWSSecretKeys} from './src/api/auth';
+import AlertModal from './src/components/AlertModal';
+import AppUpdateModal from './src/components/AlertModal/AppUpdateModal';
+import {ErrorFallback} from './src/components/ErrorFallback';
+import FullScreenLoader from './src/components/FullScreenLoader';
+import SignoutModal from './src/components/SignoutModal';
+import Maintenance from './src/screens/Maintenance';
+import useAuthStore from './store/authStore';
+import useLanguageStore from './store/languageStore';
+import useLoaderStore from './store/loaderStore';
+import {toastConfig} from './utils/common';
+import {registerListenerWithFCM} from './utils/notification';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const queryClient = new QueryClient();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+function App(): JSX.Element {
+  const {languages} = useLanguageStore();
+  const {setAWSCred} = useAuthStore();
+  const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
+  const [isAWSKeyFetching, setIsAWSKeyFetching] = useState(false);
 
-function Section({children, title}: SectionProps): React.JSX.Element {
+  if (!__DEV__) {
+    Sentry.init({
+      dsn:
+        languages?.sentry_dsn ||
+        'https://6f60a90abe9479185d953565e52b9770@o4507020983926784.ingest.us.sentry.io/4507020986679296',
+      tracesSampleRate: 1.0,
+    });
+  }
+
   const isDarkMode = useColorScheme() === 'dark';
+  const {visible, signoutModalVisibility} = useLoaderStore();
+
+  useEffect(() => {
+    if (languages?.is_under_maintenance === 'false') {
+      setIsMaintenanceMode(false);
+    }
+  }, [languages]);
+
+  useEffect(() => {
+    const initializeAWS = async () => {
+      try {
+        setIsAWSKeyFetching(true);
+        const credentials = await getAWSSecretKeys();
+        if (credentials) {
+          setAWSCred(credentials);
+        }
+      } catch (error) {
+        console.log('error', error);
+      } finally {
+        setIsAWSKeyFetching(false);
+      }
+    };
+    initializeAWS();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = registerListenerWithFCM();
+    return unsubscribe;
+  }, []);
+
+  if (__DEV__) {
+    const ignoreWarns = ['ViewPropTypes will be removed from React Native'];
+
+    const warn = console.warn;
+    console.warn = (...arg) => {
+      for (const warning of ignoreWarns) {
+        if (arg[0].startsWith(warning)) {
+          return;
+        }
+      }
+      warn(...arg);
+    };
+
+    LogBox.ignoreLogs(ignoreWarns);
+  }
+
+  if (isAWSKeyFetching) {
+    return <></>;
+  }
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
+    <>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        backgroundColor={'transparent'}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <QueryClientProvider client={queryClient}>
+        <PaperProvider>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Toast config={toastConfig} />
+            {isMaintenanceMode ? <Maintenance /> : <RootNavigator />}
+            <Toast />
+            <FullScreenLoader visible={visible} />
+            <SignoutModal visible={signoutModalVisibility} />
+            <AlertModal />
+            <AppUpdateModal
+              triggerMaintenanceMode={() => setIsMaintenanceMode(true)}
+            />
+          </ErrorBoundary>
+        </PaperProvider>
+      </QueryClientProvider>
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+export default Sentry.wrap(App);

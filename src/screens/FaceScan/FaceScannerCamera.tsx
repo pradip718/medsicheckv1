@@ -1,0 +1,505 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import {
+  NavigationProp,
+  RouteProp,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {AxiosError} from 'axios';
+import {
+  HealthMonitorException,
+  SessionState,
+  useSessionState,
+} from 'biosensesignal-react-native-sdk';
+import {assign, isArray, isString} from 'lodash';
+import moment from 'moment';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Alert,
+  Linking,
+  Platform,
+  RefreshControl,
+  StyleSheet,
+  View,
+} from 'react-native';
+import uuid from 'react-native-uuid';
+import {twMerge} from 'tailwind-merge';
+import useAlertStore from '../../../store/alertStore';
+import useBinahConfigStore from '../../../store/binahConfigStore';
+import useLanguageStore from '../../../store/languageStore';
+import {MainStackParamList} from '../../../types/navigation';
+import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
+import {errorToast} from '../../../utils/toast';
+import {syncWebScan} from '../../api/report';
+import {postCaptureUserActivity} from '../../api/user';
+import BottomAlert from '../../components/AlertModal/BottomAlert';
+import BackgroundImage from '../../components/BackgroundImage';
+import Navbar from '../../components/Navbar';
+import RoundedButton from '../../components/RoundedButton';
+import SafeAreaScrollView from '../../components/SafeAreaScrollView';
+import CustomText from '../../components/Text';
+import {RESCAN_CONFIGURATION} from '../../constants/hooks';
+import {useGetUserReadingDetail} from '../../hooks/api/readings';
+import useGetPreHealthReading from '../../hooks/api/useGetPreHealthReading';
+import useGetRescanConfiguration from '../../hooks/api/useGetRescanConfiguration';
+import useGetUserReading from '../../hooks/api/useGetUserReading';
+import usePostOnboardingSteps from '../../hooks/api/usePostOnboardingSteps';
+import usePostReadings from '../../hooks/api/usePostReading';
+import useFullPageLoader from '../../hooks/useFullPageLoader';
+import useInitializeBinahSession from '../../hooks/useInitializeBinahSession';
+import useScreenOrientation from '../../hooks/useScreenOrientation';
+import ScanReport from './ScanReport';
+import {ImageValidityView} from './components/ImageValidityView';
+import RenderCamera from './components/RenderCamera';
+import RenderInformationCard from './components/RenderInformationCard';
+import StopButton from './components/StopButton';
+import FaceScanError from './modal/FaceScanError';
+import LowConfidence from './modal/LowConfidence';
+
+type FaceScanCameraRouteProp = RouteProp<MainStackParamList, 'FaceScanCamera'>;
+
+interface FaceScanCameraProps {
+  route: FaceScanCameraRouteProp;
+}
+
+type ValidityCount = {
+  [key: string]: number;
+};
+
+const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
+  const {fromScreen, action} = route?.params || {
+    fromScreen: '',
+    action: async () => {},
+  };
+  const cameraLocation = 'front';
+
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const queryClient = useQueryClient();
+  const {languages} = useLanguageStore();
+  const {binahConfig, errorMessages} = useBinahConfigStore();
+  const sessionState = useSessionState();
+  const {showLoader, hideLoader} = useFullPageLoader();
+  const {isLandscape} = useScreenOrientation();
+  const {showAlert} = useAlertStore();
+
+  const [fakeRecording, setFakeRecording] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  const [didFinishedMeasuring, setDidFinishedMeasuring] =
+    useState<boolean>(false);
+  const [imageValidityJSON, setImageValidityJSON] = useState<ValidityCount>({});
+  const [reading_id, setReadingId] = useState<string>('');
+  const [visible, setVisible] = useState<boolean>(false);
+  const [isOngoingSessions, setIsOngoingSessions] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [imageValidity, setImageValidity] = useState<string>();
+
+  const {data: reportData} = useGetUserReading();
+  const {data: rescanConfigurations} = useGetRescanConfiguration();
+  const {refetch: getReadingDetail} = useGetUserReadingDetail({
+    reading_id: reading_id,
+    enabled: false,
+  });
+
+  const clearFaceScan = () => {
+    if (intervalRef?.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setProgress(0);
+    setFakeRecording(false);
+    setDidFinishedMeasuring(false);
+  };
+
+  const resetMeasurement = async (type: USER_ACTIVITY, msg?: string) => {
+    if (intervalRef?.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    clearFaceScan();
+    syncWebScan(type as SCAN_SESSION_STATUS, reading_id, {
+      scan_error: imageValidityJSON,
+    });
+    notifyApi(type, true, {
+      message: isString(msg) ? msg : JSON.stringify(msg),
+      reading_id,
+    });
+  };
+
+  const checkForOngoingSession = async () => {
+    try {
+      await syncWebScan('ongoing_session', '');
+      setIsOngoingSessions(false);
+    } catch (error) {
+      if (error instanceof AxiosError && error?.response?.status === 400) {
+        setIsOngoingSessions(true);
+        return showAlert({
+          title:
+            error?.response?.data?.error_title ||
+            languages?.generic_error_message,
+          content: error?.response?.data?.error_msg || '',
+        });
+      }
+      setIsOngoingSessions(false);
+    }
+  };
+
+  const {session, finalValue, restartSession, isRestarting} =
+    useInitializeBinahSession({
+      resetMeasurement,
+      cameraLocation,
+    });
+
+  useEffect(() => {
+    if (!rescanConfigurations?.rescan_flag && !!rescanConfigurations?.error) {
+      notifyApi('scan_error', true, {
+        message: rescanConfigurations?.error_msg,
+        reading_id,
+      });
+      showAlert({
+        title: rescanConfigurations?.error || languages?.generic_error_message,
+        content: rescanConfigurations?.error_msg || '',
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    checkForOngoingSession();
+  }, []);
+
+  useEffect(() => {
+    if (didFinishedMeasuring) {
+      handleCheckResult();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [didFinishedMeasuring]);
+
+  const {data: preReadingConfig} = useGetPreHealthReading();
+
+  const {mutateAsync: postOnboardingStep, isPending: isPostOnboardingPending} =
+    usePostOnboardingSteps();
+  const {mutateAsync: postReadings} = usePostReadings();
+
+  const handleValidityJSON = (validity: string) => {
+    setImageValidityJSON(prevCounts => ({
+      ...prevCounts,
+      [validity]: (prevCounts[validity] || 0) + 1,
+    }));
+  };
+
+  const proceedToReportScreen = async () => {
+    showLoader();
+
+    await Promise.all([
+      notifyApi('scan_error', true, {
+        scan_information: imageValidityJSON,
+        reading_id,
+      }),
+      reportData?.data?.count === 0
+        ? postOnboardingStep({milestone: 'first-health-measurement'})
+        : Promise.resolve(),
+      getReadingDetail(),
+      queryClient.invalidateQueries({queryKey: ['readings']}),
+      queryClient.invalidateQueries({queryKey: [RESCAN_CONFIGURATION]}),
+    ]);
+
+    hideLoader();
+
+    navigation.dispatch(
+      StackActions.replace('ReportStackScreens', {
+        screen: 'Report',
+        params: {
+          reading_id,
+        },
+      }),
+    );
+  };
+
+  const handleReportSuccess = async (data: any) => {
+    if (fromScreen === 'PersonalisedAI' && action) {
+      await action();
+      return navigation.goBack();
+    }
+
+    if (
+      !data?.success &&
+      (data?.error || (isArray(data?.error_msg) && data?.error_msg?.length))
+    ) {
+      await resetMeasurement('scan_error', data.error_msg);
+      return setVisible(true);
+    }
+    await proceedToReportScreen();
+  };
+
+  const handleReportError = (err: any) => {
+    errorToast(languages?.post_reading_error);
+    resetMeasurement('scan_error', err?.message);
+  };
+
+  const {
+    isPending: isResultSubmitting,
+    mutateAsync: submitResult,
+    data: reportResponse,
+  } = useMutation({
+    mutationFn: async () => {
+      if (finalValue) {
+        return await postReadings({
+          payload: {
+            data: finalValue,
+            scan_error: imageValidityJSON,
+            reading_id,
+            timestamp: moment().format('YYYY-MM-DD HH:mm'),
+          },
+        });
+      }
+    },
+    onMutate: () => showLoader(),
+    onSuccess: handleReportSuccess,
+    onError: handleReportError,
+    onSettled: () => hideLoader(),
+  });
+
+  const notifyApi = async (
+    user_activity: USER_ACTIVITY,
+    includeBinahKey: boolean,
+    ...rest: any
+  ) => {
+    const payload = assign(
+      {user_activity, includeBinahKey},
+      user_activity === 'scan_error' ? {scan_error: imageValidityJSON} : {},
+      ...rest,
+    );
+    await postCaptureUserActivity(payload);
+  };
+
+  const startMeasurement = React.useCallback(async () => {
+    if (!session) {
+      return;
+    }
+    try {
+      const readingId = uuid.v4() as string;
+      setReadingId(readingId as string);
+      if (sessionState == SessionState.READY && binahConfig?.scan_duration) {
+        syncWebScan('start_scan', readingId || '');
+        notifyApi('start_scan', true, {
+          reading_id: readingId,
+        });
+        await session.current?.start(+binahConfig?.scan_duration);
+      } else {
+        await session.current?.stop();
+      }
+    } catch (e) {
+      resetMeasurement('scan_error', 'Error while trying to start the session');
+      const exception = e as HealthMonitorException;
+      const error = errorMessages?.find(err => err.code === exception.code);
+
+      const alertAction = [
+        {text: languages?.allow_txt, onPress: () => console.log('OK Pressed')},
+      ];
+      if (error?.code === 4) {
+        alertAction.push({
+          text: languages?.settings,
+          onPress: () => {
+            if (Platform.OS === 'android') {
+              Linking.sendIntent('android.settings.BATTERY_SAVER_SETTINGS');
+            } else {
+              Linking.openSettings();
+            }
+          },
+        });
+      }
+      if (error) {
+        Alert.alert(`${error.cause}`, `${error.solution}`, alertAction);
+      } else {
+        errorToast(languages?.generic_error_message);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionState]);
+
+  const startFakeLoader = async () => {
+    // let intervalId: ReturnType<typeof setInterval> | undefined;
+    let faceScanningProgress = 0;
+
+    if (!binahConfig?.scan_duration) {
+      return;
+    }
+
+    if (fakeRecording && intervalRef.current) {
+      setFakeRecording(false);
+      clearInterval(intervalRef.current);
+    }
+
+    setFakeRecording(true);
+    setProgress(0);
+
+    intervalRef.current = setInterval(() => {
+      faceScanningProgress += 1 / (+binahConfig?.scan_duration + 2);
+      setProgress(faceScanningProgress);
+      if (faceScanningProgress >= 1 && intervalRef.current) {
+        clearInterval(intervalRef.current);
+        setFakeRecording(false);
+        setDidFinishedMeasuring(true);
+      }
+    }, 1000);
+  };
+
+  const handleMeasureNowPress = () => {
+    startMeasurement();
+    startFakeLoader();
+  };
+
+  const handleCheckResult = async () => {
+    syncWebScan('end_scan', reading_id);
+    notifyApi('end_scan', true, {
+      reading_id,
+    });
+    await submitResult();
+  };
+
+  const handleRefresh = async () => {
+    try {
+      setIsRefreshing(true);
+      await checkForOngoingSession();
+    } catch (error) {
+      console.error('handleRefresh error', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleImageValidity = (validity: string | undefined) => {
+    setImageValidity(validity);
+  };
+
+  const isEnabled =
+    (sessionState == SessionState.READY ||
+      sessionState == SessionState.PROCESSING) &&
+    !isOngoingSessions;
+
+  if (isLandscape) {
+    return (
+      <View className="h-full justify-center items-center">
+        <CustomText className="font-isidoraBold text-lg">
+          {languages?.switch_to_portrait}
+        </CustomText>
+      </View>
+    );
+  }
+
+  return (
+    <BackgroundImage className="h-full" style={styles.container}>
+      <SafeAreaScrollView
+        contentContainerStyle={styles.contentContainer}
+        className="h-full"
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+        }>
+        <View className="px-6 py-4">
+          <Navbar />
+        </View>
+        <View className="relative px-2 items-center smallPhone:h-2/5 mediumPhone:h-1/2">
+          <RenderCamera
+            didFinishedMeasuring={didFinishedMeasuring}
+            progress={progress}
+            readingId={reading_id}
+            imageValidity={imageValidity}
+          />
+        </View>
+        <View className="justify-between flex-grow py-4">
+          {fakeRecording ? (
+            <View className="px-4 items-center">
+              <ImageValidityView
+                handleValidityJSON={handleValidityJSON}
+                progress={progress}
+                imageValidity={imageValidity}
+                handleImageValidity={handleImageValidity}
+              />
+            </View>
+          ) : (
+            <View className="px-8 pt-2">
+              <RenderInformationCard
+                progress={progress}
+                fakeRecording={fakeRecording}
+                didFinishedMeasuring={didFinishedMeasuring}
+              />
+            </View>
+          )}
+
+          {progress >= 0.3 ? (
+            <ScanReport
+              progress={progress}
+              preReadingConfig={preReadingConfig || []}
+            />
+          ) : progress ? (
+            <View
+              className={twMerge('items-center', isRestarting && 'opacity-50')}>
+              <StopButton restartSession={restartSession} />
+            </View>
+          ) : null}
+
+          {!didFinishedMeasuring && !fakeRecording && (
+            <View className="px-2 py-1">
+              <RoundedButton
+                onPress={handleMeasureNowPress}
+                loading={
+                  fakeRecording || isResultSubmitting || isPostOnboardingPending
+                }
+                disabled={
+                  fakeRecording ||
+                  isResultSubmitting ||
+                  isPostOnboardingPending ||
+                  !isEnabled ||
+                  !rescanConfigurations?.rescan_flag
+                }>
+                <CustomText className="text-xl text-white font-isidoraSemiBold">
+                  {languages?.measure_button_txt}
+                </CustomText>
+              </RoundedButton>
+            </View>
+          )}
+        </View>
+      </SafeAreaScrollView>
+
+      <BottomAlert
+        visible={visible}
+        hideModal={() => {
+          setVisible(false);
+        }}>
+        {reportResponse?.error ? (
+          <FaceScanError
+            params={reportResponse}
+            startMeasurement={startMeasurement}
+            proceedToReportScreen={proceedToReportScreen}
+            hideModal={() => {
+              setVisible(false);
+            }}
+          />
+        ) : (
+          <LowConfidence
+            params={reportResponse}
+            startMeasurement={startMeasurement}
+            proceedToReportScreen={proceedToReportScreen}
+            hideModal={() => {
+              setVisible(false);
+            }}
+          />
+        )}
+      </BottomAlert>
+    </BackgroundImage>
+  );
+};
+
+export default FaceScannerCamera;
+
+const styles = StyleSheet.create({
+  container: {},
+  contentContainer: {
+    flex: 1,
+    height: '100%',
+  },
+  // cameraImgOverlay: {resizeMode: 'stretch', height: '100%', width: '100%'},
+});

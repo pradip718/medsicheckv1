@@ -1,0 +1,26 @@
+{
+  "data": {
+    "Heart Rate": 97,
+    "Breathing Rate": 18,
+    "PRQ": 4.2,
+    "O2 Saturation": 100,
+    "Diastolic": 80,
+    "Systolic": 150,
+    "Stress level": 4,
+    "Baevsky Stress index": 800,
+    "HRV SDNN": 80,
+    "Mean RRi": 700,
+    "RMSSD": 62,
+    "SD1": 63,
+    "SD2": 71,
+    "LF/HF": 0,
+    "PNS Zone": 0,
+    "PNS Index": 0,
+    "SNS Zone": 0,
+    "SNS Index": 0,
+    "Heamoglobin": 0,
+    "Heamoglobin A1C": 0,
+    "Total Cholesterol": 0
+  },
+  "timestamp": "timestamp"
+}

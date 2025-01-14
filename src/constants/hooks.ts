@@ -1,0 +1,32 @@
+export const GET_PREVENTIX_PERSONALISED_AI = 'personalised-ai-questionnaire';
+export const RESCAN_CONFIGURATION = 'rescan-configuration';
+export const ACCOUNT_STATUS = 'account-status';
+export const POST_FEEDBACK = 'post-feedback';
+export const GET_AI_REPORT = 'ai-report';
+export const GET_AI_REPORT_DETAILS = 'ai-report-details';
+export const MEDSI_QUESTIONNAIRE_ANSWERS = 'answers';
+export const MEDSI_QUESTIONNAIRE_ANSWERS_SUMMARY = 'questionnaire-summary';
+export const GET_REPORT_READING_BY_ID = 'report-reading-by-id';
+export const DELETE_PERSONALISED_AI_REPORT = 'delete-personalised-ai-report';
+
+// ----------------------------------------------Lab Reports ----------------------------------------------
+export const GET_LAB_REPORT_QUESTIONNAIRE = 'get-lab-report-questionnaire';
+export const POST_LAB_REPORT_FILE = 'post-lab-report-file';
+export const GET_LAB_REPORT_LIST = 'lab-report-list';
+export const GET_LAB_REPORT_DETAIL = 'ai-report-detail';
+export const DELETE_LAB_REPORT = 'delete-lab-report';
+
+// ----------------------------------------------Miscellanous Files ----------------------------------------------
+export const GET_MISCELLANOUSE_FILE = 'get-miscellanous-file-details';
+
+//----------------------------------------------Facescan Features ----------------------------------------------
+export const CAPTURE_USER_IMAGE = 'capture-user-image';
+
+//----------------------------------------------HelpDesk Features ----------------------------------------------
+export const GET_HELP_DESK_DETAILS = 'help-desk-details';
+export const GET_COMMUNICATION_DETAILS = 'communication-details';
+export const DELETE_HELP_DESK_TICKET = 'delete-help-desk-ticket';
+
+// ----------------------------------------------Settings ----------------------------------------------
+export const GET_USER_PREFERENCES = 'get-user-preferences';
+export const POST_USER_PREFERENCES = 'post-user-preferences';

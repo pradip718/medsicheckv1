@@ -3,4 +3,6 @@ plugins { id("com.facebook.react.settings") }
 extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
 rootProject.name = 'mx.medsi.medsicheck'
 include ':app'
+include ':biosensesignal-react-native-sdk:biosensesignal-sdk'
 includeBuild('../node_modules/@react-native/gradle-plugin')
+
