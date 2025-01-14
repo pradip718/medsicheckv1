@@ -1,4 +1,4 @@
-// import {KMSClient} from '@aws-sdk/client-kms';
+import {KMSClient} from '@aws-sdk/client-kms';
 import 'react-native-get-random-values';
 import 'react-native-url-polyfill/auto';
 import {ReadableStream} from 'web-streams-polyfill';
@@ -12,11 +12,10 @@ if (typeof global.ReadableStream === 'undefined') {
   global.ReadableStream = ReadableStream;
 }
 
-// export const kmsClient = new KMSClient({
-//   region: 'us-west-2',
-//   credentials: {
-//     accessKeyId: useAuthStore.getState().awsCred?.access_key ?? '',
-//     secretAccessKey: useAuthStore.getState().awsCred?.secret_access_key ?? '',
-//   },
-// });
-export const kmsClient = {};
+export const kmsClient = new KMSClient({
+  region: 'us-west-2',
+  credentials: {
+    accessKeyId: useAuthStore.getState().awsCred?.access_key ?? '',
+    secretAccessKey: useAuthStore.getState().awsCred?.secret_access_key ?? '',
+  },
+});

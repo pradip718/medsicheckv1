@@ -4,6 +4,6 @@ module.exports = {
   plugins: [
     'nativewind/babel',
     'react-native-reanimated/plugin',
-    // '@babel/plugin-transform-class-static-block',
+    '@babel/plugin-transform-class-static-block',
   ],
 };

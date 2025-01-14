@@ -6,7 +6,7 @@ import {
 import {SafeAreaView} from 'moti';
 import React, {useCallback, useRef, useState} from 'react';
 import {Image, ScrollView, StyleSheet, View} from 'react-native';
-import Carousel, {Pagination} from 'react-native-snap-carousel';
+// import Carousel, {Pagination} from 'react-native-snap-carousel';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import Metrics from '../../../utils';
@@ -26,69 +26,69 @@ type RenderCarouselProps = {
   activeSlide: number;
 };
 
-const RenderCarousel = React.forwardRef(
-  ({activeSlide, onChangeSlide}: RenderCarouselProps, ref) => {
-    const {evaluateSize} = useAppConfig();
+// const RenderCarousel = React.forwardRef(
+//   ({activeSlide, onChangeSlide}: RenderCarouselProps, ref) => {
+//     const {evaluateSize} = useAppConfig();
 
-    const _renderItem = ({item}: any) => {
-      return (
-        <EtchedGlass
-          // className="h-[280] mediumPhone:min-h-[407] tablet:h-[80%] justify-center"
-          containerStyle={styles.contentContainer}>
-          <ScrollView
-            className="max-h-full"
-            showsVerticalScrollIndicator={false}>
-            <View className="items-center">
-              <Image
-                source={item.illustration as any}
-                style={[
-                  styles.carouselImg,
-                  {height: evaluateSize('vertical', 218)},
-                ]}
-              />
-            </View>
+//     const _renderItem = ({item}: any) => {
+//       return (
+//         <EtchedGlass
+//           // className="h-[280] mediumPhone:min-h-[407] tablet:h-[80%] justify-center"
+//           containerStyle={styles.contentContainer}>
+//           <ScrollView
+//             className="max-h-full"
+//             showsVerticalScrollIndicator={false}>
+//             <View className="items-center">
+//               <Image
+//                 source={item.illustration as any}
+//                 style={[
+//                   styles.carouselImg,
+//                   {height: evaluateSize('vertical', 218)},
+//                 ]}
+//               />
+//             </View>
 
-            <CustomText className="mt-10 text-center text-xs mediumPhone:text-sm largePhone:text-base">
-              {item.subtitle}
-            </CustomText>
-          </ScrollView>
-        </EtchedGlass>
-      );
-    };
+//             <CustomText className="mt-10 text-center text-xs mediumPhone:text-sm largePhone:text-base">
+//               {item.subtitle}
+//             </CustomText>
+//           </ScrollView>
+//         </EtchedGlass>
+//       );
+//     };
 
-    return (
-      <View className="justify-center">
-        <Carousel
-          //@ts-ignore
-          ref={ref}
-          // ref={(c) => { this._carousel = c; }}
-          data={ENTRIES1}
-          renderItem={_renderItem}
-          sliderWidth={Metrics.screenWidth}
-          itemWidth={evaluateSize('scale', 312)}
-          // pagingEnabled
-          onSnapToItem={onChangeSlide}
-        />
+//     return (
+//       <View className="justify-center">
+//         <Carousel
+//           //@ts-ignore
+//           ref={ref}
+//           // ref={(c) => { this._carousel = c; }}
+//           data={ENTRIES1}
+//           renderItem={_renderItem}
+//           sliderWidth={Metrics.screenWidth}
+//           itemWidth={evaluateSize('scale', 312)}
+//           // pagingEnabled
+//           onSnapToItem={onChangeSlide}
+//         />
 
-        <View className="my-4">
-          <Pagination
-            containerStyle={styles.paginationContentContainer}
-            dotsLength={ENTRIES1.length}
-            activeDotIndex={activeSlide}
-            dotStyle={styles.dotStyle}
-            inactiveDotStyle={
-              {
-                // Define styles for inactive dots here
-              }
-            }
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-          />
-        </View>
-      </View>
-    );
-  },
-);
+//         <View className="my-4">
+//           <Pagination
+//             containerStyle={styles.paginationContentContainer}
+//             dotsLength={ENTRIES1.length}
+//             activeDotIndex={activeSlide}
+//             dotStyle={styles.dotStyle}
+//             inactiveDotStyle={
+//               {
+//                 // Define styles for inactive dots here
+//               }
+//             }
+//             inactiveDotOpacity={0.4}
+//             inactiveDotScale={0.6}
+//           />
+//         </View>
+//       </View>
+//     );
+//   },
+// );
 
 const FaceScan = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
@@ -142,13 +142,6 @@ const FaceScan = () => {
           />
         </View>
 
-        <View className="mt-4 flex-1 justify-center">
-          <RenderCarousel
-            ref={carouselRef}
-            activeSlide={activeSlide}
-            onChangeSlide={onChangeActiveSlide}
-          />
-        </View>
         <View className="px-10 mb-2">
           <RoundedButton
             onPress={
