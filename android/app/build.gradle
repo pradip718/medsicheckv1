@@ -161,6 +161,12 @@ android {
             useLegacyPackaging = true
         }
     }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
@@ -175,5 +181,21 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // Anura Core SDK
+    implementation(name: 'anura-core-sdk-2.4.7.136', ext: 'aar')
+    implementation(name: 'anura-opencv-4.5.1', ext: 'aar')
+
+    // Anura Core SDK Dependencies
+    implementation "com.google.mediapipe:solution-core:$mediaPipeVersion"
+    implementation "com.google.mediapipe:facemesh:$mediaPipeVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinXJsonSerialization"
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "org.java-websocket:Java-WebSocket:$websocketVersion"
+
+    // Anura Sample App Dependencies
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.fragment:fragment-ktx:$androidxFragmentVersion"
+    implementation 'com.google.firebase:firebase-perf-ktx:21.0.1'
 }
 

@@ -4,17 +4,22 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {SafeAreaView} from 'moti';
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Image, ScrollView, StyleSheet, View} from 'react-native';
 // import Carousel, {Pagination} from 'react-native-snap-carousel';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import Metrics from '../../../utils';
+import {hasValidUserDemographics} from '../../../utils/methods';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
 import CustomText from '../../components/Text';
+import Action from '../../config/Action';
+import AppConfig from '../../config/AppConfig';
+import Event from '../../config/Event';
+import EventBridge from '../../config/EventBridge';
 import useAppConfig from '../../hooks/api/useAppConfig';
 import Header from './Header';
 import {ENTRIES1} from './data';
@@ -127,6 +132,10 @@ const FaceScan = () => {
     navigation.navigate('FaceScanCamera');
   };
 
+  useEffect(() => {
+    EventBridge.sendEvent(Action.synchronizeAppConfiguration, AppConfig);
+  }, []);
+
   return (
     <BackgroundImage>
       <SafeAreaView className="h-full">
@@ -144,13 +153,53 @@ const FaceScan = () => {
 
         <View className="px-10 mb-2">
           <RoundedButton
-            onPress={
-              isLastSlide ? navigateToFaceScanCamera : onChangeCarouselSlide
-            }>
+            // onPress={
+            //   isLastSlide ? navigateToFaceScanCamera : onChangeCarouselSlide
+            // }
+            onPress={navigateToFaceScanCamera}>
             <CustomText className="text-white text-xl font-isidoraSemiBold">
               {isLastSlide
                 ? languages?.start_button_text
                 : languages?.next_button_txt}
+            </CustomText>
+          </RoundedButton>
+        </View>
+        <View className="px-10 mb-2">
+          <RoundedButton
+            // onPress={
+            //   isLastSlide ? navigateToFaceScanCamera : onChangeCarouselSlide
+            // }
+            onPress={() => {
+              const userDemographics = {
+                height: 180,
+                weight: 80,
+                age: 25,
+                gender: 'male',
+                partnerID: '22',
+              };
+
+              if (!hasValidUserDemographics(userDemographics)) {
+                // user demographics is not valid, only retain the partnerID
+                userDemographics = {partnerID: '22'};
+              }
+
+              console.log(userDemographics);
+
+              EventBridge.sendEvent(Action.startMeasurement, userDemographics);
+
+              /* Use the following code to customize the measurement page
+                EventBridge.sendEvent(Action.synchronizeConfiguration, CustomConfig.measurementConfig)
+                EventBridge.sendEvent(Action.synchronizeUIConfiguration, CustomConfig.measurementUIConfig)
+              */
+
+              EventBridge.addCommonListener(name => {
+                if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
+                  navigation.navigate('ResultPage');
+                }
+              });
+            }}>
+            <CustomText className="text-white text-xl font-isidoraSemiBold">
+              Nueralogix
             </CustomText>
           </RoundedButton>
         </View>

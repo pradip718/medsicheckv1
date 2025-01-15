@@ -25,6 +25,7 @@ import AboutApp from '../src/screens/AboutApp';
 import FaceScan from '../src/screens/FaceScan';
 import FaceScannerCamera from '../src/screens/FaceScan/FaceScannerCamera';
 import QRFaceScan from '../src/screens/FaceScan/QRFaceScan';
+import ResultsPage from '../src/screens/FaceScan/ResultsPage';
 import Feedbacks from '../src/screens/Feedbacks';
 import HealthWallet from '../src/screens/HealthWallet';
 import AIHealthReport from '../src/screens/HealthWallet/AIHealthReport/AIHealthReport';
@@ -342,6 +343,8 @@ const RootNavigator = () => {
           />
 
           <Stack.Screen name="ReportStackScreens" component={ReportStack} />
+
+          <Stack.Screen name="ResultPage" component={ResultsPage} />
 
           <Stack.Screen name="AIScanDetails" component={AIScanDetails} />
           <Stack.Screen

@@ -810,3 +810,26 @@ export const formatTimes = (
     localFormatted: `${startLocal} to ${endLocal}`,
   };
 };
+
+export const hasValidUserDemographics = userDemographics => {
+  if (userDemographics.height < 120 || userDemographics.height > 220) {
+    return false;
+  }
+  if (userDemographics.weight < 30 || userDemographics.weight > 300) {
+    return false;
+  }
+  const bmi = userDemographics.weight / Math.pow(userDemographics.height / 100);
+  if (bmi < 9 || bmi > 66) {
+    return false;
+  }
+  if (userDemographics.age < 13 || userDemographics.age > 120) {
+    return false;
+  }
+  if (
+    userDemographics.gender != 'male' &&
+    userDemographics.gender != 'female'
+  ) {
+    return false;
+  }
+  return true;
+};

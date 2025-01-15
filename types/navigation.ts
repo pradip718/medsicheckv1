@@ -5,6 +5,7 @@ import {QuestionnaireItem} from './personalisedai';
 import {ProfileType} from './users/user';
 
 export type MainStackParamList = {
+  ResultPage: undefined;
   Login: undefined;
   Register: undefined;
   ForgotPassword: undefined;

@@ -6,6 +6,13 @@ buildscript {
         targetSdkVersion = 34
         ndkVersion = "26.1.10909125"
         kotlinVersion = "1.9.24"
+
+        kotlinXJsonSerialization = '1.1.0'
+        websocketVersion = '1.4.1'
+        androidxFragmentVersion = '1.6.0'
+        gsonVersion = '2.9.0'
+        materialVersion = '1.9.0'
+        mediaPipeVersion = "0.10.9"
     }
     repositories {
         google()
