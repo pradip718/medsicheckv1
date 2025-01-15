@@ -151,57 +151,63 @@ const FaceScan = () => {
           />
         </View>
 
-        <View className="px-10 mb-2">
-          <RoundedButton
-            // onPress={
-            //   isLastSlide ? navigateToFaceScanCamera : onChangeCarouselSlide
-            // }
-            onPress={navigateToFaceScanCamera}>
-            <CustomText className="text-white text-xl font-isidoraSemiBold">
-              {isLastSlide
+        <View className="justify-end flex-grow">
+          <View className="px-10 mb-2">
+            <RoundedButton
+              // onPress={
+              //   isLastSlide ? navigateToFaceScanCamera : onChangeCarouselSlide
+              // }
+              onPress={navigateToFaceScanCamera}>
+              <CustomText className="text-white text-xl font-isidoraSemiBold">
+                {/* {isLastSlide
                 ? languages?.start_button_text
-                : languages?.next_button_txt}
-            </CustomText>
-          </RoundedButton>
-        </View>
-        <View className="px-10 mb-2">
-          <RoundedButton
-            // onPress={
-            //   isLastSlide ? navigateToFaceScanCamera : onChangeCarouselSlide
-            // }
-            onPress={() => {
-              const userDemographics = {
-                height: 180,
-                weight: 80,
-                age: 25,
-                gender: 'male',
-                partnerID: '22',
-              };
+                : languages?.next_button_txt} */}
+                Binah
+              </CustomText>
+            </RoundedButton>
+          </View>
+          <View className="px-10 mb-2">
+            <RoundedButton
+              // onPress={
+              //   isLastSlide ? navigateToFaceScanCamera : onChangeCarouselSlide
+              // }
+              onPress={() => {
+                const userDemographics = {
+                  height: 180,
+                  weight: 80,
+                  age: 25,
+                  gender: 'male',
+                  partnerID: '22',
+                };
 
-              if (!hasValidUserDemographics(userDemographics)) {
-                // user demographics is not valid, only retain the partnerID
-                userDemographics = {partnerID: '22'};
-              }
+                if (!hasValidUserDemographics(userDemographics)) {
+                  // user demographics is not valid, only retain the partnerID
+                  userDemographics = {partnerID: '22'};
+                }
 
-              console.log(userDemographics);
+                console.log(userDemographics);
 
-              EventBridge.sendEvent(Action.startMeasurement, userDemographics);
+                EventBridge.sendEvent(
+                  Action.startMeasurement,
+                  userDemographics,
+                );
 
-              /* Use the following code to customize the measurement page
+                /* Use the following code to customize the measurement page
                 EventBridge.sendEvent(Action.synchronizeConfiguration, CustomConfig.measurementConfig)
                 EventBridge.sendEvent(Action.synchronizeUIConfiguration, CustomConfig.measurementUIConfig)
               */
 
-              EventBridge.addCommonListener(name => {
-                if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
-                  navigation.navigate('ResultPage');
-                }
-              });
-            }}>
-            <CustomText className="text-white text-xl font-isidoraSemiBold">
-              Nueralogix
-            </CustomText>
-          </RoundedButton>
+                EventBridge.addCommonListener(name => {
+                  if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
+                    navigation.navigate('ResultPage');
+                  }
+                });
+              }}>
+              <CustomText className="text-white text-xl font-isidoraSemiBold">
+                Nueralogix
+              </CustomText>
+            </RoundedButton>
+          </View>
         </View>
       </SafeAreaView>
     </BackgroundImage>

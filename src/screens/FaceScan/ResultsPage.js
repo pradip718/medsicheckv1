@@ -15,6 +15,7 @@
 
 import React, {useState} from 'react';
 import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
+import Navbar from '../../components/Navbar';
 import Action from '../../config/Action';
 import Event from '../../config/Event';
 import EventBridge from '../../config/EventBridge';
@@ -125,7 +126,10 @@ const ResultsPage = ({navigation}) => {
           }
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={
-            <Text style={styles.id}>ID: {resultsData.measurementID}</Text>
+            <>
+              <Navbar />
+              <Text style={styles.id}>ID: {resultsData.measurementID}</Text>
+            </>
           }
         />
       </View>
