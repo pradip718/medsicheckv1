@@ -16,9 +16,11 @@
 import React, {useState} from 'react';
 import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import Navbar from '../../components/Navbar';
+import CustomText from '../../components/Text';
 import Action from '../../config/Action';
 import Event from '../../config/Event';
 import EventBridge from '../../config/EventBridge';
+import useFullPageLoader from '../../hooks/useFullPageLoader';
 
 const ResultsPage = ({navigation}) => {
   const [resultsData, setResultsData] = useState({});
@@ -26,6 +28,8 @@ const ResultsPage = ({navigation}) => {
   const [isListDisplay, setIsListDisplay] = useState('none');
   const [isErrorDisplay, setIsErrorDisplay] = useState('none');
   const [errorDescription, setErrorDescription] = useState('');
+
+  const {showLoader, hideLoader} = useFullPageLoader();
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -96,6 +100,8 @@ const ResultsPage = ({navigation}) => {
     }, 30000);
   };
 
+  console.log('resultsData', resultsData);
+
   return (
     <View
       style={[
@@ -117,8 +123,16 @@ const ResultsPage = ({navigation}) => {
           data={resultsData.results}
           renderItem={({item}) => (
             <View style={styles.list_view}>
-              <Text style={styles.list_title}>{item.key}</Text>
-              <Text style={styles.list_subTitle}>{item.value}</Text>
+              <CustomText
+                style={styles.list_title}
+                className="text-black font-isidoraSemiBold">
+                {item.key}
+              </CustomText>
+              <CustomText
+                style={styles.list_subTitle}
+                className="font-isidoraMedium">
+                {item.value}
+              </CustomText>
             </View>
           )}
           ItemSeparatorComponent={

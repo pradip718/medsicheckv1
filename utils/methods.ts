@@ -1,5 +1,6 @@
 import {EncryptCommand, EncryptCommandInput} from '@aws-sdk/client-kms';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Sex} from 'biosensesignal-react-native-sdk';
 import {Buffer} from 'buffer';
 import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
@@ -24,7 +25,7 @@ import useLoaderStore from '../store/loaderStore';
 import useUserProfileStore from '../store/profileStore';
 import {ColorRangeItem, ReadingData} from '../types/jsons';
 import {ConfidenceLevelKeys} from '../types/reports';
-import {FamilyMembers} from '../types/users/user';
+import {FamilyMembers, User} from '../types/users/user';
 import {successToast} from './toast';
 
 export const getImgBasedOnScore = (score: number) => {
@@ -809,6 +810,18 @@ export const formatTimes = (
     utcFormatted: `${startUtc} to ${endUtc}`,
     localFormatted: `${startLocal} to ${endLocal}`,
   };
+};
+
+export const getGenderForDemoGraphic = (
+  gender: User['gender'] | undefined,
+): Sex => {
+  if (gender === 'male') {
+    return Sex.MALE;
+  }
+  if (gender === 'female') {
+    return Sex.FEMALE;
+  }
+  return Sex.UNSPECIFIED;
 };
 
 export const hasValidUserDemographics = userDemographics => {

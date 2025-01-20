@@ -19,7 +19,7 @@ const AppConfig = {
   deepaffexLicenseKey: 'dd3106bf-c0f0-465f-9d5f-a98b03663494',
 
   // Must provide a study ID to send measurement data
-  deepaffexStudyID: '626c4642-0ce2-47a9-a969-876892ce5f6f',
+  deepaffexStudyID: '668e1332-a756-4fa6-b50c-cc8d5e1522d8',
 
   // DeepAffex API Hostname
   // International: api.deepaffex.ai

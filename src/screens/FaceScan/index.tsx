@@ -10,7 +10,13 @@ import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import Metrics from '../../../utils';
-import {hasValidUserDemographics} from '../../../utils/methods';
+import {
+  convertFeetAndInchesToCm,
+  convertWeightToKg,
+  getAgeFromBirthdate,
+  getGenderForDemoGraphic,
+  hasValidUserDemographics,
+} from '../../../utils/methods';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
@@ -21,6 +27,7 @@ import AppConfig from '../../config/AppConfig';
 import Event from '../../config/Event';
 import EventBridge from '../../config/EventBridge';
 import useAppConfig from '../../hooks/api/useAppConfig';
+import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
 import Header from './Header';
 import {ENTRIES1} from './data';
 
@@ -103,6 +110,8 @@ const FaceScan = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [doNotShowChecked, setDoNotShowChecked] = useState<boolean>(false);
 
+  const {data: users} = useGetUserAttributes();
+
   const isLastSlide = activeSlide >= TOTAL_SLIDE - 1;
 
   //cleanup carousel state
@@ -172,17 +181,31 @@ const FaceScan = () => {
               //   isLastSlide ? navigateToFaceScanCamera : onChangeCarouselSlide
               // }
               onPress={() => {
-                const userDemographics = {
-                  height: 180,
-                  weight: 80,
-                  age: 25,
-                  gender: 'male',
-                  partnerID: '22',
+                let userDemographics = {
+                  height: users?.height
+                    ? convertFeetAndInchesToCm(
+                        Number(users?.height),
+                        users?.height_unit,
+                      )
+                    : undefined,
+                  weight: users?.weight
+                    ? convertWeightToKg(
+                        Number(users?.weight),
+                        users?.weight_unit,
+                      )
+                    : undefined,
+                  age: users?.birthdate
+                    ? getAgeFromBirthdate(users?.birthdate)
+                    : undefined,
+                  gender: users?.gender,
+                  partnerID: users?.profile_id,
                 };
+
+                console.log('userDemographics', userDemographics);
 
                 if (!hasValidUserDemographics(userDemographics)) {
                   // user demographics is not valid, only retain the partnerID
-                  userDemographics = {partnerID: '22'};
+                  userDemographics = {partnerID: users?.profile_id};
                 }
 
                 console.log(userDemographics);

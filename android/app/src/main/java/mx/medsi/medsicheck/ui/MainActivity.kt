@@ -44,6 +44,10 @@ import kotlinx.coroutines.withContext
 import okhttp3.Dispatcher
 import kotlin.system.exitProcess
 
+import com.zoontek.rnbootsplash.RNBootSplash
+import mx.medsi.medsicheck.R
+
+
 class MainActivity : ReactActivity() {
   companion object {
     @SuppressLint("StaticFieldLeak")
@@ -93,6 +97,7 @@ class MainActivity : ReactActivity() {
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    RNBootSplash.init(this, R.style.BootTheme) // ⬅️ initialize the splash screen
     super.onCreate(null)
     currentContext = this
     requestCameraAccessPermission()
