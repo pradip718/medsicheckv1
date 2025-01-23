@@ -159,3 +159,13 @@ export type CheckAppUpdateResponse = {
   force_update: boolean;
   update: boolean;
 };
+
+export type SDK_NAME = 'binaah' | 'neurologix';
+
+export type BinahConfigResponse = {
+  sdk_name: SDK_NAME;
+  sdk_value: string;
+  sdk_type: 'vital_scan' | 'full_scan';
+  scan_duration: string;
+  demographic_flag: 'True' | 'False';
+};

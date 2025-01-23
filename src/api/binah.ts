@@ -2,34 +2,29 @@ import axiosInstance from '.';
 import useAuthStore from '../../store/authStore';
 import {BinahErrorMessage} from '../../store/binahConfigStore';
 import useUserProfileStore from '../../store/profileStore';
-import {CheckAppUpdateResponse} from '../../types/api_response';
+import {
+  BinahConfigResponse,
+  CheckAppUpdateResponse,
+} from '../../types/api_response';
 import axiosSessionInstance from './sessionConfiguration';
 
-export type BinahConfigResponse = {
-  setting_name: string;
-  setting_value: string;
-  setting_id: string;
-};
-
-async function getBinahConfiguration(): Promise<BinahConfigResponse[]> {
+async function getBinahConfiguration(): Promise<BinahConfigResponse> {
   const profile_id = useUserProfileStore.getState().currentActiveProfileId;
   const {deeplinkAuth} = useAuthStore.getState();
   const activeAxiosInstance = deeplinkAuth?.session_id
     ? axiosSessionInstance
     : axiosInstance;
 
-  try {
-    const response = await activeAxiosInstance({
-      method: 'GET',
-      url: `v1/face-scan-setting?${
-        profile_id ? 'profile_id=' + profile_id : ''
-      }&client_name=medsi_check`,
-    });
-    return response?.data;
-  } catch (error) {
-    console.warn('getBinahConfiguration error', error);
-    throw error;
-  }
+  const params = new URLSearchParams({
+    profile_id: profile_id.toString(),
+    attempt: '1',
+    client_name: 'medsi_check',
+  });
+
+  const response = await activeAxiosInstance.get(
+    `v1/sdk-setting?${params.toString()}`,
+  );
+  return response?.data;
 }
 
 async function checkAppUpdate(token: string): Promise<CheckAppUpdateResponse> {

@@ -14,16 +14,17 @@ const useFetchBinahConfig = () => {
     mutationFn: async () => {
       return await getBinahConfiguration();
     },
-    onSuccess: data => {
-      const normalizedConfig = data?.reduce(
-        (acc, {setting_name, setting_value}) => {
-          acc[setting_name] = setting_value;
-          return acc;
-        },
-        {} as any,
-      );
-      setBinahConfig(normalizedConfig as BinahConfig);
-      return normalizedConfig as BinahConfig;
+    onSuccess: setting => {
+      setBinahConfig({
+        binaah_sdk_key: setting?.sdk_value,
+        demographic_flag: setting?.demographic_flag,
+        scan_duration: setting?.scan_duration,
+      } as BinahConfig);
+      return {
+        scan_duration: setting?.scan_duration,
+        binaah_sdk_key: setting?.sdk_value,
+        demographic_flag: setting?.demographic_flag,
+      };
     },
     onError: () => {
       setBinahConfig({binaah_sdk_key: ''} as BinahConfig);
