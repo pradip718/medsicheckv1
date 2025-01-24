@@ -1,5 +1,6 @@
 import {EncryptCommand, EncryptCommandInput} from '@aws-sdk/client-kms';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Sex} from 'biosensesignal-react-native-sdk';
 import {Buffer} from 'buffer';
 import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
@@ -31,7 +32,7 @@ import useLoaderStore from '../store/loaderStore';
 import useUserProfileStore from '../store/profileStore';
 import {ColorRangeItem, ReadingData} from '../types/jsons';
 import {ConfidenceLevelKeys} from '../types/reports';
-import {FamilyMembers} from '../types/users/user';
+import {FamilyMembers, User} from '../types/users/user';
 import {successToast} from './toast';
 
 export const getImgBasedOnScore = (score: number) => {
@@ -877,4 +878,39 @@ export const transformQuestionData = (
       }),
     };
   });
+};
+
+export const getGenderForDemoGraphic = (
+  gender: User['gender'] | undefined,
+): Sex => {
+  if (gender === 'male') {
+    return Sex.MALE;
+  }
+  if (gender === 'female') {
+    return Sex.FEMALE;
+  }
+  return Sex.UNSPECIFIED;
+};
+
+export const hasValidUserDemographics = userDemographics => {
+  if (userDemographics.height < 120 || userDemographics.height > 220) {
+    return false;
+  }
+  if (userDemographics.weight < 30 || userDemographics.weight > 300) {
+    return false;
+  }
+  const bmi = userDemographics.weight / Math.pow(userDemographics.height / 100);
+  if (bmi < 9 || bmi > 66) {
+    return false;
+  }
+  if (userDemographics.age < 13 || userDemographics.age > 120) {
+    return false;
+  }
+  if (
+    userDemographics.gender != 'male' &&
+    userDemographics.gender != 'female'
+  ) {
+    return false;
+  }
+  return true;
 };

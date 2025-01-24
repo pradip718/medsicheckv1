@@ -90,45 +90,48 @@ const CustomTabBar = ({
   };
 
   const handleAnuraNavigation = () => {
-    let userDemographics = {
-      height: users?.height
-        ? convertFeetAndInchesToCm(Number(users?.height), users?.height_unit)
-        : undefined,
-      weight: users?.weight
-        ? convertWeightToKg(Number(users?.weight), users?.weight_unit)
-        : undefined,
-      age: users?.birthdate ? getAgeFromBirthdate(users?.birthdate) : undefined,
-      gender: users?.gender,
-      partnerID: users?.profile_id,
-    };
+    console.log('check');
+    try {
+      let userDemographics = {
+        height: users?.height
+          ? convertFeetAndInchesToCm(Number(users?.height), users?.height_unit)
+          : undefined,
+        weight: users?.weight
+          ? convertWeightToKg(Number(users?.weight), users?.weight_unit)
+          : undefined,
+        age: users?.birthdate
+          ? getAgeFromBirthdate(users?.birthdate)
+          : undefined,
+        gender: users?.gender,
+        partnerID: users?.profile_id,
+      };
 
-    if (!hasValidUserDemographics(userDemographics)) {
-      // user demographics is not valid, only retain the partnerID
-      userDemographics = {partnerID: users?.profile_id};
+      if (!hasValidUserDemographics(userDemographics)) {
+        // user demographics is not valid, only retain the partnerID
+        userDemographics = {partnerID: users?.profile_id};
+      }
+
+      console.log(userDemographics);
+
+      EventBridge.sendEvent(Action.startMeasurement, userDemographics);
+
+      /* Use the following code to customize the measurement page
+                      EventBridge.sendEvent(Action.synchronizeConfiguration, CustomConfig.measurementConfig)
+                      EventBridge.sendEvent(Action.synchronizeUIConfiguration, CustomConfig.measurementUIConfig)
+                    */
+
+      EventBridge.addCommonListener(name => {
+        addReusltsListener();
+        // if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
+        //   navigation.navigate('ResultPage');
+        // }
+      });
+    } catch (error) {
+      console.log('error', error);
     }
-
-    console.log(userDemographics);
-
-    EventBridge.sendEvent(Action.startMeasurement, userDemographics);
-
-    /* Use the following code to customize the measurement page
-                    EventBridge.sendEvent(Action.synchronizeConfiguration, CustomConfig.measurementConfig)
-                    EventBridge.sendEvent(Action.synchronizeUIConfiguration, CustomConfig.measurementUIConfig)
-                  */
-
-    EventBridge.addCommonListener(name => {
-      addReusltsListener();
-      // if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
-      //   navigation.navigate('ResultPage');
-      // }
-    });
   };
 
   const onPressScanButton = async () => {
-    console.log('ressed');
-    // const readingId = uuid.v4() as string;
-    // setReadingId(readingId as string);
-
     if (rescanConfigurations?.rescan_flag) {
       const {sdk_name} = await getSdkConfig();
       if (sdk_name === 'binaah') {
