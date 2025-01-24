@@ -22,8 +22,12 @@ const useFetchBinahConfig = () => {
           scan_duration: setting?.scan_duration,
         });
       }
-      if (setting?.sdk_name === 'neurologix') {
-        setAnuraConfig(setting);
+      if (setting?.sdk_name === 'nuralogix') {
+        const sdkValue = JSON.parse(setting?.sdk_value);
+        setAnuraConfig({
+          ...setting,
+          sdk_value: sdkValue,
+        });
       }
       setCurrentSdk(setting?.sdk_name);
       return setting;

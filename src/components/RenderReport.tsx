@@ -35,7 +35,7 @@ const RenderReport = React.memo(
 
     const reportConfig = useMemo(() => {
       if (!reportData || !readingData[readingKey]) return null;
-      return reportData.data?.config?.[readingKey];
+      return reportData.config?.[readingKey];
     }, [reportData, readingData, readingKey]);
 
     if (!reportConfig) {
@@ -70,7 +70,7 @@ const RenderReport = React.memo(
           description={description}
           score={score}
           category={category}
-          color_value={reportData?.data?.col_val || null}
+          color_value={reportData?.col_val || null}
           scaleCriteria={scaleCriteria}
           confidenceLevel={confidenceLevel}
           subParameters={subParameters}

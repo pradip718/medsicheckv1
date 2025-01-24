@@ -201,8 +201,6 @@ const FaceScan = () => {
                   partnerID: users?.profile_id,
                 };
 
-                console.log('userDemographics', userDemographics);
-
                 if (!hasValidUserDemographics(userDemographics)) {
                   // user demographics is not valid, only retain the partnerID
                   userDemographics = {partnerID: users?.profile_id};

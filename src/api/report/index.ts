@@ -1,6 +1,5 @@
 import axiosInstance from '..';
 import useAuthStore from '../../../store/authStore';
-import useBinahConfigStore from '../../../store/binahConfigStore';
 import useLanguageStore from '../../../store/languageStore';
 import useUserProfileStore from '../../../store/profileStore';
 import {MiscellanousFilesResponse} from '../../../types/api_response';
@@ -202,20 +201,17 @@ async function postReading({payload}: any) {
     ? axiosSessionInstance
     : axiosInstance;
 
-  try {
-    const response = await activeAxiosInstance({
-      method: 'POST',
-      url: `v1/health-report?locale=${locale}&profile_id=${profile_id}`,
-      data: {
-        ...payload,
-        binaah_key: useBinahConfigStore.getState()?.binahConfig?.binaah_sdk_key,
-      },
-    });
+  const params = new URLSearchParams({
+    locale: locale,
+    profile_id: profile_id.toString(),
+  });
 
-    return response?.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await activeAxiosInstance.post(
+    `v1/health-report?${params}`,
+    payload,
+  );
+
+  return response?.data;
 }
 
 async function captureUserImage(payload: any) {

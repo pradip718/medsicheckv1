@@ -1,5 +1,5 @@
 import {useQuery, UseQueryOptions, UseQueryResult} from '@tanstack/react-query';
-import {Reading, ReportJsonResponse} from '../../../types/jsons';
+import {ReportJson} from '../../../types/jsons';
 import {getReportReading} from '../../api/report';
 
 interface GetUserReadingsProps extends UseQueryOptions {
@@ -13,31 +13,25 @@ interface ReadingData {
   [key: string]: any;
 }
 
-const modifyBloodPressure = (reportData: ReportJsonResponse) => {
-  return reportData.data.readings.map((reading: Reading) => {
-    const updatedReadingData = Object.entries(reading.reading_data).reduce(
-      (acc: ReadingData, [key, value]) => {
-        if (key === 'systolic' || key === 'diastolic') {
-          return {
-            ...acc,
-            BLOOD_PRESSURE: {
-              ...acc.BLOOD_PRESSURE,
-              [key]: value,
-            },
-          };
-        }
+const modifyBloodPressure = (reading_data: ReadingData) => {
+  return Object.entries(reading_data).reduce(
+    (acc: ReadingData, [key, value]) => {
+      if (key === 'systolic' || key === 'diastolic') {
         return {
           ...acc,
-          [key]: value,
+          BLOOD_PRESSURE: {
+            ...acc.BLOOD_PRESSURE,
+            [key]: value,
+          },
         };
-      },
-      {},
-    );
-    return {
-      ...reading,
-      reading_data: updatedReadingData,
-    };
-  });
+      }
+      return {
+        ...acc,
+        [key]: value,
+      };
+    },
+    {},
+  );
 };
 
 const useGetUserReadingDetail = (
@@ -49,19 +43,19 @@ const useGetUserReadingDetail = (
       const reportData = (await getReportReading(
         0,
         props?.reading_id,
-      )) as ReportJsonResponse;
+      )) as ReportJson;
 
-      const updatedReportData: ReportJsonResponse = {
+      const updatedReportData: ReportJson = {
         ...reportData,
-        data: {
-          ...reportData.data,
-          readings: modifyBloodPressure(reportData),
+        readings: {
+          ...reportData?.readings,
+          reading_data: modifyBloodPressure(reportData?.readings?.reading_data),
         },
       };
       return updatedReportData;
     },
     ...props,
-  }) as UseQueryResult<ReportJsonResponse>;
+  }) as UseQueryResult<ReportJson>;
 };
 
 export {useGetUserReadingDetail};

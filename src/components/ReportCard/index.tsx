@@ -81,6 +81,24 @@ const ReportCard = React.memo((props: ReportCardProps) => {
     readingId,
     confidenceLevel,
   } = props;
+
+  console.log('first', {
+    healthMetricsTitle,
+    healthMetricsValue,
+    healthMetricsIndex,
+    description,
+    score,
+    iconName,
+    category,
+    color_value,
+    onDetailsPress,
+    scaleCriteria,
+    scaleType,
+    colorRange,
+    subParameters,
+    readingId,
+    confidenceLevel,
+  });
   const imageUrl =
     languages.vitals_with_image?.[
       iconName as keyof typeof languages.vitals_with_image

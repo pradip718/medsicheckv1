@@ -160,7 +160,7 @@ export type CheckAppUpdateResponse = {
   update: boolean;
 };
 
-export type SDK_NAME = 'binaah' | 'neurologix';
+export type SDK_NAME = 'binaah' | 'nuralogix';
 
 export type AnuraSdkValue = {
   deepaffexLicenseKey: string;
@@ -180,6 +180,11 @@ export type BinahConfigResponse = BaseSdkConfigResponse & {
 };
 
 export type AnuraConfigResponse = BaseSdkConfigResponse & {
-  sdk_name: 'neurologix';
+  sdk_name: 'nuralogix';
+  sdk_value: string;
+};
+
+export type AnuraConfig = BaseSdkConfigResponse & {
+  sdk_name: 'nuralogix';
   sdk_value: AnuraSdkValue;
 };

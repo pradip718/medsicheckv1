@@ -1,15 +1,31 @@
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
-import React from 'react';
+import {StackActions} from '@react-navigation/native';
+import moment from 'moment';
+import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
+import uuid from 'react-native-uuid';
 import useAlertStore from '../../../store/alertStore';
+import useBinahConfigStore from '../../../store/binahConfigStore';
 import useLanguageStore from '../../../store/languageStore';
+import {
+  convertFeetAndInchesToCm,
+  convertWeightToKg,
+  getAgeFromBirthdate,
+  hasValidUserDemographics,
+} from '../../../utils/methods';
 import {navigateToFaceScan} from '../../../utils/navigation';
+import Action from '../../config/Action';
+import Event from '../../config/Event';
+import EventBridge from '../../config/EventBridge';
 import useGetRescanConfiguration from '../../hooks/api/useGetRescanConfiguration';
+import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
+import usePostReadings from '../../hooks/api/usePostReading';
+import useFetchBinahConfig from '../../hooks/useFetchBinahConfig';
 import customColor from '../../theme/customColor';
 import ToolTipWalkthrough from '../CustomCopilot/ToolTipWalkthrough';
 import Icon from '../Icon';
@@ -25,11 +41,103 @@ const CustomTabBar = ({
 }: CustomTabBarProps) => {
   const {languages} = useLanguageStore();
   const {showAlert} = useAlertStore();
-  const {data: rescanConfigurations} = useGetRescanConfiguration();
+  const {anuraConfig} = useBinahConfigStore();
+  // const [reading_id, setReadingId] = useState('');
 
-  const onPressScanButton = () => {
+  const {data: rescanConfigurations} = useGetRescanConfiguration();
+  const {data: users} = useGetUserAttributes();
+
+  const {mutateAsync: getSdkConfig} = useFetchBinahConfig();
+  const {mutateAsync: postReadings} = usePostReadings({
+    onSuccess: (data, variable) => {
+      const {
+        payload: {reading_id},
+      } = variable;
+      navigation.dispatch(
+        StackActions.replace('ReportStackScreens', {
+          screen: 'Report',
+          params: {
+            reading_id,
+          },
+        }),
+      );
+    },
+  });
+
+  useEffect(() => {
+    EventBridge.sendEvent(
+      Action.synchronizeAppConfiguration,
+      anuraConfig?.sdk_value,
+    );
+  }, [anuraConfig]);
+
+  const addReusltsListener = async () => {
+    EventBridge.addReusltsListener(async (name, data) => {
+      if (name == Event.anuraMeasurementGetResultsSuccess) {
+        console.log('data', data);
+        await postReadings({
+          payload: {
+            data: data?.results,
+            scan_error: [],
+            reading_id: uuid.v4(),
+            timestamp: moment().format('YYYY-MM-DD HH:mm'),
+            sdk_name: anuraConfig?.sdk_name,
+            sdk_type: anuraConfig?.sdk_type,
+          },
+        });
+      }
+    });
+  };
+
+  const handleAnuraNavigation = () => {
+    let userDemographics = {
+      height: users?.height
+        ? convertFeetAndInchesToCm(Number(users?.height), users?.height_unit)
+        : undefined,
+      weight: users?.weight
+        ? convertWeightToKg(Number(users?.weight), users?.weight_unit)
+        : undefined,
+      age: users?.birthdate ? getAgeFromBirthdate(users?.birthdate) : undefined,
+      gender: users?.gender,
+      partnerID: users?.profile_id,
+    };
+
+    if (!hasValidUserDemographics(userDemographics)) {
+      // user demographics is not valid, only retain the partnerID
+      userDemographics = {partnerID: users?.profile_id};
+    }
+
+    console.log(userDemographics);
+
+    EventBridge.sendEvent(Action.startMeasurement, userDemographics);
+
+    /* Use the following code to customize the measurement page
+                    EventBridge.sendEvent(Action.synchronizeConfiguration, CustomConfig.measurementConfig)
+                    EventBridge.sendEvent(Action.synchronizeUIConfiguration, CustomConfig.measurementUIConfig)
+                  */
+
+    EventBridge.addCommonListener(name => {
+      addReusltsListener();
+      // if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
+      //   navigation.navigate('ResultPage');
+      // }
+    });
+  };
+
+  const onPressScanButton = async () => {
+    console.log('ressed');
+    // const readingId = uuid.v4() as string;
+    // setReadingId(readingId as string);
+
     if (rescanConfigurations?.rescan_flag) {
-      navigateToFaceScan();
+      const {sdk_name} = await getSdkConfig();
+      if (sdk_name === 'binaah') {
+        navigation?.navigate('FaceScanCamera');
+      }
+      if (sdk_name === 'nuralogix') {
+        handleAnuraNavigation();
+      }
+      // navigateToFaceScan();
     } else {
       showAlert({
         title: rescanConfigurations?.error || '',

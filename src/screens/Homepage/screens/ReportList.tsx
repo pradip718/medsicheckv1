@@ -23,17 +23,21 @@ const ReportList = ({route}: ReportListProps) => {
   const {data: reportData, isFetching: isReportDetailFetching} =
     useGetUserReadingDetail({
       // staleTime: Infinity,
+      staleTime: 0,
       reading_id: reportId,
       refetchOnWindowFocus: true,
+      enabled: !!reportId,
     });
 
-  const filteredReading = reading?.data?.reading_data?.find(
+  const filteredReading = reading?.reading_data?.find(
     eachReading => eachReading.reading_id === reportId,
   );
 
-  const reportDetail = reportData?.data?.readings?.find(
-    eachReading => eachReading.reading_id === reportId,
-  );
+  console.log('reportData 123', reportData);
+
+  // const reportDetail = reportData?.readings?.find(
+  //   eachReading => eachReading.reading_id === reportId,
+  // );
 
   return (
     <BasicContainer className="h-full">
@@ -41,7 +45,9 @@ const ReportList = ({route}: ReportListProps) => {
         <View className="px-6 py-4">
           <Navbar
             hasShare
-            handleShare={() => onShare(reportDetail?.reading_data || {})}
+            handleShare={() =>
+              onShare(reportData?.readings?.reading_data || {})
+            }
           />
         </View>
 
@@ -52,7 +58,7 @@ const ReportList = ({route}: ReportListProps) => {
               filteredReading={
                 isEmpty(filteredReading) ? null : filteredReading
               }
-              reading={reportDetail}
+              reading={reportData?.readings}
               reportData={reportData}
               isLoading={isReportDetailFetching}
             />

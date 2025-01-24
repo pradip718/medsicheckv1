@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Reading,
-  ReportJsonResponse,
+  ReportJson,
   ReportPaginationReadingData,
 } from '../../types/jsons';
 import {Parameter} from '../../types/reports';
@@ -30,19 +30,17 @@ const Report = ({
   isLoading,
 }: {
   reading: Reading | undefined;
-  reportData: ReportJsonResponse | undefined;
+  reportData: ReportJson | undefined;
   isLoading?: boolean;
   filteredReading: ReportPaginationReadingData | null;
 }) => {
   const [expandedSections, setExpandedSections] = useState<string[]>(
-    isObject(reportData) ? Object.keys(reportData.data.sub_categorisation) : [],
+    isObject(reportData) ? Object.keys(reportData.sub_categorisation) : [],
   );
 
   useEffect(() => {
     setExpandedSections(
-      isObject(reportData)
-        ? Object.keys(reportData.data.sub_categorisation)
-        : [],
+      isObject(reportData) ? Object.keys(reportData.sub_categorisation) : [],
     );
   }, [reportData]);
 
@@ -59,7 +57,7 @@ const Report = ({
   const readingsConfidence = useMemo(() => {
     return reading_data
       ? Object.entries(reading_data).filter(
-          ([_key, value]) => value.confidence_level,
+          ([_key, value]) => value?.confidence_level,
         )
       : [];
   }, [reading_data]);
@@ -96,6 +94,7 @@ const Report = ({
           </View>
         );
       }
+
       if (
         isEmpty(vitalItem) ||
         !vitalItem.some(param => reading_data?.[param.vital_key])
@@ -149,8 +148,8 @@ const Report = ({
   ]);
 
   const subCategorisationEntries = useMemo(() => {
-    return entries(reportData?.data?.sub_categorisation || {});
-  }, [reportData?.data?.sub_categorisation]);
+    return entries(reportData?.sub_categorisation || {});
+  }, [reportData?.sub_categorisation]);
 
   return (
     <FlatList

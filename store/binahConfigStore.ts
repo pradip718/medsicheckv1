@@ -1,6 +1,6 @@
 import {Session} from 'biosensesignal-react-native-sdk';
 import {create} from 'zustand';
-import {AnuraConfigResponse, SDK_NAME} from '../types/api_response';
+import {AnuraConfig, SDK_NAME} from '../types/api_response';
 
 export type BinahConfig = {
   scan_duration: string;
@@ -17,8 +17,8 @@ export type BinahErrorMessage = {
 interface ProfileState {
   binahConfig: BinahConfig;
   setBinahConfig: (config: BinahConfig) => void;
-  anuraConfig: AnuraConfigResponse;
-  setAnuraConfig: (config: AnuraConfigResponse) => void;
+  anuraConfig: AnuraConfig;
+  setAnuraConfig: (config: AnuraConfig) => void;
   currentSdk: SDK_NAME | null;
   setCurrentSdk: (sdk: SDK_NAME) => void;
   errorMessages: BinahErrorMessage[];
@@ -34,19 +34,22 @@ const useBinahConfigStore = create<ProfileState>()(set => ({
     binaah_sdk_key: '',
     demographic_flag: 'False',
   },
-  setBinahConfig: (config: BinahConfig) => set({binahConfig: config}),
   anuraConfig: {
     demographic_flag: 'False',
     scan_duration: '80',
-    sdk_type: 'vital_scan',
-    sdk_name: 'neurologix',
+    sdk_type: 'full_scan',
+    sdk_name: 'nuralogix',
     sdk_value: {
       deepaffexAPIHostname: '',
       deepaffexLicenseKey: '',
       deepaffexStudyID: '',
     },
   },
-  setAnuraConfig: (config: AnuraConfigResponse) => set({anuraConfig: config}),
+  setBinahConfig: (config: BinahConfig) => set({binahConfig: config}),
+  setAnuraConfig: config => {
+    console.log('setting anura config', config);
+    return set({anuraConfig: config});
+  },
   currentSdk: null,
   setCurrentSdk: (sdk: SDK_NAME) => set({currentSdk: sdk}),
   errorMessages: [],
