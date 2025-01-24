@@ -2,6 +2,7 @@ import {UseMutationOptions, useMutation} from '@tanstack/react-query';
 import {postQuestions} from '../../api/auth/questions';
 import {
   QuestionnairePostResponse,
+  RetrieveType,
   SelectedAnswers,
 } from '../../screens/auth/Register/Additional_Information/type';
 
@@ -10,7 +11,12 @@ const usePostQuestions = (
     UseMutationOptions<
       QuestionnairePostResponse,
       Error,
-      {hasAnswers: boolean; data: SelectedAnswers | null},
+      {
+        data: SelectedAnswers[] | null;
+        retrieve_type?: RetrieveType;
+        question_sequence?: number | null;
+        skip?: boolean;
+      },
       unknown
     >,
     'mutationFn'

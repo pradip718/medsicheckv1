@@ -58,40 +58,31 @@ export const QuestionnaireSkeleton = () => (
   <View className="items-center justify-center">
     <ShimmerPlaceHolder
       width={Metrics.screenWidth - 50}
-      height={80}
-      shimmerStyle={[styles.shimmerStyle]}
-    />
-    <Spacer height={10} />
-    <ShimmerPlaceHolder
-      width={Metrics.screenWidth - 50}
-      height={300}
-      shimmerStyle={[styles.shimmerStyle]}
-    />
-
-    <Spacer height={40} />
-
-    <ShimmerPlaceHolder
-      width={Metrics.screenWidth - 50}
-      height={80}
-      shimmerStyle={[styles.shimmerStyle]}
-    />
-    <Spacer height={10} />
-    <ShimmerPlaceHolder
-      width={Metrics.screenWidth - 50}
-      height={100}
+      height={150}
       shimmerStyle={[styles.shimmerStyle]}
     />
     <Spacer height={40} />
-
     <ShimmerPlaceHolder
       width={Metrics.screenWidth - 50}
       height={80}
       shimmerStyle={[styles.shimmerStyle]}
     />
-    <Spacer height={10} />
+    <Spacer height={40} />
     <ShimmerPlaceHolder
       width={Metrics.screenWidth - 50}
-      height={200}
+      height={80}
+      shimmerStyle={[styles.shimmerStyle]}
+    />
+    <Spacer height={40} />
+    <ShimmerPlaceHolder
+      width={Metrics.screenWidth - 50}
+      height={80}
+      shimmerStyle={[styles.shimmerStyle]}
+    />
+    <Spacer height={40} />
+    <ShimmerPlaceHolder
+      width={Metrics.screenWidth - 50}
+      height={80}
       shimmerStyle={[styles.shimmerStyle]}
     />
   </View>

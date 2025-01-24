@@ -131,8 +131,8 @@
   "general_info_header": "General Info",
   "body_mass_index_info": "Body Mass Index Info",
   "additional_info_header": "Additional Details",
-  "add_additional_info_btn_txt": "Add Additional Info",
-  "edit_additional_info_btn_txt": "Edit Additional Info",
+  "add_additional_info_btn_txt": "Update Details",
+  "edit_additional_info_btn_txt": "View Details",
   "edit_existing_details_header": "Edit your existing details",
   "No Questions": "No Questions",
 
@@ -590,5 +590,23 @@
     "DIABETES_RISK": "https://vital-signs-images.s3.us-west-2.amazonaws.com/DIABETES_RISK.png",
     "HYPERTENSION_RISK": "https://vital-signs-images.s3.us-west-2.amazonaws.com/HYPERTENSION_RISK.png"
   },
-  "showQRScanner": "True"
+  "showQRScanner": "True",
+
+  "questionnaire_section_header_1": "The more details you provide, the more tailored and effective your personalised profile will be.",
+  "questionnaire_section_header_2": "Let's work together towards a healthier and happier you! 🌿💪",
+  "questionnaire_footer_note": "Please Answer all the questions to proceed!",
+  "great_start": "Great start!!!",
+  "ready_to_uncover": "Ready to uncover personalised\ninsights for a healthier you?",
+  "unlock_information": "Unlock a wealth of personalised information and recommendations by answering just a few\nquestions.\n\nIt's a quick process, taking only 2 to 3 minutes of your time.",
+  "add_additional_details": "Add Additional Details",
+  "skip_for_now": "Skip for now",
+  "1_section_completion_message": "Good start! Just 3 more categories to cover. 🚀🎯",
+  "2_section_completion_message": "Great! You are halfway through. Let's complete it to understand you better. 💪🌟",
+  "3_section_completion_message": "Awesome! Just one more to go, and you are just a step away from completing your profile. 🎉🏁",
+  "4_section_completion_message": "Congratulations, you have completed your profile! Let us work on it and help you provide a better experience. 🏆🎊✨",
+  "default_questionnaire_completion_toast_message": "Questions saved successfully",
+  "previous_report_scores_title": "Scores: Out of 100",
+  "single_report_scores_title": "Out of 100",
+  "questionnaire_disclaimer_general_info_empty": "You seem to have not completed your additional profile details. Please click below to update your profile. 'Update Details'",
+  "questionnaire_disclaimer_general_info_completed": "Feel free to view or edit your existing profile details. 'View details' button"
 }

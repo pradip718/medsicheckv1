@@ -14,7 +14,7 @@ const ReportWellnessScore = ({score}: {score: number}) => {
       </CustomText>
 
       <CustomText className="text-white text-2xl font-isidoraBold">
-        {score}/10
+        {score}/100
       </CustomText>
     </LinearGradient>
   );

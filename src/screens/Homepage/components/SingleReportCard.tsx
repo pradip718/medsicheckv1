@@ -78,10 +78,14 @@ const SingleReportCard = () => {
               {languages?.single_scorecard_tile_msg}
             </CustomText>
           </View>
-          <View className="w-[40%] items-center justify-center">
+          <View className="w-[40%] items-center justify-center h-28">
             <DonutChart
               score={reportData?.data?.reading_data?.[0]?.WELLNESS_INDEX || 0}
+              textClassName="text-4xl"
             />
+            <CustomText className="text-white text-sm font-isidoraSemiBold absolute -bottom-6">
+              {languages?.single_report_scores_title}
+            </CustomText>
           </View>
         </View>
 

@@ -30,7 +30,7 @@ const PreviousReportCard = ({
 
   const renderCenterLabel = () => (
     <CustomText className="text-white text-xl font-isidoraSemiBold">
-      {score}/10
+      {score}/100
     </CustomText>
   );
 

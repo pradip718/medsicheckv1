@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {ParseAndRenderText} from '../../../../../../utils/common';
 import {
@@ -28,28 +28,31 @@ export const RenderNestedOption = ({
   nestedItemValue: string[] | string;
   nestedSpanishItemKey: string;
   nestedSpanishItemValue: string[] | string;
-  selectedAnswers: SelectedAnswers;
+  selectedAnswers: SelectedAnswers[];
   questionId: string;
   handleSelectedAnswers: (answer: {
     questionId: string;
     selectedItem: Choice;
     multiSelect: boolean;
   }) => void;
-  handleSetAnswers: (answer: SelectedAnswers) => void;
+  handleSetAnswers: (answer: SelectedAnswers[]) => void;
 }) => {
   const isSpanish = isSpanishLocale();
   const nestedValues = isSpanish ? nestedSpanishItemValue : nestedItemValue;
+  const selectedAnswer = selectedAnswers?.find(
+    ans => ans?.question_id === questionId,
+  );
   if (
-    typeof selectedAnswers?.choice_value === 'string' ||
-    typeof selectedAnswers?.spanish_choice_value === 'string'
+    typeof selectedAnswer?.choice_value === 'string' ||
+    typeof selectedAnswer?.spanish_choice_value === 'string'
   ) {
     return;
   }
-  const nestedEnglishChoice = selectedAnswers?.choice_value?.find(
+  const nestedEnglishChoice = selectedAnswer?.choice_value?.find(
     choiceValue =>
       choiceValue !== 'string' && Object.keys(choiceValue)[0] === nestedItemKey,
   ) as NestedChoice;
-  const nestedSpanishChoice = selectedAnswers?.spanish_choice_value?.find(
+  const nestedSpanishChoice = selectedAnswer?.spanish_choice_value?.find(
     choiceValue =>
       choiceValue !== 'string' &&
       Object.keys(choiceValue)[0] === nestedSpanishItemKey,
@@ -105,59 +108,65 @@ export const RenderNestedOption = ({
         ],
       };
     }
-
-    const updatedAnswers = {
-      ...selectedAnswers,
-      choice_value:
-        typeof selectedAnswers.choice_value !== 'string'
-          ? selectedAnswers.choice_value.map(choiceValue =>
-              typeof choiceValue !== 'string' &&
-              Object.keys(choiceValue)[0] === nestedItemKey
-                ? updatedNestedEnglishChoice
-                : choiceValue,
-            )
-          : selectedAnswers.choice_value,
-      spanish_choice_value:
-        typeof selectedAnswers.spanish_choice_value !== 'string'
-          ? selectedAnswers.spanish_choice_value.map(choiceValue =>
-              typeof choiceValue !== 'string' &&
-              Object.keys(choiceValue)[0] === nestedSpanishItemKey
-                ? updatedNestedSpanishChoice
-                : choiceValue,
-            )
-          : selectedAnswers.spanish_choice_value,
-    };
+    const updatedAnswers = selectedAnswers.map(ans =>
+      ans.question_id === questionId
+        ? {
+            ...ans,
+            choice_value:
+              typeof ans.choice_value !== 'string'
+                ? ans.choice_value.map(choiceValue =>
+                    typeof choiceValue !== 'string' &&
+                    Object.keys(choiceValue)[0] === nestedItemKey
+                      ? updatedNestedEnglishChoice
+                      : choiceValue,
+                  )
+                : ans.choice_value,
+            spanish_choice_value:
+              typeof ans.spanish_choice_value !== 'string'
+                ? ans.spanish_choice_value.map(choiceValue =>
+                    typeof choiceValue !== 'string' &&
+                    Object.keys(choiceValue)[0] === nestedSpanishItemKey
+                      ? updatedNestedSpanishChoice
+                      : choiceValue,
+                  )
+                : ans.spanish_choice_value,
+          }
+        : ans,
+    );
 
     handleSetAnswers(updatedAnswers);
   };
 
   const onChangeText = (txt: string) => {
-    const updatedAnswers = {
-      ...selectedAnswers,
-      choice_value:
-        typeof selectedAnswers.choice_value !== 'string'
-          ? selectedAnswers.choice_value.map(choiceValue =>
-              typeof choiceValue === 'object' &&
-              Object.keys(choiceValue)[0] === nestedItemKey
-                ? {
-                    [nestedItemKey]: txt,
-                  }
-                : choiceValue,
-            )
-          : selectedAnswers.choice_value,
-      spanish_choice_value:
-        typeof selectedAnswers.spanish_choice_value !== 'string'
-          ? selectedAnswers.spanish_choice_value.map(choiceValue =>
-              typeof choiceValue === 'object' &&
-              Object.keys(choiceValue)[0] === nestedSpanishItemKey
-                ? {
-                    [nestedSpanishItemKey]: txt,
-                  }
-                : choiceValue,
-            )
-          : '',
-    };
-
+    const updatedAnswers = selectedAnswers.map(ans =>
+      ans.question_id === questionId
+        ? {
+            ...ans,
+            choice_value:
+              typeof ans.choice_value !== 'string'
+                ? ans.choice_value.map(choiceValue =>
+                    typeof choiceValue === 'object' &&
+                    Object.keys(choiceValue)[0] === nestedItemKey
+                      ? {
+                          [nestedItemKey]: txt,
+                        }
+                      : choiceValue,
+                  )
+                : ans.choice_value,
+            spanish_choice_value:
+              typeof ans.spanish_choice_value !== 'string'
+                ? ans.spanish_choice_value.map(choiceValue =>
+                    typeof choiceValue === 'object' &&
+                    Object.keys(choiceValue)[0] === nestedSpanishItemKey
+                      ? {
+                          [nestedSpanishItemKey]: txt,
+                        }
+                      : choiceValue,
+                  )
+                : '',
+          }
+        : ans,
+    );
     handleSetAnswers(updatedAnswers);
   };
 
@@ -174,7 +183,7 @@ export const RenderNestedOption = ({
         style={getSelectedStyles({
           isSpanish,
           label: eachNestedItem,
-          nestedItemKey: nestedItemKey,
+          nestedItemKey: isSpanish ? nestedSpanishItemKey : nestedItemKey,
           questionId,
           selectedAnswers,
         })}

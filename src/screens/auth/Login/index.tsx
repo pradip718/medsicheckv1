@@ -128,7 +128,7 @@ const Login = () => {
         return navigation.navigate('FaceScan');
       case 'questionair':
         return navigation.dispatch(
-          StackActions.replace('AdditionalDetail', {
+          StackActions.replace('AdditionalInformation', {
             isNewUser: true,
           }),
         );

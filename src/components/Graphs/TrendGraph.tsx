@@ -2,14 +2,16 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {LineChart} from 'react-native-gifted-charts';
 import {LinearGradient, Stop} from 'react-native-svg';
+import {Stats} from '../../../types/jsons';
 import {BOLD} from '../../constants/Fonts';
 import CustomText from '../Text';
 
 type TrendGraphProps = {
   data: {value: number; label: string}[];
+  stats: Stats;
 };
 
-const TrendGraph = ({data = []}: TrendGraphProps) => {
+const TrendGraph = ({data = [], stats}: TrendGraphProps) => {
   const renderText = (label: string) => {
     return (
       <CustomText className="text-white text-xs text-center">
@@ -24,7 +26,8 @@ const TrendGraph = ({data = []}: TrendGraphProps) => {
         labelComponent: () => renderText(item.label),
       };
     })
-    ?.slice(0, 7);
+    ?.slice(0, stats?.count)
+    ?.reverse();
 
   const renderLinearGradientLine = () => {
     return (
@@ -59,7 +62,10 @@ const TrendGraph = ({data = []}: TrendGraphProps) => {
         yAxisTextStyle={styles.yAxisTextStyle}
         xAxisColor="white"
         yAxisColor="white"
-        maxValue={10}
+        yAxisOffset={stats?.min}
+        maxValue={Math.min(stats?.max - stats?.min, 100 - stats?.min)}
+        // scrollToEnd
+        scrollToIndex={stats?.count}
       />
     </View>
   );

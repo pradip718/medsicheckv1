@@ -133,5 +133,10 @@
   "user_txt_female": "Usuaria",
 
   "blood_pressure": "Presión arterial",
-  "not_answered": "No respondido"
+  "not_answered": "No respondido",
+  "great_start": "Great start!!!",
+  "ready_to_uncover": "Ready to uncover personalised\ninsights for a healthier you?",
+  "unlock_information": "Unlock a wealth of personalised information and recommendations by answering just a few\nquestions.\n\nIt's a quick process, taking only 2 to 3 minutes of your time.",
+  "add_additional_details": "Add Additional Details",
+  "skip_for_now": "Skip for now"
 }

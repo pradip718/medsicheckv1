@@ -235,9 +235,20 @@ export default function UserInformation({route}: UserInformationProps) {
     if (fromScreen === 'profile') {
       navigation.goBack();
     } else {
-      navigation.navigate('AdditionalDetail', {
+      navigation.navigate('AdditionalInformation', {
         isNewUser: true,
       });
+    }
+  };
+
+  const handleDateValidation = async (data: User) => {
+    const thirteenYearsAge = moment().subtract(13, 'years').toDate();
+    const selectedDate = moment(data?.birthdate, 'DD/MM/YYYY', true);
+
+    if (selectedDate.isAfter(thirteenYearsAge)) {
+      return showGenericModal();
+    } else {
+      handleSaveAndContinue(data);
     }
   };
 
@@ -356,15 +367,8 @@ export default function UserInformation({route}: UserInformationProps) {
                           : new Date()
                       }
                       onConfirm={date => {
-                        const thirteenYearsAge = moment()
-                          .subtract(13, 'years')
-                          .toDate();
                         onChange(moment(date).format('DD/MM/YYYY'));
                         hideDatePicker();
-
-                        if (date > thirteenYearsAge) {
-                          showGenericModal();
-                        }
                       }}
                       mode="date"
                       onCancel={hideDatePicker}
@@ -536,7 +540,7 @@ export default function UserInformation({route}: UserInformationProps) {
 
             <RoundedButton
               className="mt-8"
-              onPress={handleSubmit(handleSaveAndContinue)}
+              onPress={handleSubmit(handleDateValidation)}
               loading={isUpdatingProfile || isPostOnboardingPending}
               disabled={
                 !isDirty ||
@@ -558,7 +562,16 @@ export default function UserInformation({route}: UserInformationProps) {
           title: languages?.dob_validation_header,
           content: languages?.dob_validation_subheader,
         }}
-        handleOk={hideGenericModal}
+        allowText={languages?.update}
+        handleOk={() => {
+          hideGenericModal();
+          showDatePicker();
+        }}
+        handleCancel={() => {
+          hideGenericModal();
+          handleSaveAndContinue(getValues());
+        }}
+        cancelText={languages?.continue}
       />
     </ImageBackground>
   );

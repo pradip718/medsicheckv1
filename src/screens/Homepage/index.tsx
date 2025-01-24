@@ -14,7 +14,7 @@ import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
 import SafeAreaScrollView from '../../components/SafeAreaScrollView';
 import CustomText from '../../components/Text';
-import {useCheckQuestinnaireStatus} from '../../hooks/api/useGetQuestions';
+import {useGetQuestionnaireSection} from '../../hooks/api/useGetQuestions';
 import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
 import useGetUserReading from '../../hooks/api/useGetUserReading';
 import useBackButton from '../../hooks/useBackButton';
@@ -26,7 +26,9 @@ import UserWithOneReport from './UserWithOneReport';
 
 const Homepage = () => {
   const {setSignoutModalVisibility} = useLoaderStore();
-  const [isQuestionnaireFilled, setIsQuestionnaireFilled] = useState(true);
+  const [isQuestionnaireFilled, setIsQuestionnaireFilled] = useState<
+    boolean | null
+  >(null);
 
   const {languages} = useLanguageStore();
   const {screenName} = useAppStore();
@@ -50,13 +52,10 @@ const Homepage = () => {
     refetch: getUserReading,
   } = useGetUserReading();
 
-  // console.log('reportData', reportData);
-
   const {data: userAttributes, refetch: getUserAttributes} =
     useGetUserAttributes();
-  const {data: status} = useCheckQuestinnaireStatus({
-    questionSequence: null,
-    retrieve_type: 'completion_status',
+  const {data: questions} = useGetQuestionnaireSection({
+    cacheTime: 0,
   });
 
   const {mutate: onRefresh, isPending: isRefreshing} = useMutation({
@@ -81,14 +80,15 @@ const Homepage = () => {
 
   useEffect(() => {
     const checkAnswersFilled = () => {
-      if (!status) {
-        return null;
-      }
-      setIsQuestionnaireFilled(status?.startFlag);
+      const isAnswersFilled = questions?.sectionStats?.every(
+        section => section.total_answered === section.total_questions,
+      );
+
+      setIsQuestionnaireFilled(isAnswersFilled ?? null);
     };
     checkAnswersFilled();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [questions]);
 
   const readingLength = reportData?.data?.reading_data?.length || 0;
 
@@ -156,7 +156,7 @@ const Homepage = () => {
         {renderUserDetails()}
       </SafeAreaScrollView>
       <AnimatePresence>
-        {!isQuestionnaireFilled && (
+        {isQuestionnaireFilled === false && (
           <View className="absolute bottom-0 inset-x-0">
             <AddProfileDetails onLaterPress={onLaterPress} />
           </View>

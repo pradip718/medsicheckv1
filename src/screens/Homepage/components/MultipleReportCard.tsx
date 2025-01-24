@@ -86,7 +86,10 @@ const MultipleReportCard = () => {
         </CustomText>
 
         <View className="mt-6">
-          <TrendGraph data={trendData || []} />
+          <TrendGraph
+            data={trendData || []}
+            stats={reportData?.data?.stats || {max: 100, min: 0, count: 8}}
+          />
         </View>
 
         <ToolTipWalkthrough

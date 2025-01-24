@@ -1,4 +1,4 @@
-type QuestionType = 'textbox' | 'dropdown';
+export type QuestionType = 'textbox' | 'dropdown' | 'label';
 
 export type DropdownItem = {
   label: string;
@@ -14,23 +14,38 @@ export type Choices = Choice[];
 export type BaseQuestion = {
   created_at: string;
   lastmodified_at: string;
+  answer_id: string;
   q_id: string;
   eng_question: string;
   spanish_question: string;
-  question_type: QuestionType;
-  multi_select: boolean;
-  question_sequence: number;
-  final_question?: boolean;
-};
 
-export type QuestionnaireReponse = BaseQuestion & {
   eng_choices: string;
   spanish_choices: string;
+  skip_flag: boolean;
+  question_sequence: number;
+  meta_data: {
+    section_first_question: boolean;
+  };
+  question_type: QuestionType;
+  multi_select: boolean;
+
+  section_number: number;
+  section_sequence: number;
+  section_name: string;
+};
+
+export type QuestionnaireGETReponse = BaseQuestion & {
+  eng_choices: string;
+  spanish_choices: string;
+  user_eng_choices: string | null;
+  user_spanish_choices: string | null;
 };
 
 export type Question = BaseQuestion & {
   eng_choices: Choices;
   spanish_choices: Choices;
+  user_eng_choices: string | Choices | null;
+  user_spanish_choices: string | Choices | null;
 };
 
 export type QuestionSet = {
@@ -44,7 +59,7 @@ export type QuestionStatus = {
 };
 
 export type ResponseQuestionSet = {
-  data: QuestionnaireReponse;
+  data: QuestionnaireGETReponse;
   success: boolean;
 };
 
@@ -53,14 +68,28 @@ export type ResponseQuestionStatus = {
   success: boolean;
 };
 
-export type RetrieveTypeMap = {
-  latest: QuestionnaireReponse;
-  previous: QuestionnaireReponse;
-  completion_status: ResponseQuestionStatus;
+export type SectionStats = {
+  section_name: string;
+  section_number: number;
+  total_questions: number;
+  total_answered: number;
+  icon_url: string;
 };
 
-export type QuestionnaireResponse<T extends keyof RetrieveTypeMap | undefined> =
-  T extends keyof RetrieveTypeMap ? RetrieveTypeMap[T] : QuestionnaireReponse;
+export type QuestionnaireSetting = {
+  skip: boolean;
+  single_question: boolean;
+  overall_skip: boolean;
+};
+
+export type SectionConfigurations = {
+  questionnaireSetting: QuestionnaireSetting;
+  sectionStats: SectionStats[];
+};
+
+export type QuestionnaireResponse = {data: QuestionnaireGETReponse[]};
+
+export type ModifiedQuestionnaireResponse = Question[];
 
 export type RetrieveType = 'all' | 'latest' | 'previous' | 'completion_status';
 
@@ -134,21 +163,6 @@ export type RequestAnswers = {
   }[];
 };
 
-export type QuestionnairePostResponse = {
-  created_at: string;
-  lastmodified_at: string;
-  answer_id: string;
-  q_id: string;
-  eng_question: string;
-  spanish_question: string;
-  user_eng_choices: string;
-  user_spanish_choices: string;
-  eng_choices: string;
-  spanish_choices: string;
-  skip_flag: boolean;
-  question_sequence: number;
-  meta_data: null;
-  question_type: QuestionType;
-  final_question?: boolean;
-  multi_select: boolean;
-};
+export type QuestionnairePostResponse =
+  | {data: QuestionnaireGETReponse[]}
+  | {data: string};

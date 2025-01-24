@@ -17,7 +17,7 @@ const AddProfileDetails = ({onLaterPress}: AddProfileDetailsProps) => {
   const {languages} = useLanguageStore();
 
   const navigateToProfileDetails = () => {
-    navigation.navigate('AdditionalDetail');
+    navigation.navigate('QuestionnaireSection');
   };
 
   return (

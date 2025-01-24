@@ -1,55 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Image, View} from 'react-native';
-import {
-  // PieChart,
-  PieChartPropsType,
-  pieDataItem,
-} from 'react-native-gifted-charts';
+import {twMerge} from 'tailwind-merge';
 import {getImgBasedOnScore} from '../../../utils/methods';
-// import CustomText from '../Text';
+import CustomText from '../Text';
 
-interface DonutChartProps extends Omit<PieChartPropsType, 'data'> {
+interface DonutChartProps {
   score: number;
+  textClassName?: string;
 }
 
-const DonutChart = ({
-  score,
-}: // ...restProps
-DonutChartProps) => {
-  const [imgSource, setImgSource] = useState('');
-
-  useEffect(() => {
-    const img = `../../../assets/images/CircularProgress/progress_${score}.png`;
-    if (img) {
-      setImgSource(img);
-    } else {
-      setImgSource('');
-    }
-  }, [score]);
-  let pieData: pieDataItem[] = [];
-  let accumulatedValue = 0;
-
-  [
-    {value: 2, color: 'red'},
-    {value: 2, color: 'orange'},
-    {value: 2, color: 'yellow'},
-    {value: 2, color: 'lightgreen'},
-    {value: 2, color: 'green'},
-  ].forEach(eachPieData => {
-    accumulatedValue += eachPieData.value;
-    if (accumulatedValue <= score) {
-      pieData.push(eachPieData);
-    } else {
-      pieData.push({value: 2, color: 'rgba(50, 71, 161, 1)'});
-    }
-  });
-
-  // const renderCenterLabel = () => (
-  //   <CustomText className="text-white text-2xl font-isidoraSemiBold">
-  //     {score}/10
-  //   </CustomText>
-  // );
-
+const DonutChart = ({score, textClassName}: DonutChartProps) => {
   return (
     <View className="flex-1 items-center justify-center w-full">
       <Image
@@ -57,18 +17,16 @@ DonutChartProps) => {
         className="w-[80%]"
         resizeMode="contain"
       />
-      {/* <PieChart
-        donut
-        innerRadius={50}
-        data={pieData}
-        centerLabelComponent={renderCenterLabel}
-        innerCircleColor={'rgba(30, 49, 128, 1)'}
-        showGradient
-        gradientCenterColor="rgba(50, 71, 161, 1)"
-        initialAngle={30}
-        radius={70}
-        {...restProps}
-      /> */}
+
+      <View className="absolute">
+        <CustomText
+          className={twMerge(
+            'text-white font-isidoraBold text-xl text-center',
+            textClassName,
+          )}>
+          {score}
+        </CustomText>
+      </View>
     </View>
   );
 };

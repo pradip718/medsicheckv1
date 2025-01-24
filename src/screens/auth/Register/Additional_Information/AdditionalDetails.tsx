@@ -1,39 +1,43 @@
 import {
   CommonActions,
   NavigationProp,
-  RouteProp,
-  // StackActions,
   useNavigation,
 } from '@react-navigation/native';
+import {useQueryClient} from '@tanstack/react-query';
 import _, {isEmpty} from 'lodash';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import useLanguageStore from '../../../../../store/languageStore';
+import useQuestionStore from '../../../../../store/questionStore';
 import {MainStackParamList} from '../../../../../types/navigation';
-import {isSpanishLocale, isValidJSON} from '../../../../../utils/methods';
-import {errorToast} from '../../../../../utils/toast';
-// import {notifyApi} from '../../../../api/user';
+import {
+  isSpanishLocale,
+  transformQuestionData,
+} from '../../../../../utils/methods';
+import {errorToast, successToast} from '../../../../../utils/toast';
 import BackgroundImage from '../../../../components/BackgroundImage';
+import EtchedGlass from '../../../../components/EtchedGlass';
 import Navbar from '../../../../components/Navbar';
-import RoundedButton from '../../../../components/RoundedButton';
 import {QuestionnaireSkeleton} from '../../../../components/Skeleton';
 import CustomText from '../../../../components/Text';
 import {
   ENGLISH_NONE_OF_THE_ABOVE,
   SPANISH_NONE_OF_THE_ABOVE,
 } from '../../../../constants/enums';
-// import useGetOnboarding from '../../../../hooks/api/useGetOnboarding';
-import useGetQuestions, {
-  useCheckQuestinnaireStatus,
-} from '../../../../hooks/api/useGetQuestions';
+import {QUESTIONNAIRE_SECTION} from '../../../../constants/hooks';
+import useGetQuestions from '../../../../hooks/api/useGetQuestions';
 import usePostOnboardingSteps from '../../../../hooks/api/usePostOnboardingSteps';
 import usePostQuestions from '../../../../hooks/api/usePostQuestions';
 import useFullPageLoader from '../../../../hooks/useFullPageLoader';
-// import {OnboardingResponse} from '../../Login/type';
 import {DropdownQuestion} from './components/DropDownQuestion';
 import {InputQuestion} from './components/InputQuestion';
-import QuestionnaireSummary from './Summary';
-import {Choice, Question, SelectedAnswers} from './type';
+import {
+  NextButton,
+  PreviousButton,
+  SkipButton,
+} from './components/QuestionnaireButtons';
+import {Choice, Question, RetrieveType, SelectedAnswers} from './type';
 
 const isNoneOfTheAbove = (item: Choice) => {
   return (
@@ -41,39 +45,84 @@ const isNoneOfTheAbove = (item: Choice) => {
   );
 };
 
-const handleNoneOfTheAboveSelection = (questionId: string): SelectedAnswers => {
+const handleNoneOfTheAboveSelection = (
+  questionId: string,
+  selectedAnswers: SelectedAnswers[],
+): SelectedAnswers[] => {
+  const updatedAnswers = _.cloneDeep(selectedAnswers);
+  const index = updatedAnswers.findIndex(
+    answer => answer.question_id === questionId,
+  );
   const updatedValue: SelectedAnswers = {
     question_id: questionId,
     choice_value: [ENGLISH_NONE_OF_THE_ABOVE],
     spanish_choice_value: [SPANISH_NONE_OF_THE_ABOVE],
   };
 
-  return updatedValue;
+  if (index > -1) {
+    updatedAnswers[index] = updatedValue;
+  } else {
+    updatedAnswers.push(updatedValue);
+  }
+  return updatedAnswers;
 };
 
 const removeNoneOfTheAboveIfOtherSelected = (
-  selectedAnswer: SelectedAnswers,
-): SelectedAnswers => {
-  return {
+  selectedAnswers: SelectedAnswers[],
+): SelectedAnswers[] => {
+  return selectedAnswers.map(selectedAnswer => ({
     ...selectedAnswer,
-    choice_value: _.castArray(selectedAnswer.choice_value).filter(
-      option => option !== ENGLISH_NONE_OF_THE_ABOVE,
-    ),
-    spanish_choice_value: _.castArray(
-      selectedAnswer.spanish_choice_value,
-    ).filter(option => option !== SPANISH_NONE_OF_THE_ABOVE),
-  };
+    // Handle choice_value if it's a string or array
+    choice_value:
+      typeof selectedAnswer.choice_value === 'string'
+        ? selectedAnswer.choice_value // If it's a string, return it as is
+        : _.castArray(selectedAnswer.choice_value).filter(
+            option => option !== ENGLISH_NONE_OF_THE_ABOVE,
+          ),
+    // Handle spanish_choice_value if it's a string or array
+    spanish_choice_value:
+      typeof selectedAnswer.spanish_choice_value === 'string'
+        ? selectedAnswer.spanish_choice_value // If it's a string, return it as is
+        : _.castArray(selectedAnswer.spanish_choice_value).filter(
+            option => option !== SPANISH_NONE_OF_THE_ABOVE,
+          ),
+  }));
 };
 
-const updateAnswer = (
-  selectedAnswers: SelectedAnswers,
+const addNewAnswer = (
+  selectedAnswers: SelectedAnswers[],
+  questionId: string,
   currentSelectedEnglishOption: Choice,
   currentSelectedSpanishOption: Choice,
 ) => {
-  const updatedAnswer = _.cloneDeep(selectedAnswers);
+  return [
+    ...selectedAnswers,
+    {
+      question_id: questionId,
+      choice_value: [currentSelectedEnglishOption],
+      spanish_choice_value: [currentSelectedSpanishOption],
+    },
+  ];
+};
 
-  const updateValues = (key: string, currentSelectedOption: Choice) => {
-    const values = _.castArray(_.get(updatedAnswer, key, []));
+const updateAnswer = (
+  selectedAnswers: SelectedAnswers[],
+  currentSelectedEnglishOption: Choice,
+  currentSelectedSpanishOption: Choice,
+  questionId: string,
+): SelectedAnswers[] => {
+  const updatedAnswers = _.cloneDeep(selectedAnswers);
+
+  const index = updatedAnswers.findIndex(
+    answer => answer.question_id === questionId,
+  );
+
+  const updateValues = (
+    key: string,
+    currentSelectedOption: Choice,
+    answer: SelectedAnswers,
+  ) => {
+    const values = _.castArray(_.get(answer, key, []));
 
     const exists = values.some(option => {
       if (_.isObject(option) && _.isObject(currentSelectedOption)) {
@@ -98,117 +147,104 @@ const updateAnswer = (
       : [...values, currentSelectedOption];
   };
 
-  updatedAnswer.choice_value = updateValues(
-    'choice_value',
-    currentSelectedEnglishOption,
-  );
-  updatedAnswer.spanish_choice_value = updateValues(
-    'spanish_choice_value',
-    currentSelectedSpanishOption,
-  );
+  if (index > -1) {
+    // Update the existing answer
+    updatedAnswers[index].choice_value = updateValues(
+      'choice_value',
+      currentSelectedEnglishOption,
+      updatedAnswers[index],
+    );
+    updatedAnswers[index].spanish_choice_value = updateValues(
+      'spanish_choice_value',
+      currentSelectedSpanishOption,
+      updatedAnswers[index],
+    );
+  } else {
+    // Add a new answer for the questionId
+    updatedAnswers.push({
+      question_id: questionId,
+      choice_value: [currentSelectedEnglishOption],
+      spanish_choice_value: [currentSelectedSpanishOption],
+    });
+  }
 
-  return updatedAnswer;
+  return updatedAnswers;
 };
 
-// const isMilestoneCompleted = (
-//   onboarding: OnboardingResponse | undefined,
-//   milestone: string,
-// ) => {
-//   if (!onboarding) {
-//     return false;
-//   }
-//   return _.some(onboarding?.data, {milestone_tag: milestone});
-// };
-
-type AdditionalDetailRoute = RouteProp<MainStackParamList, 'AdditionalDetail'>;
-
-interface AdditionalDetailProps {
-  route: AdditionalDetailRoute;
-}
-
-const AdditionalDetails = ({route}: AdditionalDetailProps) => {
-  const {isNewUser} = route?.params || {};
+const AdditionalDetails = () => {
+  const queryClient = useQueryClient();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const isSpanish = isSpanishLocale();
 
   const {languages} = useLanguageStore();
   const {showLoader, hideLoader} = useFullPageLoader();
+  const {currentSection, currentConfiguration} = useQuestionStore();
 
-  const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>();
-  const [currentQuestion, setCurrentQuestion] = useState<Question | null>();
-  const [isEditing, setIsEditing] = useState(false);
-  const [shouldShowSummary, setShouldShowSummary] = useState(false);
-
-  const {
-    data: status,
-    isLoading: isStatusLoading,
-    refetch: getQuestionnaireStatus,
-  } = useCheckQuestinnaireStatus({
+  const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers[]>();
+  const [currentQuestions, setCurrentQuestions] = useState<Question[]>();
+  const [questionParams, setQuestionParams] = useState<
+    Record<'retrieve_type', RetrieveType> &
+      Record<'questionSequence', number | null> &
+      Record<'uniqueKey', string>
+  >({
+    retrieve_type: 'latest',
     questionSequence: null,
-    retrieve_type: 'completion_status',
+    uniqueKey: '' + Date.now(),
   });
 
-  const {data: questions, isLoading} = useGetQuestions({
-    enabled: status?.completionFlag === false,
+  const {data: questions, isLoading: isLoadingQuestion} = useGetQuestions({
+    retrieve_type: questionParams.retrieve_type,
+    question_sequence: questionParams.questionSequence,
+    uniqueKey: questionParams.uniqueKey,
   });
   const {mutateAsync: postOnboardingStep} = usePostOnboardingSteps();
+
   const {mutateAsync: postAdditionalQuestions, isPending: isSavingQuestions} =
     usePostQuestions({
       onMutate: showLoader,
-      onSuccess: async data => {
-        if (isEmpty(data) && isNewUser) {
-          return navigation.navigate('FaceScan');
-        }
-
-        if (isEmpty(data) || isEditing) {
-          return onChangeEditing(true);
-        }
-
-        if (status?.startFlag === false) {
-          getQuestionnaireStatus();
-          if (isNewUser) {
-            await postOnboardingStep({milestone: 'questionair'});
+      onSuccess: async ({data: questionState}) => {
+        queryClient.invalidateQueries({queryKey: [QUESTIONNAIRE_SECTION]});
+        if (
+          currentQuestions?.[0]?.section_sequence ===
+            currentSection?.total_questions ||
+          !currentConfiguration?.single_question
+        ) {
+          if (typeof questionState === 'string' && questionState) {
+            successToast(
+              typeof questionState === 'string'
+                ? questionState
+                : languages?.default_questionnaire_completion_toast_message,
+              {
+                visibilityTime: 2000,
+              },
+            );
           }
+          return navigation.goBack();
         }
 
-        const updatedQuestion = {
-          created_at: data?.created_at,
-          lastmodified_at: data?.lastmodified_at,
-          q_id: data?.q_id,
-          eng_question: data?.eng_question,
-          spanish_question: data?.spanish_question,
-          question_type: data?.question_type,
-          multi_select: data?.multi_select,
-          question_sequence: data?.question_sequence,
-          eng_choices: isValidJSON(data?.eng_choices)
-            ? JSON.parse(data?.eng_choices)
-            : [],
-          spanish_choices: isValidJSON(data?.spanish_choices)
-            ? JSON.parse(data?.spanish_choices)
-            : [],
-        };
-        setCurrentQuestion(updatedQuestion);
+        if (typeof questionState === 'string') {
+          return;
+        }
 
-        if (data?.user_eng_choices || data?.user_spanish_choices) {
-          let choice_value = '';
-          let spanish_choice_value = '';
+        const updatedQuestions = transformQuestionData(questionState);
+        setCurrentQuestions(updatedQuestions);
 
-          if (!data?.skip_flag) {
-            choice_value = isValidJSON(data?.user_eng_choices)
-              ? JSON.parse(data?.user_eng_choices)
-              : data?.user_eng_choices;
-            spanish_choice_value = isValidJSON(data?.user_spanish_choices)
-              ? JSON.parse(data?.user_spanish_choices)
-              : data?.user_spanish_choices;
-          }
-          setSelectedAnswers({
-            question_id: data.q_id,
-            answer_id: data?.answer_id,
-            choice_value,
-            spanish_choice_value,
-          });
+        if (
+          questionState?.[0]?.user_eng_choices ||
+          questionState?.[0]?.user_spanish_choices
+        ) {
+          const answer = updatedQuestions
+            .filter(question => question.answer_id)
+            .map(question => ({
+              question_id: question.q_id,
+              answer_id: question.answer_id,
+              choice_value: question?.user_eng_choices ?? [],
+              spanish_choice_value: question?.user_spanish_choices ?? [],
+            }));
+
+          setSelectedAnswers(answer);
         } else {
-          setSelectedAnswers(undefined);
+          setSelectedAnswers([]);
         }
       },
       onError: () => {
@@ -219,22 +255,28 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
 
   useEffect(() => {
     if (questions) {
-      setCurrentQuestion(questions);
+      setCurrentQuestions(questions);
+      setSelectedAnswers(
+        questions
+          .filter(question => question.answer_id)
+          .map(question => ({
+            question_id: question.q_id,
+            answer_id: question.answer_id,
+            choice_value: question?.user_eng_choices ?? [],
+            spanish_choice_value: question?.user_spanish_choices ?? [],
+          })),
+      );
     }
   }, [questions]);
 
-  useEffect(() => {
-    if (status?.completionFlag) {
-      setShouldShowSummary(status?.completionFlag);
-    }
-  }, [status]);
-
   const getOptionsInEnglishAndSpanish = ({
     selectedItem,
+    question,
   }: {
     selectedItem: Choice;
+    question: Question | undefined;
   }) => {
-    if (!currentQuestion) {
+    if (!question) {
       return {
         currentEnglishOptions: [],
         currentSpanishOptions: [],
@@ -242,18 +284,23 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
       };
     }
 
-    const findOptionIndex = (choices: any[], item: any) =>
-      choices.findIndex(
-        each =>
-          each === item ||
-          (typeof each === 'object' &&
-            typeof item === 'object' &&
-            Object.keys(each)?.[0] === Object.keys(item)?.[isSpanish ? 1 : 0]),
-      );
+    const indexBasedOnLanguage = isSpanish ? 1 : 0;
 
-    const selectedOptionIdx = isSpanish
-      ? findOptionIndex(currentQuestion.spanish_choices, selectedItem)
-      : findOptionIndex(currentQuestion.eng_choices, selectedItem);
+    const findOptionIndex = (choices: any[], item: any) => {
+      return choices.findIndex(each => {
+        if (each === item) {
+          return true;
+        }
+
+        if (typeof each === 'object' && typeof item === 'object') {
+          const eachKey = Object.keys(each)[0];
+          const itemKey = Object.keys(item)[indexBasedOnLanguage];
+          return eachKey === itemKey;
+        }
+
+        return false;
+      });
+    };
 
     const getFirstItemIfArray = (option: Choice) => {
       if (_.isObject(option)) {
@@ -266,24 +313,22 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
       return option;
     };
 
+    const selectedOptionIdx = isSpanish
+      ? findOptionIndex(question.spanish_choices, selectedItem)
+      : findOptionIndex(question.eng_choices, selectedItem);
+
     return {
       currentSelectedEnglishOption: getFirstItemIfArray(
-        currentQuestion.eng_choices[selectedOptionIdx],
+        question.eng_choices[selectedOptionIdx],
       ),
       currentSelectedSpanishOption: getFirstItemIfArray(
-        currentQuestion.spanish_choices[selectedOptionIdx],
+        question.spanish_choices[selectedOptionIdx],
       ),
     };
   };
 
   const handleSetAnswers = (ans: any) => {
     let updatedAns = ans;
-    if (selectedAnswers?.answer_id) {
-      updatedAns = {
-        ...updatedAns,
-        answer_id: selectedAnswers?.answer_id,
-      };
-    }
     setSelectedAnswers(updatedAns);
   };
 
@@ -296,40 +341,59 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
     selectedItem: Choice;
     multiSelect: boolean;
   }) => {
+    const question = currentQuestions?.find(
+      eachQuestion => eachQuestion.q_id === questionId,
+    );
+
     const {currentSelectedEnglishOption, currentSelectedSpanishOption} =
       getOptionsInEnglishAndSpanish({
         selectedItem,
+        question: question,
       });
 
     if (!currentSelectedEnglishOption || !currentSelectedSpanishOption) {
       return;
     }
 
-    let updatedAnswers = _.cloneDeep(selectedAnswers);
+    const index = selectedAnswers?.findIndex(
+      answer => answer.question_id === questionId,
+    );
+    let updatedAnswers = _.cloneDeep(selectedAnswers) ?? [];
 
     if (isNoneOfTheAbove(selectedItem)) {
-      updatedAnswers = handleNoneOfTheAboveSelection(questionId);
+      updatedAnswers = handleNoneOfTheAboveSelection(
+        questionId,
+        selectedAnswers ?? [],
+      );
     } else {
-      if (!updatedAnswers || !multiSelect) {
-        updatedAnswers = {
-          question_id: questionId,
-          choice_value: [currentSelectedEnglishOption],
-          spanish_choice_value: [currentSelectedSpanishOption],
-        };
-      } else if (multiSelect) {
-        updatedAnswers = updateAnswer(
-          updatedAnswers,
+      if (index === -1) {
+        updatedAnswers = addNewAnswer(
+          updatedAnswers ?? [],
+          questionId,
           currentSelectedEnglishOption,
           currentSelectedSpanishOption,
         );
+      } else if (multiSelect) {
+        updatedAnswers = updateAnswer(
+          updatedAnswers ?? [],
+          currentSelectedEnglishOption,
+          currentSelectedSpanishOption,
+          questionId,
+        );
+      } else {
+        if (index !== undefined && selectedAnswers) {
+          updatedAnswers[index] = {
+            ...selectedAnswers[index],
+            question_id: questionId,
+            choice_value: [currentSelectedEnglishOption],
+            spanish_choice_value: [currentSelectedSpanishOption],
+          };
+        }
       }
-      updatedAnswers = removeNoneOfTheAboveIfOtherSelected(updatedAnswers);
+      updatedAnswers = removeNoneOfTheAboveIfOtherSelected(
+        updatedAnswers ?? [],
+      );
     }
-
-    if (selectedAnswers?.answer_id) {
-      updatedAnswers.answer_id = selectedAnswers?.answer_id;
-    }
-
     setSelectedAnswers(updatedAnswers);
   };
 
@@ -340,68 +404,69 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
     questionId: string;
     answer: string;
   }) => {
-    setSelectedAnswers({
-      ...selectedAnswers,
-      question_id: questionId,
-      choice_value: answer,
-      spanish_choice_value: answer,
-    });
-  };
+    setSelectedAnswers(prevAnswers => {
+      const updatedAnswers = _.cloneDeep(prevAnswers || []);
 
-  const handleSave = async () => {
-    if (
-      typeof currentQuestion?.question_sequence !== 'number' ||
-      !selectedAnswers
-    ) {
-      return errorToast(languages?.generic_error_message);
-    }
-    await postAdditionalQuestions({
-      hasAnswers: !!selectedAnswers?.answer_id,
-      data: selectedAnswers,
-      question_sequence: currentQuestion?.question_sequence,
-      retrieve_type: 'latest',
+      const answerIndex = updatedAnswers.findIndex(
+        ans => ans.question_id === questionId,
+      );
+
+      if (answerIndex !== -1) {
+        updatedAnswers[answerIndex].choice_value = answer;
+        updatedAnswers[answerIndex].spanish_choice_value = answer;
+      } else {
+        updatedAnswers.push({
+          question_id: questionId,
+          choice_value: answer,
+          spanish_choice_value: answer,
+        });
+      }
+
+      return updatedAnswers;
     });
   };
 
   const handlePrevious = async () => {
-    if (typeof currentQuestion?.question_sequence !== 'number') {
-      return errorToast(languages?.generic_error_message);
-    }
-    await postAdditionalQuestions({
-      hasAnswers: !!selectedAnswers?.answer_id,
-      data: null,
-      question_sequence: currentQuestion?.question_sequence,
+    setQuestionParams({
       retrieve_type: 'previous',
+      questionSequence: currentQuestions?.[0]?.question_sequence ?? null,
+      uniqueKey: '' + Date.now(),
     });
   };
 
   const handleSkip = async () => {
-    if (typeof currentQuestion?.question_sequence !== 'number') {
+    if (!selectedAnswers) {
       return errorToast(languages?.generic_error_message);
     }
-    let payload: SelectedAnswers = {
-      question_id: currentQuestion?.q_id,
-      choice_value: selectedAnswers?.answer_id
-        ? selectedAnswers?.choice_value
-        : '',
-      spanish_choice_value: selectedAnswers?.answer_id
-        ? selectedAnswers?.spanish_choice_value
-        : '',
-    };
-    if (selectedAnswers?.answer_id) {
-      payload.answer_id = selectedAnswers?.answer_id;
-    }
     await postAdditionalQuestions({
-      hasAnswers: !!selectedAnswers?.answer_id,
+      data: [
+        {
+          question_id: currentQuestions?.[0].q_id ?? '',
+          choice_value: '',
+          spanish_choice_value: '',
+        },
+      ],
+      skip: true,
+      question_sequence: currentQuestions?.[0]?.question_sequence ?? null,
+    });
+  };
+
+  const handleSave = async () => {
+    if (!selectedAnswers) {
+      return errorToast(languages?.generic_error_message);
+    }
+    let payload = selectedAnswers;
+    await postAdditionalQuestions({
       data: payload,
-      question_sequence: currentQuestion?.question_sequence,
-      skip_flag: true,
-      retrieve_type: 'latest',
+      question_sequence: currentQuestions?.[0]?.question_sequence ?? null,
     });
   };
 
   const renderQuestionAnswer = (ques: Question, questionNumber: number) => {
     if (ques.question_type === 'textbox') {
+      const answer = selectedAnswers?.find(
+        currentAns => currentAns.question_id === ques.q_id,
+      );
       return (
         <InputQuestion
           question={isSpanish ? ques.spanish_question : ques?.eng_question}
@@ -409,8 +474,8 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
           questionId={ques.q_id}
           handleSelectedAnswers={handleInputAnswers}
           value={
-            !Array.isArray(selectedAnswers?.choice_value)
-              ? selectedAnswers?.choice_value ?? ''
+            !Array.isArray(answer?.choice_value)
+              ? answer?.choice_value ?? ''
               : ''
           }
         />
@@ -427,53 +492,25 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
           multiSelect={ques.multi_select}
           handleSelectedAnswers={handleDropdownSelectedAnswers}
           handleSetAnswers={handleSetAnswers}
-          selectedAnswers={selectedAnswers}
+          selectedAnswers={selectedAnswers ?? []}
         />
       );
     }
     return <></>;
   };
 
-  const changeCurrentQuestion = (question: Question) => {
-    setCurrentQuestion(question);
-  };
-
-  const onChangeEditing = (editing: boolean) => {
-    setIsEditing(!editing);
-    setShouldShowSummary(editing);
-  };
-
-  const onUpdateSelectedAnswers = (updatedAnswers: SelectedAnswers) => {
-    setSelectedAnswers(updatedAnswers);
-  };
-
-  if (isLoading || isStatusLoading) {
+  if (isLoadingQuestion) {
     return (
       <SafeAreaView className="h-full">
         <View className="p-4">
           <Navbar />
         </View>
-
-        <ScrollView
-          className="flex-1"
-          contentContainerStyle={styles.contentContainer}>
-          <QuestionnaireSkeleton />
-        </ScrollView>
+        <QuestionnaireSkeleton />
       </SafeAreaView>
     );
   }
 
-  if (shouldShowSummary) {
-    return (
-      <QuestionnaireSummary
-        changeCurrentQuestion={changeCurrentQuestion}
-        onChangeEditing={onChangeEditing}
-        onUpdateSelectedAnswers={onUpdateSelectedAnswers}
-      />
-    );
-  }
-
-  if (!currentQuestion) {
+  if (!currentQuestions) {
     return (
       <SafeAreaView className="h-full">
         <View className="p-4">
@@ -492,8 +529,6 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
     <BackgroundImage className="flex-1 p-4">
       <SafeAreaView className="h-full">
         <Navbar
-          noBack={isNewUser === true}
-          hasClose={isNewUser === true}
           handleClose={async () => {
             showLoader();
             await postOnboardingStep({milestone: 'questionair'});
@@ -506,79 +541,71 @@ const AdditionalDetails = ({route}: AdditionalDetailProps) => {
             hideLoader();
           }}
         />
-        <View style={styles.keyboardAwareContentContainer}>
-          <View className="mb-4 mt-10 flex-1">
-            {renderQuestionAnswer(
-              currentQuestion,
-              currentQuestion?.question_sequence,
-            )}
-          </View>
 
-          {isEditing ? (
-            <View className="flex-row space-x-4 justify-center">
-              <RoundedButton
-                resetStyle
-                className="bg-ultramarineBlue py-2 px-10"
-                onPress={() => onChangeEditing(true)}>
-                <CustomText className="text-lg text-white font-isidoraSemiBold">
-                  {languages?.goBackTxt}
-                </CustomText>
-              </RoundedButton>
-              <RoundedButton
-                resetStyle
-                className="bg-ultramarineBlue py-2 px-10"
-                onPress={handleSave}
+        <KeyboardAwareScrollView>
+          <EtchedGlass
+            cardContentContainerClassName="py-2 px-0"
+            className="mx-10 justify-center items-center mt-10">
+            <CustomText className="text-base font-isidoraSemiBold">
+              {currentSection?.section_name}
+            </CustomText>
+          </EtchedGlass>
+          {currentConfiguration?.single_question && (
+            <CustomText className="font-isidoraMedium text-center my-5 text-lg">
+              {currentQuestions?.[0]?.section_sequence} of{' '}
+              {currentSection?.total_questions}
+            </CustomText>
+          )}
+          {currentQuestions?.map((question, index) => (
+            <View
+              style={styles.keyboardAwareContentContainer}
+              key={`${question.q_id}-${index + 1}`}
+              className="flex-1">
+              <View className="mb-4 mt-2">
+                {renderQuestionAnswer(
+                  question,
+                  currentConfiguration?.single_question
+                    ? currentQuestions?.[0]?.section_sequence
+                    : index + 1,
+                )}
+              </View>
+            </View>
+          ))}
+        </KeyboardAwareScrollView>
+
+        {currentConfiguration?.single_question ? (
+          <View>
+            <View className="flex-row justify-center">
+              <PreviousButton
+                onPress={handlePrevious}
                 disabled={
                   isSavingQuestions ||
-                  isEmpty(selectedAnswers?.choice_value) ||
-                  isEmpty(selectedAnswers?.spanish_choice_value)
-                }>
-                <CustomText className="text-lg text-white font-isidoraSemiBold">
-                  {languages?.update}
-                </CustomText>
-              </RoundedButton>
+                  currentQuestions?.[0]?.meta_data?.section_first_question
+                }
+                containerClassName="w-2/5"
+              />
+              <NextButton
+                text={
+                  currentQuestions?.[0]?.section_sequence ===
+                  currentSection?.total_questions
+                    ? languages?.save
+                    : languages?.next
+                }
+                onPress={handleSave}
+                disabled={isSavingQuestions || isEmpty(selectedAnswers)}
+                containerClassName="w-2/5 ml-6"
+              />
             </View>
-          ) : (
-            <>
-              <View className="flex-row space-x-4 justify-center">
-                <RoundedButton
-                  resetStyle
-                  className="bg-ultramarineBlue py-2 px-10"
-                  onPress={handlePrevious}
-                  disabled={
-                    isSavingQuestions ||
-                    currentQuestion?.question_sequence === 1
-                  }>
-                  <CustomText className="text-lg text-white font-isidoraSemiBold">
-                    {languages?.previous}
-                  </CustomText>
-                </RoundedButton>
-                <RoundedButton
-                  resetStyle
-                  className="bg-ultramarineBlue py-2 px-10"
-                  onPress={handleSave}
-                  disabled={
-                    isSavingQuestions ||
-                    isEmpty(selectedAnswers?.choice_value) ||
-                    isEmpty(selectedAnswers?.spanish_choice_value)
-                  }>
-                  <CustomText className="text-lg text-white font-isidoraSemiBold">
-                    {languages?.next}
-                  </CustomText>
-                </RoundedButton>
-              </View>
-              <RoundedButton
-                resetStyle
-                className="bg-transparent my-2 self-center px-10 py-2"
-                onPress={handleSkip}
-                disabled={isSavingQuestions}>
-                <CustomText className="text-lg  text-gray-700 font-isidoraSemiBold underline">
-                  {languages?.skip}
-                </CustomText>
-              </RoundedButton>
-            </>
-          )}
-        </View>
+            {currentQuestions?.[0]?.skip_flag && (
+              <SkipButton onPress={handleSkip} disabled={isSavingQuestions} />
+            )}
+          </View>
+        ) : (
+          <NextButton
+            onPress={handleSave}
+            disabled={isSavingQuestions || isEmpty(selectedAnswers)}
+          />
+        )}
       </SafeAreaView>
     </BackgroundImage>
   );

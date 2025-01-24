@@ -58,7 +58,7 @@ const useAuthNavigation = ({
         return navigationRef.navigate('FaceScan');
       case 'questionair':
         return navigationRef.dispatch(
-          StackActions.replace('AdditionalDetail', {
+          StackActions.replace('AdditionalInformation', {
             isNewUser: true,
           }),
         );

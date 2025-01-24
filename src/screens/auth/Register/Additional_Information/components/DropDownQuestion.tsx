@@ -48,106 +48,106 @@ export function DropdownQuestion({
     multiSelect: boolean;
   }) => void;
   handleSetAnswers: (answers: SelectedAnswers[]) => void;
-  selectedAnswers: SelectedAnswers;
+  selectedAnswers: SelectedAnswers[];
 }) {
   const isSpanish = isSpanishLocale();
 
   return (
-    <View className="h-full">
+    <View>
       <CustomText className=" font-isidoraSemiBold text-lg">
         {questionNumber}. {ParseAndRenderText(question)}
       </CustomText>
-      <KeyboardAwareScrollView>
-        <Surface
-          className="rounded-3xl px-2 shadow-lg border pb-4 mt-4"
-          style={styles.dropdownContainer}>
-          {data?.map((eachItem, idx) => {
-            const {eng_choices, spanish_choices} = getNestedObjectByLang({
-              question: currentQuestion,
-              index: idx,
-            });
+      {/* <KeyboardAwareScrollView> */}
+      <Surface
+        className="rounded-3xl px-2 shadow-lg border pb-4 mt-4"
+        style={styles.dropdownContainer}>
+        {data?.map((eachItem, idx) => {
+          const {eng_choices, spanish_choices} = getNestedObjectByLang({
+            question: currentQuestion,
+            index: idx,
+          });
 
-            if (typeof eachItem === 'object') {
-              if (!eng_choices || !spanish_choices) {
-                return <></>;
-              }
-
-              const [[nestedItemKey, nestedItemValue]] =
-                Object.entries(eng_choices);
-              const [[nestedSpanishItemKey, nestedSpanishItemValue]] =
-                Object.entries(spanish_choices);
-
-              return (
-                <View key={nestedItemKey}>
-                  <TouchableOpacity
-                    style={getSelectedStyles({
-                      isSpanish,
-                      label: isSpanish ? nestedSpanishItemKey : nestedItemKey,
-                      questionId,
-                      selectedAnswers,
-                    })}
-                    className="my-2 rounded-3xl  shadow-2xl py-0 overflow-hidden"
-                    onPress={() =>
-                      handleSelectedAnswers({
-                        selectedItem: {
-                          [nestedItemKey]: [],
-                          [nestedSpanishItemKey]: [],
-                        },
-                        multiSelect: currentQuestion?.multi_select || false,
-                        questionId,
-                      })
-                    }>
-                    <View className="items-center py-4 px-2">
-                      <CustomText className="text-black text-base font-isidoraSemiBold text-center">
-                        {ParseAndRenderText(
-                          isSpanish ? nestedSpanishItemKey : nestedItemKey,
-                        )}
-                      </CustomText>
-                    </View>
-                  </TouchableOpacity>
-                  <View className="px-6">
-                    <RenderNestedOption
-                      questionId={questionId}
-                      nestedItemKey={nestedItemKey}
-                      nestedItemValue={nestedItemValue}
-                      nestedSpanishItemKey={nestedSpanishItemKey}
-                      nestedSpanishItemValue={nestedSpanishItemValue}
-                      selectedAnswers={selectedAnswers}
-                      handleSelectedAnswers={handleSelectedAnswers}
-                      handleSetAnswers={handleSetAnswers}
-                    />
-                  </View>
-                </View>
-              );
+          if (typeof eachItem === 'object') {
+            if (!eng_choices || !spanish_choices) {
+              return <></>;
             }
+
+            const [[nestedItemKey, nestedItemValue]] =
+              Object.entries(eng_choices);
+            const [[nestedSpanishItemKey, nestedSpanishItemValue]] =
+              Object.entries(spanish_choices);
+
             return (
-              <View key={eachItem}>
+              <View key={nestedItemKey}>
                 <TouchableOpacity
                   style={getSelectedStyles({
                     isSpanish,
-                    label: eachItem,
+                    label: isSpanish ? nestedSpanishItemKey : nestedItemKey,
                     questionId,
                     selectedAnswers,
                   })}
                   className="my-2 rounded-3xl  shadow-2xl py-0 overflow-hidden"
                   onPress={() =>
                     handleSelectedAnswers({
-                      selectedItem: eachItem,
-                      questionId,
+                      selectedItem: {
+                        [nestedItemKey]: [],
+                        [nestedSpanishItemKey]: [],
+                      },
                       multiSelect: currentQuestion?.multi_select || false,
+                      questionId,
                     })
                   }>
                   <View className="items-center py-4 px-2">
                     <CustomText className="text-black text-base font-isidoraSemiBold text-center">
-                      {ParseAndRenderText(eachItem)}
+                      {ParseAndRenderText(
+                        isSpanish ? nestedSpanishItemKey : nestedItemKey,
+                      )}
                     </CustomText>
                   </View>
                 </TouchableOpacity>
+                <View className="px-6">
+                  <RenderNestedOption
+                    questionId={questionId}
+                    nestedItemKey={nestedItemKey}
+                    nestedItemValue={nestedItemValue}
+                    nestedSpanishItemKey={nestedSpanishItemKey}
+                    nestedSpanishItemValue={nestedSpanishItemValue}
+                    selectedAnswers={selectedAnswers}
+                    handleSelectedAnswers={handleSelectedAnswers}
+                    handleSetAnswers={handleSetAnswers}
+                  />
+                </View>
               </View>
             );
-          })}
-        </Surface>
-      </KeyboardAwareScrollView>
+          }
+          return (
+            <View key={eachItem}>
+              <TouchableOpacity
+                style={getSelectedStyles({
+                  isSpanish,
+                  label: eachItem,
+                  questionId,
+                  selectedAnswers,
+                })}
+                className="my-2 rounded-3xl  shadow-2xl py-0 overflow-hidden"
+                onPress={() =>
+                  handleSelectedAnswers({
+                    selectedItem: eachItem,
+                    questionId,
+                    multiSelect: currentQuestion?.multi_select || false,
+                  })
+                }>
+                <View className="items-center py-4 px-2">
+                  <CustomText className="text-black text-base font-isidoraSemiBold text-center">
+                    {ParseAndRenderText(eachItem)}
+                  </CustomText>
+                </View>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </Surface>
+      {/* </KeyboardAwareScrollView> */}
     </View>
   );
 }

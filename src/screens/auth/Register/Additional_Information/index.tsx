@@ -1,67 +1,123 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import React from 'react';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
+import {useMutation} from '@tanstack/react-query';
+import React, {useEffect} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Additional_Information_img} from '../../../../../assets';
+import useLanguageStore from '../../../../../store/languageStore';
 import {MainStackParamList} from '../../../../../types/navigation';
+import BackgroundImage from '../../../../components/BackgroundImage';
 import Navbar from '../../../../components/Navbar';
 import RoundedButton from '../../../../components/RoundedButton';
 import SafeAreaScrollView from '../../../../components/SafeAreaScrollView';
 import CustomText from '../../../../components/Text';
+import {useGetQuestionnaireSection} from '../../../../hooks/api/useGetQuestions';
+import usePostOnboardingSteps from '../../../../hooks/api/usePostOnboardingSteps';
+import useFullPageLoader from '../../../../hooks/useFullPageLoader';
 import customColor from '../../../../theme/customColor';
 
-const AdditionalInformation = () => {
+type AdditionalInformationRoute = RouteProp<
+  MainStackParamList,
+  'AdditionalInformation'
+>;
+
+interface AdditionalInformationProps {
+  route: AdditionalInformationRoute;
+}
+
+const AdditionalInformation = ({route}: AdditionalInformationProps) => {
+  const {isNewUser} = route?.params || {};
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const {languages} = useLanguageStore();
+
+  const {showLoader, hideLoader} = useFullPageLoader();
+
+  const {data: questions, isLoading} = useGetQuestionnaireSection({
+    cacheTime: 0,
+    staleTime: 0,
+  });
+
+  const {mutateAsync: postOnboardingStep} = usePostOnboardingSteps();
+  const {mutateAsync: onContinuePress} = useMutation({
+    onMutate: showLoader,
+    mutationFn: async () => {
+      await postOnboardingStep({milestone: 'questionair'});
+    },
+    onSettled: hideLoader,
+  });
+
+  useEffect(() => {
+    if (isLoading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
+
+  const handleContinue = async () => {
+    navigation.navigate('QuestionnaireSection', {
+      isNewUser: isNewUser ?? false,
+    });
+  };
+
+  const handleSkip = async () => {
+    if (isNewUser) {
+      await onContinuePress();
+      navigation.navigate('FaceScan');
+    } else {
+      navigation.navigate('HomepageStackScreens', {
+        screen: 'Home',
+      });
+    }
+  };
+
   return (
-    <SafeAreaScrollView style={styles.container} className="px-6 my-6">
-      <Navbar />
-      <View className="mt-4 items-end">
-        <Image
-          source={Additional_Information_img as any}
-          style={styles.additionalInformationImg}
-        />
-      </View>
-      <View className="mt-4">
-        <CustomText
-          className="text-3xl font-isidoraSemiBold"
-          style={styles.highlightText}>
-          Great start!!!
-        </CustomText>
-        <CustomText
-          className="text-base font-isidoraSemiBold"
-          style={styles.highlightText}>
-          {'Ready to uncover personalised\ninsights for a healthier you?'}
-        </CustomText>
-      </View>
-      <View className="mt-10">
-        <CustomText className="text-sm leading-4">
-          {
-            "Unlock a wealth of personalised information and recommendations by answering just a few\nquestions.\n\nIt's a quick process, taking only 2 to 3 minutes of your time."
-          }
-        </CustomText>
-      </View>
+    <BackgroundImage className="flex-1 p-4">
+      <SafeAreaScrollView style={styles.container} className="px-2 my-6">
+        <Navbar noBack={isNewUser} />
+        <View className="mt-4 items-end">
+          <Image
+            source={Additional_Information_img as any}
+            style={styles.additionalInformationImg}
+          />
+        </View>
+        <View className="mt-4">
+          <CustomText
+            className="text-3xl font-isidoraSemiBold"
+            style={styles.highlightText}>
+            {languages?.great_start}
+          </CustomText>
+          <CustomText
+            className="text-base font-isidoraSemiBold"
+            style={styles.highlightText}>
+            {languages?.ready_to_uncover}
+          </CustomText>
+        </View>
+        <View className="mt-10">
+          <CustomText className="text-sm leading-4">
+            {languages?.unlock_information}
+          </CustomText>
+        </View>
 
-      <RoundedButton
-        className="mt-20"
-        onPress={() => {
-          navigation.navigate('AdditionalDetail');
-        }}>
-        <CustomText className="text-white text-lg font-isidoraSemiBold">
-          Add Additional Details
-        </CustomText>
-      </RoundedButton>
+        <RoundedButton className="mt-20" onPress={handleContinue}>
+          <CustomText className="text-white text-lg font-isidoraSemiBold">
+            {languages?.add_additional_details}
+          </CustomText>
+        </RoundedButton>
 
-      <RoundedButton
-        className="mt-2"
-        onPress={() => {
-          navigation.navigate('HomepageStackScreens', {
-            screen: 'Home',
-          });
-        }}>
-        <CustomText className="text-white text-lg font-isidoraSemiBold">
-          Skip for now
-        </CustomText>
-      </RoundedButton>
-    </SafeAreaScrollView>
+        {questions?.questionnaireSetting?.overall_skip && (
+          <RoundedButton className="mt-2" onPress={handleSkip}>
+            <CustomText className="text-white text-lg font-isidoraSemiBold">
+              {languages?.skip_for_now}
+            </CustomText>
+          </RoundedButton>
+        )}
+      </SafeAreaScrollView>
+    </BackgroundImage>
   );
 };
 

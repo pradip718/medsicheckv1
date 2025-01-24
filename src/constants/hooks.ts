@@ -8,6 +8,7 @@ export const MEDSI_QUESTIONNAIRE_ANSWERS = 'answers';
 export const MEDSI_QUESTIONNAIRE_ANSWERS_SUMMARY = 'questionnaire-summary';
 export const GET_REPORT_READING_BY_ID = 'report-reading-by-id';
 export const DELETE_PERSONALISED_AI_REPORT = 'delete-personalised-ai-report';
+export const QUESTIONNAIRE_SECTION = 'questionnaire-section';
 
 // ----------------------------------------------Lab Reports ----------------------------------------------
 export const GET_LAB_REPORT_QUESTIONNAIRE = 'get-lab-report-questionnaire';

@@ -172,35 +172,45 @@ const PreviousReports = () => {
       <CustomText className="mt-6 text-2xl text-ultramarineBlue font-bold">
         {languages?.previous_report_title}
       </CustomText>
-      <View className="mt-4">{renderFilterReports()}</View>
 
-      <View className="flex-row justify-end space-x-3">
-        {isEditing && (
-          <TouchableOpacity onPress={handleSelectAllReports}>
-            <CustomText
-              className={
-                'underline text-ultramarineBlue text-right font-isidoraSemiBold text-base mb-4'
-              }>
-              {allSelected ? languages?.unselect_all : languages?.select_all}
-            </CustomText>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          onPress={isEditing ? handleDeleteReport : handleEditing}>
-          <CustomText
-            className={`underline ${
-              isEditing ? 'text-red-400' : 'text-ultramarineBlue'
-            } text-right font-isidoraSemiBold text-base mb-4`}>
-            {isEditing ? languages?.delete : languages?.edit}
-          </CustomText>
-        </TouchableOpacity>
-        {isEditing && (
-          <TouchableOpacity onPress={cancelEditing}>
-            <CustomText className="underline text-ultramarineBlue text-right font-isidoraSemiBold text-base mb-4">
-              {languages?.cancel}
-            </CustomText>
-          </TouchableOpacity>
-        )}
+      <View className="mt-4 items-center flex-row justify-between">
+        <CustomText className="text-base text-cardBlueBackground font-semibold">
+          {languages?.previous_report_scores_title}
+        </CustomText>
+
+        <View>
+          {renderFilterReports()}
+          <View className="flex-row justify-end space-x-3">
+            {isEditing && (
+              <TouchableOpacity onPress={handleSelectAllReports}>
+                <CustomText
+                  className={
+                    'underline text-ultramarineBlue text-right font-isidoraSemiBold text-base mb-4'
+                  }>
+                  {allSelected
+                    ? languages?.unselect_all
+                    : languages?.select_all}
+                </CustomText>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              onPress={isEditing ? handleDeleteReport : handleEditing}>
+              <CustomText
+                className={`underline ${
+                  isEditing ? 'text-red-400' : 'text-ultramarineBlue'
+                } text-right font-isidoraSemiBold text-base mb-4`}>
+                {isEditing ? languages?.delete : languages?.edit}
+              </CustomText>
+            </TouchableOpacity>
+            {isEditing && (
+              <TouchableOpacity onPress={cancelEditing}>
+                <CustomText className="underline text-ultramarineBlue text-right font-isidoraSemiBold text-base mb-4">
+                  {languages?.cancel}
+                </CustomText>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
       </View>
     </View>
   );

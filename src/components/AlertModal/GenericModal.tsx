@@ -14,6 +14,8 @@ interface GenericModalProps {
     title: string;
     content: string;
   };
+  allowText?: string;
+  cancelText?: string;
   handleOk: () => void;
   handleCancel?: () => void;
 }
@@ -22,6 +24,8 @@ const GenericModal = ({
   visible,
   hideAlert,
   message,
+  cancelText,
+  allowText,
   handleOk,
   handleCancel,
 }: GenericModalProps) => {
@@ -55,7 +59,7 @@ const GenericModal = ({
               resetStyle
               className="bg-ultramarineBlue flex-1 py-2">
               <CustomText className="text-base font-isidoraBold text-white text-center">
-                {languages?.allow_txt}
+                {allowText ? allowText : languages?.allow_txt}
               </CustomText>
             </RoundedButton>
             {handleCancel && (
@@ -64,7 +68,7 @@ const GenericModal = ({
                 resetStyle
                 className="bg-ultramarineBlue flex-1 py-2">
                 <CustomText className="text-base font-isidoraBold text-white text-center">
-                  {languages?.cancel}
+                  {cancelText ? cancelText : languages?.cancel}
                 </CustomText>
               </RoundedButton>
             )}

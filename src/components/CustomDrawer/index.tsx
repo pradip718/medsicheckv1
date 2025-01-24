@@ -176,7 +176,8 @@ const CustomDrawer = () =>
       {
         name: languages?.menu_health_profile,
         icon: 'health_profile',
-        action: () => navigation.navigate('AdditionalDetail'),
+        // action: () => navigation.navigate('AdditionalInformation'),
+        action: () => navigation.navigate('QuestionnaireSection'),
 
         disabled: false,
       },
