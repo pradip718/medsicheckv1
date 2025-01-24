@@ -62,6 +62,7 @@ import Login from '../src/screens/auth/Login';
 import Register from '../src/screens/auth/Register';
 import AdditionalInformation from '../src/screens/auth/Register/Additional_Information';
 import AdditionalDetails from '../src/screens/auth/Register/Additional_Information/AdditionalDetails';
+import QuestionnaireSection from '../src/screens/auth/Register/Additional_Information/QuestionnaireSection';
 import ContactVerification from '../src/screens/auth/Register/ContactVerification';
 import OTP from '../src/screens/auth/Register/OTP';
 import UserInformation from '../src/screens/auth/Register/UserInformation';
@@ -392,6 +393,10 @@ const RootNavigator = () => {
             component={AdditionalInformation}
           />
           <Stack.Screen name="AdditionalDetail" component={AdditionalDetails} />
+          <Stack.Screen
+            name="QuestionnaireSection"
+            component={QuestionnaireSection}
+          />
         </Stack.Group>
         {/* )} */}
 
