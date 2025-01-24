@@ -294,7 +294,7 @@ export type Reading = {
 };
 
 export type ReportJson = {
-  readings: Reading;
+  readings: Reading[];
   config: Config;
   col_val: ColVal;
   sub_categorisation: VitalsAndBiomarkersDisplay;
@@ -316,12 +316,23 @@ export interface ReportPaginationReadingData {
   reading_source: string;
 }
 
+export type Stats = {
+  min: number;
+  max: number;
+  count: number;
+};
+
 export interface ReportPagination {
   reading_data: ReportPaginationReadingData[];
   count: number;
+  stats: Stats;
 }
 
-export interface ReportJsonPaginationResponse extends ReportPagination {}
+export interface ReportJsonPaginationResponse {
+  statusCode: number;
+  success: boolean;
+  data: ReportPagination;
+}
 
 export type LabReportFileUploadJsonResponse = {
   token_id: string;

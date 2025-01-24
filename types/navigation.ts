@@ -5,7 +5,6 @@ import {QuestionnaireItem} from './personalisedai';
 import {ProfileType} from './users/user';
 
 export type MainStackParamList = {
-  ResultPage: undefined;
   Login: undefined;
   Register: undefined;
   ForgotPassword: undefined;
@@ -85,7 +84,12 @@ export type MainStackParamList = {
   Conclusion: {
     content: QuestionnaireItem;
   };
-  AdditionalInformation: undefined;
+  AdditionalInformation?: {
+    isNewUser: boolean;
+  };
+  QuestionnaireSection?: {
+    isNewUser: boolean;
+  };
   AdditionalDetail?: {
     isNewUser: boolean;
   };
