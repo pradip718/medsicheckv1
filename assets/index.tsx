@@ -13,6 +13,7 @@ import AuthBackground from './images/authBackground.png';
 import Background from './images/background.png';
 import BatteryStatus from './images/battery_status.png';
 import CameraHeadPosition from './images/cameraHeadPosition.png';
+import CelebrationImg from './images/celebration.png';
 import CorrectPosition from './images/correctPosition.png';
 import FaceOval from './images/face_oval.png';
 import FreepikDevice from './images/freepikDevice.png';
@@ -33,17 +34,18 @@ export {
   Background,
   BatteryStatus,
   CameraHeadPosition,
+  CelebrationImg,
   CorrectPosition,
   FaceOval,
   FreepikDevice,
   Homepage_Person,
   InternetConnected,
   InternetDisconnected,
+  Medsi_Check_Navabar_img,
   MedsiBackgroundLogo,
   MedsiCheckLogo2,
-  Medsi_Check_Navabar_img,
-  PersonAtTable,
   Personal_Details,
+  PersonAtTable,
   PreventixLogo,
   PreventixNavLogo,
   ProfileImg,
