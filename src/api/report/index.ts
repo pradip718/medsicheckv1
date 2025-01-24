@@ -19,7 +19,7 @@ async function getReportReading(page?: number, reading_id?: string) {
   try {
     const response = await activeAxiosInstance({
       method: 'GET',
-      url: `v1/medsi_check_health_reading?locale=${locale}&profile_id=${profile_id}${
+      url: `v1/health-report?locale=${locale}&profile_id=${profile_id}${
         page ? '&page_number=' + page + '&page_size=10' : ''
       }${reading_id ? '&reading_id=' + reading_id : ''}`,
     });
@@ -46,7 +46,7 @@ async function getReportReadingById(readingId: string) {
     }
     const response = await activeAxiosInstance({
       method: 'GET',
-      url: `v1/medsi_check_health_reading?locale=${locale}&profile_id=${profile_id}&reading_id=${readingId}`,
+      url: `v1/health-report?locale=${locale}&profile_id=${profile_id}&reading_id=${readingId}`,
     });
 
     return response?.data;
@@ -205,7 +205,7 @@ async function postReading({payload}: any) {
   try {
     const response = await activeAxiosInstance({
       method: 'POST',
-      url: `v1/medsi_check_health_reading?locale=${locale}&profile_id=${profile_id}`,
+      url: `v1/health-report?locale=${locale}&profile_id=${profile_id}`,
       data: {
         ...payload,
         binaah_key: useBinahConfigStore.getState()?.binahConfig?.binaah_sdk_key,
@@ -252,7 +252,7 @@ async function deleteReports(payload: {reading_id: string[]}) {
   try {
     const response = await activeAxiosInstance({
       method: 'DELETE',
-      url: `v1/medsi_check_health_reading?profile_id=${profile_id}`,
+      url: `v1/health-report?profile_id=${profile_id}`,
       data: payload,
     });
     return response;

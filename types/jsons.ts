@@ -321,11 +321,7 @@ export interface ReportPagination {
   count: number;
 }
 
-export interface ReportJsonPaginationResponse {
-  statusCode: number;
-  success: boolean;
-  data: ReportPagination;
-}
+export interface ReportJsonPaginationResponse extends ReportPagination {}
 
 export type LabReportFileUploadJsonResponse = {
   token_id: string;

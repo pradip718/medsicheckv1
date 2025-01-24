@@ -50,6 +50,8 @@ const Homepage = () => {
     refetch: getUserReading,
   } = useGetUserReading();
 
+  // console.log('reportData', reportData);
+
   const {data: userAttributes, refetch: getUserAttributes} =
     useGetUserAttributes();
   const {data: status} = useCheckQuestinnaireStatus({

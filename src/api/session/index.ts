@@ -26,7 +26,7 @@ export async function getSessionReportReading(
   try {
     const response = await axiosSessionInstance({
       method: 'GET',
-      url: `v1/medsi_check_health_readingsdasd?locale=${locale}&profile_id=${profile_id}${
+      url: `v1/health-reportsdasd?locale=${locale}&profile_id=${profile_id}${
         page ? '&page_number=' + page + '&page_size=10' : ''
       }${reading_id ? '&reading_id=' + reading_id : ''}`,
     });

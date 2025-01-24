@@ -23,7 +23,7 @@ interface ReadingData {
 }
 
 const modifyBloodPressure = (reportData: ReportJsonResponse) => {
-  return reportData.data.readings.map((reading: Reading) => {
+  return reportData.readings.map((reading: Reading) => {
     const updatedReadingData = Object.entries(reading.reading_data).reduce(
       (acc: ReadingData, [key, value]) => {
         if (key === 'systolic' || key === 'diastolic') {
@@ -65,8 +65,8 @@ const useGetUserReading = <
     queryKey: ['readings'],
     initialPageParam: 1,
     getNextPageParam: (lastPage, _, lastPageParam: number) => {
-      const pageSize = lastPage?.data?.reading_data?.length ?? 0;
-      const totalCount = lastPage?.data?.count ?? 0;
+      const pageSize = lastPage?.reading_data?.length ?? 0;
+      const totalCount = lastPage?.count ?? 0;
       if (pageSize === 0 || lastPageParam * pageSize >= totalCount) {
         return undefined;
       }
@@ -81,7 +81,7 @@ const useGetUserReading = <
           updatedReportData = {
             ...reportData,
             data: {
-              ...reportData.data,
+              ...reportData,
               readings: modifyBloodPressure(reportData),
             },
           } as QueryResponseType<T>;
@@ -96,10 +96,8 @@ const useGetUserReading = <
 
       return {
         data: {
-          reading_data: data?.pages.flatMap(
-            eachPage => eachPage?.data?.reading_data,
-          ),
-          count: data?.pages?.[0]?.data?.count,
+          reading_data: data?.pages.flatMap(eachPage => eachPage?.reading_data),
+          count: data?.pages?.[0]?.count,
         },
       };
     },
