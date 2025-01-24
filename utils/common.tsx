@@ -2,7 +2,7 @@
 import {StackActions} from '@react-navigation/native';
 import React from 'react';
 import {Linking} from 'react-native';
-import {BaseToast, ErrorToast} from 'react-native-toast-message';
+import {ErrorToast, SuccessToast} from 'react-native-toast-message';
 import {navigationRef} from '../RootNavigation';
 import {getSessionToken} from '../src/api/auth';
 import {syncScanSession} from '../src/api/report';
@@ -145,10 +145,10 @@ export const redirectFromDeeplink = async (url: string) => {
 
 export const toastConfig = {
   success: (props: any) => (
-    <BaseToast
+    <SuccessToast
       {...props}
       text1Style={{
-        fontSize: 15,
+        fontSize: 12,
         fontFamily: 'IsidoraSans-Regular',
       }}
       text2Style={{

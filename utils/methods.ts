@@ -1,6 +1,5 @@
 import {EncryptCommand, EncryptCommandInput} from '@aws-sdk/client-kms';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Sex} from 'biosensesignal-react-native-sdk';
 import {Buffer} from 'buffer';
 import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
@@ -18,45 +17,54 @@ import {notifyApi} from '../src/api/user';
 import {kmsClient} from '../src/config';
 import {DEVICE_LOCALE, STORAGE_KEY} from '../src/constants/AsyncStorageKeys';
 import {ConfidenceLevels} from '../src/constants/enums';
-import {SelectedAnswers} from '../src/screens/auth/Register/Additional_Information/type';
+import {
+  Choices,
+  ModifiedQuestionnaireResponse,
+  QuestionnaireGETReponse,
+  QuestionType,
+  SelectedAnswers,
+} from '../src/screens/auth/Register/Additional_Information/type';
+import {WellnessScoreKey} from '../src/screens/Reports/data';
 import useAuthStore from '../store/authStore';
 import useLanguageStore from '../store/languageStore';
 import useLoaderStore from '../store/loaderStore';
 import useUserProfileStore from '../store/profileStore';
 import {ColorRangeItem, ReadingData} from '../types/jsons';
 import {ConfidenceLevelKeys} from '../types/reports';
-import {FamilyMembers, User} from '../types/users/user';
+import {FamilyMembers} from '../types/users/user';
 import {successToast} from './toast';
 
 export const getImgBasedOnScore = (score: number) => {
   switch (true) {
     case score === 0:
-      return require('../assets/images/CircularProgress/progress_0.png');
-    case score === 1:
-      return require('../assets/images/CircularProgress/progress_1.png');
-    case score === 2:
-      return require('../assets/images/CircularProgress/progress_2.png');
-    case score === 3:
-      return require('../assets/images/CircularProgress/progress_3.png');
-    case score === 4:
-      return require('../assets/images/CircularProgress/progress_4.png');
-    case score === 5:
-      return require('../assets/images/CircularProgress/progress_5.png');
-    case score === 6:
-      return require('../assets/images/CircularProgress/progress_6.png');
-    case score === 7:
-      return require('../assets/images/CircularProgress/progress_7.png');
-    case score === 8:
-      return require('../assets/images/CircularProgress/progress_8.png');
-    case score === 9:
-      return require('../assets/images/CircularProgress/progress_9.png');
-    case score === 10:
-      return require('../assets/images/CircularProgress/progress_10.png');
-
+      return require(`../assets/images/CircularProgress/progress_0.png`);
+    case score > 0 && score < 10:
+      return require(`../assets/images/CircularProgress/progress_1_9.png`);
+    case score >= 10 && score < 20:
+      return require(`../assets/images/CircularProgress/progress_1.png`);
+    case score >= 20 && score < 30:
+      return require(`../assets/images/CircularProgress/progress_2.png`);
+    case score >= 30 && score < 40:
+      return require(`../assets/images/CircularProgress/progress_3.png`);
+    case score >= 40 && score < 50:
+      return require(`../assets/images/CircularProgress/progress_4.png`);
+    case score >= 50 && score < 60:
+      return require(`../assets/images/CircularProgress/progress_5.png`);
+    case score >= 60 && score < 70:
+      return require(`../assets/images/CircularProgress/progress_6.png`);
+    case score >= 70 && score < 80:
+      return require(`../assets/images/CircularProgress/progress_7.png`);
+    case score >= 80 && score < 90:
+      return require(`../assets/images/CircularProgress/progress_8.png`);
+    case score >= 90 && score < 100:
+      return require(`../assets/images/CircularProgress/progress_9.png`);
+    case score >= 100:
+      return require(`../assets/images/CircularProgress/progress_10.png`);
     default:
-      return '';
+      return ''; // Default case for invalid scores
   }
 };
+
 export const getColorBasedOnWellnessScore = (score: number) => {
   switch (true) {
     case score <= 2:
@@ -125,6 +133,15 @@ export const getGradientColorBasedOnScore = (score: number): string[] => {
     default:
       return ['rgba(128, 128, 128, 1)', 'rgba(128, 128, 128, 0.6)'];
   }
+};
+
+export const getScoreKey = (score: number): WellnessScoreKey | null => {
+  if (score >= 0 && score <= 20) return '1_2';
+  if (score >= 21 && score <= 40) return '3_4';
+  if (score >= 41 && score <= 60) return '5_6';
+  if (score >= 61 && score <= 80) return '7_8';
+  if (score >= 81 && score <= 100) return '9_10';
+  return null; // Return null if score is out of range
 };
 
 export const getDeviceLocaleInformation = () => {
@@ -399,13 +416,13 @@ export const getSelectedStyles = ({
   label,
   isSpanish,
 }: {
-  selectedAnswers: SelectedAnswers;
+  selectedAnswers: SelectedAnswers[];
   questionId: string;
   label: string;
   isSpanish: boolean;
   nestedItemKey?: string;
 }) => {
-  if (!selectedAnswers) {
+  if (!Array.isArray(selectedAnswers)) {
     return {
       backgroundColor: 'transparent',
       borderWidth: 1,
@@ -413,35 +430,41 @@ export const getSelectedStyles = ({
     };
   }
 
-  const selectedValues = isSpanish
-    ? selectedAnswers.spanish_choice_value
-    : selectedAnswers.choice_value;
+  const answer = selectedAnswers.find(
+    (each: SelectedAnswers) => each.question_id === questionId,
+  );
 
-  const isSelected =
-    typeof selectedValues !== 'string'
-      ? selectedValues?.some(value => {
-          if (typeof value === 'string') {
-            return value === label;
-          } else if (typeof value === 'object') {
-            const key = Object.keys(value)[0];
-            if (key === label) {
-              return true;
-            } else if (Array.isArray(value[key])) {
-              return nestedItemKey
-                ? key === nestedItemKey && value[key].includes(label)
-                : value[key].includes(label);
+  if (answer) {
+    const selectedValues = isSpanish
+      ? answer.spanish_choice_value
+      : answer.choice_value;
+
+    const isSelected =
+      typeof selectedValues !== 'string'
+        ? selectedValues?.some(value => {
+            if (typeof value === 'string') {
+              return value === label;
+            } else if (typeof value === 'object') {
+              const key = Object.keys(value)[0];
+              if (key === label) {
+                return true;
+              } else if (Array.isArray(value[key])) {
+                return nestedItemKey
+                  ? key === nestedItemKey && value[key].includes(label)
+                  : value[key].includes(label);
+              }
             }
-          }
-          return false;
-        })
-      : false;
+            return false;
+          })
+        : false;
 
-  if (isSelected) {
-    return {
-      backgroundColor: 'rgba(63, 101, 255, 0.41)',
-      borderWidth: 1,
-      borderColor: 'rgba(63, 101, 255, 0.41)',
-    };
+    if (isSelected) {
+      return {
+        backgroundColor: 'rgba(63, 101, 255, 0.41)',
+        borderWidth: 1,
+        borderColor: 'rgba(63, 101, 255, 0.41)',
+      };
+    }
   }
 
   return {
@@ -812,37 +835,46 @@ export const formatTimes = (
   };
 };
 
-export const getGenderForDemoGraphic = (
-  gender: User['gender'] | undefined,
-): Sex => {
-  if (gender === 'male') {
-    return Sex.MALE;
+export const getUserChoices = (
+  userChoices: string | Choices | null | undefined,
+  questionType?: QuestionType | undefined,
+): string | Choices => {
+  if (!userChoices) {
+    return ''; // Explicitly return null if input is falsy
   }
-  if (gender === 'female') {
-    return Sex.FEMALE;
+  if (typeof userChoices === 'string') {
+    if (questionType && questionType === 'dropdown') {
+      return isValidJSON(userChoices) ? JSON.parse(userChoices) : [userChoices];
+    }
+    return userChoices;
   }
-  return Sex.UNSPECIFIED;
+  return userChoices; // Return as-is if it's already of type Choices
 };
 
-export const hasValidUserDemographics = userDemographics => {
-  if (userDemographics.height < 120 || userDemographics.height > 220) {
-    return false;
-  }
-  if (userDemographics.weight < 30 || userDemographics.weight > 300) {
-    return false;
-  }
-  const bmi = userDemographics.weight / Math.pow(userDemographics.height / 100);
-  if (bmi < 9 || bmi > 66) {
-    return false;
-  }
-  if (userDemographics.age < 13 || userDemographics.age > 120) {
-    return false;
-  }
-  if (
-    userDemographics.gender != 'male' &&
-    userDemographics.gender != 'female'
-  ) {
-    return false;
-  }
-  return true;
+export const transformQuestionData = (
+  responseData: QuestionnaireGETReponse[],
+): ModifiedQuestionnaireResponse => {
+  return responseData?.map(answer => {
+    return {
+      ...answer,
+      eng_choices: isValidJSON(answer?.eng_choices)
+        ? JSON.parse(answer?.eng_choices)
+        : '',
+      spanish_choices: isValidJSON(answer?.spanish_choices)
+        ? JSON.parse(answer?.spanish_choices)
+        : '',
+      ...(answer.user_eng_choices && {
+        user_eng_choices: getUserChoices(
+          answer.user_eng_choices,
+          answer?.question_type,
+        ),
+      }),
+      ...(answer.user_spanish_choices && {
+        user_spanish_choices: getUserChoices(
+          answer.user_spanish_choices,
+          answer?.question_type,
+        ),
+      }),
+    };
+  });
 };
