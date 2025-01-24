@@ -150,7 +150,7 @@ const useInitializeBinahSession = ({
   }, []);
 
   const checkCameraPermission = async () => {
-    if (!binahConfig?.binaah_sdk_key) {
+    if (!binahConfig?.sdk_value) {
       return;
     }
     duringPermissionsCheck.current = true;
@@ -173,7 +173,7 @@ const useInitializeBinahSession = ({
     mutationFn: async () => {
       session.current = await SessionBuilder.faceSession(
         {
-          licenseKey: binahConfig?.binaah_sdk_key,
+          licenseKey: binahConfig?.sdk_value,
         },
         {
           // sdkAnalytics: true
@@ -332,13 +332,13 @@ const useInitializeBinahSession = ({
   }, []);
 
   useEffect(() => {
-    if (binahConfig?.binaah_sdk_key) {
+    if (binahConfig?.sdk_value) {
       screenActiveState == ScreenActiveState.ACTIVE
         ? createNewSession()
         : terminateSession();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screenActiveState, binahConfig?.binaah_sdk_key, cameraLocation]);
+  }, [screenActiveState, binahConfig?.sdk_value, cameraLocation]);
 
   useFocusEffect(
     useCallback(() => {

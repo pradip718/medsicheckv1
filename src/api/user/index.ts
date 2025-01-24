@@ -163,7 +163,7 @@ async function postCaptureUserActivity(payload: {
   if (includeBinahKey) {
     additionalParameter = {
       ...additionalParameter,
-      binaah_key: useBinahConfigStore.getState()?.binahConfig?.binaah_sdk_key,
+      binaah_key: useBinahConfigStore.getState()?.binahConfig?.sdk_value,
     };
   }
   try {

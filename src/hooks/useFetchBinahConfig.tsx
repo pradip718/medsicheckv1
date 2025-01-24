@@ -1,5 +1,5 @@
 import {useMutation} from '@tanstack/react-query';
-import useBinahConfigStore, {BinahConfig} from '../../store/binahConfigStore';
+import useBinahConfigStore from '../../store/binahConfigStore';
 import {getBinahConfiguration} from '../api/binah';
 import useFullPageLoader from './useFullPageLoader';
 
@@ -16,11 +16,7 @@ const useFetchBinahConfig = () => {
     },
     onSuccess: setting => {
       if (setting?.sdk_name === 'binaah') {
-        setBinahConfig({
-          binaah_sdk_key: setting?.sdk_value,
-          demographic_flag: setting?.demographic_flag,
-          scan_duration: setting?.scan_duration,
-        });
+        setBinahConfig(setting);
       }
       if (setting?.sdk_name === 'nuralogix') {
         const sdkValue = JSON.parse(setting?.sdk_value);
@@ -33,7 +29,13 @@ const useFetchBinahConfig = () => {
       return setting;
     },
     onError: () => {
-      setBinahConfig({binaah_sdk_key: ''} as BinahConfig);
+      setBinahConfig({
+        sdk_value: '',
+        scan_duration: '80',
+        demographic_flag: 'False',
+        sdk_name: 'binaah',
+        sdk_type: 'full_scan',
+      });
     },
   });
 };

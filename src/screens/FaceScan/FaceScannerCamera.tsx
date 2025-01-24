@@ -252,6 +252,8 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
             scan_error: imageValidityJSON,
             reading_id,
             timestamp: moment().format('YYYY-MM-DD HH:mm'),
+            sdk_name: binahConfig?.sdk_name,
+            sdk_type: binahConfig?.sdk_type,
           },
         });
       }
