@@ -4,7 +4,7 @@ import {getBinahConfiguration} from '../api/binah';
 import useFullPageLoader from './useFullPageLoader';
 
 const useFetchBinahConfig = () => {
-  const {setBinahConfig} = useBinahConfigStore();
+  const {setBinahConfig, setAnuraConfig, setCurrentSdk} = useBinahConfigStore();
   const {showLoader, hideLoader} = useFullPageLoader();
 
   return useMutation({
@@ -15,16 +15,18 @@ const useFetchBinahConfig = () => {
       return await getBinahConfiguration();
     },
     onSuccess: setting => {
-      setBinahConfig({
-        binaah_sdk_key: setting?.sdk_value,
-        demographic_flag: setting?.demographic_flag,
-        scan_duration: setting?.scan_duration,
-      } as BinahConfig);
-      return {
-        scan_duration: setting?.scan_duration,
-        binaah_sdk_key: setting?.sdk_value,
-        demographic_flag: setting?.demographic_flag,
-      };
+      if (setting?.sdk_name === 'binaah') {
+        setBinahConfig({
+          binaah_sdk_key: setting?.sdk_value,
+          demographic_flag: setting?.demographic_flag,
+          scan_duration: setting?.scan_duration,
+        });
+      }
+      if (setting?.sdk_name === 'neurologix') {
+        setAnuraConfig(setting);
+      }
+      setCurrentSdk(setting?.sdk_name);
+      return setting;
     },
     onError: () => {
       setBinahConfig({binaah_sdk_key: ''} as BinahConfig);

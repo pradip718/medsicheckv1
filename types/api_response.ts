@@ -162,10 +162,24 @@ export type CheckAppUpdateResponse = {
 
 export type SDK_NAME = 'binaah' | 'neurologix';
 
-export type BinahConfigResponse = {
-  sdk_name: SDK_NAME;
-  sdk_value: string;
-  sdk_type: 'vital_scan' | 'full_scan';
+export type AnuraSdkValue = {
+  deepaffexLicenseKey: string;
+  deepaffexStudyID: string;
+  deepaffexAPIHostname: string;
+};
+
+type BaseSdkConfigResponse = {
   scan_duration: string;
   demographic_flag: 'True' | 'False';
+  sdk_type: 'vital_scan' | 'full_scan';
+};
+
+export type BinahConfigResponse = BaseSdkConfigResponse & {
+  sdk_name: 'binaah';
+  sdk_value: string;
+};
+
+export type AnuraConfigResponse = BaseSdkConfigResponse & {
+  sdk_name: 'neurologix';
+  sdk_value: AnuraSdkValue;
 };

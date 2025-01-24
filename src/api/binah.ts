@@ -3,12 +3,15 @@ import useAuthStore from '../../store/authStore';
 import {BinahErrorMessage} from '../../store/binahConfigStore';
 import useUserProfileStore from '../../store/profileStore';
 import {
+  AnuraConfigResponse,
   BinahConfigResponse,
   CheckAppUpdateResponse,
 } from '../../types/api_response';
 import axiosSessionInstance from './sessionConfiguration';
 
-async function getBinahConfiguration(): Promise<BinahConfigResponse> {
+async function getBinahConfiguration(): Promise<
+  BinahConfigResponse | AnuraConfigResponse
+> {
   const profile_id = useUserProfileStore.getState().currentActiveProfileId;
   const {deeplinkAuth} = useAuthStore.getState();
   const activeAxiosInstance = deeplinkAuth?.session_id
