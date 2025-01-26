@@ -23,9 +23,9 @@ import useAuthNavigation from '../src/hooks/useAuthNavigation';
 import useUpdateLocale from '../src/hooks/useUpdateLocale';
 import AboutApp from '../src/screens/AboutApp';
 import FaceScan from '../src/screens/FaceScan';
+import AnuraIntermediateLoader from '../src/screens/FaceScan/AnuraIntermediateLoader';
 import FaceScannerCamera from '../src/screens/FaceScan/FaceScannerCamera';
 import QRFaceScan from '../src/screens/FaceScan/QRFaceScan';
-import ResultsPage from '../src/screens/FaceScan/ResultsPage';
 import Feedbacks from '../src/screens/Feedbacks';
 import HealthWallet from '../src/screens/HealthWallet';
 import AIHealthReport from '../src/screens/HealthWallet/AIHealthReport/AIHealthReport';
@@ -319,6 +319,10 @@ const RootNavigator = () => {
           <Stack.Screen name="ReportDetails" component={ReportDetails} />
           <Stack.Screen name="FaceScan" component={FaceScan} />
           <Stack.Screen name="FaceScanCamera" component={FaceScannerCamera} />
+          <Stack.Screen
+            name="AnuraIntermediateLoader"
+            component={AnuraIntermediateLoader}
+          />
           <Stack.Screen name="PreviousReports" component={PreviousReports} />
           <Stack.Screen name="ReportList" component={ReportList} />
 
@@ -344,8 +348,6 @@ const RootNavigator = () => {
           />
 
           <Stack.Screen name="ReportStackScreens" component={ReportStack} />
-
-          <Stack.Screen name="ResultPage" component={ResultsPage} />
 
           <Stack.Screen name="AIScanDetails" component={AIScanDetails} />
           <Stack.Screen

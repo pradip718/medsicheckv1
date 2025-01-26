@@ -48,21 +48,6 @@ const CustomTabBar = ({
   const {data: users} = useGetUserAttributes();
 
   const {mutateAsync: getSdkConfig} = useFetchBinahConfig();
-  const {mutateAsync: postReadings} = usePostReadings({
-    onSuccess: (data, variable) => {
-      const {
-        payload: {reading_id},
-      } = variable;
-      navigation.dispatch(
-        StackActions.replace('ReportStackScreens', {
-          screen: 'Report',
-          params: {
-            reading_id,
-          },
-        }),
-      );
-    },
-  });
 
   useEffect(() => {
     EventBridge.sendEvent(
@@ -70,24 +55,6 @@ const CustomTabBar = ({
       anuraConfig?.sdk_value,
     );
   }, [anuraConfig]);
-
-  const addReusltsListener = async () => {
-    EventBridge.addReusltsListener(async (name, data) => {
-      if (name == Event.anuraMeasurementGetResultsSuccess) {
-        console.log('data', data);
-        await postReadings({
-          payload: {
-            data: data?.results,
-            scan_error: [],
-            reading_id: uuid.v4(),
-            timestamp: moment().format('YYYY-MM-DD HH:mm'),
-            sdk_name: anuraConfig?.sdk_name,
-            sdk_type: anuraConfig?.sdk_type,
-          },
-        });
-      }
-    });
-  };
 
   const handleAnuraNavigation = () => {
     console.log('check');
@@ -121,10 +88,9 @@ const CustomTabBar = ({
                     */
 
       EventBridge.addCommonListener(name => {
-        addReusltsListener();
-        // if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
-        //   navigation.navigate('ResultPage');
-        // }
+        if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
+          navigation.navigate('AnuraIntermediateLoader');
+        }
       });
     } catch (error) {
       console.log('error', error);

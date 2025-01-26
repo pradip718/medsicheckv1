@@ -34,6 +34,7 @@ export type MainStackParamList = {
     fromScreen?: 'PersonalisedAI';
     action?: () => void;
   };
+  AnuraIntermediateLoader: undefined;
   QRFaceScan: undefined;
   PreviousReports: undefined;
   ReportList: {
