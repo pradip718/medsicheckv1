@@ -8,13 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MedsiCheckTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MedsiCheckTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-MedsiCheck.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-MedsiCheck.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-MedsiCheck-MedsiCheckTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-MedsiCheck-MedsiCheckTests.a */; };
+		34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */; };
+		56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */; };
+		6FC0CCDF815666EF3F852CB2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */; };
 		A94D0732F6C3707DD4EA8EB8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		AEEF05652D4692F6002EE9AB /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
+		AEEF05662D4692F6002EE9AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		AEEF056A2D4692F6002EE9AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AEEF056B2D4692F6002EE9AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		AEEF056C2D4692F6002EE9AB /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		AEEF058C2D46B9C9002EE9AB /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
+		AEEF058D2D46B9C9002EE9AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		AEEF05912D46B9C9002EE9AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AEEF05922D46B9C9002EE9AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		AEEF05932D46B9C9002EE9AB /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */; };
+		AEEF059F2D46C049002EE9AB /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */; };
+		AEEF05A02D46C049002EE9AB /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */; };
+		AEEF05A62D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
+		AEEF05A72D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
+		AEEF05A82D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +49,7 @@
 		00E356EE1AD99517003FC87E /* MedsiCheckTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MedsiCheckTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* MedsiCheckTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MedsiCheckTests.m; sourceTree = "<group>"; };
+		0F948343B2444D45EDB4FB6C /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* MedsiCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedsiCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = MedsiCheck/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = MedsiCheck/AppDelegate.mm; sourceTree = "<group>"; };
@@ -38,14 +57,31 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MedsiCheck/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MedsiCheck/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = MedsiCheck/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-MedsiCheck-MedsiCheckTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheck-MedsiCheckTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheck.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21A252BE48B65A82ABCEAFEC /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig"; sourceTree = "<group>"; };
+		25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-MedsiCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck.debug.xcconfig"; sourceTree = "<group>"; };
+		40E3121E5214B4F76E2225D8 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckStaging.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5709B34CF0A7D63546082F79 /* Pods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-MedsiCheck.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheck.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MedsiCheck/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-MedsiCheck-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
+		8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
+		9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; sourceTree = "<group>"; };
+		AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; sourceTree = "<group>"; };
+		AEEF05732D4692F6002EE9AB /* MedsiCheckDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedsiCheckDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEEF05742D4692F6002EE9AB /* MedsiCheck dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MedsiCheck dev-Info.plist"; path = "/Users/pradipshrestha/Organization/OpenFabric/MedsiNewApp/MedsiCheck/ios/MedsiCheck dev-Info.plist"; sourceTree = "<absolute>"; };
+		AEEF05752D469341002EE9AB /* MedsiCheckDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MedsiCheckDev.entitlements; sourceTree = "<group>"; };
+		AEEF059A2D46B9C9002EE9AB /* MedsiCheckStaging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedsiCheckStaging.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEEF059B2D46B9C9002EE9AB /* MedsiCheck staging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MedsiCheck staging-Info.plist"; path = "/Users/pradipshrestha/Organization/OpenFabric/MedsiNewApp/MedsiCheck/ios/MedsiCheck staging-Info.plist"; sourceTree = "<absolute>"; };
+		AEEF059C2D46B9F3002EE9AB /* MedsiCheckStaging.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MedsiCheckStaging.entitlements; sourceTree = "<group>"; };
+		AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
+		AEEF05A52D46C52C002EE9AB /* Firebase */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Firebase; sourceTree = "<group>"; };
+		DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FEE7B8B608EB1651E3D9A7CB /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-MedsiCheck-MedsiCheckTests.a in Frameworks */,
+				6FC0CCDF815666EF3F852CB2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,7 +97,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-MedsiCheck.a in Frameworks */,
+				56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AEEF05672D4692F6002EE9AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AEEF058E2D46B9C9002EE9AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,12 +140,14 @@
 		13B07FAE1A68108700A75B9A /* MedsiCheck */ = {
 			isa = PBXGroup;
 			children = (
+				AEEF05A52D46C52C002EE9AB /* Firebase */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 			);
 			name = MedsiCheck;
@@ -103,8 +157,10 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-MedsiCheck.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-MedsiCheck-MedsiCheckTests.a */,
+				1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */,
+				25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */,
+				4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */,
+				DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -119,12 +175,16 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				AEEF059C2D46B9F3002EE9AB /* MedsiCheckStaging.entitlements */,
+				AEEF05752D469341002EE9AB /* MedsiCheckDev.entitlements */,
 				13B07FAE1A68108700A75B9A /* MedsiCheck */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MedsiCheckTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				AEEF05742D4692F6002EE9AB /* MedsiCheck dev-Info.plist */,
+				AEEF059B2D46B9C9002EE9AB /* MedsiCheck staging-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -136,6 +196,8 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* MedsiCheck.app */,
 				00E356EE1AD99517003FC87E /* MedsiCheckTests.xctest */,
+				AEEF05732D4692F6002EE9AB /* MedsiCheckDev.app */,
+				AEEF059A2D46B9C9002EE9AB /* MedsiCheckStaging.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,6 +209,14 @@
 				5709B34CF0A7D63546082F79 /* Pods-MedsiCheck.release.xcconfig */,
 				5B7EB9410499542E8C5724F5 /* Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig */,
 				89C6BE57DB24E9ADA2F236DE /* Pods-MedsiCheck-MedsiCheckTests.release.xcconfig */,
+				FEE7B8B608EB1651E3D9A7CB /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */,
+				796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */,
+				AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */,
+				21A252BE48B65A82ABCEAFEC /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */,
+				0F948343B2444D45EDB4FB6C /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */,
+				9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */,
+				40E3121E5214B4F76E2225D8 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */,
+				8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -186,6 +256,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				AEEF05AB2D46C923002EE9AB /* Google Analytics Run Script */,
 			);
 			buildRules = (
 			);
@@ -194,6 +265,50 @@
 			name = MedsiCheck;
 			productName = MedsiCheck;
 			productReference = 13B07F961A680F5B00A75B9A /* MedsiCheck.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AEEF05622D4692F6002EE9AB /* MedsiCheckDev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AEEF05702D4692F6002EE9AB /* Build configuration list for PBXNativeTarget "MedsiCheckDev" */;
+			buildPhases = (
+				AEEF05632D4692F6002EE9AB /* [CP] Check Pods Manifest.lock */,
+				AEEF05642D4692F6002EE9AB /* Sources */,
+				AEEF05672D4692F6002EE9AB /* Frameworks */,
+				AEEF05692D4692F6002EE9AB /* Resources */,
+				AEEF056D2D4692F6002EE9AB /* Bundle React Native code and images */,
+				AEEF056E2D4692F6002EE9AB /* [CP] Embed Pods Frameworks */,
+				AEEF056F2D4692F6002EE9AB /* [CP] Copy Pods Resources */,
+				AEEF05AA2D46C8DC002EE9AB /* Google Analytics Run Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MedsiCheckDev;
+			productName = MedsiCheck;
+			productReference = AEEF05732D4692F6002EE9AB /* MedsiCheckDev.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AEEF05892D46B9C9002EE9AB /* MedsiCheckStaging */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AEEF05972D46B9C9002EE9AB /* Build configuration list for PBXNativeTarget "MedsiCheckStaging" */;
+			buildPhases = (
+				AEEF058A2D46B9C9002EE9AB /* [CP] Check Pods Manifest.lock */,
+				AEEF058B2D46B9C9002EE9AB /* Sources */,
+				AEEF058E2D46B9C9002EE9AB /* Frameworks */,
+				AEEF05902D46B9C9002EE9AB /* Resources */,
+				AEEF05942D46B9C9002EE9AB /* Bundle React Native code and images */,
+				AEEF05952D46B9C9002EE9AB /* [CP] Embed Pods Frameworks */,
+				AEEF05962D46B9C9002EE9AB /* [CP] Copy Pods Resources */,
+				AEEF05A92D46C7A9002EE9AB /* Google Analytics Run Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MedsiCheckStaging;
+			productName = MedsiCheck;
+			productReference = AEEF059A2D46B9C9002EE9AB /* MedsiCheckStaging.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -228,6 +343,8 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* MedsiCheck */,
 				00E356ED1AD99517003FC87E /* MedsiCheckTests */,
+				AEEF05622D4692F6002EE9AB /* MedsiCheckDev */,
+				AEEF05892D46B9C9002EE9AB /* MedsiCheckStaging */,
 			);
 		};
 /* End PBXProject section */
@@ -244,9 +361,35 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEEF05A62D46C52C002EE9AB /* Firebase in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				A94D0732F6C3707DD4EA8EB8 /* PrivacyInfo.xcprivacy in Resources */,
+				AEEF059F2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AEEF05692D4692F6002EE9AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AEEF05A82D46C52C002EE9AB /* Firebase in Resources */,
+				AEEF056A2D4692F6002EE9AB /* LaunchScreen.storyboard in Resources */,
+				AEEF056B2D4692F6002EE9AB /* Images.xcassets in Resources */,
+				AEEF056C2D4692F6002EE9AB /* PrivacyInfo.xcprivacy in Resources */,
+				AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AEEF05902D46B9C9002EE9AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AEEF05A72D46C52C002EE9AB /* Firebase in Resources */,
+				AEEF05912D46B9C9002EE9AB /* LaunchScreen.storyboard in Resources */,
+				AEEF05922D46B9C9002EE9AB /* Images.xcassets in Resources */,
+				AEEF05932D46B9C9002EE9AB /* PrivacyInfo.xcprivacy in Resources */,
+				AEEF05A02D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,15 +418,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -301,12 +444,210 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MedsiCheck-MedsiCheckTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-MedsiCheckCommonPods-MedsiCheckTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		AEEF05632D4692F6002EE9AB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MedsiCheckCommonPods-MedsiCheckDev-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEEF056D2D4692F6002EE9AB /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
+		AEEF056E2D4692F6002EE9AB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEEF056F2D4692F6002EE9AB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEEF058A2D46B9C9002EE9AB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MedsiCheckCommonPods-MedsiCheckStaging-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEEF05942D46B9C9002EE9AB /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
+		AEEF05952D46B9C9002EE9AB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEEF05962D46B9C9002EE9AB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEEF05A92D46C7A9002EE9AB /* Google Analytics Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Google Analytics Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource \nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev, stg, and prod versions of the GoogleService-Info.plist\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/MedsiCheck/Firebase/dev/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_STG=${PROJECT_DIR}/MedsiCheck/Firebase/stage/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/MedsiCheck/Firebase/prod/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev, stg, and prod versions of GoogleService-Info.plist exist\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]; then\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_STG}\"\nif [ ! -f $GOOGLESERVICE_INFO_STG ]; then\n    echo \"No Staging GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]; then\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copy over the appropriate GoogleService-Info.plist based on the build configuration\nif [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n    echo \"-> Using ${GOOGLESERVICE_INFO_DEV}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\nelif [ \"${CONFIGURATION}\" == \"Staging\" ]; then\n    echo \"-> Using ${GOOGLESERVICE_INFO_STG}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_STG}\" \"${PLIST_DESTINATION}\"\nelse\n    echo \"-> Using ${GOOGLESERVICE_INFO_PROD}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\nfi\n";
+		};
+		AEEF05AA2D46C8DC002EE9AB /* Google Analytics Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Google Analytics Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource \nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev, stg, and prod versions of the GoogleService-Info.plist\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/MedsiCheck/Firebase/dev/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_STG=${PROJECT_DIR}/MedsiCheck/Firebase/stage/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/MedsiCheck/Firebase/prod/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev, stg, and prod versions of GoogleService-Info.plist exist\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]; then\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_STG}\"\nif [ ! -f $GOOGLESERVICE_INFO_STG ]; then\n    echo \"No Staging GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]; then\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copy over the appropriate GoogleService-Info.plist based on the build configuration\nif [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n    echo \"-> Using ${GOOGLESERVICE_INFO_DEV}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\nelif [ \"${CONFIGURATION}\" == \"Staging\" ]; then\n    echo \"-> Using ${GOOGLESERVICE_INFO_STG}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_STG}\" \"${PLIST_DESTINATION}\"\nelse\n    echo \"-> Using ${GOOGLESERVICE_INFO_PROD}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\nfi\n";
+		};
+		AEEF05AB2D46C923002EE9AB /* Google Analytics Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Google Analytics Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource \nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev, stg, and prod versions of the GoogleService-Info.plist\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/MedsiCheck/Firebase/dev/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_STG=${PROJECT_DIR}/MedsiCheck/Firebase/stage/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/MedsiCheck/Firebase/prod/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev, stg, and prod versions of GoogleService-Info.plist exist\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]; then\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_STG}\"\nif [ ! -f $GOOGLESERVICE_INFO_STG ]; then\n    echo \"No Staging GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]; then\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copy over the appropriate GoogleService-Info.plist based on the build configuration\nif [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n    echo \"-> Using ${GOOGLESERVICE_INFO_DEV}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\nelif [ \"${CONFIGURATION}\" == \"Staging\" ]; then\n    echo \"-> Using ${GOOGLESERVICE_INFO_STG}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_STG}\" \"${PLIST_DESTINATION}\"\nelse\n    echo \"-> Using ${GOOGLESERVICE_INFO_PROD}\"\n    echo \"-> Config ${CONFIGURATION}\"\n    cp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\nfi\n";
 		};
 		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -323,7 +664,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MedsiCheck-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-MedsiCheckCommonPods-MedsiCheck-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -336,15 +677,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -353,15 +694,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -370,15 +711,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -401,6 +742,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AEEF05642D4692F6002EE9AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AEEF05652D4692F6002EE9AB /* AppDelegate.mm in Sources */,
+				AEEF05662D4692F6002EE9AB /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AEEF058B2D46B9C9002EE9AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AEEF058C2D46B9C9002EE9AB /* AppDelegate.mm in Sources */,
+				AEEF058D2D46B9C9002EE9AB /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -414,7 +773,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig */;
+			baseConfigurationReference = 40E3121E5214B4F76E2225D8 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -441,7 +800,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-MedsiCheck-MedsiCheckTests.release.xcconfig */;
+			baseConfigurationReference = 8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -465,11 +824,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-MedsiCheck.debug.xcconfig */;
+			baseConfigurationReference = FEE7B8B608EB1651E3D9A7CB /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9BA744J4X;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MedsiCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -493,11 +853,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-MedsiCheck.release.xcconfig */;
+			baseConfigurationReference = 796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9BA744J4X;
 				INFOPLIST_FILE = MedsiCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -586,10 +947,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -658,14 +1016,133 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AEEF05712D4692F6002EE9AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MedsiCheckDev.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9BA744J4X;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "MedsiCheck dev-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Medsi Dev";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.dev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		AEEF05722D4692F6002EE9AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21A252BE48B65A82ABCEAFEC /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MedsiCheckDev.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9BA744J4X;
+				INFOPLIST_FILE = "MedsiCheck dev-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Medsi Dev";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.dev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		AEEF05982D46B9C9002EE9AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0F948343B2444D45EDB4FB6C /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MedsiCheckStaging.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9BA744J4X;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "MedsiCheck staging-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.stage;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		AEEF05992D46B9C9002EE9AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MedsiCheckStaging.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9BA744J4X;
+				INFOPLIST_FILE = "MedsiCheck staging-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.stage;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -695,6 +1172,24 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AEEF05702D4692F6002EE9AB /* Build configuration list for PBXNativeTarget "MedsiCheckDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AEEF05712D4692F6002EE9AB /* Debug */,
+				AEEF05722D4692F6002EE9AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AEEF05972D46B9C9002EE9AB /* Build configuration list for PBXNativeTarget "MedsiCheckStaging" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AEEF05982D46B9C9002EE9AB /* Debug */,
+				AEEF05992D46B9C9002EE9AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
