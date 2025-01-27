@@ -317,12 +317,12 @@ const RootNavigator = () => {
             component={HomePageDrawer}
           />
           <Stack.Screen name="ReportDetails" component={ReportDetails} />
-          {/* <Stack.Screen name="FaceScan" component={FaceScan} /> */}
+          <Stack.Screen name="FaceScan" component={FaceScan} />
           <Stack.Screen name="FaceScanCamera" component={FaceScannerCamera} />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="AnuraIntermediateLoader"
             component={AnuraIntermediateLoader}
-          /> */}
+          />
           <Stack.Screen name="PreviousReports" component={PreviousReports} />
           <Stack.Screen name="ReportList" component={ReportList} />
 

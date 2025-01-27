@@ -1,0 +1,362 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name AnuraCore
+import AVFoundation.AVCaptureDevice
+import AVFoundation
+@_exported import AnuraCore
+import CoreGraphics
+import CoreMedia
+import CoreVideo
+import DeveloperToolsSupport
+import Foundation
+import MetalKit
+import QuartzCore
+import Swift
+import SwiftUI
+import UIKit
+import VideoToolbox
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@objc public protocol DFXSDKClientDelegate {
+  @objc func onMeasurementComplete()
+  @objc func onMeasurementError()
+  @objc func onMeasurementPayloadReady(_ payload: AnuraCore.MeasurementPayload)
+}
+extension AnuraCore.FaceConstraintsStatus : Swift.Hashable {
+}
+@objc public enum CameraControlMethod : Swift.Int {
+  case anura
+  case system
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class MeasurementConfiguration : ObjectiveC.NSObject {
+  @objc public static let defaultConfiguration: AnuraCore.MeasurementConfiguration
+  @objc public static let defaultLegacyConfiguration: AnuraCore.MeasurementConfiguration
+  @objc public var studyFile: Foundation.Data
+  @objc public var measurementDuration: Swift.Double
+  @objc public var cameraPosition: AVFoundation.AVCaptureDevice.Position
+  @objc public var frameRate: CoreMedia.CMTime
+  @objc public var countdownDuration: Swift.Double
+  @objc public var screenLightControlEnabled: Swift.Bool
+  @objc public var defaultConstraintsEnabled: Swift.Bool
+  @objc public var defaultConstraintsDuringMeasurementEnabled: Swift.Bool
+  @objc public var lightingQualityConstraintEnabled: Swift.Bool
+  @objc public var chunkDuration: Swift.Double
+  @objc public var numChunks: Swift.Int {
+    @objc get
+  }
+  @objc @available(*, deprecated, message: "Experimental: Don't change this property under most circumstances. Setting this to 'system' disables camera optimizations")
+  public var cameraControlMethod: AnuraCore.CameraControlMethod
+  @objc @available(*, deprecated, message: "Experimental: Don't change this property under most circumstances. Setting this to 'false' will keep the measurement going even when a face is not detected")
+  public var faceNoneConstraintEnabled: Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class MeasurementResults : ObjectiveC.NSObject, Swift.Codable {
+  @objc @_hasMissingDesignatedInitializers @objcMembers public class SignalResult : ObjectiveC.NSObject, Swift.Codable {
+    @objc final public let value: Swift.Double
+    @objc final public let notes: [Swift.String]
+    @objc override dynamic public var description: Swift.String {
+      @objc get
+    }
+    @objc deinit
+    public func encode(to encoder: any Swift.Encoder) throws
+    required public init(from decoder: any Swift.Decoder) throws
+  }
+  @objc @objcMembers public class Error : ObjectiveC.NSObject, Swift.Codable {
+    @objc final public let code: Swift.String?
+    @objc deinit
+    public func encode(to encoder: any Swift.Encoder) throws
+    required public init(from decoder: any Swift.Decoder) throws
+  }
+  @objc final public let measurementID: Swift.String
+  @objc final public let error: AnuraCore.MeasurementResults.Error?
+  @objc public var allResultsValues: [Swift.String : Swift.Double] {
+    @objc get
+  }
+  @objc public var allResults: [Swift.String : AnuraCore.MeasurementResults.SignalResult] {
+    @objc get
+  }
+  @objc public var chunkOrder: Swift.Int {
+    @objc get
+  }
+  @objc public var snr: Swift.Double {
+    @objc get
+  }
+  @objc public var heartRate: Swift.Double {
+    @objc get
+  }
+  @objc public var isSNRGood: Swift.Bool {
+    @objc get
+  }
+  @objc public func result(for signalID: Swift.String) -> Swift.Double
+  @objc public func notes(for signalID: Swift.String) -> [Swift.String]
+  @objc deinit
+  public func encode(to encoder: any Swift.Encoder) throws
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public protocol FaceTrackerProtocol {
+  @objc init(quality: AnuraCore.FaceTrackerQuality)
+  @objc func trackFace(from videoFrame: AnuraCore.VideoFrame, completion: ((AnuraCore.TrackedFace) -> Swift.Void)!)
+  @objc func lock()
+  @objc func unlock()
+  @objc func reset()
+  @objc var trackingBounds: CoreFoundation.CGRect { get set }
+  @objc var quality: AnuraCore.FaceTrackerQuality { get set }
+  @objc var delegate: (any AnuraCore.FaceTrackerDelegate)? { get set }
+}
+@objc @_hasMissingDesignatedInitializers public class Camera : ObjectiveC.NSObject {
+  @objc public var cameraControlMethod: AnuraCore.CameraControlMethod
+  @objc public var iso: Swift.Float {
+    @objc get
+  }
+  @objc public var maxISO: Swift.Float {
+    @objc get
+    @objc set
+  }
+  @objc public var minISO: Swift.Float {
+    @objc get
+  }
+  @objc public var usingHighISO: Swift.Bool {
+    @objc get
+  }
+  @objc public var usingMediumISO: Swift.Bool {
+    @objc get
+  }
+  @objc public var usingLowISO: Swift.Bool {
+    @objc get
+  }
+  @objc public var exposureDuration: Swift.Double {
+    @objc get
+  }
+  @objc public var maxExposureDuration: Swift.Double {
+    @objc get
+  }
+  @objc public var minExposureDuration: Swift.Double {
+    @objc get
+  }
+  @objc public var maxExposureTargetBias: Swift.Float {
+    @objc get
+  }
+  @objc public var minExposureTargetBias: Swift.Float {
+    @objc get
+  }
+  @objc public var exposureTargetBias: Swift.Float {
+    @objc get
+  }
+  @objc public var isAdjustingExposure: Swift.Bool {
+    @objc get
+  }
+  @objc public var isAdjustingWhiteBalance: Swift.Bool {
+    @objc get
+  }
+  @objc public var whiteBalanceGains: AVFoundation.AVCaptureDevice.WhiteBalanceGains {
+    @objc get
+  }
+  @objc public var maxWhiteBalanceGains: Swift.Float {
+    @objc get
+  }
+  @objc public var minWhiteBalanceGains: Swift.Float {
+    @objc get
+  }
+  @objc public var rgMax: Swift.Double {
+    @objc get
+  }
+  @objc public var rgMin: Swift.Double {
+    @objc get
+  }
+  @objc public var gbMax: Swift.Double {
+    @objc get
+  }
+  @objc public var gbMin: Swift.Double {
+    @objc get
+  }
+  @objc public var gMax: Swift.Double {
+    @objc get
+  }
+  @objc public var gMin: Swift.Double {
+    @objc get
+  }
+  @objc public var bMax: Swift.Double {
+    @objc get
+  }
+  @objc public var bMin: Swift.Double {
+    @objc get
+  }
+  @objc public var calibrationRegionName: Swift.String {
+    @objc get
+  }
+  @objc deinit
+  @objc(setWithIso:exposureDuration:completion:) public func set(iso: Swift.Float, exposureDuration: Swift.Double, completion: @escaping () -> ()) -> Swift.Bool
+  @objc(setWithWhiteBalanceGains:completion:) public func set(whiteBalanceGains: AVFoundation.AVCaptureDevice.WhiteBalanceGains, completion: @escaping () -> ()) -> Swift.Bool
+  @objc public func set(exposureTargetBias: Swift.Float)
+  @objc override dynamic public func observeValue(forKeyPath keyPath: Swift.String?, of object: Any?, change: [Foundation.NSKeyValueChangeKey : Any]?, context: Swift.UnsafeMutableRawPointer?)
+}
+extension AnuraCore.Camera : AVFoundation.AVCaptureVideoDataOutputSampleBufferDelegate {
+  @objc dynamic public func captureOutput(_ output: AVFoundation.AVCaptureOutput, didDrop sampleBuffer: CoreMedia.CMSampleBuffer, from connection: AVFoundation.AVCaptureConnection)
+  @objc dynamic public func captureOutput(_ output: AVFoundation.AVCaptureOutput, didOutput sampleBuffer: CoreMedia.CMSampleBuffer, from connection: AVFoundation.AVCaptureConnection)
+}
+@objc public protocol AnuraMeasurementDelegate {
+  @objc func anuraMeasurementControllerDidLoad(_ controller: AnuraCore.AnuraMeasurementViewController)
+  @objc func anuraMeasurementControllerDidAppear(_ controller: AnuraCore.AnuraMeasurementViewController)
+  @objc func anuraMeasurementControllerDidDisappear(_ controller: AnuraCore.AnuraMeasurementViewController)
+  @objc func anuraMeasurementControllerDidStartCamera(_ controller: AnuraCore.AnuraMeasurementViewController)
+  @objc func anuraMeasurementControllerDidStopCamera(_ controller: AnuraCore.AnuraMeasurementViewController)
+  @objc func anuraMeasurementControllerIsReadyToMeasure(_ controller: AnuraCore.AnuraMeasurementViewController)
+  @objc func anuraMeasurementControllerDidStartMeasuring(_ controller: AnuraCore.AnuraMeasurementViewController)
+  @objc func anuraMeasurementControllerDidFinishMeasuring(_ controller: AnuraCore.AnuraMeasurementViewController)
+  @objc func anuraMeasurementControllerDidGetPayload(_ controller: AnuraCore.AnuraMeasurementViewController, _ payload: AnuraCore.MeasurementPayload)
+  @objc func anuraMeasurementControllerDidGetConstraintsWarning(_ controller: AnuraCore.AnuraMeasurementViewController, status: AnuraCore.FaceConstraintsStatus)
+  @objc func anuraMeasurementControllerDidCancelMeasurement(_ controller: AnuraCore.AnuraMeasurementViewController, status: AnuraCore.FaceConstraintsStatus)
+  @objc func anuraMeasurementControllerDidUpdate(_ controller: AnuraCore.AnuraMeasurementViewController, info: AnuraCore.MeasurementPipelineInfo)
+}
+@objc @objcMembers @_Concurrency.MainActor(unsafe) open class AnuraMeasurementViewController : UIKit.UIViewController {
+  @objc @_Concurrency.MainActor(unsafe) weak public var delegate: (any AnuraCore.AnuraMeasurementDelegate)?
+  @objc @_Concurrency.MainActor(unsafe) public var measurementConfiguration: AnuraCore.MeasurementConfiguration {
+    @objc get
+  }
+  @objc @_Concurrency.MainActor(unsafe) public var uiConfiguration: AnuraCore.MeasurementUIConfiguration {
+    @objc get
+  }
+  @objc @_Concurrency.MainActor(unsafe) public init(measurementConfiguration: AnuraCore.MeasurementConfiguration, uiConfiguration: AnuraCore.MeasurementUIConfiguration, faceTracker: any AnuraCore.FaceTrackerProtocol)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
+  @objc @_Concurrency.MainActor(unsafe) public func start()
+  @objc @_Concurrency.MainActor(unsafe) public func stop()
+  @objc @_Concurrency.MainActor(unsafe) public func startExtracting()
+  @objc @_Concurrency.MainActor(unsafe) public func stopExtracting()
+  @objc @_Concurrency.MainActor(unsafe) public func restart()
+  @objc @_Concurrency.MainActor(unsafe) public func lock()
+  @objc @_Concurrency.MainActor(unsafe) public func unlock(after delay: Foundation.TimeInterval = 0)
+  @objc @_Concurrency.MainActor(unsafe) public func decodeMeasurementResult(data: Foundation.Data) -> AnuraCore.MeasurementResults?
+  @objc @_Concurrency.MainActor(unsafe) public func setMeasurementProperties(properties: [Swift.String : Swift.String])
+  @objc @_Concurrency.MainActor(unsafe) public func startMeasurement()
+  @objc @_Concurrency.MainActor(unsafe) public func startMeasurementCountdown()
+  @objc @_Concurrency.MainActor(unsafe) public func cancelMeasurement(reason: AnuraCore.FaceConstraintsStatus)
+  @objc @_Concurrency.MainActor(unsafe) public func setHeartRate(_ heartRate: Swift.Double, histogramColor: UIKit.UIColor? = nil)
+  @objc @_Concurrency.MainActor(unsafe) public func setCurrentSNR(_ snr: Swift.Double)
+  @objc @_Concurrency.MainActor(unsafe) public func shouldCancelMeasurement(snr: Swift.Double, chunkOrder: Swift.Int) -> Swift.Bool
+  @objc @_Concurrency.MainActor(unsafe) public func enableConstraint(_ key: Swift.String)
+  @objc @_Concurrency.MainActor(unsafe) public func disableConstraint(_ key: Swift.String)
+  @objc @_Concurrency.MainActor(unsafe) public func setConstraint(key: Swift.String, value: Swift.String)
+  @objc @_Concurrency.MainActor(unsafe) public func setHistogramsColor(color: UIKit.UIColor)
+  @objc @_Concurrency.MainActor(unsafe) public func setMessage(string: Swift.String)
+  @objc @_Concurrency.MainActor(unsafe) public func resetMessage(string: Swift.String)
+  @objc @available(*, deprecated, message: "Experimental: Don't change the camera control method under most circumstances. Setting this to 'system' disables camera optimizations")
+  @_Concurrency.MainActor(unsafe) public func setCameraControlMethod(method: AnuraCore.CameraControlMethod)
+  @objc deinit
+}
+extension AnuraCore.AnuraMeasurementViewController {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidCancelMeasurement(status: AnuraCore.FaceConstraintsStatus)
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidLoad()
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidStartCamera()
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidStopCamera()
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidStartMeasuring()
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidFinishMeasuring()
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidGetPayload(_ payload: AnuraCore.MeasurementPayload)
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerConstraintsWarning(status: AnuraCore.FaceConstraintsStatus)
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerIsReadyToMeasure()
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidStartCountdown()
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidCancelCountdown()
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func measurementViewControllerDidFinishCountdown()
+}
+extension AnuraCore.FaceConstraintsStatus {
+  public var cancellationMessage: Swift.String {
+    get
+  }
+  public var warningMessage: Swift.String {
+    get
+  }
+  public var identifier: Swift.String {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @objcMembers public class MeasurementUIConfiguration : ObjectiveC.NSObject {
+  @objc public static let defaultConfiguration: AnuraCore.MeasurementUIConfiguration
+  @objc public static let defaultLegacyConfiguration: AnuraCore.MeasurementUIConfiguration
+  @objc public var showHeartRateDuringMeasurement: Swift.Bool
+  @objc public var heartRateShapeColor: UIKit.UIColor
+  @objc public var heartRateTextColor: UIKit.UIColor
+  @objc public var heartRateTextShadowColor: UIKit.UIColor
+  @objc public var heartRateFont: UIKit.UIFont
+  @objc public var heartRateImage: UIKit.UIImage?
+  @objc public var animateHeartRateImage: Swift.Bool
+  @objc public var showHistograms: Swift.Bool
+  @objc public var histogramActiveColor: UIKit.UIColor
+  @objc public var histogramInactiveColor: UIKit.UIColor
+  @objc public var showStatusMessages: Swift.Bool
+  @objc public var showMeasurementStartedMessage: Swift.Bool
+  @objc public var showCountdown: Swift.Bool
+  @objc public var statusMessagesTextColor: UIKit.UIColor
+  @objc public var statusMessagesTextShadowColor: UIKit.UIColor
+  @objc public var statusMessagesFont: UIKit.UIFont
+  @objc public var countdownFont: UIKit.UIFont
+  public enum MeasurementOutlineStyle {
+    case circle
+    case oval
+    public static func == (a: AnuraCore.MeasurementUIConfiguration.MeasurementOutlineStyle, b: AnuraCore.MeasurementUIConfiguration.MeasurementOutlineStyle) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @objc public var showOverlay: Swift.Bool
+  @objc public var showMeasurementOutline: Swift.Bool
+  public var measurementOutlineStyle: AnuraCore.MeasurementUIConfiguration.MeasurementOutlineStyle
+  @objc public var logoImage: UIKit.UIImage?
+  @objc public var overlayBackgroundColor: UIKit.UIColor
+  @objc public var measurementOutlineInactiveColor: UIKit.UIColor
+  @objc public var measurementOutlineActiveColor: UIKit.UIColor
+  @objc public var timerTextColor: UIKit.UIColor
+  @objc public var timerFont: UIKit.UIFont
+  @objc public var showLightingQualityStars: Swift.Bool
+  @objc public var lightingQualityStarsActiveColor: UIKit.UIColor
+  @objc public var lightingQualityStarsInactiveColor: UIKit.UIColor
+  @objc public var lightingQualityStarsFilledImage: UIKit.UIImage?
+  @objc public var lightingQualityStarsEmptyImage: UIKit.UIImage?
+  @objc public var locale: Foundation.Locale
+  @objc @available(*, deprecated, message: "No longer available")
+  public var showFacePolygons: Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class MeasurementPipelineInfo : ObjectiveC.NSObject {
+  public enum State {
+    case off
+    case locked
+    case initalizing
+    case idle
+    case extracting
+    case hold
+    case calibrating
+    case spotCheck
+    case readyToMeasure
+    case measuring
+    case complete
+    case failure
+    public static func == (a: AnuraCore.MeasurementPipelineInfo.State, b: AnuraCore.MeasurementPipelineInfo.State) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  final public let state: AnuraCore.MeasurementPipelineInfo.State
+  @objc final public let currentLightingQuality: Swift.Int
+  @objc final public let overallLightingQuality: Swift.Int
+  public init(state: AnuraCore.MeasurementPipelineInfo.State, currentLightingQuality: Swift.Int, overallLightingQuality: Swift.Int)
+  @objc deinit
+}
+extension AnuraCore.MediaPipeFaceTracker : AnuraCore.FaceTrackerProtocol {
+}
+extension AnuraCore.CameraControlMethod : Swift.Equatable {}
+extension AnuraCore.CameraControlMethod : Swift.Hashable {}
+extension AnuraCore.CameraControlMethod : Swift.RawRepresentable {}
+extension AnuraCore.MeasurementUIConfiguration.MeasurementOutlineStyle : Swift.Equatable {}
+extension AnuraCore.MeasurementUIConfiguration.MeasurementOutlineStyle : Swift.Hashable {}
+extension AnuraCore.MeasurementPipelineInfo.State : Swift.Equatable {}
+extension AnuraCore.MeasurementPipelineInfo.State : Swift.Hashable {}

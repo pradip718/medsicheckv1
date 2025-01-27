@@ -3,20 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MedsiCheckTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MedsiCheckTests.m */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */; };
 		56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */; };
 		6FC0CCDF815666EF3F852CB2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */; };
-		A94D0732F6C3707DD4EA8EB8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		AE9813E62D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */; };
 		AE9813E72D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */; };
 		AE9813EB2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */; };
@@ -51,16 +47,26 @@
 		AE98140D2D4755AD001E7BD8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DD2D4755AD001E7BD8 /* Ionicons.ttf */; };
 		AE98140E2D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */; };
 		AE98140F2D4755AD001E7BD8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DA2D4755AD001E7BD8 /* Feather.ttf */; };
-		AEEF05652D4692F6002EE9AB /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
-		AEEF05662D4692F6002EE9AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		AEEF056A2D4692F6002EE9AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AE9814762D478545001E7BD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE9814492D478545001E7BD8 /* Assets.xcassets */; };
+		AE9814772D478545001E7BD8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE98144B2D478545001E7BD8 /* LaunchScreen.storyboard */; };
+		AE98147B2D478545001E7BD8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE98144E2D478545001E7BD8 /* Localizable.strings */; };
+		AE9814A32D478545001E7BD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE9814492D478545001E7BD8 /* Assets.xcassets */; };
+		AE9814A42D478545001E7BD8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE98144B2D478545001E7BD8 /* LaunchScreen.storyboard */; };
+		AE9814A82D478545001E7BD8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE98144E2D478545001E7BD8 /* Localizable.strings */; };
+		AE9814D02D478545001E7BD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE9814492D478545001E7BD8 /* Assets.xcassets */; };
+		AE9814D12D478545001E7BD8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE98144B2D478545001E7BD8 /* LaunchScreen.storyboard */; };
+		AE9814D52D478545001E7BD8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE98144E2D478545001E7BD8 /* Localizable.strings */; };
+		AE98179C2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
+		AE98179D2D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
+		AE98179E2D47A396001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
+		AE98179F2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
+		AE9817A02D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
+		AE9817A12D47A396001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
+		AE9817A22D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
+		AE9817A32D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
+		AE9817A42D47A396001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
 		AEEF056B2D4692F6002EE9AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		AEEF056C2D4692F6002EE9AB /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
-		AEEF058C2D46B9C9002EE9AB /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
-		AEEF058D2D46B9C9002EE9AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		AEEF05912D46B9C9002EE9AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		AEEF05922D46B9C9002EE9AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		AEEF05932D46B9C9002EE9AB /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */; };
 		AEEF059F2D46C049002EE9AB /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */; };
 		AEEF05A02D46C049002EE9AB /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */; };
@@ -85,12 +91,8 @@
 		00E356F21AD99517003FC87E /* MedsiCheckTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MedsiCheckTests.m; sourceTree = "<group>"; };
 		0F948343B2444D45EDB4FB6C /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* MedsiCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedsiCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = MedsiCheck/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = MedsiCheck/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MedsiCheck/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MedsiCheck/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MedsiCheck/main.m; sourceTree = "<group>"; };
-		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = MedsiCheck/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../MedsiCheck/Info.plist; sourceTree = "<group>"; };
 		1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheck.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		21A252BE48B65A82ABCEAFEC /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig"; sourceTree = "<group>"; };
 		25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,7 +102,6 @@
 		5709B34CF0A7D63546082F79 /* Pods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig"; sourceTree = "<group>"; };
 		796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MedsiCheck/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-MedsiCheck-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
 		8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
 		9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; sourceTree = "<group>"; };
@@ -119,6 +120,14 @@
 		AE9813E22D4755AD001E7BD8 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		AE9813E32D4755AD001E7BD8 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		AE9813E42D4755AD001E7BD8 /* Urbanist-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-Bold.ttf"; sourceTree = "<group>"; };
+		AE9814482D478545001E7BD8 /* MedsiCheck-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MedsiCheck-Bridging-Header.h"; sourceTree = "<group>"; };
+		AE9814492D478545001E7BD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE98144B2D478545001E7BD8 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AE98144C2D478545001E7BD8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AE98144D2D478545001E7BD8 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AnuraCore.xcframework; sourceTree = "<group>"; };
+		AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FaceMesh.xcframework; sourceTree = "<group>"; };
+		AE98179B2D47A396001E7BD8 /* libdfx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libdfx.xcframework; sourceTree = "<group>"; };
 		AEEF05732D4692F6002EE9AB /* MedsiCheckDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedsiCheckDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEEF05742D4692F6002EE9AB /* MedsiCheck dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MedsiCheck dev-Info.plist"; path = "/Users/pradipshrestha/Organization/OpenFabric/MedsiNewApp/MedsiCheck/ios/MedsiCheck dev-Info.plist"; sourceTree = "<absolute>"; };
 		AEEF05752D469341002EE9AB /* MedsiCheckDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MedsiCheckDev.entitlements; sourceTree = "<group>"; };
@@ -131,6 +140,10 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FEE7B8B608EB1651E3D9A7CB /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AE98171F2D479B05001E7BD8 /* Main */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Main; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		00E356EB1AD99517003FC87E /* Frameworks */ = {
@@ -146,6 +159,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */,
+				AE98179C2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */,
+				AE98179D2D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */,
+				AE98179E2D47A396001E7BD8 /* libdfx.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +170,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */,
+				AE98179F2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */,
+				AE9817A02D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */,
+				AE9817A12D47A396001E7BD8 /* libdfx.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,6 +181,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */,
+				AE9817A22D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */,
+				AE9817A32D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */,
+				AE9817A42D47A396001E7BD8 /* libdfx.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,14 +211,10 @@
 			isa = PBXGroup;
 			children = (
 				AEEF05A52D46C52C002EE9AB /* Firebase */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
-				13B07FB71A68108700A75B9A /* main.m */,
+				AE9814502D478545001E7BD8 /* Resources */,
+				AE98171F2D479B05001E7BD8 /* Main */,
 				AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */,
-				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 			);
 			name = MedsiCheck;
 			sourceTree = "<group>";
@@ -206,6 +224,9 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */,
+				AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */,
+				AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */,
+				AE98179B2D47A396001E7BD8 /* libdfx.xcframework */,
 				25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */,
 				4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */,
 				DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */,
@@ -272,6 +293,18 @@
 			path = fonts;
 			sourceTree = "<group>";
 		};
+		AE9814502D478545001E7BD8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AE9814482D478545001E7BD8 /* MedsiCheck-Bridging-Header.h */,
+				AE9814492D478545001E7BD8 /* Assets.xcassets */,
+				13B07FB61A68108700A75B9A /* Info.plist */,
+				AE98144B2D478545001E7BD8 /* LaunchScreen.storyboard */,
+				AE98144E2D478545001E7BD8 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,6 +365,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				AE98171F2D479B05001E7BD8 /* Main */,
+			);
 			name = MedsiCheck;
 			productName = MedsiCheck;
 			productReference = 13B07F961A680F5B00A75B9A /* MedsiCheck.app */;
@@ -355,6 +391,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				AE98171F2D479B05001E7BD8 /* Main */,
+			);
 			name = MedsiCheckDev;
 			productName = MedsiCheck;
 			productReference = AEEF05732D4692F6002EE9AB /* MedsiCheckDev.app */;
@@ -376,6 +415,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AE98171F2D479B05001E7BD8 /* Main */,
 			);
 			name = MedsiCheckStaging;
 			productName = MedsiCheck;
@@ -406,6 +448,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -433,9 +476,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEEF05A62D46C52C002EE9AB /* Firebase in Resources */,
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				AE9814022D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */,
+				AE9814762D478545001E7BD8 /* Assets.xcassets in Resources */,
+				AE9814772D478545001E7BD8 /* LaunchScreen.storyboard in Resources */,
+				AE98147B2D478545001E7BD8 /* Localizable.strings in Resources */,
 				AE9814032D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */,
 				AE9814042D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */,
 				AE9814052D4755AD001E7BD8 /* EvilIcons.ttf in Resources */,
@@ -449,7 +494,6 @@
 				AE98140D2D4755AD001E7BD8 /* Ionicons.ttf in Resources */,
 				AE98140E2D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AE98140F2D4755AD001E7BD8 /* Feather.ttf in Resources */,
-				A94D0732F6C3707DD4EA8EB8 /* PrivacyInfo.xcprivacy in Resources */,
 				AEEF059F2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -458,8 +502,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE9814A32D478545001E7BD8 /* Assets.xcassets in Resources */,
+				AE9814A42D478545001E7BD8 /* LaunchScreen.storyboard in Resources */,
+				AE9814A82D478545001E7BD8 /* Localizable.strings in Resources */,
 				AEEF05A82D46C52C002EE9AB /* Firebase in Resources */,
-				AEEF056A2D4692F6002EE9AB /* LaunchScreen.storyboard in Resources */,
 				AEEF056B2D4692F6002EE9AB /* Images.xcassets in Resources */,
 				AE9813E62D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */,
 				AE9813E72D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */,
@@ -467,7 +513,6 @@
 				AE9813ED2D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */,
 				AE9813EF2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
 				AE9813F22D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
-				AEEF056C2D4692F6002EE9AB /* PrivacyInfo.xcprivacy in Resources */,
 				AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -477,9 +522,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEEF05A72D46C52C002EE9AB /* Firebase in Resources */,
-				AEEF05912D46B9C9002EE9AB /* LaunchScreen.storyboard in Resources */,
 				AEEF05922D46B9C9002EE9AB /* Images.xcassets in Resources */,
 				AE9813F42D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */,
+				AE9814D02D478545001E7BD8 /* Assets.xcassets in Resources */,
+				AE9814D12D478545001E7BD8 /* LaunchScreen.storyboard in Resources */,
+				AE9814D52D478545001E7BD8 /* Localizable.strings in Resources */,
 				AE9813F52D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */,
 				AE9813F62D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */,
 				AE9813F72D4755AD001E7BD8 /* EvilIcons.ttf in Resources */,
@@ -493,7 +540,6 @@
 				AE9813FF2D4755AD001E7BD8 /* Ionicons.ttf in Resources */,
 				AE9814002D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AE9814012D4755AD001E7BD8 /* Feather.ttf in Resources */,
-				AEEF05932D46B9C9002EE9AB /* PrivacyInfo.xcprivacy in Resources */,
 				AEEF05A02D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -860,8 +906,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -869,8 +913,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEEF05652D4692F6002EE9AB /* AppDelegate.mm in Sources */,
-				AEEF05662D4692F6002EE9AB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -878,8 +920,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEEF058C2D46B9C9002EE9AB /* AppDelegate.mm in Sources */,
-				AEEF058D2D46B9C9002EE9AB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -892,6 +932,18 @@
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AE98144E2D478545001E7BD8 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE98144C2D478545001E7BD8 /* en */,
+				AE98144D2D478545001E7BD8 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
@@ -1074,10 +1126,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -1146,10 +1195,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -1183,6 +1229,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Resources/MedsiCheck-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1214,6 +1261,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Resources/MedsiCheck-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

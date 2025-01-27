@@ -1,0 +1,11 @@
+framework module AnuraCore {
+  umbrella header "AnuraCore.h"
+  export *
+
+  module * { export * }
+}
+
+module AnuraCore.Swift {
+  header "Nura-Swift.h"
+  requires objc
+}

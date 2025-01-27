@@ -8,7 +8,7 @@
 import * as Sentry from '@sentry/react-native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import React, {useEffect, useState} from 'react';
-import {LogBox, StatusBar, useColorScheme} from 'react-native';
+import {LogBox, NativeModules, StatusBar, useColorScheme} from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-gesture-handler';
 import {PaperProvider} from 'react-native-paper';
@@ -96,6 +96,8 @@ function App(): JSX.Element {
   if (isAWSKeyFetching) {
     return <></>;
   }
+
+  console.log('NativeModules', NativeModules?.RNTEventBridge);
 
   return (
     <>
