@@ -4,9 +4,15 @@ import reactotronZustand from 'reactotron-plugin-zustand';
 import Reactotron, {networking} from 'reactotron-react-native';
 import useBinahConfigStore from './store/binahConfigStore';
 
+let scriptHostname;
+if (__DEV__) {
+  const scriptURL = NativeModules.SourceCode.scriptURL;
+  scriptHostname = scriptURL.split('://')[1].split(':')[0];
+}
+
 Reactotron.configure({
   name: Config.Environment,
-  host: 'localhost',
+  host: scriptHostname,
 })
   .useReactNative()
   .use(networking())

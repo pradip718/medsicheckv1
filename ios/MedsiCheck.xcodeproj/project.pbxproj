@@ -59,12 +59,15 @@
 		AE98179C2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
 		AE98179D2D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
 		AE98179E2D47A396001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
-		AE98179F2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
-		AE9817A02D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
-		AE9817A12D47A396001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
 		AE9817A22D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
 		AE9817A32D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
 		AE9817A42D47A396001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
+		AE981F332D47DC8B001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
+		AE981F342D47DC8B001E7BD8 /* AnuraCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE981F362D47DC8D001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
+		AE981F372D47DC8D001E7BD8 /* FaceMesh.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE981F382D47DC8E001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
+		AE981F392D47DC8E001E7BD8 /* libdfx.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AEEF056B2D4692F6002EE9AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		AEEF05922D46B9C9002EE9AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */; };
@@ -84,6 +87,22 @@
 			remoteInfo = MedsiCheck;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AE981F352D47DC8C001E7BD8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AE981F342D47DC8B001E7BD8 /* AnuraCore.xcframework in Embed Frameworks */,
+				AE981F392D47DC8E001E7BD8 /* libdfx.xcframework in Embed Frameworks */,
+				AE981F372D47DC8D001E7BD8 /* FaceMesh.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* MedsiCheckTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MedsiCheckTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,10 +188,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE981F332D47DC8B001E7BD8 /* AnuraCore.xcframework in Frameworks */,
 				34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */,
-				AE98179F2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */,
-				AE9817A02D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */,
-				AE9817A12D47A396001E7BD8 /* libdfx.xcframework in Frameworks */,
+				AE981F382D47DC8E001E7BD8 /* libdfx.xcframework in Frameworks */,
+				AE981F362D47DC8D001E7BD8 /* FaceMesh.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +405,7 @@
 				AEEF056E2D4692F6002EE9AB /* [CP] Embed Pods Frameworks */,
 				AEEF056F2D4692F6002EE9AB /* [CP] Copy Pods Resources */,
 				AEEF05AA2D46C8DC002EE9AB /* Google Analytics Run Script */,
+				AE981F352D47DC8C001E7BD8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
