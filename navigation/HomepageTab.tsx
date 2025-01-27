@@ -17,7 +17,8 @@ const HomepageTab = () => {
         headerShown: false,
         // tabBarStyle: styles.tabBar,
       }}
-      tabBar={props => <CustomTabBar {...props} />}>
+      // tabBar={props => <CustomTabBar {...props} />}
+    >
       <Tab.Screen name="Homepage" component={Homepage} />
       <Tab.Screen
         name="Scan"

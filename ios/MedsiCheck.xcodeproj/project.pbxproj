@@ -17,6 +17,40 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */; };
 		A94D0732F6C3707DD4EA8EB8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		AE9813E62D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */; };
+		AE9813E72D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */; };
+		AE9813EB2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */; };
+		AE9813ED2D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E42D4755AD001E7BD8 /* Urbanist-Bold.ttf */; };
+		AE9813EF2D4755AD001E7BD8 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DC2D4755AD001E7BD8 /* icomoon.ttf */; };
+		AE9813F22D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */; };
+		AE9813F42D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */; };
+		AE9813F52D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */; };
+		AE9813F62D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E22D4755AD001E7BD8 /* MaterialCommunityIcons.ttf */; };
+		AE9813F72D4755AD001E7BD8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D92D4755AD001E7BD8 /* EvilIcons.ttf */; };
+		AE9813F82D4755AD001E7BD8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DB2D4755AD001E7BD8 /* FontAwesome.ttf */; };
+		AE9813F92D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */; };
+		AE9813FA2D4755AD001E7BD8 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E32D4755AD001E7BD8 /* MaterialIcons.ttf */; };
+		AE9813FB2D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E42D4755AD001E7BD8 /* Urbanist-Bold.ttf */; };
+		AE9813FC2D4755AD001E7BD8 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D72D4755AD001E7BD8 /* AntDesign.ttf */; };
+		AE9813FD2D4755AD001E7BD8 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DC2D4755AD001E7BD8 /* icomoon.ttf */; };
+		AE9813FE2D4755AD001E7BD8 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D82D4755AD001E7BD8 /* Entypo.ttf */; };
+		AE9813FF2D4755AD001E7BD8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DD2D4755AD001E7BD8 /* Ionicons.ttf */; };
+		AE9814002D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */; };
+		AE9814012D4755AD001E7BD8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DA2D4755AD001E7BD8 /* Feather.ttf */; };
+		AE9814022D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */; };
+		AE9814032D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */; };
+		AE9814042D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E22D4755AD001E7BD8 /* MaterialCommunityIcons.ttf */; };
+		AE9814052D4755AD001E7BD8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D92D4755AD001E7BD8 /* EvilIcons.ttf */; };
+		AE9814062D4755AD001E7BD8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DB2D4755AD001E7BD8 /* FontAwesome.ttf */; };
+		AE9814072D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */; };
+		AE9814082D4755AD001E7BD8 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E32D4755AD001E7BD8 /* MaterialIcons.ttf */; };
+		AE9814092D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E42D4755AD001E7BD8 /* Urbanist-Bold.ttf */; };
+		AE98140A2D4755AD001E7BD8 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D72D4755AD001E7BD8 /* AntDesign.ttf */; };
+		AE98140B2D4755AD001E7BD8 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DC2D4755AD001E7BD8 /* icomoon.ttf */; };
+		AE98140C2D4755AD001E7BD8 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D82D4755AD001E7BD8 /* Entypo.ttf */; };
+		AE98140D2D4755AD001E7BD8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DD2D4755AD001E7BD8 /* Ionicons.ttf */; };
+		AE98140E2D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */; };
+		AE98140F2D4755AD001E7BD8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DA2D4755AD001E7BD8 /* Feather.ttf */; };
 		AEEF05652D4692F6002EE9AB /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		AEEF05662D4692F6002EE9AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		AEEF056A2D4692F6002EE9AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -71,6 +105,20 @@
 		8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
 		9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; sourceTree = "<group>"; };
 		AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; sourceTree = "<group>"; };
+		AE9813D72D4755AD001E7BD8 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
+		AE9813D82D4755AD001E7BD8 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
+		AE9813D92D4755AD001E7BD8 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
+		AE9813DA2D4755AD001E7BD8 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
+		AE9813DB2D4755AD001E7BD8 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
+		AE9813DC2D4755AD001E7BD8 /* icomoon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = icomoon.ttf; sourceTree = "<group>"; };
+		AE9813DD2D4755AD001E7BD8 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IsidoraSans-Bold.ttf"; sourceTree = "<group>"; };
+		AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IsidoraSans-Medium.ttf"; sourceTree = "<group>"; };
+		AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IsidoraSans-Regular.ttf"; sourceTree = "<group>"; };
+		AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IsidoraSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		AE9813E22D4755AD001E7BD8 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		AE9813E32D4755AD001E7BD8 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		AE9813E42D4755AD001E7BD8 /* Urbanist-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Urbanist-Bold.ttf"; sourceTree = "<group>"; };
 		AEEF05732D4692F6002EE9AB /* MedsiCheckDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedsiCheckDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEEF05742D4692F6002EE9AB /* MedsiCheck dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MedsiCheck dev-Info.plist"; path = "/Users/pradipshrestha/Organization/OpenFabric/MedsiNewApp/MedsiCheck/ios/MedsiCheck dev-Info.plist"; sourceTree = "<absolute>"; };
 		AEEF05752D469341002EE9AB /* MedsiCheckDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MedsiCheckDev.entitlements; sourceTree = "<group>"; };
@@ -177,6 +225,7 @@
 			children = (
 				AEEF059C2D46B9F3002EE9AB /* MedsiCheckStaging.entitlements */,
 				AEEF05752D469341002EE9AB /* MedsiCheckDev.entitlements */,
+				AE9813E52D4755AD001E7BD8 /* fonts */,
 				13B07FAE1A68108700A75B9A /* MedsiCheck */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MedsiCheckTests */,
@@ -200,6 +249,27 @@
 				AEEF059A2D46B9C9002EE9AB /* MedsiCheckStaging.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AE9813E52D4755AD001E7BD8 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				AE9813D72D4755AD001E7BD8 /* AntDesign.ttf */,
+				AE9813D82D4755AD001E7BD8 /* Entypo.ttf */,
+				AE9813D92D4755AD001E7BD8 /* EvilIcons.ttf */,
+				AE9813DA2D4755AD001E7BD8 /* Feather.ttf */,
+				AE9813DB2D4755AD001E7BD8 /* FontAwesome.ttf */,
+				AE9813DC2D4755AD001E7BD8 /* icomoon.ttf */,
+				AE9813DD2D4755AD001E7BD8 /* Ionicons.ttf */,
+				AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */,
+				AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */,
+				AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */,
+				AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */,
+				AE9813E22D4755AD001E7BD8 /* MaterialCommunityIcons.ttf */,
+				AE9813E32D4755AD001E7BD8 /* MaterialIcons.ttf */,
+				AE9813E42D4755AD001E7BD8 /* Urbanist-Bold.ttf */,
+			);
+			path = fonts;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -272,6 +342,7 @@
 			buildConfigurationList = AEEF05702D4692F6002EE9AB /* Build configuration list for PBXNativeTarget "MedsiCheckDev" */;
 			buildPhases = (
 				AEEF05632D4692F6002EE9AB /* [CP] Check Pods Manifest.lock */,
+				AEEF05AC2D4733BB002EE9AB /* Start Packager */,
 				AEEF05642D4692F6002EE9AB /* Sources */,
 				AEEF05672D4692F6002EE9AB /* Frameworks */,
 				AEEF05692D4692F6002EE9AB /* Resources */,
@@ -279,7 +350,6 @@
 				AEEF056E2D4692F6002EE9AB /* [CP] Embed Pods Frameworks */,
 				AEEF056F2D4692F6002EE9AB /* [CP] Copy Pods Resources */,
 				AEEF05AA2D46C8DC002EE9AB /* Google Analytics Run Script */,
-				AEEF05AC2D4733BB002EE9AB /* Start Packager */,
 			);
 			buildRules = (
 			);
@@ -365,6 +435,20 @@
 				AEEF05A62D46C52C002EE9AB /* Firebase in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				AE9814022D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */,
+				AE9814032D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */,
+				AE9814042D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */,
+				AE9814052D4755AD001E7BD8 /* EvilIcons.ttf in Resources */,
+				AE9814062D4755AD001E7BD8 /* FontAwesome.ttf in Resources */,
+				AE9814072D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */,
+				AE9814082D4755AD001E7BD8 /* MaterialIcons.ttf in Resources */,
+				AE9814092D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */,
+				AE98140A2D4755AD001E7BD8 /* AntDesign.ttf in Resources */,
+				AE98140B2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
+				AE98140C2D4755AD001E7BD8 /* Entypo.ttf in Resources */,
+				AE98140D2D4755AD001E7BD8 /* Ionicons.ttf in Resources */,
+				AE98140E2D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
+				AE98140F2D4755AD001E7BD8 /* Feather.ttf in Resources */,
 				A94D0732F6C3707DD4EA8EB8 /* PrivacyInfo.xcprivacy in Resources */,
 				AEEF059F2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
@@ -377,6 +461,12 @@
 				AEEF05A82D46C52C002EE9AB /* Firebase in Resources */,
 				AEEF056A2D4692F6002EE9AB /* LaunchScreen.storyboard in Resources */,
 				AEEF056B2D4692F6002EE9AB /* Images.xcassets in Resources */,
+				AE9813E62D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */,
+				AE9813E72D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */,
+				AE9813EB2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */,
+				AE9813ED2D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */,
+				AE9813EF2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
+				AE9813F22D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AEEF056C2D4692F6002EE9AB /* PrivacyInfo.xcprivacy in Resources */,
 				AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
@@ -389,6 +479,20 @@
 				AEEF05A72D46C52C002EE9AB /* Firebase in Resources */,
 				AEEF05912D46B9C9002EE9AB /* LaunchScreen.storyboard in Resources */,
 				AEEF05922D46B9C9002EE9AB /* Images.xcassets in Resources */,
+				AE9813F42D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */,
+				AE9813F52D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */,
+				AE9813F62D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */,
+				AE9813F72D4755AD001E7BD8 /* EvilIcons.ttf in Resources */,
+				AE9813F82D4755AD001E7BD8 /* FontAwesome.ttf in Resources */,
+				AE9813F92D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */,
+				AE9813FA2D4755AD001E7BD8 /* MaterialIcons.ttf in Resources */,
+				AE9813FB2D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */,
+				AE9813FC2D4755AD001E7BD8 /* AntDesign.ttf in Resources */,
+				AE9813FD2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
+				AE9813FE2D4755AD001E7BD8 /* Entypo.ttf in Resources */,
+				AE9813FF2D4755AD001E7BD8 /* Ionicons.ttf in Resources */,
+				AE9814002D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
+				AE9814012D4755AD001E7BD8 /* Feather.ttf in Resources */,
 				AEEF05932D46B9C9002EE9AB /* PrivacyInfo.xcprivacy in Resources */,
 				AEEF05A02D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
@@ -851,6 +955,7 @@
 				DEVELOPMENT_TEAM = M9BA744J4X;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MedsiCheck/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Medsi Check";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -880,6 +985,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M9BA744J4X;
 				INFOPLIST_FILE = MedsiCheck/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Medsi Check";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1124,6 +1230,7 @@
 				DEVELOPMENT_TEAM = M9BA744J4X;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "MedsiCheck staging-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Medsi Check Staging";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1154,6 +1261,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M9BA744J4X;
 				INFOPLIST_FILE = "MedsiCheck staging-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Medsi Check Staging";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (

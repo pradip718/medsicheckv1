@@ -1,19 +1,9 @@
 PODS:
   - AmplifyRTNCore (1.1.6):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
     - React-Core
-    - ReactCommon/turbomodule/core
   - BEMCheckBox (1.4.1)
   - biosensesignal-react-native-sdk (5.6.3):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
     - React-Core
-    - ReactCommon/turbomodule/core
   - boost (1.84.0)
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -184,7 +174,6 @@ PODS:
     - React-RCTText (= 0.76.6)
     - React-RCTVibration (= 0.76.6)
   - React-callinvoker (0.76.6)
-  - React-Codegen (0.1.0)
   - React-Core (0.76.6):
     - glog
     - hermes-engine
@@ -1419,26 +1408,7 @@ PODS:
     - React-Core
   - react-native-config/Extension (1.5.3)
   - react-native-date-picker (5.0.8):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - react-native-document-picker (9.3.1):
     - DoubleConversion
     - glog
@@ -1511,71 +1481,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - react-native-safe-area-context (4.14.1):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - react-native-safe-area-context/common (= 4.14.1)
-    - react-native-safe-area-context/fabric (= 4.14.1)
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - react-native-safe-area-context/common (4.14.1):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - react-native-safe-area-context/fabric (4.14.1):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - react-native-safe-area-context/common
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - react-native-version-check (3.4.7):
     - React-Core
   - react-native-view-shot (3.8.0):
@@ -1871,92 +1777,16 @@ PODS:
   - rn-fetch-blob (0.12.0):
     - React-Core
   - RNBootSplash (5.5.3):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNCAsyncStorage (1.24.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNCCheckbox (0.5.17):
     - BEMCheckBox (~> 1.4)
     - React-Core
   - RNCPicker (2.11.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNDateTimePicker (8.2.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNDeviceInfo (14.0.2):
     - React-Core
   - RNFBApp (20.5.0):
@@ -1991,52 +1821,14 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - RNLocalize (3.4.1):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNNotifee (7.9.0):
     - React-Core
     - RNNotifee/NotifeeCore (= 7.9.0)
   - RNNotifee/NotifeeCore (7.9.0):
     - React-Core
   - RNPermissions (4.1.5):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNReanimated (3.16.7):
     - DoubleConversion
     - glog
@@ -2145,29 +1937,6 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 3.35.0)
-    - Yoga
-  - RNScreens/common (3.35.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-RCTImage
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
     - Yoga
   - RNSentry (6.5.0):
     - DoubleConversion
@@ -2193,56 +1962,9 @@ PODS:
     - Sentry/HybridSDK (= 8.43.0)
     - Yoga
   - RNShare (10.2.1):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Codegen
     - React-Core
-    - React-RCTFabric
-    - ReactCommon/turbomodule/core
   - RNSVG (15.11.1):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.11.1)
-    - Yoga
-  - RNSVG/common (15.11.1):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNVectorIcons (10.2.0):
     - DoubleConversion
     - glog
@@ -2393,7 +2115,6 @@ SPEC REPOS:
     - GoogleUtilities
     - nanopb
     - PromisesObjC
-    - React-Codegen
     - Sentry
     - SocketRocket
 
@@ -2603,9 +2324,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AmplifyRTNCore: 4a338e0325ac32e9f4fd8356d712f6f3aea7532d
+  AmplifyRTNCore: fed43e0ab4504c7ae49291204c3c704da4963255
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
-  biosensesignal-react-native-sdk: 7710c5c22b1077471c6a1f213c761230128bfac6
+  biosensesignal-react-native-sdk: 91ce07df1efbcba3c813f38fb76fba096de769d7
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
@@ -2631,21 +2352,20 @@ SPEC CHECKSUMS:
   RCTTypeSafety: 0f96bf6c99efc33eb43352212703854933f22930
   React: 1d3d5bada479030961d513fb11e42659b30e97ff
   React-callinvoker: 682c610b9e9d3b93bd8d0075eacb2e6aa304d3e0
-  React-Codegen: 4b8b4817cea7a54b83851d4c1f91f79aa73de30a
   React-Core: 10420b32e62acf6b3aa0a570e45566001175c777
   React-CoreModules: aad977a7dbff83aa707c4045e5db81446a511cca
   React-cxxreact: 1bee1b97e7d537f1a33d9eb68c9426c1fc1a4e3c
   React-debug: 4ae2e95c2d392cca29939a3a2f2b4320ddff3e59
-  React-defaultsnativemodule: b585565214178c5780b54e4d56815d65782eac81
-  React-domnativemodule: 03fd1847e49505aa9024acbe4f0811e441dc89a2
+  React-defaultsnativemodule: 0454c65789fdbd0f27ce15e32e06b6705f43f29f
+  React-domnativemodule: 65861da3f8e055c080e40a6e4c23c73d1d6b9cb6
   React-Fabric: fc0898bb601b03ed41ab0df3e7b1a4acd05a6cff
   React-FabricComponents: 13e78253b210d112b3ffddca5b7323db7f254358
   React-FabricImage: a86ff938570a06c2a9fbf00ff0b00195f0bd4aba
   React-featureflags: 5670e0dcdc17ba2515963d117dacc13d5b69c431
-  React-featureflagsnativemodule: 79dea40c60cdc0356aadc67a099bba0af8c34e4f
+  React-featureflagsnativemodule: 1da2688854b2f6c03c99712b8ca07bc94dcda0e1
   React-graphics: 04eed50a115e750e4644c1e955f32bec57f6a235
   React-hermes: add932964f5ef024c86352dcc0dc427e6309642e
-  React-idlecallbacksnativemodule: 3e8d5085a21eb2f70ac64ff9817f8f8a603518a9
+  React-idlecallbacksnativemodule: 6c199bf5dbba7e9fedb032c06ff90ef723eb564d
   React-ImageManager: 3239badd14cc602baf836b5d7151ffa90393deae
   React-jserrorhandler: 81ac36638e02c33a9df0bdbeec464d2e699ac8a9
   React-jsi: 690f3742db66cab8d5219bcfbc19fee112c6bb0c
@@ -2654,31 +2374,31 @@ SPEC CHECKSUMS:
   React-jsitracing: 737a69a469e2bc821cf8ae11977bded522393719
   React-logger: 162c09cc432b02d4a0db31b1d98f6df5243a2679
   React-Mapbuffer: f760d2229640be48cb3c2d4832b5bbc3018123fc
-  React-microtasksnativemodule: 1364ae5354f51b3ecee8eb718b5b6d1686d2ff4d
-  react-native-blur: 28b0a731ed804bed3e88757c2414305896e6b47e
+  React-microtasksnativemodule: c7beb09cf9c61d18b24b51db99ac026796035bb3
+  react-native-blur: a1bf334589f44658a58a859b1f3defe28e367fcf
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-config: 8f7283449bbb048902f4e764affbbf24504454af
-  react-native-date-picker: 543274fea228bdf7427a917d19b71f8f6eca7a72
-  react-native-document-picker: e9d83c149bdd72dc01cf8dcb8df0389c6bd5fddb
+  react-native-date-picker: 8a0d56cdef18f61945e6d0dfd250dc1b8e7a313e
+  react-native-document-picker: 7343222102ece8aec51390717f47ad7119c7921f
   react-native-encrypted-storage: db300a3f2f0aba1e818417c1c0a6be549038deb7
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
-  react-native-image-picker: e7331948589e764ecd5a9c715c3fc14d4e6187e6
+  react-native-image-picker: df4f6aefbc662b0a5f991065650662c9731977a3
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
-  react-native-pager-view: 9dbdfdc85d9409c054ee2581c6837c193fbadccc
-  react-native-safe-area-context: 782fec0553f14a630a2bac87b116e512a9f35500
+  react-native-pager-view: e229770a88b7760aca7293b6c7255099a470ae06
+  react-native-safe-area-context: 141eca0fd4e4191288dfc8b96a7c7e1c2983447a
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
   react-native-view-shot: 6b7ed61d77d88580fed10954d45fad0eb2d47688
-  react-native-webview: ce6e24111244cea3b9cefbb65d8c32ad0a0c7b45
+  react-native-webview: 24d0f951d301c59fe8ac760b4a9c0a20731dff45
   React-nativeconfig: 539ff4de6ce3b694e8e751080568c281c84903ce
   React-NativeModulesApple: 771cc40b086281b820fe455fedebbe4341fd0c90
   React-perflogger: 4e80a5b8d61dfb38024e7d5b8efaf9ce1037d31f
   React-performancetimeline: 1dcacc31d81f790f43a2d434ec95b0f864582329
   React-RCTActionSheet: ed5a845eae98fe455b9a1d71f057d626e2f3f1c5
   React-RCTAnimation: 0cda303ef8ca5a2d0ee9e425f188cc9fc1d2e20f
-  React-RCTAppDelegate: 1edcdebdaebf5120bdaa9d54bc40789714be3719
+  React-RCTAppDelegate: e2cb4b46075bd676ce5c1efbbb470eb837112d66
   React-RCTBlob: dab83a3c22210e5c7a8267834c68e6cf94bc1ce2
-  React-RCTFabric: 19ba31d6b913b8b4aa8b27e4d6f5dc8ebd93a438
+  React-RCTFabric: 3d7a7c010a3f0daf3222649e6da9d71111e80795
   React-RCTImage: b9c3d2cff3b8214322022cdf8afb92ff978bb92e
   React-RCTLinking: e58c4fa216f9ac87ed3d4a0cce03905df67adec0
   React-RCTNetwork: 9f206fa039e107f51ddfac133df79105643ea2bd
@@ -2698,25 +2418,25 @@ SPEC CHECKSUMS:
   ReactCodegen: 484b223748d7489d7036db1cbf79896d297e33a7
   ReactCommon: 832cdd669aeecd430d9ca1975d15676b38d0b263
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNBootSplash: 8a4347ae9a1ec724df45bf64920d1646c05d74eb
-  RNCAsyncStorage: 3ad840f7b17b45ca7ebbbb0e80948564a9513315
+  RNBootSplash: e025d4ee98d942ee6c8b495a6fe66339a6b5f6dd
+  RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNCCheckbox: a3ca9978cb0846b981d28da4e9914bd437403d77
-  RNCPicker: d23ebebb0c66864ac3edf260c20f8a4470aa2769
-  RNDateTimePicker: 6008d74df8122d6af6d9d08096bff19a8c6ba647
+  RNCPicker: 4f6d5e8d107064be32dfc8f1bcb5a3741135db0b
+  RNDateTimePicker: 40ffda97d071a98a10fdca4fa97e3977102ccd14
   RNDeviceInfo: 3f2e5fcca3637f75c6d30ba287293c2f97206781
   RNFBApp: 5f87753a8d8b37d229adf85cd0ff37709ffdf008
   RNFBMessaging: 3fa1114c0868dd21f20dfe186adf42297ea316b1
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 8ce7a079c513f96f9b580bcb2ecee621d511361f
-  RNLocalize: b1840d1b41605b041d127f8f226b7ed0f34cde1c
+  RNGestureHandler: 9decfddf99dcf2397b50c9adae0188fc84c74231
+  RNLocalize: 06991b9c31e7a898a9fa6ddb204ce0f53a967248
   RNNotifee: 935f3ea8c134c88cbf8b13ea0c97c72c09ad2116
-  RNPermissions: d9335622d65617c2581c75dd90cad295f672cf8c
-  RNReanimated: 9ee6347ca0aa3cf78cae715455e781728ae142e2
-  RNScreens: e389d6a6a66a4f0d3662924ecae803073ccce8ec
-  RNSentry: 1c48d95d4bd03054aa4f67eb2cce2cd6620866c1
-  RNShare: 0463c31e8c1883bb80afed64066cff3dc7ed4e1a
-  RNSVG: ea3e35f0375ac20449384fa89ce056ee0e0690ee
-  RNVectorIcons: 07792a9538e8577c1263fcad187712e90d65d8fb
+  RNPermissions: 294531ede5a64d1528463e88fffef05675842042
+  RNReanimated: 849c4bfc1a185b123ca9a89f2a98d679b3d79b4e
+  RNScreens: c7ceced6a8384cb9be5e7a5e88e9e714401fd958
+  RNSentry: e1a16a23ada7d12686dff2f1eeaf55a08738585c
+  RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
+  RNSVG: 3271d86d99e0ff3bc1c6cb74f894bab06a261969
+  RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
   Sentry: 532b281a53b1b45a523fd592f608956fb36e577c
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: be6f55a028e86c83ae066f018e9b5d24ffc45436
