@@ -293,11 +293,19 @@ export type Reading = {
   confidence_level: keyof typeof ConfidenceLevels;
 };
 
+export type MainCategorisation = {
+  value: number;
+  category: string;
+};
+
 export type ReportJson = {
   readings: Reading;
   config: Config;
   col_val: ColVal;
   sub_categorisation: VitalsAndBiomarkersDisplay;
+  main_categorisation?: {
+    [category: string]: MainCategorisation;
+  };
   scale_value_mapping: {
     [key: string]: number;
   };

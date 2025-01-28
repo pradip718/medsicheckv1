@@ -118,23 +118,37 @@ const RenderReportInformation = ({
       return (
         <View>
           <TouchableOpacity
-            className="border-b py-4 border-[#868686] px-2 flex-row justify-between"
+            className="border-b py-4 border-[#868686] px-2 flex-row justify-between items-center"
             onPress={() => toggleSection(vitalKey)}>
             <CustomText className="text-midnight text-base font-isidoraSemiBold">
               {vitalKey}
             </CustomText>
-            <Icon
-              name={isExpanded ? 'remove' : 'add'}
-              size={isExpanded ? 8 : 20}
-              color={customColor.black}
-              className="px-4 self-center"
-            />
+            {reportData?.main_categorisation?.[vitalKey] ? (
+              <View className="px-2 rounded-xl items-center flex-row">
+                <CustomText className="text-midnight text-base font-isidoraSemiBold">
+                  {reportData?.main_categorisation?.[vitalKey]?.category}
+                </CustomText>
+                <Icon
+                  name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                  size={20}
+                  color={customColor.black}
+                  className="pl-2 self-center"
+                />
+              </View>
+            ) : (
+              <Icon
+                name={isExpanded ? 'remove' : 'add'}
+                size={isExpanded ? 8 : 20}
+                color={customColor.black}
+                className="px-4 self-center"
+              />
+            )}
           </TouchableOpacity>
           {isExpanded && vitalItem.map(param => renderCardItem(param))}
         </View>
       );
     },
-    [expandedSections, toggleSection, renderCardItem, reading_data],
+    [expandedSections, toggleSection, renderCardItem, reading_data, reportData],
   );
 
   if (isLoading) {
@@ -179,8 +193,6 @@ const Reports = ({route}: ReportsProps) => {
     gcTime: 0,
     reading_id: reading_id,
   });
-
-  console.log('reportData check', reportData);
 
   return (
     <BasicContainer className="bg-white">

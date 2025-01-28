@@ -132,7 +132,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
       style={styles({color: highlightedColor}).card}>
       <View className="px-4">
         <View className="flex-row items-center justify-between">
-          <View className="flex-row gap-x-4 items-center">
+          <View className="flex-row gap-x-4 items-center w-[60%]">
             <View
               className="rounded-2xl w-[50px] h-[50px] justify-center items-center"
               style={{backgroundColor: highlightedColor}}>
@@ -152,10 +152,10 @@ const ReportCard = React.memo((props: ReportCardProps) => {
               )}
             </View>
             <View>
-              <CustomText className="text-sm font-isidoraSemiBold">
+              <CustomText className="text-sm font-isidoraSemiBold ">
                 {healthMetricsTitle}
               </CustomText>
-              <CustomText className="text-2xl font-isidoraSemiBold">
+              <CustomText className="text-2xl font-isidoraSemiBold grow">
                 {healthMetricsValue}{' '}
                 <CustomText className="text-base font-isidoraSemiBold">
                   {healthMetricsIndex}
@@ -163,6 +163,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
               </CustomText>
             </View>
           </View>
+
           <View>
             <View
               className="py-2 px-2 rounded-xl items-center"
