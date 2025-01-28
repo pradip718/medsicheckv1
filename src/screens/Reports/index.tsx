@@ -130,7 +130,7 @@ const RenderReportInformation = ({
                 </CustomText>
                 <Icon
                   name={isExpanded ? 'collapse' : 'expand'}
-                  size={20}
+                  size={10}
                   color={customColor.black}
                   className="pl-2 self-center"
                 />

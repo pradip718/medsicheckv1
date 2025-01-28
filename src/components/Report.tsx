@@ -122,7 +122,7 @@ const Report = ({
                 </CustomText>
                 <Icon
                   name={isExpanded ? 'collapse' : 'expand'}
-                  size={12}
+                  size={10}
                   color={customColor.black}
                   className="pl-2 self-center"
                 />

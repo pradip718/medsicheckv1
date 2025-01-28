@@ -142,6 +142,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
                     source={{
                       uri: imageUrl,
                     }}
+                    resizeMode="contain"
                     className="h-8 w-8"
                   />
                 ) : (

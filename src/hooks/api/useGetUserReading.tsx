@@ -22,31 +22,25 @@ interface ReadingData {
   [key: string]: any;
 }
 
-const modifyBloodPressure = (reportData: ReportJsonResponse) => {
-  return reportData.readings.map((reading: Reading) => {
-    const updatedReadingData = Object.entries(reading.reading_data).reduce(
-      (acc: ReadingData, [key, value]) => {
-        if (key === 'systolic' || key === 'diastolic') {
-          return {
-            ...acc,
-            BLOOD_PRESSURE: {
-              ...acc.BLOOD_PRESSURE,
-              [key]: value,
-            },
-          };
-        }
+const modifyBloodPressure = (reading_data: ReadingData) => {
+  return Object.entries(reading_data).reduce(
+    (acc: ReadingData, [key, value]) => {
+      if (key === 'systolic' || key === 'diastolic') {
         return {
           ...acc,
-          [key]: value,
+          BLOOD_PRESSURE: {
+            ...acc.BLOOD_PRESSURE,
+            [key]: value,
+          },
         };
-      },
-      {},
-    );
-    return {
-      ...reading,
-      reading_data: updatedReadingData,
-    };
-  });
+      }
+      return {
+        ...acc,
+        [key]: value,
+      };
+    },
+    {},
+  );
 };
 
 type QueryResponseType<T> = T extends {reading_id: any}
@@ -80,11 +74,13 @@ const useGetUserReading = <
         if (props?.reading_id) {
           updatedReportData = {
             ...reportData,
-            data: {
-              ...reportData,
-              readings: modifyBloodPressure(reportData),
+            readings: {
+              ...reportData?.readings,
+              reading_data: modifyBloodPressure(
+                reportData?.readings?.reading_data,
+              ),
             },
-          } as QueryResponseType<T>;
+          };
         }
         return updatedReportData;
       }
