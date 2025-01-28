@@ -110,7 +110,7 @@ export default function ReportConfidence(props: ReportConfidenceProps) {
                 readingsConfidence?.map(([vitalKey, {confidence_level}]) => (
                   <View key={vitalKey} className="flex-row p-2">
                     <CustomText className="font-isidoraMedium text-sm w-[70%]">
-                      {reportData?.data?.config?.[vitalKey]?.display || ''}
+                      {reportData?.config?.[vitalKey]?.display || ''}
                     </CustomText>
                     {!!confidence_level && (
                       <View className="w-[30%]">

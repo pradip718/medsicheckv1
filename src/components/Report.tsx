@@ -1,11 +1,7 @@
 import {entries, isEmpty, isObject} from 'lodash';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  Reading,
-  ReportJson,
-  ReportPaginationReadingData,
-} from '../../types/jsons';
+import {Reading, ReportJson} from '../../types/jsons';
 import {Parameter} from '../../types/reports';
 import VitalSignCard from '../screens/Homepage/components/ReportVitalSignCard';
 import ReportWellnessScore from '../screens/Homepage/components/ReportWellnessScore';
@@ -25,14 +21,12 @@ const renderSkeleton = () => (
 
 const Report = ({
   reading,
-  filteredReading,
   reportData,
   isLoading,
 }: {
   reading: Reading | undefined;
   reportData: ReportJson | undefined;
   isLoading?: boolean;
-  filteredReading: ReportPaginationReadingData | null;
 }) => {
   const [expandedSections, setExpandedSections] = useState<string[]>(
     isObject(reportData) ? Object.keys(reportData.sub_categorisation) : [],
@@ -101,6 +95,7 @@ const Report = ({
       ) {
         return null;
       }
+
       const isExpanded = expandedSections.includes(vitalKey);
       return (
         <View>
@@ -125,13 +120,13 @@ const Report = ({
   );
 
   const renderHeaderComponent = useCallback(() => {
-    if (!filteredReading) {
+    if (!reading) {
       return;
     }
     return (
       <>
-        <ReportWellnessScore score={filteredReading?.WELLNESS_INDEX || 0} />
-        <VitalSignCard timeframe={filteredReading?.created_at || ''} />
+        <ReportWellnessScore score={reading?.WELLNESS_INDEX || 0} />
+        <VitalSignCard timeframe={reading?.created_at || ''} />
         <ReportConfidence
           classNameValue="mt-8 mx-4"
           readingsConfidence={readingsConfidence}
@@ -140,12 +135,7 @@ const Report = ({
         />
       </>
     );
-  }, [
-    filteredReading,
-    readingsConfidence,
-    reading?.reading_id,
-    reading?.confidence_level,
-  ]);
+  }, [reading, readingsConfidence]);
 
   const subCategorisationEntries = useMemo(() => {
     return entries(reportData?.sub_categorisation || {});

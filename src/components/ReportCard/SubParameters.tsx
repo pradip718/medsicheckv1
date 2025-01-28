@@ -23,23 +23,21 @@ const SubParameters = ({parameter, readingId}: SubParametersProps) => {
     reading_id: readingId,
     enabled: false,
   });
-  const report = reportData?.data?.readings?.find(
-    eachReading => eachReading.reading_id === readingId,
-  );
-  const reading = report?.reading_data?.[parameter?.vital_key];
+
+  const reading = reportData?.readings?.reading_data?.[parameter?.vital_key];
   const colorRange =
-    reportData?.data?.config?.[parameter?.vital_key]?.color_range || [];
+    reportData?.config?.[parameter?.vital_key]?.color_range || [];
   const selectedColor = getColorForValue(reading?.value || 0, colorRange || []);
 
-  if (!report || isEmpty(reading)) {
+  if (isEmpty(reading)) {
     return <></>;
   }
 
   const highlightedColor =
-    selectedColor ||
-    reportData?.data?.col_val?.Default?.[parameter?.vital_key]?.[
-      reading?.category || ''
-    ] ||
+    (selectedColor ||
+      reportData?.col_val?.Default?.[parameter?.vital_key]?.[
+        reading?.category || ''
+      ]) ??
     'gray';
 
   const onRowPress = () => {
@@ -77,7 +75,7 @@ const SubParameters = ({parameter, readingId}: SubParametersProps) => {
             className="text-sm text-midnight font-isidoraSemiBold"
             numberOfLines={2}
             ellipsizeMode="middle">
-            {reportData?.data?.config?.[parameter?.vital_key]?.display || ''}
+            {reportData?.config?.[parameter?.vital_key]?.display || ''}
           </CustomText>
           <CustomText className="text-lg font-isidoraSemiBold text-midnight">
             {reading?.value || 0}
@@ -92,8 +90,7 @@ const SubParameters = ({parameter, readingId}: SubParametersProps) => {
           total={200}
           scaleCriteria={{
             scale:
-              reportData?.data?.config?.[parameter?.vital_key]?.scale ||
-              ({} as any),
+              reportData?.config?.[parameter?.vital_key]?.scale || ({} as any),
             measuredValue: reading.value,
           }}
           colorRange={colorRange}

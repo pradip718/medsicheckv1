@@ -82,23 +82,6 @@ const ReportCard = React.memo((props: ReportCardProps) => {
     confidenceLevel,
   } = props;
 
-  console.log('first', {
-    healthMetricsTitle,
-    healthMetricsValue,
-    healthMetricsIndex,
-    description,
-    score,
-    iconName,
-    category,
-    color_value,
-    onDetailsPress,
-    scaleCriteria,
-    scaleType,
-    colorRange,
-    subParameters,
-    readingId,
-    confidenceLevel,
-  });
   const imageUrl =
     languages.vitals_with_image?.[
       iconName as keyof typeof languages.vitals_with_image
@@ -113,7 +96,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
   }, [imageUrl]);
 
   const subParameterTitles = useMemo(
-    () => _.map(subParameters, 'title'),
+    () => _.map(subParameters, 'vital_key'),
     [subParameters],
   );
   const lastIndex = subParameterTitles.length - 1;
@@ -251,7 +234,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
                 </CustomText>
               </TouchableOpacity>
               {subParameters?.map((param, idx) => (
-                <View key={`${param}-${idx}`} className="mt-2">
+                <View key={`${param?.vital_key}-${idx}`} className="mt-2">
                   <SubParameters parameter={param} readingId={readingId} />
                 </View>
               ))}

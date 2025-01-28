@@ -294,7 +294,7 @@ export type Reading = {
 };
 
 export type ReportJson = {
-  readings: Reading[];
+  readings: Reading;
   config: Config;
   col_val: ColVal;
   sub_categorisation: VitalsAndBiomarkersDisplay;

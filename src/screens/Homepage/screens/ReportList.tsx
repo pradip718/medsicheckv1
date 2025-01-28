@@ -1,5 +1,4 @@
 import {RouteProp} from '@react-navigation/native';
-import {isEmpty} from 'lodash';
 import React, {Suspense} from 'react';
 import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
 import {HomepageParamList} from '../../../../types/navigation';
@@ -7,7 +6,6 @@ import {onShare} from '../../../../utils/methods';
 import BasicContainer from '../../../components/BasicContainer';
 import Navbar from '../../../components/Navbar';
 import {useGetUserReadingDetail} from '../../../hooks/api/readings';
-import useGetUserReading from '../../../hooks/api/useGetUserReading';
 
 const Report = React.lazy(() => import('../../../components/Report'));
 
@@ -19,7 +17,6 @@ interface ReportListProps {
 
 const ReportList = ({route}: ReportListProps) => {
   const {reportId} = route.params;
-  const {data: reading} = useGetUserReading();
   const {data: reportData, isFetching: isReportDetailFetching} =
     useGetUserReadingDetail({
       // staleTime: Infinity,
@@ -29,18 +26,8 @@ const ReportList = ({route}: ReportListProps) => {
       enabled: !!reportId,
     });
 
-  const filteredReading = reading?.reading_data?.find(
-    eachReading => eachReading.reading_id === reportId,
-  );
-
-  console.log('reportData 123', reportData);
-
-  // const reportDetail = reportData?.readings?.find(
-  //   eachReading => eachReading.reading_id === reportId,
-  // );
-
   return (
-    <BasicContainer className="h-full">
+    <BasicContainer className="h-full bg-white">
       <SafeAreaView>
         <View className="px-6 py-4">
           <Navbar
@@ -55,9 +42,6 @@ const ReportList = ({route}: ReportListProps) => {
           <Suspense
             fallback={<ActivityIndicator size="large" color="#0000ff" />}>
             <Report
-              filteredReading={
-                isEmpty(filteredReading) ? null : filteredReading
-              }
               reading={reportData?.readings}
               reportData={reportData}
               isLoading={isReportDetailFetching}
