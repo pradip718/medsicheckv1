@@ -1,6 +1,7 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {View} from 'moti';
 import React, {useCallback, useMemo} from 'react';
+import useLanguageStore from '../../store/languageStore';
 import {Reading} from '../../types/jsons';
 import {MainStackParamList} from '../../types/navigation';
 import {SubParameter} from '../../types/reports';
@@ -20,6 +21,7 @@ const RenderReport = React.memo(
     name: string;
   }) => {
     const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+    const {languages} = useLanguageStore();
     const {data: reportData} = useGetUserReadingDetail({
       reading_id: reading?.reading_id || '',
       enabled: false,
@@ -45,7 +47,9 @@ const RenderReport = React.memo(
     const colorRange = reportConfig?.color_range || [];
     const scaleType = reportConfig?.scale_type || 1;
     const healthMetricsTitle = name || reportConfig?.display || '';
-    const healthMetricsValue = readingData[readingKey]?.value || 0;
+    const healthMetricsValue = languages?.round_off_vitals?.includes(readingKey)
+      ? Math.round(readingData[readingKey]?.value)
+      : readingData[readingKey]?.value || 0;
     const healthMetricsIndex = reportConfig?.unit || '';
     const iconName = readingKey || '';
     const description = reportConfig?.short_intro || '';
@@ -56,6 +60,8 @@ const RenderReport = React.memo(
       scale: reportConfig?.scale || [],
       measuredValue: score,
     };
+
+    console.log('readingKey', readingKey);
 
     return (
       <View className="p-4">

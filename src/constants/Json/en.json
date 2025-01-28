@@ -614,5 +614,6 @@
   "questionnaire_disclaimer_general_info_empty": "You seem to have not completed your additional profile details. Please click below to update your profile. 'Update Details'",
   "questionnaire_disclaimer_general_info_completed": "Feel free to view or edit your existing profile details. 'View details' button",
 
-  "report_load_error": "Unable to load report. Please try again later."
+  "report_load_error": "Unable to load report. Please try again later.",
+  "round_off_vitals": ["HR_BPM"]
 }

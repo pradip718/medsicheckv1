@@ -82,9 +82,9 @@ const BloodPressureReportCard = (props: BloodPressureReportCardProps) => {
                 {languages?.blood_pressure}
               </CustomText>
               <CustomText className="text-2xl font-isidoraSemiBold mt-2">
-                {data?.systolic?.value}
+                {Math.round(data?.systolic?.value)}
                 {'/'}
-                {data?.diastolic?.value}
+                {Math.round(data?.diastolic?.value)}
                 <CustomText className="text-base font-isidoraSemiBold">
                   {'  '}
                   {healthMetricsIndex}

@@ -15,6 +15,7 @@ import {Badge} from 'react-native-paper';
 import {FAMILY_INFO, MY_INFO} from '../../constants/enums';
 import {useGetHelpdeskDetails} from '../../hooks/api/helpdesk';
 import useGetFamilyMembers from '../../hooks/api/useGetFamilyMembers';
+import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import customColor from '../../theme/customColor';
 import Icon from '../Icon';
 import Pressable from '../Pressable';
@@ -154,6 +155,8 @@ const CustomDrawer = () =>
     const navigation = useNavigation<NavigationProp<MainStackParamList>>();
     const {data: rescanConfigurations} = useGetRescanConfiguration();
     const {data: helpDeskDetails} = useGetHelpdeskDetails();
+
+    const {startScan} = usePrepareFacescan();
     const [hasUnreadMessage, setHasUnreadMessage] = React.useState(false);
 
     useEffect(() => {
@@ -170,7 +173,7 @@ const CustomDrawer = () =>
       {
         name: languages?.faceScan,
         icon: 'face_scan',
-        action: () => navigation.navigate('FaceScan'),
+        action: startScan,
         disabled: !rescanConfigurations?.rescan_flag,
       },
       {
