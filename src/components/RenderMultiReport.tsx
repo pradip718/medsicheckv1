@@ -27,23 +27,19 @@ const RenderMultiReport = ({
     <View className="px-4">
       <BloodPressureReportCard
         readingId={reading?.reading_id || ''}
-        systolicScaleType={reportData.data?.config?.systolic?.scale_type || 1}
-        systolicColorRange={
-          reportData.data?.config?.systolic?.color_range || []
-        }
-        diastolicScaleType={reportData.data?.config?.diastolic?.scale_type || 1}
-        diastolicColorRange={
-          reportData.data?.config?.diastolic?.color_range || []
-        }
+        systolicScaleType={reportData.config?.systolic?.scale_type || 1}
+        systolicColorRange={reportData.config?.systolic?.color_range || []}
+        diastolicScaleType={reportData.config?.diastolic?.scale_type || 1}
+        diastolicColorRange={reportData.config?.diastolic?.color_range || []}
         data={readingObj}
-        healthMetricsTitle={reportData.data?.config?.[readingKey]?.display}
+        healthMetricsTitle={reportData.config?.[readingKey]?.display}
         healthMetricsValue={readingObj.value}
-        healthMetricsIndex={reportData.data?.config?.systolic?.unit || ''}
+        healthMetricsIndex={reportData.config?.systolic?.unit || ''}
         iconName={'systolic'}
-        description={reportData?.data?.config?.systolic?.short_intro || ''}
+        description={reportData?.config?.systolic?.short_intro || ''}
         score={Number(readingObj.score)}
         category={readingObj?.systolic?.category}
-        color_value={reportData?.data?.col_val}
+        color_value={reportData?.col_val}
         diastolicScaleCriteria={{
           // scale: reportData?.data?.config?.['diastolic']?.scale || [],
           scale: {

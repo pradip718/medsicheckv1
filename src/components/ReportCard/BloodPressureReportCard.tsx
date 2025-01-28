@@ -145,6 +145,7 @@ const BloodPressureReportCard = (props: BloodPressureReportCardProps) => {
       <View className="my-8">
         {diastolicScaleType === 11 ? (
           <ReportBlockScale
+            readingId={readingId}
             min={90}
             max={120}
             value={score}
