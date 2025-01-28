@@ -21,18 +21,10 @@
 		AE9813F22D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */; };
 		AE9813F42D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */; };
 		AE9813F52D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */; };
-		AE9813F62D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E22D4755AD001E7BD8 /* MaterialCommunityIcons.ttf */; };
-		AE9813F72D4755AD001E7BD8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D92D4755AD001E7BD8 /* EvilIcons.ttf */; };
-		AE9813F82D4755AD001E7BD8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DB2D4755AD001E7BD8 /* FontAwesome.ttf */; };
 		AE9813F92D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */; };
-		AE9813FA2D4755AD001E7BD8 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E32D4755AD001E7BD8 /* MaterialIcons.ttf */; };
 		AE9813FB2D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E42D4755AD001E7BD8 /* Urbanist-Bold.ttf */; };
-		AE9813FC2D4755AD001E7BD8 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D72D4755AD001E7BD8 /* AntDesign.ttf */; };
 		AE9813FD2D4755AD001E7BD8 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DC2D4755AD001E7BD8 /* icomoon.ttf */; };
-		AE9813FE2D4755AD001E7BD8 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D82D4755AD001E7BD8 /* Entypo.ttf */; };
-		AE9813FF2D4755AD001E7BD8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DD2D4755AD001E7BD8 /* Ionicons.ttf */; };
 		AE9814002D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */; };
-		AE9814012D4755AD001E7BD8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DA2D4755AD001E7BD8 /* Feather.ttf */; };
 		AE9814022D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */; };
 		AE9814032D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */; };
 		AE9814042D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E22D4755AD001E7BD8 /* MaterialCommunityIcons.ttf */; };
@@ -548,18 +540,10 @@
 				AE9814D12D478545001E7BD8 /* LaunchScreen.storyboard in Resources */,
 				AE9814D52D478545001E7BD8 /* Localizable.strings in Resources */,
 				AE9813F52D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */,
-				AE9813F62D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */,
-				AE9813F72D4755AD001E7BD8 /* EvilIcons.ttf in Resources */,
-				AE9813F82D4755AD001E7BD8 /* FontAwesome.ttf in Resources */,
 				AE9813F92D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */,
-				AE9813FA2D4755AD001E7BD8 /* MaterialIcons.ttf in Resources */,
 				AE9813FB2D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */,
-				AE9813FC2D4755AD001E7BD8 /* AntDesign.ttf in Resources */,
 				AE9813FD2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
-				AE9813FE2D4755AD001E7BD8 /* Entypo.ttf in Resources */,
-				AE9813FF2D4755AD001E7BD8 /* Ionicons.ttf in Resources */,
 				AE9814002D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
-				AE9814012D4755AD001E7BD8 /* Feather.ttf in Resources */,
 				AEEF05A02D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1042,6 +1026,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck;
 				PRODUCT_NAME = MedsiCheck;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Resources/MedsiCheck-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1072,6 +1057,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck;
 				PRODUCT_NAME = MedsiCheck;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Resources/MedsiCheck-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1323,8 +1309,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.stage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Resources/MedsiCheck-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1354,7 +1346,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.stage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Resources/MedsiCheck-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
