@@ -38,7 +38,7 @@ const useGetUserReadingDetail = (
   props?: Omit<GetUserReadingsProps, 'queryKey'>,
 ) => {
   return useQuery({
-    queryKey: ['reading-detail'],
+    queryKey: ['reading-detail', props?.reading_id],
     queryFn: async () => {
       const reportData = (await getReportReading(
         0,
