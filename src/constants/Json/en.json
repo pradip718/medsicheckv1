@@ -588,7 +588,11 @@
   },
   "vitals_with_image": {
     "DIABETES_RISK": "https://vital-signs-images.s3.us-west-2.amazonaws.com/DIABETES_RISK.png",
-    "HYPERTENSION_RISK": "https://vital-signs-images.s3.us-west-2.amazonaws.com/HYPERTENSION_RISK.png"
+    "HYPERTENSION_RISK": "https://vital-signs-images.s3.us-west-2.amazonaws.com/HYPERTENSION_RISK.png",
+
+    "BP_HEART_ATTACK": "https://medsi-check-image-assets.s3.us-west-2.amazonaws.com/anura_heart_attack.png",
+    "WAIST_TO_HEIGHT": "https://medsi-check-image-assets.s3.us-west-2.amazonaws.com/anura_waist_to_height.png",
+    "BP_STROKE": "https://medsi-check-image-assets.s3.us-west-2.amazonaws.com/anura_stroke.png"
   },
   "showQRScanner": "True",
 

@@ -29,11 +29,9 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
     reading_id: reportId,
   });
 
-  const color_value = reportData?.data?.col_val;
-  const config = reportData?.data?.config;
-  const reading = reportData?.data?.readings?.find(
-    eachReading => eachReading.reading_id === reportId,
-  );
+  const color_value = reportData?.col_val;
+  const config = reportData?.config;
+  const reading = reportData?.readings;
 
   const readingData = reading?.reading_data?.[vitalKey];
 
@@ -54,9 +52,8 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
     config?.[vitalKey]?.color_range || [],
   );
 
-  const systolicScaleType = reportData.data?.config?.systolic?.scale_type || 1;
-  const diastolicScaleType =
-    reportData.data?.config?.diastolic?.scale_type || 1;
+  const systolicScaleType = reportData?.config?.systolic?.scale_type || 1;
+  const diastolicScaleType = reportData?.config?.diastolic?.scale_type || 1;
 
   const parseAndRenderLinks = (text: string) => {
     const parts = [];
@@ -201,9 +198,7 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
                     measuredValue:
                       bloodPressureReadingData?.['systolic']?.value,
                   }}
-                  colorRange={
-                    reportData.data?.config?.systolic?.color_range || []
-                  }
+                  colorRange={reportData?.config?.systolic?.color_range || []}
                   name="Systolic"
                   readingKey={'BLOOD_PRESSURE'}
                   readingId={reportId}
@@ -226,9 +221,7 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
                     measuredValue:
                       bloodPressureReadingData?.['diastolic']?.value,
                   }}
-                  colorRange={
-                    reportData.data?.config?.diastolic?.color_range || []
-                  }
+                  colorRange={reportData?.config?.diastolic?.color_range || []}
                   name="Diastolic"
                   readingKey={'BLOOD_PRESSURE'}
                   readingId={reportId}
@@ -238,19 +231,17 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
           </>
         ) : (
           !!reportData &&
-          reportData.data?.config?.[vitalKey]?.scale_type === 11 && (
+          reportData?.config?.[vitalKey]?.scale_type === 11 && (
             <ReportBlockScale
               min={90}
               max={120}
               value={readingData?.score || 0}
               total={200}
               scaleCriteria={{
-                scale: reportData?.data?.config?.[vitalKey]?.scale || [],
+                scale: reportData?.config?.[vitalKey]?.scale || [],
                 measuredValue: readingData?.value,
               }}
-              colorRange={
-                reportData.data?.config?.[vitalKey]?.color_range || []
-              }
+              colorRange={reportData?.config?.[vitalKey]?.color_range || []}
               pointerAdjustment={8}
               readingKey={vitalKey}
               readingId={reportId}
@@ -277,7 +268,7 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
           style={styles.borderOuterContainer}>
           <View className="px-2">
             <CustomText className="text-center text-sm font-isidoraMedium">
-              {reportData?.data?.config?.[vitalKey]?.short_intro || ''}
+              {reportData?.config?.[vitalKey]?.short_intro || ''}
             </CustomText>
           </View>
         </BorderGradient>
@@ -286,7 +277,7 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
       <View className="px-8 mt-6">
         <CustomText className="text-sm font-isidoraMedium">
           {parseAndRenderLinks(
-            reportData?.data?.config?.[vitalKey]?.long_intro || '',
+            reportData?.config?.[vitalKey]?.long_intro || '',
           )}
         </CustomText>
       </View>

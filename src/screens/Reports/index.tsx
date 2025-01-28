@@ -129,7 +129,7 @@ const RenderReportInformation = ({
                   {reportData?.main_categorisation?.[vitalKey]?.category}
                 </CustomText>
                 <Icon
-                  name={isExpanded ? 'chevron-up' : 'chevron-down'}
+                  name={isExpanded ? 'collapse' : 'expand'}
                   size={20}
                   color={customColor.black}
                   className="pl-2 self-center"

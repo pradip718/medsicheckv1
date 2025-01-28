@@ -49,18 +49,18 @@ const RenderReport = React.memo(
     const healthMetricsIndex = reportConfig?.unit || '';
     const iconName = readingKey || '';
     const description = reportConfig?.short_intro || '';
-    const score = Number(readingData[readingKey]?.score) || 0;
+    const score = Number(readingData[readingKey]?.value) || 0;
     const category = readingData[readingKey]?.category || '';
     const confidenceLevel = readingData[readingKey]?.confidence_level || null;
     const scaleCriteria = {
       scale: reportConfig?.scale || [],
-      measuredValue: healthMetricsValue,
+      measuredValue: score,
     };
 
     return (
       <View className="p-4">
         <ReportCard
-          readingId={reading?.reading_id || ''}
+          readingId={reading?.reading_id ?? ''}
           scaleType={scaleType}
           colorRange={colorRange}
           healthMetricsTitle={healthMetricsTitle}

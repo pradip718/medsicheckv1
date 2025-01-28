@@ -36,7 +36,7 @@ const ReportBlockScale = ({
     reading_id: readingId || '',
     enabled: false,
   });
-  const scaleValueMapping = userReading?.data?.scale_value_mapping;
+  const scaleValueMapping = userReading?.scale_value_mapping;
   let {measuredValue: value} = scaleCriteria;
   if (scaleValueMapping) {
     value = scaleValueMapping[value] || value;
@@ -44,8 +44,8 @@ const ReportBlockScale = ({
 
   const calculateBoxHeight = (range: ReportScaleRange) => {
     if (
-      range[0] &&
-      range[1] &&
+      range[0] != null &&
+      range[1] != null &&
       typeof range[0] === 'number' &&
       typeof range[1] === 'number'
     ) {
@@ -69,8 +69,8 @@ const ReportBlockScale = ({
 
   const calculateMargin = (range: ReportScaleRange) => {
     if (
-      range[0] &&
-      range[1] &&
+      range[0] != null &&
+      range[1] != null &&
       typeof range[0] === 'number' &&
       typeof range[1] === 'number'
     ) {
@@ -92,8 +92,8 @@ const ReportBlockScale = ({
 
   const isInRange = (colorItem: ColorRangeItem) => {
     if (
-      colorItem.range[0] &&
-      colorItem.range[1] &&
+      colorItem.range[0] !== null &&
+      colorItem.range[1] !== null &&
       typeof colorItem.range[0] === 'number' &&
       typeof colorItem.range[1] === 'number'
     ) {

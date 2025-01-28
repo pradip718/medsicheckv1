@@ -121,8 +121,8 @@ const Report = ({
                   {reportData?.main_categorisation?.[vitalKey]?.category}
                 </CustomText>
                 <Icon
-                  name={isExpanded ? 'chevron-up' : 'chevron-down'}
-                  size={20}
+                  name={isExpanded ? 'collapse' : 'expand'}
+                  size={12}
                   color={customColor.black}
                   className="pl-2 self-center"
                 />
