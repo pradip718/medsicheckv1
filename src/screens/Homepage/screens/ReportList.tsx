@@ -6,6 +6,7 @@ import {onShare} from '../../../../utils/methods';
 import BasicContainer from '../../../components/BasicContainer';
 import Navbar from '../../../components/Navbar';
 import {useGetUserReadingDetail} from '../../../hooks/api/readings';
+import useGetUserReading from '../../../hooks/api/useGetUserReading';
 
 const Report = React.lazy(() => import('../../../components/Report'));
 
@@ -17,6 +18,9 @@ interface ReportListProps {
 
 const ReportList = ({route}: ReportListProps) => {
   const {reportId} = route.params;
+  const {data: reading} = useGetUserReading({
+    enabled: false,
+  });
   const {data: reportData, isFetching: isReportDetailFetching} =
     useGetUserReadingDetail({
       // staleTime: Infinity,
@@ -24,7 +28,12 @@ const ReportList = ({route}: ReportListProps) => {
       reading_id: reportId,
       refetchOnWindowFocus: true,
       enabled: !!reportId,
+      gcTime: 0,
     });
+
+  const selectedReading = reading?.data?.reading_data?.find(
+    eachReading => eachReading?.reading_id === reportId,
+  );
 
   return (
     <BasicContainer className="h-full bg-white">
@@ -42,6 +51,7 @@ const ReportList = ({route}: ReportListProps) => {
           <Suspense
             fallback={<ActivityIndicator size="large" color="#0000ff" />}>
             <Report
+              selectedReading={selectedReading}
               reading={reportData?.readings}
               reportData={reportData}
               isLoading={isReportDetailFetching}

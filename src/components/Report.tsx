@@ -1,7 +1,11 @@
 import {entries, isEmpty, isObject} from 'lodash';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Reading, ReportJson} from '../../types/jsons';
+import {
+  Reading,
+  ReportJson,
+  ReportPaginationReadingData,
+} from '../../types/jsons';
 import {Parameter} from '../../types/reports';
 import VitalSignCard from '../screens/Homepage/components/ReportVitalSignCard';
 import ReportWellnessScore from '../screens/Homepage/components/ReportWellnessScore';
@@ -23,10 +27,12 @@ const Report = ({
   reading,
   reportData,
   isLoading,
+  selectedReading,
 }: {
   reading: Reading | undefined;
   reportData: ReportJson | undefined;
   isLoading?: boolean;
+  selectedReading: ReportPaginationReadingData | undefined;
 }) => {
   const [expandedSections, setExpandedSections] = useState<string[]>(
     isObject(reportData) ? Object.keys(reportData.sub_categorisation) : [],
@@ -40,14 +46,6 @@ const Report = ({
 
   const {reading_data} = reading || {};
 
-  const toggleSection = useCallback((key: string) => {
-    setExpandedSections(prevState =>
-      prevState.includes(key)
-        ? prevState.filter(section => section !== key)
-        : [...prevState, key],
-    );
-  }, []);
-
   const readingsConfidence = useMemo(() => {
     return reading_data
       ? Object.entries(reading_data).filter(
@@ -55,6 +53,18 @@ const Report = ({
         )
       : [];
   }, [reading_data]);
+
+  const subCategorisationEntries = useMemo(() => {
+    return entries(reportData?.sub_categorisation || {});
+  }, [reportData?.sub_categorisation]);
+
+  const toggleSection = useCallback((key: string) => {
+    setExpandedSections(prevState =>
+      prevState.includes(key)
+        ? prevState.filter(section => section !== key)
+        : [...prevState, key],
+    );
+  }, []);
 
   const renderCardItem = useCallback(
     (param: Parameter) => (
@@ -120,26 +130,22 @@ const Report = ({
   );
 
   const renderHeaderComponent = useCallback(() => {
-    if (!reading) {
+    if (!selectedReading) {
       return;
     }
     return (
       <>
-        <ReportWellnessScore score={reading?.WELLNESS_INDEX || 0} />
-        <VitalSignCard timeframe={reading?.created_at || ''} />
+        <ReportWellnessScore score={selectedReading?.WELLNESS_INDEX ?? 0} />
+        <VitalSignCard timeframe={selectedReading?.created_at ?? ''} />
         <ReportConfidence
           classNameValue="mt-8 mx-4"
           readingsConfidence={readingsConfidence}
           overallConfidence={reading?.confidence_level}
-          readingId={reading?.reading_id || ''}
+          readingId={selectedReading?.reading_id ?? ''}
         />
       </>
     );
-  }, [reading, readingsConfidence]);
-
-  const subCategorisationEntries = useMemo(() => {
-    return entries(reportData?.sub_categorisation || {});
-  }, [reportData?.sub_categorisation]);
+  }, [selectedReading, readingsConfidence, reading]);
 
   return (
     <FlatList
