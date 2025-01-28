@@ -6,3 +6,4 @@
 #import <React/RCTEventEmitter.h>
 #import <React/RCTBridge.h>
 #import "RNTEventBridge.h"
+#import "RNBootSplash.h"
