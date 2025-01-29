@@ -61,8 +61,6 @@ const RenderReport = React.memo(
       measuredValue: score,
     };
 
-    console.log('readingKey', readingKey);
-
     return (
       <View className="p-4">
         <ReportCard

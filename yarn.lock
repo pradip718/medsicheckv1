@@ -3922,14 +3922,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-native-snap-carousel@^3.8.10":
-  version "3.8.11"
-  resolved "https://registry.yarnpkg.com/@types/react-native-snap-carousel/-/react-native-snap-carousel-3.8.11.tgz#a5807eb786a6c55c0a99f98581b5125c1166b984"
-  integrity sha512-9VrAJ4PlPCzQCpyQ95vjeR9V4Osbgvfc+tSGhLkt3FDNWWNxwbgUQONFbNQznoPU/Qd69PFVWtabPTgtjZjWPg==
-  dependencies:
-    "@types/react" "*"
-    react-native "*"
-
 "@types/react-native-star-rating@^1.1.6":
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/@types/react-native-star-rating/-/react-native-star-rating-1.1.6.tgz#9391010806719ff39e26bee6f80aa8163e8cc931"
@@ -9591,6 +9583,11 @@ react-native-qrcode-scanner@^1.5.5:
     "@react-native-async-storage/async-storage" "^1.13.4"
     prop-types "^15.5.10"
     react-native-permissions "^2.0.2"
+
+react-native-reanimated-carousel@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated-carousel/-/react-native-reanimated-carousel-3.5.1.tgz#3605b9959ffc0aa1c6b8b8736d98f91f46e36b17"
+  integrity sha512-9BBQV6JAYSQm2lV7MFtT4mzapXmW4IZO6s38gfiJL84Jg23ivGB1UykcNQauKgtHyhtW2NuZJzItb1s42lM+hA==
 
 react-native-reanimated@^3.11.0:
   version "3.16.7"

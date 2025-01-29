@@ -65,7 +65,11 @@ const CustomTabBar = ({
                     <ToolTipWalkthrough
                       walkthroughName="scan_button"
                       placement="top">
-                      <ScanButton onPressScanButton={startScan} />
+                      <ScanButton
+                        onPressScanButton={() => {
+                          navigation.navigate('FaceScan');
+                        }}
+                      />
                     </ToolTipWalkthrough>
                   </View>
                   <CustomText className="absolute bottom-3 -left-7 w-[150] font-isidoraMedium">
