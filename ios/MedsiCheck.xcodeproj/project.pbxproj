@@ -48,18 +48,24 @@
 		AE9814D02D478545001E7BD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE9814492D478545001E7BD8 /* Assets.xcassets */; };
 		AE9814D12D478545001E7BD8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE98144B2D478545001E7BD8 /* LaunchScreen.storyboard */; };
 		AE9814D52D478545001E7BD8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE98144E2D478545001E7BD8 /* Localizable.strings */; };
-		AE98179C2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
-		AE98179D2D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
-		AE98179E2D47A396001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
-		AE9817A22D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
-		AE9817A32D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
-		AE9817A42D47A396001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
 		AE981F332D47DC8B001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
 		AE981F342D47DC8B001E7BD8 /* AnuraCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE981F362D47DC8D001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
 		AE981F372D47DC8D001E7BD8 /* FaceMesh.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AE981F382D47DC8E001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
 		AE981F392D47DC8E001E7BD8 /* libdfx.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE9823542D494CA4001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
+		AE9823552D494CA4001E7BD8 /* AnuraCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE9823572D494CA5001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
+		AE9823582D494CA5001E7BD8 /* FaceMesh.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE9823592D494CA7001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
+		AE98235A2D494CA7001E7BD8 /* libdfx.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE98235B2D49E028001E7BD8 /* AnuraCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; };
+		AE98235C2D49E028001E7BD8 /* AnuraCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE98235E2D49E02A001E7BD8 /* FaceMesh.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; };
+		AE98235F2D49E02A001E7BD8 /* FaceMesh.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AE9823602D49E02B001E7BD8 /* libdfx.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; };
+		AE9823612D49E02B001E7BD8 /* libdfx.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AE98179B2D47A396001E7BD8 /* libdfx.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AEEF056B2D4692F6002EE9AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		AEEF05922D46B9C9002EE9AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */; };
@@ -90,6 +96,32 @@
 				AE981F342D47DC8B001E7BD8 /* AnuraCore.xcframework in Embed Frameworks */,
 				AE981F392D47DC8E001E7BD8 /* libdfx.xcframework in Embed Frameworks */,
 				AE981F372D47DC8D001E7BD8 /* FaceMesh.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE9823562D494CA4001E7BD8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AE9823552D494CA4001E7BD8 /* AnuraCore.xcframework in Embed Frameworks */,
+				AE98235A2D494CA7001E7BD8 /* libdfx.xcframework in Embed Frameworks */,
+				AE9823582D494CA5001E7BD8 /* FaceMesh.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE98235D2D49E028001E7BD8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AE98235C2D49E028001E7BD8 /* AnuraCore.xcframework in Embed Frameworks */,
+				AE9823612D49E02B001E7BD8 /* libdfx.xcframework in Embed Frameworks */,
+				AE98235F2D49E02A001E7BD8 /* FaceMesh.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,10 +201,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE98235B2D49E028001E7BD8 /* AnuraCore.xcframework in Frameworks */,
 				56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */,
-				AE98179C2D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */,
-				AE98179D2D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */,
-				AE98179E2D47A396001E7BD8 /* libdfx.xcframework in Frameworks */,
+				AE9823602D49E02B001E7BD8 /* libdfx.xcframework in Frameworks */,
+				AE98235E2D49E02A001E7BD8 /* FaceMesh.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,10 +223,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE9823542D494CA4001E7BD8 /* AnuraCore.xcframework in Frameworks */,
 				9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */,
-				AE9817A22D47A396001E7BD8 /* AnuraCore.xcframework in Frameworks */,
-				AE9817A32D47A396001E7BD8 /* FaceMesh.xcframework in Frameworks */,
-				AE9817A42D47A396001E7BD8 /* libdfx.xcframework in Frameworks */,
+				AE9823592D494CA7001E7BD8 /* libdfx.xcframework in Frameworks */,
+				AE9823572D494CA5001E7BD8 /* FaceMesh.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +403,7 @@
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
 				AEEF05AB2D46C923002EE9AB /* Google Analytics Run Script */,
+				AE98235D2D49E028001E7BD8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -423,6 +456,7 @@
 				AEEF05952D46B9C9002EE9AB /* [CP] Embed Pods Frameworks */,
 				AEEF05962D46B9C9002EE9AB /* [CP] Copy Pods Resources */,
 				AEEF05A92D46C7A9002EE9AB /* Google Analytics Run Script */,
+				AE9823562D494CA4001E7BD8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1307,7 +1341,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.stage;
+				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.stagev2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1344,7 +1378,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.stage;
+				PRODUCT_BUNDLE_IDENTIFIER = mx.medsi.medsicheck.stagev2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
