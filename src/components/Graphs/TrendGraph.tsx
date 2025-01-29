@@ -39,8 +39,6 @@ const TrendGraph = ({data = [], stats}: TrendGraphProps) => {
     );
   };
 
-  console.log('stats', stats);
-
   return (
     <View style={styles.container}>
       <LineChart
