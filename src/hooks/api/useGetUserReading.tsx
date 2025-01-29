@@ -4,7 +4,6 @@ import {
   UseInfiniteQueryResult,
 } from '@tanstack/react-query';
 import {
-  Reading,
   ReportJsonPaginationResponse,
   ReportJsonResponse,
 } from '../../../types/jsons';
@@ -94,6 +93,7 @@ const useGetUserReading = <
         data: {
           reading_data: data?.pages.flatMap(eachPage => eachPage?.reading_data),
           count: data?.pages?.[0]?.count,
+          stats: data?.pages?.[0]?.stats,
         },
       };
     },
