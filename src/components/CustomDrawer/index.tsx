@@ -12,6 +12,7 @@ import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
 // import useGetProfileImage from '../../hooks/useGetProfileImage';
 import {isArray} from 'lodash';
 import {Badge} from 'react-native-paper';
+import {shouldGoToFaceScan} from '../../../utils/navigation';
 import {FAMILY_INFO, MY_INFO} from '../../constants/enums';
 import {useGetHelpdeskDetails} from '../../hooks/api/helpdesk';
 import useGetFamilyMembers from '../../hooks/api/useGetFamilyMembers';
@@ -159,6 +160,15 @@ const CustomDrawer = () =>
     const {startScan} = usePrepareFacescan();
     const [hasUnreadMessage, setHasUnreadMessage] = React.useState(false);
 
+    const handleScanButtonPress = async () => {
+      const shouldGoToFacescan = await shouldGoToFaceScan();
+      if (shouldGoToFacescan) {
+        startScan();
+      } else {
+        navigation.navigate('FaceScan');
+      }
+    };
+
     useEffect(() => {
       if (isArray(helpDeskDetails)) {
         setHasUnreadMessage(
@@ -173,7 +183,7 @@ const CustomDrawer = () =>
       {
         name: languages?.faceScan,
         icon: 'face_scan',
-        action: startScan,
+        action: handleScanButtonPress,
         disabled: !rescanConfigurations?.rescan_flag,
       },
       {

@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import useLanguageStore from '../../../store/languageStore';
+import {shouldGoToFaceScan} from '../../../utils/navigation';
 import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import customColor from '../../theme/customColor';
 import ToolTipWalkthrough from '../CustomCopilot/ToolTipWalkthrough';
@@ -24,6 +25,15 @@ const CustomTabBar = ({
   const {languages} = useLanguageStore();
 
   const {startScan} = usePrepareFacescan();
+
+  const handleScanButtonPress = async () => {
+    const shouldGoToFacescan = await shouldGoToFaceScan();
+    if (shouldGoToFacescan) {
+      startScan();
+    } else {
+      navigation.navigate('FaceScan');
+    }
+  };
 
   return (
     <View style={[styles.tabBar]}>
@@ -65,11 +75,7 @@ const CustomTabBar = ({
                     <ToolTipWalkthrough
                       walkthroughName="scan_button"
                       placement="top">
-                      <ScanButton
-                        onPressScanButton={() => {
-                          navigation.navigate('FaceScan');
-                        }}
-                      />
+                      <ScanButton onPressScanButton={handleScanButtonPress} />
                     </ToolTipWalkthrough>
                   </View>
                   <CustomText className="absolute bottom-3 -left-7 w-[150] font-isidoraMedium">

@@ -28,3 +28,25 @@ export const navigateToFaceScan = async () => {
 export const navigateToLogin = async () => {
   navigate('Login', {});
 };
+
+export const shouldGoToFaceScan = async () => {
+  let userBasedVisibility = (await AsyncStorage.getItem(
+    Face_SCANNER_KEY,
+  )) as any;
+  const {currentActiveProfileId} = useUserProfileStore.getState();
+
+  if (userBasedVisibility) {
+    userBasedVisibility = JSON.parse(userBasedVisibility);
+    if (
+      userBasedVisibility &&
+      currentActiveProfileId &&
+      userBasedVisibility[currentActiveProfileId]
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};
