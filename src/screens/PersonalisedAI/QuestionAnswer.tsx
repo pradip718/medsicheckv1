@@ -91,7 +91,7 @@ const Answer = ({
 };
 
 interface QuestionAnswerProps {
-  details: QuestionnaireItem | undefined;
+  details: QuestionnaireItem | null;
   selectedAnswers: any;
   handleSelectedAnswers: (answers: string) => void;
 }

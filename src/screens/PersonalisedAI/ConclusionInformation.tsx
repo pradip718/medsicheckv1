@@ -1,10 +1,10 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {useQueryClient} from '@tanstack/react-query';
 import moment from 'moment';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {getTimeZone} from 'react-native-localize';
 import useLanguageStore from '../../../store/languageStore';
+import {useAIReportStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {QuestionnaireItem} from '../../../types/personalisedai';
 import {
@@ -14,7 +14,6 @@ import {
 import {errorToast} from '../../../utils/toast';
 import RoundedButton from '../../components/RoundedButton';
 import CustomText from '../../components/Text';
-import {GET_PREVENTIX_PERSONALISED_AI} from '../../constants/hooks';
 import usePostAIQuestionnaire from '../../hooks/api/usePostAIQuestionnaire';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useGetDeviceLocale from '../../hooks/useGetDeviceLocale';
@@ -37,11 +36,11 @@ const getOptions = (
 };
 
 const ConclusionInformation = ({content}: any) => {
-  const queryClient = useQueryClient();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
   const {isEnglish} = useGetDeviceLocale();
   const {showLoader, hideLoader} = useFullPageLoader();
+  const {setCurrentQuestionAnswers} = useAIReportStore();
   const currentQuestions = content;
 
   const {mutateAsync: postQuestionnaire} = usePostAIQuestionnaire({
@@ -49,11 +48,9 @@ const ConclusionInformation = ({content}: any) => {
     onError: () => {
       return errorToast(languages?.generic_error_message);
     },
-    onSuccess: async (_, payload) => {
+    onSuccess: async (data, payload) => {
       if (payload.eng_choices === 'Yes') {
-        await queryClient.invalidateQueries({
-          queryKey: [GET_PREVENTIX_PERSONALISED_AI],
-        });
+        setCurrentQuestionAnswers(data);
         return navigation.navigate('PersonalisedAI');
       }
       if (payload.eng_choices === 'Exit') {

@@ -11,6 +11,7 @@ import {getTimeZone} from 'react-native-localize';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {QuestionnaireBackground} from '../../../assets';
 import useLanguageStore from '../../../store/languageStore';
+import {useAIReportStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {QuestionnaireItem} from '../../../types/personalisedai';
 import {
@@ -35,8 +36,8 @@ const PersonalisedAI = () => {
   const {languages} = useLanguageStore();
   const {showLoader, hideLoader} = useFullPageLoader();
   const [selectedAnswers, setSelectedAnswers] = useState<any>('');
-  const [currentQuestionAnswers, setCurrentQuestionAnswers] =
-    useState<QuestionnaireItem>();
+  const {currentQuestionAnswers, setCurrentQuestionAnswers} =
+    useAIReportStore();
   const {isEnglish} = useGetDeviceLocale();
 
   const {
