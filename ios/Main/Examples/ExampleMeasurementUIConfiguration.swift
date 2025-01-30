@@ -22,8 +22,8 @@ extension MeasurementUIConfiguration {
         let uiConfig = MeasurementUIConfiguration.defaultLegacyConfiguration
         
         // Customize Images
-        uiConfig.logoImage = UIImage(named: "example_healthie_logo")
-        uiConfig.heartRateImage = UIImage(named: "example_heart_shape")
+        uiConfig.logoImage = UIImage(named: "BootSplashLogo")
+        uiConfig.heartRateImage = UIImage(named: "BootSplashLogo")
         uiConfig.lightingQualityStarsFilledImage = UIImage(named: "example_light_full")
         uiConfig.lightingQualityStarsEmptyImage = UIImage(named: "example_light_empty")
         

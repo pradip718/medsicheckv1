@@ -123,7 +123,7 @@ import AnuraCore
       }
     }
 
-    let uiConfig = MeasurementUIConfiguration.defaultConfiguration
+    let uiConfig = MeasurementUIConfiguration.defaultConfiguration 
     
     if let logoImage = uiConfigDic["logoImage"] as? String {
       uiConfig.logoImage = UIImage(named: logoImage)

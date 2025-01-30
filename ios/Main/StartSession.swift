@@ -81,31 +81,53 @@ import AnuraCore
   }
   
   func presentAnuraMeasurementViewController(sdkConfig: Data) {
-    let config = self.measurementDefaultConfig ?? .defaultConfiguration
-    let uiConfig = self.measurementDefaultUIConfig ?? .defaultConfiguration
+      let config = self.measurementDefaultConfig ?? .defaultConfiguration
+      let uiConfig = self.measurementDefaultUIConfig ?? .defaultConfiguration
 
-    // Set sdkConfig to measurement config
-    config.studyFile = sdkConfig
-            
-    // Create Face Tracker
-    let faceTracker = MediaPipeFaceTracker(quality: .high)
-    
-    // Create Anura Measurement View Controller
-    let viewController = AnuraMeasurementViewController(measurementConfiguration: config,
-                                                        uiConfiguration: uiConfig,
-                                                        faceTracker: faceTracker)
-    
-    // Set Delegate
-    viewController.delegate = measurementDelegate
-    
-    // Pass the Anura user struct to the measurement delegate
-    measurementDelegate.user = user
-        
-    // Present View Controller
-    RCTPresentedViewController()?.present(viewController, animated: true) {
-      print("started Measurement")
-    }
+      // Set sdkConfig to measurement config
+      config.studyFile = sdkConfig
+      
+      // Create Face Tracker
+      let faceTracker = MediaPipeFaceTracker(quality: .high)
+      
+      // Create Anura Measurement View Controller
+      let viewController = AnuraMeasurementViewController(measurementConfiguration: config,
+                                                          uiConfiguration: uiConfig,
+                                                          faceTracker: faceTracker)
+      
+      // Set Delegate
+      viewController.delegate = measurementDelegate
+      
+      // Pass the Anura user struct to the measurement delegate
+      measurementDelegate.user = user
+      
+      // Add the Anura logo image to the top of the view
+      let logoImageView = UIImageView(image: UIImage(named: "medsi_check_navbar"))
+      
+      // Check if the image exists
+      if let logoImage = logoImageView.image {
+          logoImageView.contentMode = .scaleAspectFit
+          logoImageView.translatesAutoresizingMaskIntoConstraints = false
+          
+          // Adding the image view to the AnuraMeasurementViewController's view
+          viewController.view.addSubview(logoImageView)
+          
+          // Set constraints for the image to be at the top
+          NSLayoutConstraint.activate([
+              logoImageView.topAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.topAnchor, constant: 2),
+              logoImageView.centerXAnchor.constraint(equalTo: viewController.view.centerXAnchor),
+              logoImageView.widthAnchor.constraint(equalTo: viewController.view.widthAnchor, multiplier: 0.5), // Adjust width as needed
+                 logoImageView.heightAnchor.constraint(equalTo: logoImageView.widthAnchor, multiplier: 0.4) // Make height half of the width
+             ])
+      }
+      
+      // Present the view controller
+      RCTPresentedViewController()?.present(viewController, animated: true) {
+          print("started Measurement")
+      }
   }
+
+
   
   // MARK: Error Handling
   private func startupFlowError(_ error: Error) {
