@@ -382,11 +382,11 @@ class AnuraExampleMeasurementActivity :
      * This method is called after MeasurementPipeline and MeasurementView have finished setting up.
      * As an example, this method simply displays the version number of DeepAffex Extraction Library
      */
-    private fun setupCustomViews() {
-        val dfxIDText = findViewById<TextView>(R.id.dfx_sdk_version)
-        dfxIDText.setTextColor(measurementUIConfig.statusMessagesTextColor)
-        dfxIDText.text =  getString(R.string.dfx_id_version, core.dfxSdkID, core.coreSdkVersion)
-    }
+    // private fun setupCustomViews() {
+    //     val dfxIDText = findViewById<TextView>(R.id.dfx_sdk_version)
+    //     dfxIDText.setTextColor(measurementUIConfig.statusMessagesTextColor)
+    //     dfxIDText.text =  getString(R.string.dfx_id_version, core.dfxSdkID, core.coreSdkVersion)
+    // }
 
     //endregion Common Methods
 
@@ -1019,9 +1019,12 @@ class AnuraExampleMeasurementActivity :
 
         measurementView.setMeasurementUIConfiguration(measurementUIConfig)
 
-        getResource(MeasurementUIConfig.logoImage)?.let {
-            measurementView.setIconImageResource(it)
-        }
+        
+        measurementView.setIconImageResource(R.drawable.medsi_check)
+        
+        // getResource(MeasurementUIConfig.logoImage)?.let {
+        //     measurementView.setIconImageResource(it)
+        // }
 
         MeasurementUIConfig.showCountdown?.let {
             measurementView.showCountdown(it)
@@ -1193,7 +1196,7 @@ class AnuraExampleMeasurementActivity :
          */
         setupMeasurementView()
         setupMeasurementPipeline()
-        setupCustomViews()
+        // setupCustomViews()
 
         /**
          * Connect to DeepAffex Cloud
