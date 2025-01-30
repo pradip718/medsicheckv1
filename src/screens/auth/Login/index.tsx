@@ -254,11 +254,11 @@ const Login = () => {
       colors={['#6583FF', '#3E64FF']}
       style={styles.linearGradient}>
       <ImageBackground source={AuthBackground as any} className="flex-1">
-        <KeyboardAwareScrollView
-          bounces={false}
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={styles.contentContainer}>
-          <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container}>
+          <KeyboardAwareScrollView
+            bounces={false}
+            keyboardShouldPersistTaps="handled"
+            className="grow">
             <View
               // style={styles.content}
               className="justify-between h-full">
@@ -368,8 +368,8 @@ const Login = () => {
                 </View>
               </View>
             </View>
-          </SafeAreaView>
-        </KeyboardAwareScrollView>
+          </KeyboardAwareScrollView>
+        </SafeAreaView>
       </ImageBackground>
     </LinearGradient>
   );
@@ -379,9 +379,9 @@ const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
   },
-  contentContainer: {
-    flexGrow: 1,
-  },
+  // contentContainer: {
+  //   flexGrow: 1,
+  // },
   container: {
     paddingHorizontal: 28,
     paddingTop: 20,
