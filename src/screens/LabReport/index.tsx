@@ -14,6 +14,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import RNFetchBlob from 'rn-fetch-blob';
 import {QuestionnaireBackground} from '../../../assets';
 import useLanguageStore from '../../../store/languageStore';
+import {useLabReportStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {QuestionnaireItem} from '../../../types/personalisedai';
 import {isAndroid} from '../../../utils';
@@ -41,8 +42,8 @@ const LabReport = () => {
   const {languages} = useLanguageStore();
   const {showLoader, hideLoader} = useFullPageLoader();
   const [selectedAnswers, setSelectedAnswers] = useState<any>('');
-  const [currentQuestionAnswers, setCurrentQuestionAnswers] =
-    useState<QuestionnaireItem>();
+  const {currentQuestionAnswers, setCurrentQuestionAnswers} =
+    useLabReportStore();
   const {isEnglish} = useGetDeviceLocale();
 
   const {
