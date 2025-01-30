@@ -38,16 +38,18 @@ function App(): JSX.Element {
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [isAWSKeyFetching, setIsAWSKeyFetching] = useState(false);
 
-  Sentry.init({
-    environment: Config.Environment,
-    dsn:
-      languages?.sentry_dsn ||
-      'https://6f60a90abe9479185d953565e52b9770@o4507020983926784.ingest.us.sentry.io/4507020986679296',
-    tracesSampleRate: 1.0,
-    release: DeviceInfo.getVersion(),
-    dist: DeviceInfo.getBuildNumber(),
-    enableNative: true,
-  });
+  if (!__DEV__) {
+    Sentry.init({
+      environment: Config.Environment,
+      dsn:
+        languages?.sentry_dsn ||
+        'https://6f60a90abe9479185d953565e52b9770@o4507020983926784.ingest.us.sentry.io/4507020986679296',
+      tracesSampleRate: 1.0,
+      release: DeviceInfo.getVersion(),
+      dist: DeviceInfo.getBuildNumber(),
+      enableNative: true,
+    });
+  }
 
   const isDarkMode = useColorScheme() === 'dark';
   const {visible, signoutModalVisibility} = useLoaderStore();
