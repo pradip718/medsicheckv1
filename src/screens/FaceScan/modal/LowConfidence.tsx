@@ -82,7 +82,7 @@ const LowConfidence = ({
     <LinearGradient
       key={key}
       colors={['#0BC899', '#1A6AD7']}
-      className="rounded-full py-2 px-4 w-[30%]">
+      className="rounded-full py-2 px-4 mb-2 min-w-[30%]">
       <RoundedButton onPress={onPress} resetStyle className="">
         <CustomText className="text-base font-isidoraBold text-white text-center">
           {text}
@@ -117,7 +117,7 @@ const LowConfidence = ({
           </View>
         ))}
 
-      <View className="my-4 flex-row justify-center space-x-2">
+      <View className="my-4 flex-row justify-center space-x-2 flex-wrap">
         {buttonsConfig
           .filter(button => button.condition)
           .map((button, index) => renderButton(button, index))}
