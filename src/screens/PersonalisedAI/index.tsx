@@ -11,7 +11,10 @@ import {getTimeZone} from 'react-native-localize';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {QuestionnaireBackground} from '../../../assets';
 import useLanguageStore from '../../../store/languageStore';
-import {useAIReportStore} from '../../../store/smartReportStore';
+import {
+  useAIReportFacescanStore,
+  useAIReportStore,
+} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {QuestionnaireItem} from '../../../types/personalisedai';
 import {
@@ -29,12 +32,17 @@ import useGetAIQuestionnaire from '../../hooks/api/useGetAIQuestionnaire';
 import usePostAIQuestionnaire from '../../hooks/api/usePostAIQuestionnaire';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useGetDeviceLocale from '../../hooks/useGetDeviceLocale';
+import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import QuestionAnswer from './QuestionAnswer';
 
 const PersonalisedAI = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
   const {showLoader, hideLoader} = useFullPageLoader();
+  const {setActionData} = useAIReportFacescanStore();
+
+  const {startScan} = usePrepareFacescan();
+
   const [selectedAnswers, setSelectedAnswers] = useState<any>('');
   const {currentQuestionAnswers, setCurrentQuestionAnswers} =
     useAIReportStore();
@@ -138,10 +146,11 @@ const PersonalisedAI = () => {
       }
       case answers?.includes('Initiate Scan') ||
         answers?.includes('Iniciar escaneo'): {
-        return navigation?.navigate('FaceScanCamera', {
+        setActionData({
           fromScreen: 'PersonalisedAI',
           action: async () => await submitQuestionnaire(answers),
         });
+        return startScan();
       }
       default: {
         return submitQuestionnaire(answers);

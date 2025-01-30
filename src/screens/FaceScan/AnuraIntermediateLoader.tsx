@@ -8,6 +8,7 @@ import React from 'react';
 import {ActivityIndicator, View} from 'react-native';
 import uuid from 'react-native-uuid';
 import useBinahConfigStore from '../../../store/binahConfigStore';
+import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import BackgroundImage from '../../components/BackgroundImage';
 import CustomText from '../../components/Text';
@@ -20,9 +21,14 @@ const AnuraIntermediateLoader = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const {anuraConfig} = useBinahConfigStore();
+  const {actionData, executeAction} = useAIReportFacescanStore();
 
   const {mutateAsync: postReadings} = usePostReadings({
-    onSuccess: (data, variable) => {
+    onSuccess: async (data, variable) => {
+      if (actionData?.fromScreen === 'PersonalisedAI') {
+        await executeAction();
+        return navigation.goBack();
+      }
       const {
         payload: {reading_id},
       } = variable;
@@ -49,7 +55,6 @@ const AnuraIntermediateLoader = () => {
     EventBridge.addReusltsListener(async (name, data) => {
       // clearInterval(timer);
       if (name == Event.anuraMeasurementGetResultsSuccess) {
-        console.log('data', data);
         await postReadings({
           payload: {
             data: data?.results,

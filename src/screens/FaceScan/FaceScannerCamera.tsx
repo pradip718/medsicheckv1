@@ -28,6 +28,7 @@ import {twMerge} from 'tailwind-merge';
 import useAlertStore from '../../../store/alertStore';
 import useBinahConfigStore from '../../../store/binahConfigStore';
 import useLanguageStore from '../../../store/languageStore';
+import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
 import {errorToast} from '../../../utils/toast';
@@ -68,10 +69,6 @@ type ValidityCount = {
 };
 
 const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
-  const {fromScreen, action} = route?.params || {
-    fromScreen: '',
-    action: async () => {},
-  };
   const cameraLocation = 'front';
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -83,6 +80,7 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
   const {showLoader, hideLoader} = useFullPageLoader();
   const {isLandscape} = useScreenOrientation();
   const {showAlert} = useAlertStore();
+  const {actionData, executeAction} = useAIReportFacescanStore();
 
   const [fakeRecording, setFakeRecording] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -219,8 +217,8 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
   };
 
   const handleReportSuccess = async (data: any) => {
-    if (fromScreen === 'PersonalisedAI' && action) {
-      await action();
+    if (actionData?.fromScreen === 'PersonalisedAI') {
+      await executeAction();
       return navigation.goBack();
     }
 
