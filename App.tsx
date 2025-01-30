@@ -8,7 +8,9 @@
 import * as Sentry from '@sentry/react-native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import React, {useEffect, useState} from 'react';
-import {LogBox, NativeModules, StatusBar, useColorScheme} from 'react-native';
+import {LogBox, StatusBar, useColorScheme} from 'react-native';
+import Config from 'react-native-config';
+import DeviceInfo from 'react-native-device-info';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-gesture-handler';
 import {PaperProvider} from 'react-native-paper';
@@ -36,14 +38,16 @@ function App(): JSX.Element {
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [isAWSKeyFetching, setIsAWSKeyFetching] = useState(false);
 
-  if (!__DEV__) {
-    Sentry.init({
-      dsn:
-        languages?.sentry_dsn ||
-        'https://6f60a90abe9479185d953565e52b9770@o4507020983926784.ingest.us.sentry.io/4507020986679296',
-      tracesSampleRate: 1.0,
-    });
-  }
+  Sentry.init({
+    environment: Config.Environment,
+    dsn:
+      languages?.sentry_dsn ||
+      'https://6f60a90abe9479185d953565e52b9770@o4507020983926784.ingest.us.sentry.io/4507020986679296',
+    tracesSampleRate: 1.0,
+    release: DeviceInfo.getVersion(),
+    dist: DeviceInfo.getBuildNumber(),
+    enableNative: true,
+  });
 
   const isDarkMode = useColorScheme() === 'dark';
   const {visible, signoutModalVisibility} = useLoaderStore();
@@ -96,8 +100,6 @@ function App(): JSX.Element {
   if (isAWSKeyFetching) {
     return <></>;
   }
-
-  console.log('NativeModules', NativeModules?.RNTEventBridge);
 
   return (
     <>
