@@ -62,7 +62,9 @@ export const ErrorFallback = ({resetError, error}: FallbackComponentProps) => {
             resetStyle
             className="bg-green-400 px-8 py-2"
             onPress={resetError}>
-            <CustomText className="font-isidoraSemiBold">Retry</CustomText>
+            <CustomText className="font-isidoraSemiBold">
+              {languages?.retry_button}
+            </CustomText>
           </RoundedButton>
           <RoundedButton
             resetStyle

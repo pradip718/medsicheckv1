@@ -114,7 +114,6 @@ function App(): JSX.Element {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Toast config={toastConfig} />
             {isMaintenanceMode ? <Maintenance /> : <RootNavigator />}
-            <Toast />
             <FullScreenLoader visible={visible} />
             <SignoutModal visible={signoutModalVisibility} />
             <AlertModal />
