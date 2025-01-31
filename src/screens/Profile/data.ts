@@ -1,4 +1,4 @@
-import {isObject} from 'lodash';
+import {isObject, toLower} from 'lodash';
 import useLanguageStore from '../../../store/languageStore';
 import {User} from '../../../types/users/user';
 
@@ -54,8 +54,8 @@ export const BODY_MASS_INDEX_INFORMATION: {
 ];
 
 export const GENDER = [
-  {label: languages?.male, value: 'male'},
-  {label: languages?.female, value: 'female'},
+  {label: languages?.male, value: toLower(languages?.male)},
+  {label: languages?.female, value: toLower(languages?.female)},
 ];
 
 export const RELATIONSHIPS = isObject(languages?.relation_list)

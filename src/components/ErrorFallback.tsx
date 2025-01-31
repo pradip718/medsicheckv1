@@ -1,5 +1,6 @@
+import * as Sentry from '@sentry/react-native';
 import {Text, View} from 'moti';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {FallbackComponentProps} from 'react-native-error-boundary';
 import useLanguageStore from '../../store/languageStore';
@@ -12,6 +13,12 @@ import CustomText from './Text';
 export const ErrorFallback = ({resetError, error}: FallbackComponentProps) => {
   const {handleSignout} = useSignout();
   const {languages} = useLanguageStore();
+
+  useEffect(() => {
+    if (error && !__DEV__) {
+      Sentry.captureException(error);
+    }
+  }, [error]);
 
   return (
     <SafeAreaView className="h-full bg-white">
