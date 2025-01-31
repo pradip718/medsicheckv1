@@ -13,15 +13,18 @@ import {MainStackParamList} from '../../../types/navigation';
 import BackgroundImage from '../../components/BackgroundImage';
 import CustomText from '../../components/Text';
 import Event from '../../config/Event';
-import EventBridge from '../../config/EventBridge';
+// import EventBridge from '../../config/EventBridge';
+import useLanguageStore from '../../../store/languageStore';
+import useEventBridge from '../../config/EventBridge';
 import usePostReadings from '../../hooks/api/usePostReading';
 import customColor from '../../theme/customColor';
 
 const AnuraIntermediateLoader = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-
+  const {languages} = useLanguageStore();
   const {anuraConfig} = useBinahConfigStore();
   const {actionData, executeAction} = useAIReportFacescanStore();
+  const EventBridge = useEventBridge();
 
   const {mutateAsync: postReadings} = usePostReadings({
     onSuccess: async (data, variable) => {
@@ -52,7 +55,7 @@ const AnuraIntermediateLoader = () => {
   }, []);
 
   const addResultsListener = async () => {
-    EventBridge.addReusltsListener(async (name, data) => {
+    EventBridge.addResultsListener(async (name, data) => {
       // clearInterval(timer);
       if (name == Event.anuraMeasurementGetResultsSuccess) {
         await postReadings({
@@ -80,7 +83,7 @@ const AnuraIntermediateLoader = () => {
     <BackgroundImage>
       <View className="h-full justify-center items-center">
         <CustomText className="font-isidoraSemiBold text-lg text-ultramarineBlue">
-          Analyzing Your Data And Generating Report
+          {languages?.anura_intermediate_loader}
         </CustomText>
 
         <ActivityIndicator

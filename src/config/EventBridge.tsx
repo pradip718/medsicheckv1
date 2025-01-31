@@ -13,7 +13,10 @@
  *      NURALOGIX CORP SOFTWARE LICENSE AGREEMENT.
  */
 
+import {useEffect, useRef} from 'react';
 import {LogBox, NativeEventEmitter, NativeModules} from 'react-native';
+// import useLoaderStore from '../../store/loaderStore.js';
+import useFullPageLoader from '../hooks/useFullPageLoader';
 import Action from './Action.js';
 import Event from './Event.js';
 
@@ -22,95 +25,108 @@ LogBox.ignoreLogs(['new NativeEventEmitter']);
 const NativeBridge = NativeModules.RNTEventBridge;
 const NativeModule = new NativeEventEmitter(NativeBridge);
 
-export default class EventBridge {
-  static isAddedCommonLisener: boolean = false;
-  static isAddedResultsLisener: boolean = false;
+const useEventBridge = () => {
+  const isAddedCommonListener = useRef(false);
+  const isAddedResultsListener = useRef(false);
+  const {hideLoader} = useFullPageLoader();
 
-  static sendEvent(name: string, body: any) {
+  const sendEvent = (name: string, body: any) => {
     NativeBridge.doSomething(name, JSON.stringify(body));
-  }
+  };
 
-  static addCommonListener(commonCallback: (name: String, data: any) => void) {
-    if (!EventBridge.isAddedCommonLisener) {
+  const addCommonListener = (
+    commonCallback: (name: String, data: any) => void,
+  ) => {
+    if (!isAddedCommonListener.current) {
       NativeBridge.anura_startCommonObserving();
       console.log('rn--js...addCommonListener');
-      EventBridge.isAddedCommonLisener = true;
+      isAddedCommonListener.current = true;
       NativeModule.addListener(Action.reminderCommon, data => {
         const actionName = data.nativeActionName;
         if (actionName == Action.stopCommonObserving) {
-          this.removeCommonListener();
+          removeCommonListener();
         } else {
           commonCallback(actionName, data.data);
         }
-        this.parseActionsFromNative(actionName, data.data);
+        parseActionsFromNative(actionName, data.data);
       });
     }
-  }
+  };
 
-  static addReusltsListener(
+  const addResultsListener = (
     resultsCallback: (name: String, data: any) => void,
-  ) {
-    if (!EventBridge.isAddedResultsLisener) {
+  ) => {
+    if (!isAddedResultsListener.current) {
       NativeBridge.anura_startResultsObserving();
-      console.log('rn--js...addReusltsListener');
-      EventBridge.isAddedResultsLisener = true;
+      console.log('rn--js...addResultsListener');
+      isAddedResultsListener.current = true;
       NativeModule.addListener(Action.reminderResults, data => {
-        var actionName = data.nativeActionName;
+        const actionName = data.nativeActionName;
         if (actionName == Action.stopResultsObserving) {
-          this.removeResultsListener();
+          removeResultsListener();
         } else {
           resultsCallback(actionName, data.data);
         }
-        this.parseActionsFromNative(actionName, data.data);
+        parseActionsFromNative(actionName, data.data);
       });
     }
-  }
+  };
 
-  static parseActionsFromNative(name: String, data: any) {
+  const parseActionsFromNative = (name: String, data: any) => {
     if (name == Event.anuraMeasurementPageDidLoad) {
-      // Called when the Anura Measurement page has finished loading
       console.log('rn--js...anuraMeasurementPageDidLoad');
     } else if (name == Event.anuraMeasurementPageDidAppear) {
-      // Called when the measurement page appears on the screen
+      hideLoader();
       console.log('rn--js...anuraMeasurementPageDidAppear');
     } else if (name == Event.anuraMeasurementPageDidDisappear) {
-      // Called when the measurement page disappears from the screen
       console.log('rn--js...anuraMeasurementPageDidDisappear');
     } else if (name == Event.anuraMeasurementPageIsReadyToMeasure) {
-      // Called when the camera is calibrated and ready to measure
       console.log('rn--js...anuraMeasurementPageIsReadyToMeasure');
     } else if (name == Event.anuraMeasurementPageDidStartMeasuring) {
-      // Called when countdown has finished and Anura is about to start the measurement
       console.log('rn--js...anuraMeasurementPageDidStartMeasuring');
     } else if (name == Event.anuraMeasurementPageDidFinishMeasuring) {
-      // Called when the measurement is complete
       console.log('rn--js...anuraMeasurementPageDidFinishMeasuring');
     } else if (name == Event.anuraMeasurementGetResultsSuccess) {
-      // Called when reveiving the measurement results
       console.log(
         `rn--js...anuraMeasurementGetResultsSuccess, results:${JSON.stringify(
           data,
         )}`,
       );
     } else if (name == Event.anuraMeasurementGetResultsFailure) {
-      // Called when the measurement results fails to be received
       console.log(
         `rn--js...anuraMeasurementGetResultsFailure, errorCode:${data.errorCode}, errorDescription:${data.errorDescription}`,
       );
     } else {
       console.log(`rn--js...other, name: ${name}`);
     }
-  }
+  };
 
-  static removeCommonListener() {
+  const removeCommonListener = () => {
     console.log('rn--js...removeCommonListener');
-    EventBridge.isAddedCommonLisener = false;
+    isAddedCommonListener.current = false;
     NativeModule.removeAllListeners(Action.reminderCommon);
-  }
+  };
 
-  static removeResultsListener() {
+  const removeResultsListener = () => {
     console.log('rn--js...removeResultsListener');
-    EventBridge.isAddedResultsLisener = false;
+    isAddedResultsListener.current = false;
     NativeModule.removeAllListeners(Action.reminderResults);
-  }
-}
+  };
+
+  useEffect(() => {
+    return () => {
+      removeCommonListener();
+      removeResultsListener();
+    };
+  }, []);
+
+  return {
+    sendEvent,
+    addCommonListener,
+    addResultsListener,
+    removeCommonListener,
+    removeResultsListener,
+  };
+};
+
+export default useEventBridge;

@@ -11,15 +11,20 @@ import {
 } from '../../utils/methods';
 import Action from '../config/Action';
 import Event from '../config/Event';
-import EventBridge from '../config/EventBridge';
+// import EventBridge from '../config/EventBridge';
+import useEventBridge from '../config/EventBridge';
 import useGetRescanConfiguration from './api/useGetRescanConfiguration';
 import useGetUserAttributes from './api/useGetUserAttributes';
 import useFetchBinahConfig from './useFetchBinahConfig';
+import useFullPageLoader from './useFullPageLoader';
 
 const usePrepareFacescan = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {anuraConfig} = useBinahConfigStore();
   const {showAlert} = useAlertStore();
+  const {showLoader} = useFullPageLoader();
+
+  const EventBridge = useEventBridge();
 
   const {data: users} = useGetUserAttributes();
   const {data: rescanConfigurations} = useGetRescanConfiguration();
@@ -78,6 +83,7 @@ const usePrepareFacescan = () => {
         navigation?.navigate('FaceScanCamera');
       }
       if (sdk_name === 'nuralogix') {
+        showLoader();
         startAnuraScan();
       }
     } else {

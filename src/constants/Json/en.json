@@ -615,5 +615,6 @@
   "questionnaire_disclaimer_general_info_completed": "Feel free to view or edit your existing profile details. 'View details' button",
 
   "report_load_error": "Unable to load report. Please try again later.",
-  "round_off_vitals": ["HR_BPM"]
+  "round_off_vitals": ["HR_BPM"],
+  "anura_intermediate_loader": "Analyzing Your Data And Generating Report"
 }
