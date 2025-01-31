@@ -94,7 +94,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
       const adminProfileId = familyMembers?.find(
         profile => profile?.relation === 'Admin',
       );
-      return await getFamilyAttributes(adminProfileId?.user_id || '');
+      return await getFamilyAttributes(adminProfileId?.user_id ?? '');
     },
   });
 
@@ -111,7 +111,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
     defaultValues: {
       given_name: '',
       family_name: '',
-      gender: 'male',
+      gender: GENDER[0].value,
       email: '',
       phone_number: '',
       birthdate: moment(new Date()).format('DD/MM/YYYY'),
@@ -139,7 +139,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
         reset({
           given_name: details?.given_name,
           family_name: details?.family_name,
-          gender: details?.gender,
+          gender: details?.gender ?? GENDER[0].value,
           email: details?.email,
           relation: details?.email,
           phone_number: details?.phone_number,

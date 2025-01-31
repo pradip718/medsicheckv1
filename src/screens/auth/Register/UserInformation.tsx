@@ -54,16 +54,19 @@ type UserInformationRouteProp = RouteProp<
 >;
 
 interface UserInformationProps {
-  route: UserInformationRouteProp;
+  readonly route: UserInformationRouteProp;
 }
 
-export default function UserInformation({route}: UserInformationProps) {
+export default function UserInformation({
+  route,
+}: Readonly<UserInformationProps>) {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const queryClient = useQueryClient();
   const {languages} = useLanguageStore();
   const {setCurrentActiveProfileId} = useUserProfileStore();
   const {fromScreen} = route?.params || {};
   const {data: users} = useGetUserAttributes();
+
   const {data: familyMembers, refetch: getFamilyMembers} =
     useGetFamilyMembers();
   const {refetch: getAccountStatus} = useGetAccountStatus({
@@ -88,11 +91,10 @@ export default function UserInformation({route}: UserInformationProps) {
           screen: 'Home',
         }),
       );
-      return true;
     } else {
       setSignoutModalVisibility(true);
-      return true;
     }
+    return true;
   };
   useBackButton(showSignoutModal);
 
@@ -107,7 +109,7 @@ export default function UserInformation({route}: UserInformationProps) {
     defaultValues: {
       given_name: '',
       family_name: '',
-      gender: 'male',
+      gender: GENDER[0].value,
       birthdate: moment(new Date()).format('DD/MM/YYYY'),
       height: '',
       weight: '',
@@ -123,13 +125,13 @@ export default function UserInformation({route}: UserInformationProps) {
       reset({
         given_name: users?.given_name || '',
         family_name: users?.family_name || '',
-        gender: users?.gender || 'male',
+        gender: users?.gender ?? GENDER[0].value,
         birthdate: users?.birthdate || moment(new Date()).format('DD/MM/YYYY'),
         height: users?.height || '',
         weight: users?.weight || '',
         height_unit: users?.height_unit || 'cm',
         weight_unit: users?.weight_unit || 'kg',
-        middle_name: users?.middle_name || '',
+        middle_name: users?.middle_name ?? '',
       });
     }
   }, [users, reset]);
@@ -139,7 +141,7 @@ export default function UserInformation({route}: UserInformationProps) {
     const admin = familyData?.find(
       eachMember => eachMember.relation === 'Admin',
     );
-    setCurrentActiveProfileId(admin?.profile_id || '');
+    setCurrentActiveProfileId(admin?.profile_id ?? '');
   };
 
   const handlePostAdmin = async (payload: User) => {
@@ -189,7 +191,6 @@ export default function UserInformation({route}: UserInformationProps) {
   const handleOnSuccess = async () => {
     try {
       const {data: accountStatus} = await getAccountStatus();
-
       if (accountStatus?.approved) {
         navigateBasedOnPrevRoute();
       } else {
@@ -199,7 +200,9 @@ export default function UserInformation({route}: UserInformationProps) {
       }
 
       await queryClient.invalidateQueries({queryKey: ['user-attributes']});
-      await postOnboardingStep({milestone: 'user-details-submitted'});
+      if (!users?.user_id) {
+        await postOnboardingStep({milestone: 'user-details-submitted'});
+      }
       reset();
     } catch (error) {
       console.error('Error handling onSuccess:', error);

@@ -1,10 +1,11 @@
+import {toLower} from 'lodash';
 import useLanguageStore from '../../../../store/languageStore';
 
 const languages = useLanguageStore?.getState()?.languages;
 
 export const GENDER = [
-  {label: languages?.male, value: 'male'},
-  {label: languages?.female, value: 'female'},
+  {label: languages?.male, value: toLower(languages?.male)},
+  {label: languages?.female, value: toLower(languages?.female)},
 ];
 
 export const HEIGHT = [

@@ -3,7 +3,7 @@ export type User = {
   bmi: string;
   bmi_category: string;
   birthdate: string;
-  gender: 'male' | 'female' | 'other';
+  gender: string;
   given_name: string;
   family_name: string;
   middle_name?: string;
