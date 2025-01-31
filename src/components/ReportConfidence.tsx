@@ -62,10 +62,7 @@ export default function ReportConfidence(props: ReportConfidenceProps) {
       <View className={twMerge('border rounded p-2', props.classNameValue)}>
         <Pressable
           android_ripple={{color: 'rgba(0,0,0,0.1)', borderless: true}}
-          className={twMerge(
-            'flex-row justify-between items-center',
-            isDropdownDisabled && 'opacity-50',
-          )}
+          className={twMerge('flex-row justify-between items-center')}
           onPress={onChangeConfidenceVisibility}
           disabled={isDropdownDisabled}>
           <View className="flex-1">
