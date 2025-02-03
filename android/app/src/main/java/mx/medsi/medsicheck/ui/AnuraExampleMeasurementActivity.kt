@@ -1020,7 +1020,7 @@ class AnuraExampleMeasurementActivity :
         measurementView.setMeasurementUIConfiguration(measurementUIConfig)
 
         
-        measurementView.setIconImageResource(R.drawable.medsi_check)
+        measurementView.setIconImageResource(0)
         
         // getResource(MeasurementUIConfig.logoImage)?.let {
         //     measurementView.setIconImageResource(it)
