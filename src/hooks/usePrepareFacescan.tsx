@@ -36,6 +36,7 @@ const usePrepareFacescan = () => {
       Action.synchronizeAppConfiguration,
       anuraConfig?.sdk_value,
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [anuraConfig]);
 
   const startAnuraScan = () => {
@@ -83,6 +84,7 @@ const usePrepareFacescan = () => {
         navigation?.navigate('FaceScanCamera');
       }
       if (sdk_name === 'nuralogix') {
+        navigation?.navigate('PrepareFacescan');
         showLoader();
         startAnuraScan();
       }

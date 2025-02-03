@@ -616,5 +616,6 @@
 
   "report_load_error": "Unable to load report. Please try again later.",
   "round_off_vitals": ["HR_BPM"],
-  "anura_intermediate_loader": "Analyzing Your Data And Generating Report"
+  "anura_intermediate_loader": "Analyzing Your Data And Generating Report",
+  "anura_preparation_loader": "Processing..."
 }

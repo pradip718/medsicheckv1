@@ -14,12 +14,15 @@ import BackgroundImage from '../../components/BackgroundImage';
 import CustomText from '../../components/Text';
 import Event from '../../config/Event';
 // import EventBridge from '../../config/EventBridge';
+import {useQueryClient} from '@tanstack/react-query';
 import useLanguageStore from '../../../store/languageStore';
 import useEventBridge from '../../config/EventBridge';
+import {RESCAN_CONFIGURATION} from '../../constants/hooks';
 import usePostReadings from '../../hooks/api/usePostReading';
 import customColor from '../../theme/customColor';
 
 const AnuraIntermediateLoader = () => {
+  const queryClient = useQueryClient();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
   const {anuraConfig} = useBinahConfigStore();
@@ -28,6 +31,8 @@ const AnuraIntermediateLoader = () => {
 
   const {mutateAsync: postReadings} = usePostReadings({
     onSuccess: async (data, variable) => {
+      queryClient.invalidateQueries({queryKey: ['readings']});
+      queryClient.invalidateQueries({queryKey: [RESCAN_CONFIGURATION]});
       if (actionData?.fromScreen === 'PersonalisedAI') {
         await executeAction();
         return navigation.goBack();

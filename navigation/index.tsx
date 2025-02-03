@@ -25,6 +25,7 @@ import AboutApp from '../src/screens/AboutApp';
 import FaceScan from '../src/screens/FaceScan';
 import AnuraIntermediateLoader from '../src/screens/FaceScan/AnuraIntermediateLoader';
 import FaceScannerCamera from '../src/screens/FaceScan/FaceScannerCamera';
+import PrepareFacescan from '../src/screens/FaceScan/PrepareFacescan';
 import QRFaceScan from '../src/screens/FaceScan/QRFaceScan';
 import Feedbacks from '../src/screens/Feedbacks';
 import HealthWallet from '../src/screens/HealthWallet';
@@ -319,6 +320,7 @@ const RootNavigator = () => {
           <Stack.Screen name="ReportDetails" component={ReportDetails} />
           <Stack.Screen name="FaceScan" component={FaceScan} />
           <Stack.Screen name="FaceScanCamera" component={FaceScannerCamera} />
+          <Stack.Screen name="PrepareFacescan" component={PrepareFacescan} />
           <Stack.Screen
             name="AnuraIntermediateLoader"
             component={AnuraIntermediateLoader}
