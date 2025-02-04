@@ -128,7 +128,6 @@ function App(): JSX.Element {
       <QueryClientProvider client={queryClient}>
         <PaperProvider>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <Toast config={toastConfig} />
             {isMaintenanceMode ? <Maintenance /> : <RootNavigator />}
             <FullScreenLoader visible={visible} />
             <SignoutModal visible={signoutModalVisibility} />
@@ -136,6 +135,7 @@ function App(): JSX.Element {
             <AppUpdateModal
               triggerMaintenanceMode={() => setIsMaintenanceMode(true)}
             />
+            <Toast config={toastConfig} />
           </ErrorBoundary>
         </PaperProvider>
       </QueryClientProvider>
