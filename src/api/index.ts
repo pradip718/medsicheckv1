@@ -1,3 +1,4 @@
+import {Mutex} from 'async-mutex'; // Assuming you're using the `async-mutex` library
 import axios, {AxiosResponse} from 'axios';
 import {Platform} from 'react-native';
 import Config from 'react-native-config';
@@ -54,6 +55,32 @@ axiosInstance.interceptors.request.use(
   error => Promise.reject(error),
 );
 
+const signoutMutex = new Mutex(); // Create a mutex instance for signout
+
+async function handleSignout(skipSignout = false) {
+  const languages = useLanguageStore.getState().languages;
+  try {
+    if (!skipSignout) {
+      await signout(); // Only attempt signout if we have a valid token
+    }
+  } catch {
+    // Ensure navigation to login even if signout fails
+  } finally {
+    navigationRef.navigate('Login');
+    errorToast(languages.refresh_token_expiry);
+  }
+}
+
+async function ensureTokenRefresh() {
+  if (!refreshing_token) {
+    refreshing_token = refreshToken();
+    await refreshing_token;
+    refreshing_token = null;
+  } else {
+    await refreshing_token; // Wait for the ongoing refresh
+  }
+}
+
 axiosInstance.interceptors.response.use(
   response => response,
   async error => {
@@ -63,30 +90,29 @@ axiosInstance.interceptors.response.use(
     if (statusCode === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        refreshing_token = refreshing_token ? refreshing_token : refreshToken();
-        await refreshing_token;
-        refreshing_token = null;
-        return axios(originalRequest);
+        await ensureTokenRefresh();
+        return axios(originalRequest); // Retry request with refreshed token
       } catch (refreshError) {
         if (!originalRequest._signoutAttempted) {
           originalRequest._signoutAttempted = true;
-          try {
-            const languages = useLanguageStore.getState().languages;
-            await signout();
-            navigationRef.navigate('Login');
-            errorToast(languages.refresh_token_expiry);
-          } finally {
-            return Promise.reject(refreshError);
-          }
+          await handleSignout(true); // Skip signout as token is invalid
         }
+        return Promise.reject(refreshError);
       }
-    } else if (statusCode === 403 && !originalRequest._signoutAttempted) {
-      originalRequest._signoutAttempted = true;
-      const languages = useLanguageStore.getState().languages;
-      await signout();
-      navigationRef.navigate('Login');
-      errorToast(languages.refresh_token_expiry);
     }
+
+    if (statusCode === 403 && !originalRequest._signoutAttempted) {
+      const release = await signoutMutex.acquire();
+      try {
+        if (!originalRequest._signoutAttempted) {
+          originalRequest._signoutAttempted = true;
+          await handleSignout(false); // Attempt signout normally
+        }
+      } finally {
+        release();
+      }
+    }
+
     return Promise.reject(error);
   },
 );

@@ -7,6 +7,7 @@
 
 import * as Sentry from '@sentry/react-native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {AxiosError} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {LogBox, StatusBar, useColorScheme} from 'react-native';
 import Config from 'react-native-config';
@@ -30,7 +31,22 @@ import useLoaderStore from './store/loaderStore';
 import {toastConfig} from './utils/common';
 import {registerListenerWithFCM} from './utils/notification';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (failureCount, error) => {
+        if (error instanceof AxiosError && error.response) {
+          const statusCode = error.response.status;
+
+          if (statusCode === 400 || statusCode === 403) {
+            return false;
+          }
+        }
+        return failureCount < 3;
+      },
+    },
+  },
+});
 
 function App(): JSX.Element {
   const {languages} = useLanguageStore();
