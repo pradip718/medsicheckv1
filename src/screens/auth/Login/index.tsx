@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native';
 import {UseQueryResult, useQuery} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
+import {isEmpty} from 'lodash';
 import {AnimatePresence, View} from 'moti';
 import React, {useCallback, useState} from 'react';
 import {useForm} from 'react-hook-form';
@@ -103,6 +104,9 @@ const Login = () => {
 
   const fetchAndSetProfile = async () => {
     const {data: members, isError: isMembersError} = await getFamilyMembers();
+    if (!members || isEmpty(members)) {
+      return;
+    }
     const admin = members?.find(eachMember => eachMember?.relation === 'Admin');
     if (!isMembersError && !currentActiveProfileId) {
       setCurrentActiveProfileId(admin?.user_id ?? '');
