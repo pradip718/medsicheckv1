@@ -20,16 +20,16 @@ const SingleReportCard = () => {
   const {data: reportData} = useGetUserReading();
   const readingId = reportData?.data?.reading_data?.[0]?.reading_id;
   const {data: reportDetails} = useGetUserReadingDetail({
-    reading_id: readingId || '',
+    reading_id: readingId ?? '',
     enabled: !!readingId,
   });
 
   const onShare = async () => {
     try {
-      if (!reportDetails?.data) {
+      if (!reportDetails) {
         return;
       }
-      const readingData = reportDetails?.data?.readings?.[0]?.reading_data;
+      const readingData = reportDetails?.readings?.reading_data;
       let message = '';
       Object.entries(readingData).forEach(([key, value]) => {
         if (

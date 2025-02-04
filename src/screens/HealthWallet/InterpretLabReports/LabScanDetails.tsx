@@ -1,5 +1,4 @@
 import {RouteProp} from '@react-navigation/native';
-import {isEmpty} from 'lodash';
 import {SafeAreaView} from 'moti';
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -25,10 +24,10 @@ const LabScanDetails = ({route}: LabScanDetailProps) => {
   const {data: reading} = useGetUserReading();
   const {data: reportData} = useGetUserReadingDetail({
     staleTime: Infinity,
-    reading_id: readingId || '',
+    reading_id: readingId ?? '',
   });
   const {data: reports, isError: isReadingError} = useGetReportReadingById({
-    readingId: readingId || '',
+    readingId: readingId ?? '',
   });
 
   const filteredReading = reading?.data?.reading_data?.find(
@@ -42,7 +41,7 @@ const LabScanDetails = ({route}: LabScanDetailProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReadingError]);
 
-  const reportDetail = reports?.data?.readings?.[0];
+  const reportDetail = reports?.data?.readings;
   if (!readingId || !reportData || !reportDetail) {
     return (
       <SafeAreaView>
@@ -60,7 +59,7 @@ const LabScanDetails = ({route}: LabScanDetailProps) => {
         <Report
           reading={reportDetail}
           reportData={reportData}
-          filteredReading={isEmpty(filteredReading) ? null : filteredReading}
+          selectedReading={filteredReading}
         />
       </View>
     </SafeAreaView>

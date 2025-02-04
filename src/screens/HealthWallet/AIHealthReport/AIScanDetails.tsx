@@ -1,5 +1,4 @@
 import {RouteProp} from '@react-navigation/native';
-import {isEmpty} from 'lodash';
 import {SafeAreaView} from 'moti';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -22,15 +21,13 @@ const AIScanDetails = ({route}: AIScanDetailProps) => {
 
   const {data: reportData} = useGetUserReadingDetail({
     staleTime: Infinity,
-    reading_id: readingId || '',
+    reading_id: readingId ?? '',
   });
 
-  const reportDetail = reportData?.data?.readings?.find(
-    eachReading => eachReading.reading_id === readingId,
-  );
+  const reportDetail = reportData?.readings;
 
-  const filteredReading = reading?.data?.reading_data?.find(
-    eachReading => eachReading.reading_id === readingId,
+  const selectedReading = reading?.data?.reading_data?.find(
+    eachReading => eachReading?.reading_id === readingId,
   );
 
   if (!readingId || !reportData || !reading) {
@@ -51,7 +48,7 @@ const AIScanDetails = ({route}: AIScanDetailProps) => {
           <Report
             reading={reportDetail}
             reportData={reportData}
-            filteredReading={isEmpty(filteredReading) ? null : filteredReading}
+            selectedReading={selectedReading}
           />
         </View>
       </SafeAreaView>

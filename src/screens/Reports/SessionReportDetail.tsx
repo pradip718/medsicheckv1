@@ -68,13 +68,11 @@ const RenderReportInformation = ({
   });
 
   const latestReading = useMemo(() => {
-    return reportData?.data?.readings?.[0];
-  }, [reportData?.data?.readings]);
+    return reportData?.readings;
+  }, [reportData?.readings]);
 
   useEffect(() => {
-    setExpandedSections(
-      Object.keys(reportData?.data?.sub_categorisation || {}),
-    );
+    setExpandedSections(Object.keys(reportData?.sub_categorisation || {}));
     const timer = setTimeout(() => setIsLoading(false), 500); // Simulate loading delay
     return () => clearTimeout(timer);
   }, [reportData]);
@@ -165,13 +163,11 @@ const RenderReportInformation = ({
         classNameValue="mt-8 mx-4"
         readingId={readingId}
         readingsConfidence={readingsConfidence}
-        overallConfidence={
-          reportData?.data?.readings?.[0]?.confidence_level || ''
-        }
+        overallConfidence={reportData?.readings?.confidence_level ?? ''}
       />
-      {isObject(reportData?.data?.sub_categorisation) && (
+      {isObject(reportData?.sub_categorisation) && (
         <FlatList
-          data={entries(reportData?.data?.sub_categorisation)}
+          data={entries(reportData?.sub_categorisation)}
           keyExtractor={item => item[0]}
           renderItem={renderItem}
           scrollEnabled={false}
@@ -235,20 +231,16 @@ const SessionReportDetail = ({route}: SessionReportDetailProps) => {
           contentContainerStyle={styles.scrollviewContentContainer}
           className="h-full">
           <View>
-            <WellnessScore
-              score={reportData?.data?.readings?.[0]?.WELLNESS_INDEX || 0}
-            />
+            <WellnessScore score={reportData?.readings?.WELLNESS_INDEX ?? 0} />
           </View>
 
           <View className="bg-white mt-[-30px] rounded-t-3xl flex-1 pt-4">
-            <RenderDateAndTitle
-              date={reportData?.data?.readings?.[0]?.created_at}
-            />
+            <RenderDateAndTitle date={reportData?.readings?.created_at} />
 
             {reportData && (
               <RenderReportInformation
                 // reportData={reportData}
-                readingId={reportData?.data?.readings?.[0]?.reading_id}
+                readingId={reportData?.readings?.reading_id}
               />
             )}
           </View>
