@@ -3,6 +3,7 @@ import {Text, View} from 'moti';
 import React, {useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {FallbackComponentProps} from 'react-native-error-boundary';
+import useAppStore from '../../store/appStore';
 import useLanguageStore from '../../store/languageStore';
 import useSignout from '../hooks/useSignout';
 import customColor from '../theme/customColor';
@@ -13,12 +14,19 @@ import CustomText from './Text';
 export const ErrorFallback = ({resetError, error}: FallbackComponentProps) => {
   const {handleSignout} = useSignout();
   const {languages} = useLanguageStore();
+  const {screenName} = useAppStore();
 
   useEffect(() => {
     if (error && !__DEV__) {
-      Sentry.captureException(error);
+      Sentry.withScope(scope => {
+        scope.setContext('Screen Info', {
+          previous: screenName.previous,
+          current: screenName.current,
+        });
+        Sentry.captureException(error);
+      });
     }
-  }, [error]);
+  }, [error, screenName]);
 
   return (
     <SafeAreaView className="h-full bg-white">

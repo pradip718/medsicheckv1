@@ -1,5 +1,6 @@
 import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import {useMutation, UseMutationOptions} from '@tanstack/react-query';
+import {isEmpty} from 'lodash';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {navigationRef} from '../../../RootNavigation';
 import useUserProfileStore from '../../../store/profileStore';
@@ -26,6 +27,9 @@ export const useFetchAndSetProfile = (
   const fetchAndSetProfile = async () => {
     const {data: members, isSuccess} = await getFamilyMembers();
     if (isSuccess) {
+      if (!members || isEmpty(members)) {
+        return;
+      }
       const admin = members?.find(
         eachMember => eachMember?.relation === 'Admin',
       );

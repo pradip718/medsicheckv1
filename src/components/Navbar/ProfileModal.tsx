@@ -91,7 +91,9 @@ const ProfileModal = ({hideModal}: {hideModal: () => void}) => {
   const onUserCardClick = async (profileId: string) => {
     setCurrentActiveProfileId(profileId);
     hideModal();
-    await queryClient.resetQueries();
+    await queryClient.resetQueries({
+      predicate: query => !query.queryKey.includes('reading-detail'),
+    });
   };
 
   const renderAddMemberCard = () => {
