@@ -188,3 +188,59 @@ export type AnuraConfig = BaseSdkConfigResponse & {
   sdk_name: 'nuralogix';
   sdk_value: AnuraSdkValue;
 };
+
+// ----------------- Health Risks -----------------
+
+export type HealthRisksResponse =
+  | QuestionnaireResponse
+  | ViewRiskScoreResponse
+  | GenerateRiskScoreResponse;
+
+export type ScreenName =
+  | 'questionnaire'
+  | 'generate_risk_score'
+  | 'view_risk_score';
+
+export type QuestionnaireResponse = {
+  screen_name: 'questionnaire';
+  data: Array<{
+    created_at: string;
+    lastmodified_at: string;
+    q_id: string;
+    eng_question: string;
+    spanish_question: string;
+    eng_choices: string;
+    spanish_choices: string;
+    skip_flag: boolean;
+    question_sequence: number;
+    question_type: string;
+    multi_select: boolean;
+    final_question: boolean;
+  }>;
+};
+
+export type ViewRiskScoreResponse = {
+  screen_name: 'view_risk_score';
+  data: {
+    score_info: {
+      category: string;
+      probability: number;
+      score: number;
+    };
+    report_info: {
+      intro: string;
+      label_1: string;
+      label_2: ListElement;
+    };
+  };
+};
+
+export type ListElement = {
+  body: string;
+  list: string[];
+};
+
+export type GenerateRiskScoreResponse = {
+  screen_name: 'generate_risk_score';
+  data: null;
+};

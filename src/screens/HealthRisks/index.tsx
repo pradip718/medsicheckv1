@@ -3,18 +3,19 @@ import {
   NavigationProp,
   useNavigation,
 } from '@react-navigation/native';
+import {useMutation} from '@tanstack/react-query';
 import {Image, View} from 'moti';
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
+import {getHealthRisks} from '../../api/healthRisks';
 import Icon from '../../components/Icon';
 import Navbar from '../../components/Navbar';
 import SafeAreaScrollView from '../../components/SafeAreaScrollView';
 import CustomText from '../../components/Text';
-import {useGetLabReportQuestionnaire} from '../../hooks/api/report';
-import useGetAIQuestionnaire from '../../hooks/api/useGetAIQuestionnaire';
+import {HYPERTENSION_RISK} from '../../constants/hooks';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 
 const MenuItem = ({
@@ -64,17 +65,23 @@ const HealthRisks = () => {
   const {languages} = useLanguageStore();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {showLoader, hideLoader} = useFullPageLoader();
-  const {refetch: getAIQuestions} = useGetAIQuestionnaire({
-    type: 'latest',
-    gcTime: 0,
-    staleTime: 0,
-    enabled: false,
-  });
-  const {refetch: getLabReportQuestions} = useGetLabReportQuestionnaire({
-    type: 'latest',
-    gcTime: 0,
-    staleTime: 0,
-    enabled: false,
+
+  const {mutateAsync: fetchHealthRisks} = useMutation({
+    onMutate: showLoader,
+    mutationKey: [HYPERTENSION_RISK],
+    mutationFn: getHealthRisks,
+    onSettled: hideLoader,
+    onSuccess: riskDetails => {
+      if (riskDetails?.screen_name === 'questionnaire') {
+        // navigation.navigate('PersonalisedAI');
+      }
+      if (riskDetails?.screen_name === 'view_risk_score') {
+        // navigation.navigate('PersonalisedAI');
+      }
+      if (riskDetails?.screen_name === 'generate_risk_score') {
+        // navigation.navigate('PersonalisedAI');
+      }
+    },
   });
 
   const MENU_ITEM = [
@@ -82,24 +89,14 @@ const HealthRisks = () => {
       name: languages?.hypertension_risk_title,
       icon: 'personal_report',
       description: languages?.hypertension_risk_description,
-      action: async () => {
-        showLoader();
-        await getAIQuestions();
-        navigation.navigate('PersonalisedAI');
-        hideLoader();
-      },
+      action: () => fetchHealthRisks({risk_type: 'hypertension'}),
       disabled: false,
     },
     {
       name: languages?.diabetes_risk_title,
       icon: 'lab_result',
       description: languages?.diabetes_risk_description,
-      action: async () => {
-        showLoader();
-        await getLabReportQuestions();
-        navigation.navigate('LabReport');
-        hideLoader();
-      },
+      action: () => fetchHealthRisks({risk_type: 'diabetes'}),
       disabled: false,
     },
   ];

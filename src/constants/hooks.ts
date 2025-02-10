@@ -31,3 +31,6 @@ export const DELETE_HELP_DESK_TICKET = 'delete-help-desk-ticket';
 // ----------------------------------------------Settings ----------------------------------------------
 export const GET_USER_PREFERENCES = 'get-user-preferences';
 export const POST_USER_PREFERENCES = 'post-user-preferences';
+
+// ----------------------------------------------Health Risks ----------------------------------------------
+export const HYPERTENSION_RISK = 'hypertension-risk';
