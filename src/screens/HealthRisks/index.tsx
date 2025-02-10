@@ -79,9 +79,9 @@ const HealthRisks = () => {
 
   const MENU_ITEM = [
     {
-      name: languages?.personal_health_report_description,
+      name: languages?.hypertension_risk_title,
       icon: 'personal_report',
-      description: languages?.personalized_health_assessment_description,
+      description: languages?.hypertension_risk_description,
       action: async () => {
         showLoader();
         await getAIQuestions();
@@ -91,9 +91,9 @@ const HealthRisks = () => {
       disabled: false,
     },
     {
-      name: languages?.interpret_lab_results,
+      name: languages?.diabetes_risk_title,
       icon: 'lab_result',
-      description: languages?.upload_test_results_description,
+      description: languages?.diabetes_risk_description,
       action: async () => {
         showLoader();
         await getLabReportQuestions();
@@ -117,19 +117,19 @@ const HealthRisks = () => {
           <Navbar onBackClick={handleBackClick} />
         </View>
         <CustomText className="text-xl font-isidoraBold text-center">
-          {languages?.smart_report_title}
+          {languages?.health_risks_report_title}
         </CustomText>
 
         <View className="flex-1 mt-4">
           <Image
-            source={require('../../../assets/images/smart_report.png')}
+            source={require('../../../assets/images/health_risks.png')}
             style={styles.imageStyle}
             from={{opacity: 0}}
             animate={{opacity: 1}}
             transition={{duration: 1000, type: 'timing'} as any}
           />
           <CustomText className="text-sm text-center mt-4 px-8">
-            {languages?.smart_report_description}
+            {languages?.health_risks_description}
           </CustomText>
           {MENU_ITEM?.map((eachMenu, idx) => (
             <View

@@ -328,6 +328,13 @@
   "upload_test_results_description": "Upload results from clinical, imaging or lab tests and receive a personalized interpretation in plain language.",
   "please_wait_processing_message": "Please wait while we process your data.",
 
+  "health_risks_report_title": "Health Risks",
+  "health_risks_description": "Medsi.ai has developed proprietary medical reasoning algorithms that bring together all your health information to provide you health risks that you may have in next 3-4 years",
+  "hypertension_risk_title": "Hypertension Risk",
+  "hypertension_risk_description": "Hypertension Risk based on your vital sign readings and health questionaire.",
+  "diabetes_risk_title": "Diabetes Risk",
+  "diabetes_risk_description": "Diabetes Risk based on your vital sign readings and health questionaire.",
+
   "vital_scan_reports_title": "Vital Scan Reports",
   "total_scans": "Total Scans",
   "new_face_scan": "New Face Scan",
