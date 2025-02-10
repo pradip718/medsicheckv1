@@ -542,6 +542,8 @@
   "invalid_ai_token": "Provided Reading doesn't exist",
   "invalid_lab_token": "Provided Reading doesn't exist",
 
+  "health_risk": "Health Risks",
+
   "issue_list": [
     {
       "name": "Having Issues with facescan.",

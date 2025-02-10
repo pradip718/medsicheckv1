@@ -28,6 +28,7 @@ import FaceScannerCamera from '../src/screens/FaceScan/FaceScannerCamera';
 import PrepareFacescan from '../src/screens/FaceScan/PrepareFacescan';
 import QRFaceScan from '../src/screens/FaceScan/QRFaceScan';
 import Feedbacks from '../src/screens/Feedbacks';
+import HealthRisks from '../src/screens/HealthRisks';
 import HealthWallet from '../src/screens/HealthWallet';
 import AIHealthReport from '../src/screens/HealthWallet/AIHealthReport/AIHealthReport';
 import AIHealthReportDetail from '../src/screens/HealthWallet/AIHealthReport/AIHealthReportDetail';
@@ -317,6 +318,7 @@ const RootNavigator = () => {
             name="HomepageStackScreens"
             component={HomePageDrawer}
           />
+          <Stack.Screen name="HealthRisks" component={HealthRisks} />
           <Stack.Screen name="ReportDetails" component={ReportDetails} />
           <Stack.Screen name="FaceScan" component={FaceScan} />
           <Stack.Screen name="FaceScanCamera" component={FaceScannerCamera} />
