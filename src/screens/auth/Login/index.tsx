@@ -28,7 +28,7 @@ import useUserProfileStore from '../../../../store/profileStore';
 import {LoginSuccessResponse} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
 import {isAndroid} from '../../../../utils';
-import {encryptText} from '../../../../utils/methods';
+import {encryptText, setUserRegistered} from '../../../../utils/methods';
 import {errorToast} from '../../../../utils/toast';
 import {login} from '../../../api/auth';
 import {notifyApi} from '../../../api/user';
@@ -36,6 +36,7 @@ import Pressable from '../../../components/Pressable';
 import CustomText from '../../../components/Text';
 import {
   LOGIN_ASYNC_KEY,
+  REMEMBERED_USER_DEVICE,
   REMEMBERED_USER_SESSION,
 } from '../../../constants/AsyncStorageKeys';
 import useGetAccountStatus from '../../../hooks/api/useGetAccountStatus';
@@ -239,6 +240,7 @@ const Login = () => {
       if (rememberMe === 'true') {
         await storeUserSession();
       }
+      await setUserRegistered();
       await proceedLoginStep(loginResponse);
     } catch (error) {
       if (error instanceof AxiosError) {

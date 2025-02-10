@@ -8,6 +8,7 @@ import moment from 'moment';
 import {Alert, NativeModules, Platform, Share as RNShare} from 'react-native';
 import {CountryCode, CountryCodeList} from 'react-native-country-picker-modal';
 import {DocumentPickerResponse} from 'react-native-document-picker';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import RNFS from 'react-native-fs';
 import {Asset} from 'react-native-image-picker';
 import Share from 'react-native-share';
@@ -16,7 +17,11 @@ import {isAndroid} from '.';
 import {updateLocale} from '../src/api/language';
 import {notifyApi} from '../src/api/user';
 import {kmsClient} from '../src/config';
-import {DEVICE_LOCALE, STORAGE_KEY} from '../src/constants/AsyncStorageKeys';
+import {
+  DEVICE_LOCALE,
+  REMEMBERED_USER_DEVICE,
+  STORAGE_KEY,
+} from '../src/constants/AsyncStorageKeys';
 import {ConfidenceLevels} from '../src/constants/enums';
 import {
   Choices,
@@ -913,4 +918,22 @@ export const hasValidUserDemographics = userDemographics => {
     return false;
   }
   return true;
+};
+
+export const setUserRegistered = async () => {
+  try {
+    await EncryptedStorage.setItem(REMEMBERED_USER_DEVICE, 'true');
+  } catch (error) {
+    console.error('error', error);
+  }
+};
+
+export const checkUserRegistered = async (): Promise<boolean> => {
+  try {
+    const isRegistered = await EncryptedStorage.getItem(REMEMBERED_USER_DEVICE);
+    return isRegistered === 'true';
+  } catch (error) {
+    console.error('Error checking user registration:', error);
+    return false;
+  }
 };

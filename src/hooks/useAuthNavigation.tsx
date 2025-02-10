@@ -5,6 +5,7 @@ import BootSplash from 'react-native-bootsplash';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {navigationRef} from '../../RootNavigation';
 import useLanguageStore from '../../store/languageStore';
+import {checkUserRegistered} from '../../utils/methods';
 import {errorToast} from '../../utils/toast';
 import {
   LOGIN_ASYNC_KEY,
@@ -137,7 +138,8 @@ const useAuthNavigation = ({
       return await checkForOnboardingStep();
     }
     if (isRememberme !== 'true' || !session) {
-      return navigationRef.navigate('Login');
+      const isRegistered = await checkUserRegistered();
+      return navigationRef.navigate(isRegistered ? 'Register' : 'Login');
     }
     // await fetchAndSetProfile();
     await checkForOnboardingStep();
