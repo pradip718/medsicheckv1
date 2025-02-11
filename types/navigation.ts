@@ -47,6 +47,7 @@ export type MainStackParamList = {
   Settings: undefined;
   SmartReport: undefined;
   HealthRisks: undefined;
+  ViewRiskScore: undefined;
   InterpretLabReport: undefined;
   CommunicationPreferences: undefined;
   MobileVerification: undefined;

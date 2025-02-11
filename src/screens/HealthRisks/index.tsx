@@ -89,7 +89,10 @@ const HealthRisks = () => {
       name: languages?.hypertension_risk_title,
       icon: 'personal_report',
       description: languages?.hypertension_risk_description,
-      action: () => fetchHealthRisks({risk_type: 'hypertension'}),
+      // action: () => fetchHealthRisks({risk_type: 'hypertension'}),
+      action: () => {
+        navigation.navigate('ViewRiskScore');
+      },
       disabled: false,
     },
     {
