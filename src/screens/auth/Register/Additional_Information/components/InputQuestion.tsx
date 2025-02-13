@@ -13,14 +13,15 @@ export function InputQuestion({
 }: {
   question: string;
   questionId: string;
-  questionNumber: number;
+  questionNumber: number | null;
   handleSelectedAnswers: (answer: any) => void;
   value: string;
 }) {
   return (
     <View className="h-full">
       <CustomText className=" font-isidoraSemiBold text-lg grow-[0.1]">
-        {questionNumber}. {ParseAndRenderText(question)}
+        {questionNumber ? `${questionNumber}.` : ''}
+        {ParseAndRenderText(question)}
       </CustomText>
       <TextInput
         mode="outlined"

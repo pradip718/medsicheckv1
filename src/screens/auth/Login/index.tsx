@@ -36,7 +36,6 @@ import Pressable from '../../../components/Pressable';
 import CustomText from '../../../components/Text';
 import {
   LOGIN_ASYNC_KEY,
-  REMEMBERED_USER_DEVICE,
   REMEMBERED_USER_SESSION,
 } from '../../../constants/AsyncStorageKeys';
 import useGetAccountStatus from '../../../hooks/api/useGetAccountStatus';

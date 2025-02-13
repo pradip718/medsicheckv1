@@ -30,6 +30,7 @@ import QRFaceScan from '../src/screens/FaceScan/QRFaceScan';
 import Feedbacks from '../src/screens/Feedbacks';
 import HealthRisks from '../src/screens/HealthRisks';
 import ViewRiskScore from '../src/screens/HealthRisks/ViewRiskScore';
+import HealthRisksQuestionnaire from '../src/screens/HealthRisks/questionnaire';
 import HealthWallet from '../src/screens/HealthWallet';
 import AIHealthReport from '../src/screens/HealthWallet/AIHealthReport/AIHealthReport';
 import AIHealthReportDetail from '../src/screens/HealthWallet/AIHealthReport/AIHealthReportDetail';
@@ -321,6 +322,10 @@ const RootNavigator = () => {
           />
           <Stack.Group>
             <Stack.Screen name="HealthRisks" component={HealthRisks} />
+            <Stack.Screen
+              name="HealthRisksQuestionnaire"
+              component={HealthRisksQuestionnaire}
+            />
             <Stack.Screen name="ViewRiskScore" component={ViewRiskScore} />
           </Stack.Group>
           <Stack.Screen name="ReportDetails" component={ReportDetails} />

@@ -87,7 +87,10 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     const statusCode = error.response?.data?.statusCode;
 
+    console.log('statusCode', statusCode);
+
     if (statusCode === 401 && !originalRequest._retry) {
+      console.log('Refreshing Token');
       originalRequest._retry = true;
       try {
         await ensureTokenRefresh();

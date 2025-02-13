@@ -8,14 +8,16 @@ import {Image, View} from 'moti';
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {twMerge} from 'tailwind-merge';
+import useHealthRiskStore from '../../../store/healthRisksStore';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
-import {getHealthRisks} from '../../api/healthRisks';
+import {transformQuestionData} from '../../../utils/methods';
+import {executeRiskEngine, getHealthRisks} from '../../api/healthRisks';
 import Icon from '../../components/Icon';
 import Navbar from '../../components/Navbar';
 import SafeAreaScrollView from '../../components/SafeAreaScrollView';
 import CustomText from '../../components/Text';
-import {HYPERTENSION_RISK} from '../../constants/hooks';
+import {EXECUTE_RISK_ENGINE, HYPERTENSION_RISK} from '../../constants/hooks';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 
 const MenuItem = ({
@@ -62,25 +64,44 @@ const MenuItem = ({
 };
 
 const HealthRisks = () => {
-  const {languages} = useLanguageStore();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {showLoader, hideLoader} = useFullPageLoader();
+
+  const {languages} = useLanguageStore();
+  const {setCurrentQuestion, setEngineName, setViewRiskDetails} =
+    useHealthRiskStore();
+
+  const {mutateAsync: executeRiskEngineMutation} = useMutation({
+    mutationKey: [EXECUTE_RISK_ENGINE],
+    mutationFn: executeRiskEngine,
+    onSuccess: riskEngineDetails => {
+      if (riskEngineDetails?.screen_name === 'view_risk_score') {
+        setViewRiskDetails(riskEngineDetails?.data);
+        navigation.navigate('ViewRiskScore');
+      }
+    },
+  });
 
   const {mutateAsync: fetchHealthRisks} = useMutation({
     onMutate: showLoader,
     mutationKey: [HYPERTENSION_RISK],
     mutationFn: getHealthRisks,
     onSettled: hideLoader,
-    onSuccess: riskDetails => {
+    onSuccess: async (riskDetails, variable) => {
+      const {risk_type} = variable;
       if (riskDetails?.screen_name === 'questionnaire') {
-        // navigation.navigate('PersonalisedAI');
-      }
-      if (riskDetails?.screen_name === 'view_risk_score') {
-        // navigation.navigate('PersonalisedAI');
+        const updatedQuestions = transformQuestionData([riskDetails?.data]);
+        setCurrentQuestion(updatedQuestions);
+        navigation.navigate('HealthRisksQuestionnaire');
       }
       if (riskDetails?.screen_name === 'generate_risk_score') {
-        // navigation.navigate('PersonalisedAI');
+        await executeRiskEngineMutation({
+          risk_type,
+        });
       }
+    },
+    onError: error => {
+      console.log('error', error);
     },
   });
 
@@ -89,9 +110,9 @@ const HealthRisks = () => {
       name: languages?.hypertension_risk_title,
       icon: 'personal_report',
       description: languages?.hypertension_risk_description,
-      // action: () => fetchHealthRisks({risk_type: 'hypertension'}),
       action: () => {
-        navigation.navigate('ViewRiskScore');
+        setEngineName('hypertension_risk');
+        fetchHealthRisks({risk_type: 'hypertension_risk'});
       },
       disabled: false,
     },
@@ -99,7 +120,10 @@ const HealthRisks = () => {
       name: languages?.diabetes_risk_title,
       icon: 'lab_result',
       description: languages?.diabetes_risk_description,
-      action: () => fetchHealthRisks({risk_type: 'diabetes'}),
+      action: () => {
+        setEngineName('diabetes_risk');
+        fetchHealthRisks({risk_type: 'diabetes_risk'});
+      },
       disabled: false,
     },
   ];

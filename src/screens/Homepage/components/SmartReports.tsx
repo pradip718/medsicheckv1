@@ -40,13 +40,13 @@ const SmartReports = () => {
 
       <View className="w-[48%] ml-[4%] h-[160px]">
         <TouchableOpacity
-          className=" bg-[#FFCD86] rounded-2xl flex-grow justify-center items-center h-full"
+          className="rounded-2xl flex-grow items-center h-full"
           activeOpacity={0.4}
           onPress={navigateToHealthRisks}>
           <Image
             source={require('../../../../assets/images/interpret_report.png')}
-            className="w-[131]"
-            resizeMode="contain"
+            className="h-[140] w-full grow"
+            resizeMode="stretch"
           />
         </TouchableOpacity>
         <CustomText className="text-base text-yankeesBlue font-isidoraMedium text-center py-2">

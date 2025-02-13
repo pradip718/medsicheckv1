@@ -34,3 +34,4 @@ export const POST_USER_PREFERENCES = 'post-user-preferences';
 
 // ----------------------------------------------Health Risks ----------------------------------------------
 export const HYPERTENSION_RISK = 'hypertension-risk';
+export const EXECUTE_RISK_ENGINE = 'execute-risk-engine';

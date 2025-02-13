@@ -40,7 +40,7 @@ export function DropdownQuestion({
   currentQuestion: Question | undefined;
   data: Choices;
   questionId: string;
-  questionNumber: number;
+  questionNumber: number | null;
   multiSelect: boolean;
   handleSelectedAnswers: (answer: {
     questionId: string;
@@ -55,7 +55,8 @@ export function DropdownQuestion({
   return (
     <View>
       <CustomText className=" font-isidoraSemiBold text-lg">
-        {questionNumber}. {ParseAndRenderText(question)}
+        {questionNumber ? `${questionNumber}.` : ''}
+        {ParseAndRenderText(question)}
       </CustomText>
       {/* <KeyboardAwareScrollView> */}
       <Surface

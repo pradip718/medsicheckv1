@@ -3,6 +3,7 @@ import Config from 'react-native-config';
 import reactotronZustand from 'reactotron-plugin-zustand';
 import Reactotron, {networking} from 'reactotron-react-native';
 import useBinahConfigStore from './store/binahConfigStore';
+import useHealthRiskStore from './store/healthRisksStore';
 
 let scriptHostname;
 if (__DEV__) {
@@ -18,7 +19,10 @@ Reactotron.configure({
   .use(networking())
   .use(
     reactotronZustand({
-      stores: [{name: 'binah', store: useBinahConfigStore}],
+      stores: [
+        {name: 'binah', store: useBinahConfigStore},
+        {name: 'health_risk', store: useHealthRiskStore},
+      ],
       omitFunctionKeys: true,
     }),
   )

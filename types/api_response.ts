@@ -1,5 +1,8 @@
 import {EncryptionAlgorithmSpec} from '@aws-sdk/client-kms';
-import {Question} from '../src/screens/auth/Register/Additional_Information/type';
+import {
+  Question,
+  QuestionnaireGETReponse,
+} from '../src/screens/auth/Register/Additional_Information/type';
 
 export type AIHealthList = {
   created_at: string;
@@ -203,36 +206,50 @@ export type ScreenName =
 
 export type QuestionnaireResponse = {
   screen_name: 'questionnaire';
-  data: Array<{
-    created_at: string;
-    lastmodified_at: string;
-    q_id: string;
-    eng_question: string;
-    spanish_question: string;
-    eng_choices: string;
-    spanish_choices: string;
-    skip_flag: boolean;
-    question_sequence: number;
-    question_type: string;
-    multi_select: boolean;
-    final_question: boolean;
-  }>;
+  data: QuestionnaireGETReponse;
+};
+
+export type RiskScoreInfo = {
+  risk_level: string;
+  probability: number;
+  probability_color: number;
+  category_color: string;
+};
+
+export type ReportSection = {
+  name: string;
+  body: string;
+  list: string[];
+};
+
+export type PeriodicMonitoringSection = ReportSection & {
+  action_name?: string;
+};
+
+export type LifeStyleSection = Omit<ReportSection, 'list'> & {
+  list: {
+    name: string;
+    body: string;
+  }[];
+};
+
+export type ReportInfo = {
+  result: ReportSection;
+  medical_referral: ReportSection;
+  periodic_monitoring: PeriodicMonitoringSection;
+  lab_test: ReportSection;
+  lifestyle_recommendation: LifeStyleSection;
+  footer: ReportSection;
+};
+
+export type ViewRiskScoreData = {
+  score_info: RiskScoreInfo;
+  report_info: ReportInfo;
 };
 
 export type ViewRiskScoreResponse = {
   screen_name: 'view_risk_score';
-  data: {
-    score_info: {
-      category: string;
-      probability: number;
-      score: number;
-    };
-    report_info: {
-      intro: string;
-      label_1: string;
-      label_2: ListElement;
-    };
-  };
+  data: ViewRiskScoreData;
 };
 
 export type ListElement = {
