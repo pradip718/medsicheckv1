@@ -1,6 +1,6 @@
 import CheckBox from '@react-native-community/checkbox';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {isString} from 'lodash';
+import {isNumber, isString} from 'lodash';
 import {Image} from 'moti';
 import React, {PropsWithChildren, useState} from 'react';
 import {
@@ -64,6 +64,37 @@ const CollapsibleCard = ({
   );
 };
 
+const InfoCard = ({
+  info,
+  iconColor,
+  icon_url,
+}: {
+  info: string | number;
+  icon_url: string;
+  iconColor: string;
+}) => {
+  if (!isNumber(info) && !isString(info)) {
+    return <></>;
+  }
+  return (
+    <AnimatedWrapper
+      isTranslateY={false}
+      className="bg-[#FFE4E6] p-2 rounded-lg flex-row items-center space-x-2 mr-2 mb-2"
+      style={{
+        backgroundColor: iconColor ?? '#FFE4E6',
+      }}>
+      <Image
+        source={{uri: icon_url}}
+        className="w-5 h-4"
+        resizeMode="contain"
+      />
+      <CustomText className="text-[#9f1239] font-isidoraMedium">
+        {info}
+      </CustomText>
+    </AnimatedWrapper>
+  );
+};
+
 const ViewRiskScore = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
@@ -84,41 +115,58 @@ const ViewRiskScore = () => {
       <StatusBar backgroundColor="#242E49" barStyle="light-content" />
       <SafeAreaView className="bg-[#242E49] rounded-b-[32px]">
         <View className={twMerge('px-4 pt-10', !isAndroid && 'pt-2')}>
-          {navigation?.canGoBack() && (
-            <TouchableOpacity
-              className="bg-[#3D4966] self-start p-4 rounded-lg"
-              onPress={navigation.goBack}>
-              <Icon name="back" color="#fff" size={16} />
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            className="bg-[#3D4966] self-start p-4 rounded-lg"
+            onPress={() => navigation.navigate('HealthRisks')}>
+            <Icon name="back" color="#fff" size={16} />
+          </TouchableOpacity>
           <CustomText className="text-white text-3xl font-isidoraSemiBold mt-6">
             {engine_name === 'hypertension_risk' && 'Hypertension Risk'}
             {engine_name === 'diabetes_risk' && 'Diabetes Risk'}
           </CustomText>
 
-          <View className="flex-row space-x-4 my-4">
-            {viewRiskDetails?.score_info?.risk_level && (
-              <AnimatedWrapper
-                isTranslateY={false}
-                className="bg-[#FFE4E6] p-2 rounded-lg flex-row items-center space-x-2"
-                style={{
-                  backgroundColor: scoreInfo?.category_color ?? '#FFE4E6',
-                }}>
-                <Icon name="risk" color="#9f1239" size={20} />
-                <CustomText className="text-[#9f1239] font-isidoraMedium">
-                  {scoreInfo?.risk_level}
-                </CustomText>
-              </AnimatedWrapper>
+          <View className="flex-row my-4 shrink flex-wrap">
+            {scoreInfo?.risk_level && (
+              <InfoCard
+                info={scoreInfo?.risk_level ?? ''}
+                icon_url={scoreInfo?.risk_level_img_url ?? ''}
+                iconColor={scoreInfo?.category_color ?? ''}
+              />
             )}
-            {isString(scoreInfo?.probability) && scoreInfo?.probability && (
-              <AnimatedWrapper
-                isTranslateY={false}
-                className="bg-[#fef3c7] p-2 rounded-lg flex-row items-center space-x-2">
-                <Icon name="heart" color="#9f1239" size={20} />
-                <CustomText className="text-[#92400e] font-isidoraMedium">
-                  {viewRiskDetails?.score_info?.probability}% chances
-                </CustomText>
-              </AnimatedWrapper>
+            {scoreInfo?.probability && (
+              <InfoCard
+                info={
+                  scoreInfo?.probability
+                    ? `${scoreInfo?.probability}% chances`
+                    : ''
+                }
+                icon_url={scoreInfo?.probability_img_url ?? ''}
+                iconColor={scoreInfo?.probability_color ?? ''}
+              />
+            )}
+            {scoreInfo?.pre_diabetes_probability && (
+              <InfoCard
+                info={
+                  scoreInfo?.pre_diabetes_probability
+                    ? `${scoreInfo?.pre_diabetes_probability}% chances`
+                    : ''
+                }
+                icon_url={scoreInfo?.pre_diabetes_probability_img_url ?? ''}
+                iconColor={scoreInfo?.pre_diabetes_probability_color ?? ''}
+              />
+            )}
+            {scoreInfo?.diabetes_type_2_probability && (
+              <InfoCard
+                info={
+                  scoreInfo?.diabetes_type_2_probability
+                    ? `${scoreInfo?.diabetes_type_2_probability}% chances`
+                    : ''
+                }
+                icon_url={scoreInfo?.diabetes_type_2_probability_img_url ?? ''}
+                iconColor={
+                  scoreInfo?.diabetes_type_2_probability_color ?? '#fff'
+                }
+              />
             )}
           </View>
         </View>
@@ -140,6 +188,11 @@ const ViewRiskScore = () => {
               title="Medical Referrals"
               classNameValue="mt-8"
               icon_url={MedicalReferralInfo?.image_url ?? ''}>
+              {!!MedicalReferralInfo?.body && (
+                <CustomText className="text-sm">
+                  {MedicalReferralInfo?.body}
+                </CustomText>
+              )}
               {MedicalReferralInfo?.list?.map(eachInfo => (
                 <View className="flex-row mb-2 space-x-2" key={eachInfo}>
                   <CheckBox
