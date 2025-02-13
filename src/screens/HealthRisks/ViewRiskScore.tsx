@@ -20,6 +20,7 @@ import BasicContainer from '../../components/BasicContainer';
 import Icon from '../../components/Icon';
 import RoundedButton from '../../components/RoundedButton';
 import CustomText from '../../components/Text';
+import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 
 type CollapsibleCardProps = {
   title: string;
@@ -60,6 +61,7 @@ const ViewRiskScore = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const {engine_name, viewRiskDetails} = useHealthRiskStore();
+  const {startScan} = usePrepareFacescan();
 
   const ResultInfo = viewRiskDetails?.report_info?.result;
   const MedicalReferralInfo = viewRiskDetails?.report_info?.medical_referral;
@@ -180,6 +182,7 @@ const ViewRiskScore = () => {
               </CustomText>
               {PeriodicMonitoringInfo?.action_name && (
                 <RoundedButton
+                  onPress={startScan}
                   text={PeriodicMonitoringInfo?.action_name}
                   className="mt-4"
                 />
@@ -200,10 +203,8 @@ const ViewRiskScore = () => {
                       {eachInfo?.name}
                     </CustomText>
                   </View>
-                  <CustomText className="text-sm text-[#4B5363] pt-4">
-                    Follow the DASH or Mediterranean diet strictly. Focus on
-                    whole, minimally processed foods, and limit alcohol to one
-                    drink per day.
+                  <CustomText className="text-sm pt-4">
+                    {eachInfo?.body}
                   </CustomText>
                 </Card>
               ))}

@@ -214,11 +214,14 @@ export type RiskScoreInfo = {
   probability: number;
   probability_color: number;
   category_color: string;
+  risk_level_img_url: string;
+  probability_img_url: string;
 };
 
 export type ReportSection = {
   name: string;
   body: string;
+  image_url?: string;
   list: string[];
 };
 
@@ -230,6 +233,7 @@ export type LifeStyleSection = Omit<ReportSection, 'list'> & {
   list: {
     name: string;
     body: string;
+    image_url?: string;
   }[];
 };
 
