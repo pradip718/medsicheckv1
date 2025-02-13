@@ -1,6 +1,7 @@
 import CheckBox from '@react-native-community/checkbox';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {isString} from 'lodash';
+import {Image} from 'moti';
 import React, {PropsWithChildren, useState} from 'react';
 import {
   SafeAreaView,
@@ -24,14 +25,14 @@ import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 
 type CollapsibleCardProps = {
   title: string;
-  iconName: string;
+  icon_url: string;
   classNameValue?: string;
 };
 
 const CollapsibleCard = ({
   children,
   title,
-  iconName,
+  icon_url,
   classNameValue,
 }: PropsWithChildren<CollapsibleCardProps>) => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -41,7 +42,13 @@ const CollapsibleCard = ({
         className="flex-row justify-between items-center"
         onPress={() => setIsExpanded(!isExpanded)}>
         <View className="space-x-2 flex-row items-center">
-          {!!iconName && <Icon name={iconName} size={20} />}
+          {!!icon_url && (
+            <Image
+              source={{uri: icon_url}}
+              className="w-8 h-6"
+              resizeMode="contain"
+            />
+          )}
           <CustomText className="font-isidoraSemiBold text-base">
             {title}
           </CustomText>
@@ -71,8 +78,6 @@ const ViewRiskScore = () => {
   const LifeStyleInfo = viewRiskDetails?.report_info?.lifestyle_recommendation;
   const FooterInfo = viewRiskDetails?.report_info?.footer;
   const scoreInfo = viewRiskDetails?.score_info;
-
-  console.log('ResultInfos', ResultInfo);
 
   return (
     <BasicContainer className="grow">
@@ -121,7 +126,9 @@ const ViewRiskScore = () => {
       <SafeAreaView className="bg-[#f2f5f9] flex-1">
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {ResultInfo && (
-            <CollapsibleCard title={ResultInfo?.name} iconName="result">
+            <CollapsibleCard
+              title={ResultInfo?.name}
+              icon_url={ResultInfo?.image_url ?? ''}>
               <CustomText className="text-sm">
                 {ResultInfo?.body ?? ''}
               </CustomText>
@@ -131,8 +138,8 @@ const ViewRiskScore = () => {
           {MedicalReferralInfo && (
             <CollapsibleCard
               title="Medical Referrals"
-              iconName="medical"
-              classNameValue="mt-8">
+              classNameValue="mt-8"
+              icon_url={MedicalReferralInfo?.image_url ?? ''}>
               {MedicalReferralInfo?.list?.map(eachInfo => (
                 <View className="flex-row mb-2 space-x-2" key={eachInfo}>
                   <CheckBox
@@ -145,10 +152,7 @@ const ViewRiskScore = () => {
                     onCheckColor="white"
                     onTintColor="transparent"
                   />
-                  <CustomText className="text-sm shrink">
-                    Schedule a check-up with your primary care physician within
-                    the next week to develop a risk management plan.
-                  </CustomText>
+                  <CustomText className="text-sm shrink">{eachInfo}</CustomText>
                 </View>
               ))}
             </CollapsibleCard>
@@ -157,8 +161,8 @@ const ViewRiskScore = () => {
           {LabTestInfo && (
             <CollapsibleCard
               title={LabTestInfo?.name}
-              iconName="lab"
-              classNameValue="mt-8">
+              classNameValue="mt-8"
+              icon_url={LabTestInfo?.image_url ?? ''}>
               {LabTestInfo?.list?.map((eachInfo, idx) => (
                 <CustomText
                   className={twMerge(
@@ -175,7 +179,7 @@ const ViewRiskScore = () => {
           {PeriodicMonitoringInfo && (
             <CollapsibleCard
               title={PeriodicMonitoringInfo?.name}
-              iconName="monitoring"
+              icon_url={PeriodicMonitoringInfo?.image_url ?? ''}
               classNameValue="mt-8">
               <CustomText className="text-sm">
                 {PeriodicMonitoringInfo?.body}
@@ -193,12 +197,16 @@ const ViewRiskScore = () => {
           {LifeStyleInfo && (
             <CollapsibleCard
               title={LifeStyleInfo?.name}
-              iconName="lifestyle"
+              icon_url={LifeStyleInfo?.image_url ?? ''}
               classNameValue="mt-8">
               {LifeStyleInfo?.list?.map(eachInfo => (
                 <Card className="p-4 bg-[#F3F4F6] mb-4" key={eachInfo?.name}>
                   <View className="flex-row items-center justify-between">
-                    <Icon name={eachInfo?.name?.toLowerCase()} size={20} />
+                    <Image
+                      source={{uri: eachInfo?.image_url}}
+                      className="w-8 h-6"
+                      resizeMode="contain"
+                    />
                     <CustomText className="font-isidoraSemiBold text-base">
                       {eachInfo?.name}
                     </CustomText>
@@ -220,7 +228,7 @@ const ViewRiskScore = () => {
           )}
           {/* <CollapsibleCard
             title="How did we calculate this?"
-            iconName="heart"
+            icon_url="heart"
             classNameValue="mt-4">
             <CustomText className="text-sm text-[#4B5363] pt-4">
               to be filled...

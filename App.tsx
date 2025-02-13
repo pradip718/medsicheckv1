@@ -9,7 +9,7 @@ import * as Sentry from '@sentry/react-native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
 import React, {useEffect, useState} from 'react';
-import {LogBox, StatusBar, useColorScheme} from 'react-native';
+import {LogBox, StatusBar} from 'react-native';
 import Config from 'react-native-config';
 import DeviceInfo from 'react-native-device-info';
 import ErrorBoundary from 'react-native-error-boundary';
@@ -67,7 +67,6 @@ function App(): JSX.Element {
     });
   }
 
-  const isDarkMode = useColorScheme() === 'dark';
   const {visible, signoutModalVisibility} = useLoaderStore();
 
   useEffect(() => {
@@ -121,10 +120,7 @@ function App(): JSX.Element {
 
   return (
     <>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={'transparent'}
-      />
+      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
       <QueryClientProvider client={queryClient}>
         <PaperProvider>
           <ErrorBoundary FallbackComponent={ErrorFallback}>

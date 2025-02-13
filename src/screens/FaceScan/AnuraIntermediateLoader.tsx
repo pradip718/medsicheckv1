@@ -15,6 +15,7 @@ import CustomText from '../../components/Text';
 import Event from '../../config/Event';
 // import EventBridge from '../../config/EventBridge';
 import {useQueryClient} from '@tanstack/react-query';
+import useHealthRiskStore from '../../../store/healthRisksStore';
 import useLanguageStore from '../../../store/languageStore';
 import useEventBridge from '../../config/EventBridge';
 import {RESCAN_CONFIGURATION} from '../../constants/hooks';
@@ -27,6 +28,7 @@ const AnuraIntermediateLoader = () => {
   const {languages} = useLanguageStore();
   const {anuraConfig} = useBinahConfigStore();
   const {actionData, executeAction} = useAIReportFacescanStore();
+  const {executeAction: executeHealthRisksAction} = useHealthRiskStore();
   const EventBridge = useEventBridge();
 
   const {mutateAsync: postReadings} = usePostReadings({
@@ -35,6 +37,10 @@ const AnuraIntermediateLoader = () => {
       queryClient.invalidateQueries({queryKey: [RESCAN_CONFIGURATION]});
       if (actionData?.fromScreen === 'PersonalisedAI') {
         await executeAction();
+        return navigation.goBack();
+      }
+      if (actionData?.fromScreen === 'HealthRisks') {
+        await executeHealthRisksAction();
         return navigation.goBack();
       }
       const {

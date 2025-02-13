@@ -13,12 +13,15 @@ import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {transformQuestionData} from '../../../utils/methods';
 import {executeRiskEngine, getHealthRisks} from '../../api/healthRisks';
+import AnimatedWrapper from '../../components/AnimatedWrapper';
+import BackgroundImage from '../../components/BackgroundImage';
+import {Loader} from '../../components/FullScreenLoader';
 import Icon from '../../components/Icon';
 import Navbar from '../../components/Navbar';
 import SafeAreaScrollView from '../../components/SafeAreaScrollView';
 import CustomText from '../../components/Text';
 import {EXECUTE_RISK_ENGINE, HYPERTENSION_RISK} from '../../constants/hooks';
-import useFullPageLoader from '../../hooks/useFullPageLoader';
+import customColor from '../../theme/customColor';
 
 const MenuItem = ({
   name,
@@ -65,7 +68,6 @@ const MenuItem = ({
 
 const HealthRisks = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-  const {showLoader, hideLoader} = useFullPageLoader();
 
   const {languages} = useLanguageStore();
   const {setCurrentQuestion, setEngineName, setViewRiskDetails} =
@@ -82,11 +84,11 @@ const HealthRisks = () => {
     },
   });
 
-  const {mutateAsync: fetchHealthRisks} = useMutation({
-    onMutate: showLoader,
+  const {mutateAsync: fetchHealthRisks, isPending} = useMutation({
+    // onMutate: showLoader,
     mutationKey: [HYPERTENSION_RISK],
     mutationFn: getHealthRisks,
-    onSettled: hideLoader,
+    // onSettled: hideLoader,
     onSuccess: async (riskDetails, variable) => {
       const {risk_type} = variable;
       if (riskDetails?.screen_name === 'questionnaire') {
@@ -134,6 +136,20 @@ const HealthRisks = () => {
       navigation.dispatch(DrawerActions.openDrawer());
     }
   };
+
+  if (isPending) {
+    return (
+      <AnimatedWrapper isTranslateY={false} className="h-full">
+        <BackgroundImage className="grow justify-center items-center">
+          <CustomText className="font-isidoraSemiBold text-lg">
+            {languages?.health_risks_loading}
+          </CustomText>
+          <Loader name="6-dots" color={customColor.ultramarineBlue} />
+        </BackgroundImage>
+      </AnimatedWrapper>
+    );
+  }
+
   return (
     <View className="bg-white h-full">
       <SafeAreaScrollView contentContainerStyle={styles.contentContainer}>

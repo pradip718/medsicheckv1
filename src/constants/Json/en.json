@@ -550,6 +550,7 @@
   "invalid_lab_token": "Provided Reading doesn't exist",
 
   "health_risk": "Health Risks",
+  "health_risks_loading": "Please wait...",
 
   "issue_list": [
     {

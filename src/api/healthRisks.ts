@@ -29,8 +29,10 @@ async function getHealthRisks({
 
 async function postHealthRisksQuestions({
   data,
+  scanFlag,
 }: {
   data: SelectedAnswers[] | null;
+  scanFlag?: boolean;
 }): Promise<HealthRisksResponse> {
   const locale = getDeviceLocaleInformation();
   const profile_id = useUserProfileStore.getState().currentActiveProfileId;
@@ -47,6 +49,10 @@ async function postHealthRisksQuestions({
 
   if (engine_name) {
     params.append('engine_name', engine_name.toString());
+  }
+
+  if (scanFlag) {
+    params.append('scan_flag', scanFlag.toString());
   }
 
   const response = await activeAxiosInstance.post<HealthRisksResponse>(

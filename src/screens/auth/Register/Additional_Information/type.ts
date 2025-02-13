@@ -1,4 +1,4 @@
-export type QuestionType = 'textbox' | 'dropdown' | 'label';
+export type QuestionType = 'textbox' | 'dropdown' | 'label' | 'action';
 
 export type DropdownItem = {
   label: string;

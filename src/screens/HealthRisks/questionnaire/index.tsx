@@ -37,6 +37,7 @@ import {
   Question,
   SelectedAnswers,
 } from '../../auth/Register/Additional_Information/type';
+import FaceScan from './FaceScan';
 
 const isNoneOfTheAbove = (item: Choice) => {
   return (
@@ -420,6 +421,36 @@ const HealthRisksQuestionnaire = () => {
     });
   };
 
+  const submitFacescan = async (choice: string) => {
+    if (!choice) {
+      return errorToast(languages?.generic_error_message);
+    }
+
+    const {currentSelectedEnglishOption, currentSelectedSpanishOption} =
+      getOptionsInEnglishAndSpanish({
+        selectedItem: choice,
+        question: currentQuestions?.[0],
+      });
+
+    console.log({
+      currentSelectedEnglishOption,
+      currentSelectedSpanishOption,
+    });
+
+    await postAdditionalQuestions({
+      data: [
+        {
+          question_id: currentQuestions?.[0]?.q_id ?? '',
+          //@ts-ignore
+          choice_value: currentSelectedEnglishOption ?? '',
+          //@ts-ignore
+          spanish_choice_value: currentSelectedSpanishOption,
+        },
+      ],
+      scanFlag: true,
+    });
+  };
+
   const renderQuestionAnswer = (
     ques: Question,
     questionNumber: number | null,
@@ -454,6 +485,17 @@ const HealthRisksQuestionnaire = () => {
           handleSelectedAnswers={handleDropdownSelectedAnswers}
           handleSetAnswers={handleSetAnswers}
           selectedAnswers={selectedAnswers ?? []}
+        />
+      );
+    }
+
+    if (ques.question_type === 'action') {
+      return (
+        <FaceScan
+          question={isSpanish ? ques.spanish_question : ques?.eng_question}
+          //@ts-ignore
+          choices={isSpanish ? ques.spanish_choices : ques?.eng_choices}
+          submitFacescan={submitFacescan}
         />
       );
     }
@@ -497,7 +539,7 @@ const HealthRisksQuestionnaire = () => {
               style={styles.keyboardAwareContentContainer}
               key={`${question.q_id}-${index + 1}`}
               className="flex-1">
-              <View className="mb-4 mt-2">
+              <View className="mb-4 mt-2 grow ">
                 {renderQuestionAnswer(question, null)}
               </View>
             </View>

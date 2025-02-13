@@ -46,7 +46,7 @@ const FullScreenLoader = ({visible}: FullPageLoaderProps) => {
 
 export default FullScreenLoader;
 
-const Loader: React.FC<LoaderProps> = ({name, color}) => {
+export const Loader: React.FC<LoaderProps> = ({name, color}) => {
   const firstCircle = useRef(new Animated.Value(0)).current;
   const secondCircle = useRef(new Animated.Value(0)).current;
   const thirdCircle = useRef(new Animated.Value(0)).current;

@@ -27,6 +27,7 @@ import uuid from 'react-native-uuid';
 import {twMerge} from 'tailwind-merge';
 import useAlertStore from '../../../store/alertStore';
 import useBinahConfigStore from '../../../store/binahConfigStore';
+import useHealthRiskStore from '../../../store/healthRisksStore';
 import useLanguageStore from '../../../store/languageStore';
 import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
@@ -81,6 +82,8 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
   const {isLandscape} = useScreenOrientation();
   const {showAlert} = useAlertStore();
   const {actionData, executeAction} = useAIReportFacescanStore();
+  const {actionData: healthRiskAction, executeAction: executeHealthRiskAction} =
+    useHealthRiskStore();
 
   const [fakeRecording, setFakeRecording] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -219,6 +222,10 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
   const handleReportSuccess = async (data: any) => {
     if (actionData?.fromScreen === 'PersonalisedAI') {
       await executeAction();
+      return navigation.goBack();
+    }
+    if (healthRiskAction?.fromScreen === 'HealthRisks') {
+      await executeHealthRiskAction();
       return navigation.goBack();
     }
 

@@ -325,8 +325,17 @@ const RootNavigator = () => {
             <Stack.Screen
               name="HealthRisksQuestionnaire"
               component={HealthRisksQuestionnaire}
+              options={{
+                animation: 'fade',
+              }}
             />
-            <Stack.Screen name="ViewRiskScore" component={ViewRiskScore} />
+            <Stack.Screen
+              name="ViewRiskScore"
+              component={ViewRiskScore}
+              options={{
+                animation: 'fade',
+              }}
+            />
           </Stack.Group>
           <Stack.Screen name="ReportDetails" component={ReportDetails} />
           <Stack.Screen name="FaceScan" component={FaceScan} />
