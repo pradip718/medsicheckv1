@@ -37,20 +37,22 @@ const FaceScan = ({question, choices, submitFacescan}: Props) => {
     }
   };
   return (
-    <View className="h-full grow">
+    <View className="grow">
       <CustomText className=" font-isidoraSemiBold text-lg grow-[0.1]">
         {ParseAndRenderText(question)}
       </CustomText>
 
-      <View className="justify-center items-center grow">
+      <View className="justify-center items-center grow ">
         {choices &&
           isArray(choices) &&
           choices.map(choice => (
             <TouchableOpacity
               key={choice}
-              className="border border-gray-300 rounded-lg w-[50%] h-12 justify-center items-center mt-4"
+              className="border border-gray-300 rounded-lg min-w-[50%] min-h-12 justify-center items-center mt-4 px-4 py-2"
               onPress={() => handleSelectedAction(choice)}>
-              <CustomText className="font-isidoraSemiBold">{choice}</CustomText>
+              <CustomText className="font-isidoraSemiBold text-lg">
+                {choice}
+              </CustomText>
             </TouchableOpacity>
           ))}
       </View>

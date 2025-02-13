@@ -533,13 +533,12 @@ const HealthRisksQuestionnaire = () => {
           }}
         />
 
-        <KeyboardAwareScrollView className="mt-10">
+        <KeyboardAwareScrollView
+          className="mt-10"
+          contentContainerStyle={styles.keyboardAwareContentContainer}>
           {currentQuestions?.map((question, index) => (
-            <View
-              style={styles.keyboardAwareContentContainer}
-              key={`${question.q_id}-${index + 1}`}
-              className="flex-1">
-              <View className="mb-4 mt-2 grow ">
+            <View key={`${question.q_id}-${index + 1}`} className="flex-1">
+              <View className="mb-4 mt-2 grow">
                 {renderQuestionAnswer(question, null)}
               </View>
             </View>
