@@ -57,7 +57,7 @@ const FaceScan = () => {
       <SafeAreaView className="h-full">
         <View className="flex-1">
           <View className="px-4 py-2 mediumPhone:py-4">
-            <Navbar hasClose noBack handleClose={() => navigation.goBack()} />
+            <Navbar hasClose noBack />
           </View>
           <View
             className="mt-10 h-[89px] smallPhone:mt-0"
