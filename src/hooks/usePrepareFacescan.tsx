@@ -43,10 +43,17 @@ const usePrepareFacescan = () => {
     try {
       let userDemographics = {
         height: users?.height
-          ? convertFeetAndInchesToCm(Number(users?.height), users?.height_unit)
+          ? Math.round(
+              convertFeetAndInchesToCm(
+                Number(users?.height),
+                users?.height_unit,
+              ) ?? 0,
+            )
           : undefined,
         weight: users?.weight
-          ? convertWeightToKg(Number(users?.weight), users?.weight_unit)
+          ? Math.round(
+              convertWeightToKg(Number(users?.weight), users?.weight_unit) ?? 0,
+            )
           : undefined,
         age: users?.birthdate
           ? getAgeFromBirthdate(users?.birthdate)
