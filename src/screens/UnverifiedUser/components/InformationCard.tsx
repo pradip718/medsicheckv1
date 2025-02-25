@@ -8,8 +8,10 @@ import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
 import customColor from '../../../theme/customColor';
 
-const InformationCard = ({}: // header,
-// subHeader,
+const InformationCard = ({
+  header,
+  subHeader,
+}: // subHeader,
 {
   header: string;
   subHeader: string;
@@ -20,10 +22,10 @@ const InformationCard = ({}: // header,
       colors={['#222B45', '#142044']}
       className="px-4 pt-10 rounded-3xl mt-2">
       <CustomText className="text-white text-[32px] font-isidoraSemiBold leading-9 tracking-[.2px]">
-        {languages?.verificationTitlePrompt}
+        {header}
       </CustomText>
       <CustomText className="text-white text-base font-isidoraMedium leading-5 tracking-[.3px] mt-4">
-        {languages?.verificationTitleContent}
+        {subHeader}
       </CustomText>
       <View className="mt-4 flex-row">
         <View className="flex-shrink">

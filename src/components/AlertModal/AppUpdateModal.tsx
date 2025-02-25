@@ -19,30 +19,23 @@ const AppUpdateModal = ({
 }: {
   triggerMaintenanceMode: () => void;
 }) => {
-  const {languages, setLanguages} = useLanguageStore();
+  const {languages} = useLanguageStore();
   const [isVisible, setIsVisible] = useState(false);
   const [updateData, setUpdateData] = useState<CheckAppUpdateResponse | null>();
 
   useEffect(() => {
     checkToShowAppUpdate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [languages]);
 
   const checkToShowAppUpdate = async () => {
     setUpdateData(null);
     const token = await getFcmToken();
-    const [locale, appUpdateData] = await Promise.all([
-      getDeviceLocaleInformation(),
-      checkAppUpdate(token || ''),
-    ]);
+    const [appUpdateData] = await Promise.all([checkAppUpdate(token || '')]);
     setUpdateData(appUpdateData);
-    const {data: language} = await getLanguage(locale);
-    setLanguages(language);
-
-    const localLanguage = language ?? languages;
 
     if (appUpdateData?.update && Config.Environment === 'production') {
-      checkAppVersion(localLanguage);
+      checkAppVersion(languages);
     }
   };
 

@@ -4,35 +4,19 @@ import {MutationOptions, useMutation} from '@tanstack/react-query';
 import {useEffect} from 'react';
 import {navigationRef} from '../../RootNavigation';
 import useAuthStore from '../../store/authStore';
-import useLanguageStore from '../../store/languageStore';
-import {getDeviceLocaleInformation} from '../../utils/methods';
-import {getLanguage} from '../api/language';
 import {useSetupUserProfile} from './api/auth';
 import useFetchBinahConfig from './useFetchBinahConfig';
 
 const useAppInitialization = (props?: MutationOptions) => {
-  const {setLanguages} = useLanguageStore();
   const {deeplinkAuth} = useAuthStore();
 
   const {mutateAsync: setupUserProfile} = useSetupUserProfile();
   const {mutateAsync: getBinahConfig} = useFetchBinahConfig();
 
-  const loadLanguage = async () => {
-    const locale = getDeviceLocaleInformation();
-    const {data: language} = await getLanguage(locale);
-    if (language) {
-      setLanguages(language);
-    }
-  };
-
   const fetchBinahConfig = async () => {
     if (deeplinkAuth?.token) {
       await getBinahConfig();
     }
-  };
-
-  const initializeLanguage = async () => {
-    await loadLanguage();
   };
 
   const handleConnectivityChange = (state: NetInfoState) => {
@@ -64,9 +48,8 @@ const useAppInitialization = (props?: MutationOptions) => {
 
   return useMutation({
     mutationFn: async () => {
-      const [_, __, setupUserProfileResult] = await Promise.allSettled([
+      const [_, setupUserProfileResult] = await Promise.allSettled([
         fetchBinahConfig(),
-        initializeLanguage(),
         setupUserProfile(),
       ]);
       if (setupUserProfileResult.status === 'fulfilled') {
