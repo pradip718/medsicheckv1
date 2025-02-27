@@ -27,18 +27,10 @@
 		AE9814002D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */; };
 		AE9814022D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */; };
 		AE9814032D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */; };
-		AE9814042D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E22D4755AD001E7BD8 /* MaterialCommunityIcons.ttf */; };
-		AE9814052D4755AD001E7BD8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D92D4755AD001E7BD8 /* EvilIcons.ttf */; };
-		AE9814062D4755AD001E7BD8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DB2D4755AD001E7BD8 /* FontAwesome.ttf */; };
 		AE9814072D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */; };
-		AE9814082D4755AD001E7BD8 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E32D4755AD001E7BD8 /* MaterialIcons.ttf */; };
 		AE9814092D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E42D4755AD001E7BD8 /* Urbanist-Bold.ttf */; };
-		AE98140A2D4755AD001E7BD8 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D72D4755AD001E7BD8 /* AntDesign.ttf */; };
 		AE98140B2D4755AD001E7BD8 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DC2D4755AD001E7BD8 /* icomoon.ttf */; };
-		AE98140C2D4755AD001E7BD8 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813D82D4755AD001E7BD8 /* Entypo.ttf */; };
-		AE98140D2D4755AD001E7BD8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DD2D4755AD001E7BD8 /* Ionicons.ttf */; };
 		AE98140E2D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E02D4755AD001E7BD8 /* IsidoraSans-Regular.ttf */; };
-		AE98140F2D4755AD001E7BD8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DA2D4755AD001E7BD8 /* Feather.ttf */; };
 		AE9814762D478545001E7BD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE9814492D478545001E7BD8 /* Assets.xcassets */; };
 		AE9814772D478545001E7BD8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AE98144B2D478545001E7BD8 /* LaunchScreen.storyboard */; };
 		AE98147B2D478545001E7BD8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE98144E2D478545001E7BD8 /* Localizable.strings */; };
@@ -171,6 +163,8 @@
 		AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AnuraCore.xcframework; sourceTree = "<group>"; };
 		AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FaceMesh.xcframework; sourceTree = "<group>"; };
 		AE98179B2D47A396001E7BD8 /* libdfx.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libdfx.xcframework; sourceTree = "<group>"; };
+		AEB17F312D7063A900A8BA90 /* MedsiCheck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MedsiCheck.entitlements; sourceTree = "<group>"; };
+		AEB17F322D7063C800A8BA90 /* MedsiCheck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MedsiCheck.entitlements; path = MedsiCheck/MedsiCheck.entitlements; sourceTree = "<group>"; };
 		AEEF05732D4692F6002EE9AB /* MedsiCheckDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedsiCheckDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEEF05742D4692F6002EE9AB /* MedsiCheck dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MedsiCheck dev-Info.plist"; path = "/Users/pradipshrestha/Organization/OpenFabric/MedsiNewApp/MedsiCheck/ios/MedsiCheck dev-Info.plist"; sourceTree = "<absolute>"; };
 		AEEF05752D469341002EE9AB /* MedsiCheckDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MedsiCheckDev.entitlements; sourceTree = "<group>"; };
@@ -253,6 +247,7 @@
 		13B07FAE1A68108700A75B9A /* MedsiCheck */ = {
 			isa = PBXGroup;
 			children = (
+				AEB17F322D7063C800A8BA90 /* MedsiCheck.entitlements */,
 				AEEF05A52D46C52C002EE9AB /* Firebase */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				AE9814502D478545001E7BD8 /* Resources */,
@@ -288,6 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				AEEF059C2D46B9F3002EE9AB /* MedsiCheckStaging.entitlements */,
+				AEB17F312D7063A900A8BA90 /* MedsiCheck.entitlements */,
 				AEEF05752D469341002EE9AB /* MedsiCheckDev.entitlements */,
 				AE9813E52D4755AD001E7BD8 /* fonts */,
 				13B07FAE1A68108700A75B9A /* MedsiCheck */,
@@ -528,18 +524,10 @@
 				AE9814772D478545001E7BD8 /* LaunchScreen.storyboard in Resources */,
 				AE98147B2D478545001E7BD8 /* Localizable.strings in Resources */,
 				AE9814032D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */,
-				AE9814042D4755AD001E7BD8 /* MaterialCommunityIcons.ttf in Resources */,
-				AE9814052D4755AD001E7BD8 /* EvilIcons.ttf in Resources */,
-				AE9814062D4755AD001E7BD8 /* FontAwesome.ttf in Resources */,
 				AE9814072D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */,
-				AE9814082D4755AD001E7BD8 /* MaterialIcons.ttf in Resources */,
 				AE9814092D4755AD001E7BD8 /* Urbanist-Bold.ttf in Resources */,
-				AE98140A2D4755AD001E7BD8 /* AntDesign.ttf in Resources */,
 				AE98140B2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
-				AE98140C2D4755AD001E7BD8 /* Entypo.ttf in Resources */,
-				AE98140D2D4755AD001E7BD8 /* Ionicons.ttf in Resources */,
 				AE98140E2D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
-				AE98140F2D4755AD001E7BD8 /* Feather.ttf in Resources */,
 				AEEF059F2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1041,6 +1029,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MedsiCheck/MedsiCheck.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M9BA744J4X;
 				ENABLE_BITCODE = NO;
@@ -1073,6 +1062,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MedsiCheck/MedsiCheck.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M9BA744J4X;
 				INFOPLIST_FILE = MedsiCheck/Info.plist;
