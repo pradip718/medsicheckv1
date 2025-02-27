@@ -13,7 +13,8 @@
 //
 
 #import "RNTEventBridge.h"
-#import "MedsiCheckDev-Swift.h"
+//#import "MedsiCheckDev-Swift.h"
+#import "MedsiCheck-Swift.h"
 // #import "MedsiCheckStaging-Swift.h"
 
 NSString *const EventReminderCommon = @"eventReminder_common";

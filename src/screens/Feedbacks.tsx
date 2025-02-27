@@ -1,7 +1,7 @@
 import {useMutation} from '@tanstack/react-query';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, TextInput, View} from 'react-native';
-// import StarRating from 'react-native-star-rating';
+import StarRating from 'react-native-star-rating-widget';
 import useLanguageStore from '../../store/languageStore';
 import {FeedbackPayload} from '../../types/users/user';
 import {errorToast, successToast} from '../../utils/toast';
@@ -90,16 +90,13 @@ const Feedbacks = () => {
           <CustomText className="font-isidoraMedium text-base">
             {languages?.feedback_form_heading}
           </CustomText>
-          {/* <View className="w-40 mt-4">
+          <View className="mt-4">
             <StarRating
-              disabled={false}
+              rating={startCount ?? 0}
+              onChange={onStarRatingPress}
               maxStars={5}
-              rating={startCount}
-              fullStarColor={'#FFD700'}
-              starSize={30}
-              selectedStar={onStarRatingPress}
             />
-          </View> */}
+          </View>
         </View>
         <View className="mt-8 space-y-2">
           <CustomText className="font-isidoraMedium text-sm">
