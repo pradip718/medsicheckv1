@@ -58,7 +58,7 @@ const RenderReport = React.memo(
     const confidenceLevel = readingData[readingKey]?.confidence_level || null;
     const scaleCriteria = {
       scale: reportConfig?.scale || [],
-      measuredValue: score,
+      measuredValue: healthMetricsValue,
     };
 
     return (

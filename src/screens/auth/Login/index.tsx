@@ -261,6 +261,7 @@ const Login = () => {
       <ImageBackground source={AuthBackground as any} className="flex-1">
         <SafeAreaView style={styles.container}>
           <KeyboardAwareScrollView
+            showsVerticalScrollIndicator={false}
             bounces={false}
             keyboardShouldPersistTaps="handled"
             className="grow">
