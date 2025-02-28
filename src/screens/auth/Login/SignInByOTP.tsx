@@ -117,6 +117,9 @@ const SignInByOTP = ({
   };
 
   const handleVerifyLoginOTP = async () => {
+    if (!otp) {
+      return errorToast(languages?.generic_error_message);
+    }
     await verifyLoginOTPMutation({
       otp_value: otp,
       session: sendOTPResponse?.session ?? '',
@@ -272,7 +275,7 @@ const SignInByOTP = ({
             style={styles.button}
             className="mt-10"
             loading={isValidatingOTP}
-            disabled={isValidatingOTP}
+            disabled={isValidatingOTP || otp.length !== 6}
             onPress={handleVerifyLoginOTP}>
             <CustomText className="text-base text-white font-isidoraSemiBold">
               {languages.validate_otp_button}
