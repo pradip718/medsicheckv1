@@ -2,7 +2,7 @@ PODS:
   - AmplifyRTNCore (1.1.6):
     - React-Core
   - BEMCheckBox (1.4.1)
-  - biosensesignal-react-native-sdk (5.9.1):
+  - biosensesignal-react-native-sdk (5.6.3):
     - React-Core
   - boost (1.84.0)
   - BVLinearGradient (2.8.3):
@@ -2326,7 +2326,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AmplifyRTNCore: fed43e0ab4504c7ae49291204c3c704da4963255
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
-  biosensesignal-react-native-sdk: ab6f6e54b395730e80b7458aff17c77104c57d8b
+  biosensesignal-react-native-sdk: 91ce07df1efbcba3c813f38fb76fba096de769d7
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
