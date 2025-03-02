@@ -138,8 +138,8 @@ const useAuthNavigation = ({
       return await checkForOnboardingStep();
     }
     if (isRememberme !== 'true' || !session) {
-      const isRegistered = await checkUserRegistered();
-      return navigationRef.navigate(isRegistered ? 'Register' : 'Login');
+      // const isRegistered = await checkUserRegistered();
+      return navigationRef.navigate('Login');
     }
     // await fetchAndSetProfile();
     await checkForOnboardingStep();
