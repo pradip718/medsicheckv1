@@ -19,7 +19,6 @@ import 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 import RootNavigator from './navigation';
 import {getAWSSecretKeys} from './src/api/auth';
-import {getLanguage} from './src/api/language';
 import AlertModal from './src/components/AlertModal';
 import AppUpdateModal from './src/components/AlertModal/AppUpdateModal';
 import {ErrorFallback} from './src/components/ErrorFallback';
@@ -30,7 +29,6 @@ import useAuthStore from './store/authStore';
 import useLanguageStore from './store/languageStore';
 import useLoaderStore from './store/loaderStore';
 import {toastConfig} from './utils/common';
-import {getDeviceLocaleInformation} from './utils/methods';
 import {registerListenerWithFCM} from './utils/notification';
 
 export const queryClient = new QueryClient({
@@ -50,55 +48,31 @@ export const queryClient = new QueryClient({
   },
 });
 
-if (!__DEV__) {
-  Sentry.init({
-    environment: Config.Environment,
-    dsn: 'https://6f60a90abe9479185d953565e52b9770@o4507020983926784.ingest.us.sentry.io/4507020986679296',
-    tracesSampleRate: 1.0,
-    release: DeviceInfo.getVersion(),
-    dist: DeviceInfo.getBuildNumber(),
-    enableNative: true,
-    replaysSessionSampleRate: 1.0,
-    replaysOnErrorSampleRate: 1.0,
-    integrations: [Sentry.mobileReplayIntegration()],
-  });
-}
-
-const suppressWarnings = () => {
-  if (__DEV__) {
-    const ignoreWarns = ['ViewPropTypes will be removed from React Native'];
-    const warn = console.warn;
-    console.warn = (...args) => {
-      if (!ignoreWarns.some(warning => args[0]?.startsWith(warning))) {
-        warn(...args);
-      }
-    };
-    LogBox.ignoreLogs(ignoreWarns);
-  }
-};
-suppressWarnings();
-
 function App(): JSX.Element {
-  const {languages, setLanguages} = useLanguageStore();
+  const {languages} = useLanguageStore();
   const {setAWSCred} = useAuthStore();
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [isAWSKeyFetching, setIsAWSKeyFetching] = useState(false);
 
+  if (!__DEV__) {
+    Sentry.init({
+      environment: Config.Environment,
+      dsn:
+        languages?.sentry_dsn ||
+        'https://6f60a90abe9479185d953565e52b9770@o4507020983926784.ingest.us.sentry.io/4507020986679296',
+      tracesSampleRate: 1.0,
+      release: DeviceInfo.getVersion(),
+      dist: DeviceInfo.getBuildNumber(),
+      enableNative: true,
+    });
+  }
+
   const {visible, signoutModalVisibility} = useLoaderStore();
 
   useEffect(() => {
-    const loadLanguage = async () => {
-      const locale = getDeviceLocaleInformation();
-      const {data: language} = await getLanguage(locale);
-      setLanguages(language);
-    };
-
-    loadLanguage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setIsMaintenanceMode(languages?.is_under_maintenance === 'true');
+    if (languages?.is_under_maintenance === 'false') {
+      setIsMaintenanceMode(false);
+    }
   }, [languages]);
 
   useEffect(() => {
@@ -123,6 +97,22 @@ function App(): JSX.Element {
     const unsubscribe = registerListenerWithFCM();
     return unsubscribe;
   }, []);
+
+  if (__DEV__) {
+    const ignoreWarns = ['ViewPropTypes will be removed from React Native'];
+
+    const warn = console.warn;
+    console.warn = (...arg) => {
+      for (const warning of ignoreWarns) {
+        if (arg[0].startsWith(warning)) {
+          return;
+        }
+      }
+      warn(...arg);
+    };
+
+    LogBox.ignoreLogs(ignoreWarns);
+  }
 
   if (isAWSKeyFetching) {
     return <></>;
