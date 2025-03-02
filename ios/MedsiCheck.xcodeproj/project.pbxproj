@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MedsiCheckTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MedsiCheckTests.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		2E6C2B8B18E47BED0F28B028 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DA857B1407C0CF0A83732C11 /* PrivacyInfo.xcprivacy */; };
 		34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */; };
-		4AB2D3A961F13218F999B58C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DA857B1407C0CF0A83732C11 /* PrivacyInfo.xcprivacy */; };
 		56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */; };
 		6FC0CCDF815666EF3F852CB2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */; };
 		9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */; };
@@ -68,7 +66,6 @@
 		AEEF05A62D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
 		AEEF05A72D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
 		AEEF05A82D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
-		F372F5A878A3DAD024C3DAD4 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DA857B1407C0CF0A83732C11 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -177,7 +174,6 @@
 		AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
 		AEEF05A52D46C52C002EE9AB /* Firebase */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Firebase; sourceTree = "<group>"; };
 		DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA857B1407C0CF0A83732C11 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MedsiCheck/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FEE7B8B608EB1651E3D9A7CB /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -185,8 +181,6 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AE98171F2D479B05001E7BD8 /* Main */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Main;
 			sourceTree = "<group>";
 		};
@@ -263,7 +257,6 @@
 				AE9814502D478545001E7BD8 /* Resources */,
 				AE98171F2D479B05001E7BD8 /* Main */,
 				AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */,
-				DA857B1407C0CF0A83732C11 /* PrivacyInfo.xcprivacy */,
 			);
 			name = MedsiCheck;
 			sourceTree = "<group>";
@@ -540,7 +533,6 @@
 				AE98140B2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
 				AE98140E2D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AEEF059F2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
-				4AB2D3A961F13218F999B58C /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -560,7 +552,6 @@
 				AE9813EF2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
 				AE9813F22D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
-				2E6C2B8B18E47BED0F28B028 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,7 +571,6 @@
 				AE9813FD2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
 				AE9814002D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AEEF05A02D46C049002EE9AB /* BootSplash.storyboard in Resources */,
-				F372F5A878A3DAD024C3DAD4 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1170,10 +1160,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -1242,10 +1229,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
