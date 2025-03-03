@@ -29,7 +29,7 @@ const AppUpdateModal = ({
   const checkToShowAppUpdate = async () => {
     setUpdateData(null);
     const token = await getFcmToken();
-    const [appUpdateData] = await Promise.all([checkAppUpdate(token || '')]);
+    const appUpdateData = await checkAppUpdate(token ?? '');
     setUpdateData(appUpdateData);
 
     if (appUpdateData?.update && Config.Environment === 'production') {

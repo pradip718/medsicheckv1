@@ -83,9 +83,7 @@ function App(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (languages?.is_under_maintenance === 'false') {
-      setIsMaintenanceMode(false);
-    }
+    setIsMaintenanceMode(languages?.is_under_maintenance === 'true');
   }, [languages]);
 
   useEffect(() => {
