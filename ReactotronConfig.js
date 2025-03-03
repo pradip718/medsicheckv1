@@ -5,15 +5,15 @@ import Reactotron, {networking} from 'reactotron-react-native';
 import useBinahConfigStore from './store/binahConfigStore';
 import useHealthRiskStore from './store/healthRisksStore';
 
-// let scriptHostname;
-// if (__DEV__) {
-//   const scriptURL = NativeModules.SourceCode.scriptURL;
-//   scriptHostname = scriptURL.split('://')[1].split(':')[0];
-// }
+let scriptHostname;
+if (__DEV__) {
+  const scriptURL = NativeModules.SourceCode.scriptURL;
+  scriptHostname = scriptURL.split('://')[1].split(':')[0];
+}
 
 Reactotron.configure({
   name: Config.Environment,
-  // host: scriptHostname,
+  host: scriptHostname,
 })
   .useReactNative()
   .use(networking())
