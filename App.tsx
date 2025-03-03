@@ -19,6 +19,7 @@ import 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 import RootNavigator from './navigation';
 import {getAWSSecretKeys} from './src/api/auth';
+import {getLanguage} from './src/api/language';
 import AlertModal from './src/components/AlertModal';
 import AppUpdateModal from './src/components/AlertModal/AppUpdateModal';
 import {ErrorFallback} from './src/components/ErrorFallback';
@@ -29,6 +30,7 @@ import useAuthStore from './store/authStore';
 import useLanguageStore from './store/languageStore';
 import useLoaderStore from './store/loaderStore';
 import {toastConfig} from './utils/common';
+import {getDeviceLocaleInformation} from './utils/methods';
 import {registerListenerWithFCM} from './utils/notification';
 
 export const queryClient = new QueryClient({
@@ -49,7 +51,7 @@ export const queryClient = new QueryClient({
 });
 
 function App(): JSX.Element {
-  const {languages} = useLanguageStore();
+  const {languages, setLanguages} = useLanguageStore();
   const {setAWSCred} = useAuthStore();
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
   const [isAWSKeyFetching, setIsAWSKeyFetching] = useState(false);
@@ -68,6 +70,17 @@ function App(): JSX.Element {
   }
 
   const {visible, signoutModalVisibility} = useLoaderStore();
+
+  useEffect(() => {
+    const loadLanguage = async () => {
+      const locale = getDeviceLocaleInformation();
+      const {data: language} = await getLanguage(locale);
+      setLanguages(language);
+    };
+
+    loadLanguage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (languages?.is_under_maintenance === 'false') {
