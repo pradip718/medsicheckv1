@@ -49,6 +49,17 @@ const SignInByPassword = ({
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  React.useEffect(() => {
+    const setDefaultRememberMe = async () => {
+      const currentValue = await getItem();
+      if (!currentValue) {
+        await setItem('true');
+        await queryClient.invalidateQueries({queryKey: ['Remember_Me']});
+      }
+    };
+    setDefaultRememberMe();
+  }, [getItem, setItem, queryClient]);
+
   const {mutateAsync: handleRememberme, isPending: isRemembermeLoading} =
     useMutation({
       mutationFn: async (isRememberme: boolean) => {

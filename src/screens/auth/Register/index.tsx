@@ -1,5 +1,6 @@
+import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
 import {MotiTransitionProp, StyleValueWithReplacedTransforms, View} from 'moti';
 import React, {useEffect, useState} from 'react';
@@ -12,6 +13,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import BootSplash from 'react-native-bootsplash';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native-paper';
 import {AuthBackground} from '../../../../assets';
@@ -26,7 +28,10 @@ import {login, signup} from '../../../api/auth';
 import CustomPhoneInput from '../../../components/PhoneInput';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
-// import {useFetchAndSetProfile} from '../../../hooks/api/auth';
+import {
+  LOGIN_ASYNC_KEY,
+  REMEMBERED_USER_SESSION,
+} from '../../../constants/AsyncStorageKeys';
 import useAuthNavigation from '../../../hooks/useAuthNavigation';
 import customColor from '../../../theme/customColor';
 import Header from './Header';
@@ -44,12 +49,13 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
+  const {setItem} = useAsyncStorage(LOGIN_ASYNC_KEY);
+  const queryClient = useQueryClient();
 
   const {mutateAsync: navigateIfExistingUser} = useAuthNavigation({
     hasLoader: false,
     shouldCheckOnboarding: true,
   });
-  // const {mutateAsync: fetchAndSetProfile} = useFetchAndSetProfile();
 
   useEffect(() => {
     const hide = async () => {
@@ -76,7 +82,6 @@ const Register = () => {
       }
       await handleLogin();
       return await navigateIfExistingUser();
-      // await fetchAndSetProfile();
     },
   });
 
@@ -117,6 +122,20 @@ const Register = () => {
     },
   });
 
+  const storeUserSession = async () => {
+    try {
+      await EncryptedStorage.setItem(
+        REMEMBERED_USER_SESSION,
+        JSON.stringify({
+          username: getValues('email'),
+          password: getValues('password'),
+        }),
+      );
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
+
   const handleLogin = async () => {
     const password = getValues('confirmPassword');
     const email = getValues('email');
@@ -126,37 +145,13 @@ const Register = () => {
     try {
       const encryptedPassword = await encryptText(password);
       await login({username: email, password: encryptedPassword});
+      await storeUserSession();
+      await setItem('true');
+      await queryClient.invalidateQueries({queryKey: ['Remember_Me']});
     } catch (error: any) {
       navigation.navigate('Login');
     }
   };
-
-  // const {mutateAsync: verifyEmailMutation, isPending: isVerifyingEmail} =
-  //   useMutation({
-  //     mutationKey: ['verifyEmail'],
-  //     mutationFn: verifyEmail,
-  //     onSuccess: async () => {
-  //       await handleLogin();
-  //       navigation.navigate('TermsAndConditions');
-  //     },
-  //     onError: error => {
-  //       if (error instanceof AxiosError) {
-  //         errorToast(error?.response?.data?.error || '');
-  //       }
-  //     },
-  //   });
-
-  // const handleLogin = async () => {
-  //   try {
-  //     const username = getValues('email');
-  //     const password = getValues('confirmPassword');
-  //     const encryptedPassword = await encryptText(password);
-  //     await login({username, password: encryptedPassword});
-  //   } catch (error: any) {
-  //     errorToast(error?.message);
-  //     navigation.navigate('Login');
-  //   }
-  // };
 
   const handleSignUp = async ({
     email,
@@ -260,7 +255,6 @@ const Register = () => {
                 underlineColor="black"
                 activeUnderlineColor="rgba(255, 255, 255, 0.45)"
                 secureTextEntry={!showPassword}
-                // right={<Icon name="person" size={20} color={customColor.black} />}
                 right={
                   <TextInput.Icon
                     icon={!showPassword ? 'eye' : 'eye-off'}
@@ -373,18 +367,6 @@ const Register = () => {
                   {languages?.sign_up}
                 </CustomText>
               </RoundedButton>
-              {/* <RoundedButton
-              style={styles.signUpButton}
-              onPress={() => {
-                navigation?.navigate('ContactVerification', {
-                  email: 'pradip_dev200@yopmail.com',
-                  phoneNumber: '+9779840071750',
-                });
-              }}>
-              <CustomText className="text-base text-white font-isidoraSemiBold">
-                {languages?.sign_up}
-              </CustomText>
-            </RoundedButton> */}
             </View>
           </View>
 
@@ -451,7 +433,6 @@ const styles = StyleSheet.create({
   signUpButton: {
     width: '50%',
     backgroundColor: '#222B45',
-    // marginTop: 20,
   },
   inputLabel: {
     color: 'rgba(255, 255, 255, 0.45)',
