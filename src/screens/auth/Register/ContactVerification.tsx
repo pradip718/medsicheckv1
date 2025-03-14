@@ -1,9 +1,10 @@
+import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import {
   NavigationProp,
   RouteProp,
   useNavigation,
 } from '@react-navigation/native';
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {SafeAreaView, View} from 'moti';
 import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
@@ -13,9 +14,11 @@ import {
   Keyboard,
   StyleSheet,
 } from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native-paper';
 import {AuthBackground} from '../../../../assets';
+import useAppStore from '../../../../store/appStore';
 import useLanguageStore from '../../../../store/languageStore';
 import {MainStackParamList} from '../../../../types/navigation';
 import {encryptText, isValidPhoneNumber} from '../../../../utils/methods';
@@ -26,8 +29,10 @@ import Icon from '../../../components/Icon';
 import CustomPhoneInput from '../../../components/PhoneInput';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
-// import {useFetchAndSetProfile} from '../../../hooks/api/auth';
-import useAppStore from '../../../../store/appStore';
+import {
+  LOGIN_ASYNC_KEY,
+  REMEMBERED_USER_SESSION,
+} from '../../../constants/AsyncStorageKeys';
 import useAuthNavigation from '../../../hooks/useAuthNavigation';
 import customColor from '../../../theme/customColor';
 import Header from './Header';
@@ -103,6 +108,7 @@ const ContactVerification = ({route}: OTPProps) => {
     };
   const [currentEmail, setCurrentEmail] = useState(email);
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState(phoneNumber);
+  const {setItem} = useAsyncStorage(LOGIN_ASYNC_KEY);
 
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
@@ -117,15 +123,29 @@ const ContactVerification = ({route}: OTPProps) => {
     hasLoader: false,
     shouldCheckOnboarding: true,
   });
-  // const {mutateAsync: fetchAndSetProfile} = useFetchAndSetProfile();
   const {mutateAsync: fetchProfileAndNavigate, isPending: isLoadingAuthSteps} =
     useMutation({
       mutationKey: ['fetch-profile-navigate'],
       mutationFn: async () => {
-        // await fetchAndSetProfile();
         return await navigateIfExistingUser();
       },
     });
+
+  const queryClient = useQueryClient();
+
+  const storeUserSession = async () => {
+    try {
+      await EncryptedStorage.setItem(
+        REMEMBERED_USER_SESSION,
+        JSON.stringify({
+          username: currentEmail,
+          password: password,
+        }),
+      );
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
 
   const handleLogin = async () => {
     if (!password) {
@@ -134,6 +154,11 @@ const ContactVerification = ({route}: OTPProps) => {
     try {
       const encryptedPassword = await encryptText(password);
       await login({username: currentEmail, password: encryptedPassword});
+      if (currentEmail !== email || password !== route.params?.password) {
+        await storeUserSession();
+        await setItem('true');
+        await queryClient.invalidateQueries({queryKey: ['Remember_Me']});
+      }
     } catch (error: any) {
       navigation.navigate('Login');
     }
