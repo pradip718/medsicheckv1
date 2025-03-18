@@ -1,8 +1,6 @@
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import CheckBox from '@react-native-community/checkbox';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Control,
   Controller,
@@ -10,13 +8,13 @@ import {
   UseFormHandleSubmit,
 } from 'react-hook-form';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import useAppStore from '../../../../store/appStore';
 import useLanguageStore from '../../../../store/languageStore';
 import {MainStackParamList} from '../../../../types/navigation';
 import {isAndroid} from '../../../../utils';
 import CustomTextInput from '../../../components/CustomTextInput';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
-import {LOGIN_ASYNC_KEY} from '../../../constants/AsyncStorageKeys';
 import {color, units} from '../../../theme';
 import {LoginParam, LoginType} from './type';
 
@@ -43,26 +41,17 @@ const SignInByPassword = ({
     formState: {errors, isDirty, isValid},
   } = formProps;
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-  const {getItem, setItem} = useAsyncStorage(LOGIN_ASYNC_KEY);
-  const queryClient = useQueryClient();
   const {languages} = useLanguageStore();
+  const {stayLoggedIn, setStayLoggedIn} = useAppStore();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const {mutateAsync: handleRememberme, isPending: isRemembermeLoading} =
-    useMutation({
-      mutationFn: async (isRememberme: boolean) => {
-        await setItem('' + isRememberme);
-        await queryClient.invalidateQueries({queryKey: ['Remember_Me']});
-      },
-    });
-
-  const {data: rememberMe} = useQuery({
-    queryKey: ['Remember_Me'],
-    queryFn: async () => {
-      return getItem();
-    },
-  });
+  useEffect(() => {
+    if (!stayLoggedIn) {
+      setStayLoggedIn(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const navigateToForgotPassword = () => {
     navigation.navigate('ForgotPassword');
@@ -123,10 +112,9 @@ const SignInByPassword = ({
             <CheckBox
               boxType="square"
               lineWidth={4}
-              onValueChange={handleRememberme}
-              value={rememberMe === 'true'}
+              onValueChange={() => setStayLoggedIn(!stayLoggedIn)}
+              value={stayLoggedIn}
               style={styles.checkBox}
-              disabled={isRemembermeLoading}
               tintColors={{true: 'white', false: 'white'}}
               tintColor="white"
               onCheckColor="black"
