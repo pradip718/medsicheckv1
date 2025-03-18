@@ -220,7 +220,7 @@ async function postReading({payload}: any) {
   const activeAxiosInstance = deeplinkAuth?.session_id
     ? axiosSessionInstance
     : axiosInstance;
-  const {geo_location, ...restPayload} = payload;
+  const {geo_location} = payload;
 
   const params = new URLSearchParams({
     locale: locale,
@@ -239,7 +239,7 @@ async function postReading({payload}: any) {
 
   const response = await activeAxiosInstance.post(
     `v1/health-report?${params}`,
-    restPayload,
+    payload,
   );
 
   return response?.data;
