@@ -78,11 +78,11 @@ const UserWithMultipleReport = () => {
           <UserPreferencesVital />
         </View> */}
         <View className="mt-4">
-          <CustomText
+          {/* <CustomText
             style={styles.lastScanTitle}
             className="text-sm font-isidoraSemiBold py-2">
             {languages?.menu_smart_report}
-          </CustomText>
+          </CustomText> */}
           <SmartReports />
         </View>
       </View>

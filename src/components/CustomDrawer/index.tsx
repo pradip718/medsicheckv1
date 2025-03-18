@@ -201,6 +201,12 @@ const CustomDrawer = () =>
         action: () => navigation.navigate('SmartReport'),
       },
       {
+        name: languages?.health_risk,
+        icon: 'risk',
+        disabled: false,
+        action: () => navigation.navigate('HealthRisks'),
+      },
+      {
         name: languages?.menu_health_wallet,
         icon: 'health_wallet',
         action: () => navigation.navigate('HealthWallet'),
