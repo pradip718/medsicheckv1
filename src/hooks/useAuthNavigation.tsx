@@ -4,13 +4,10 @@ import {useMutation, UseQueryResult} from '@tanstack/react-query';
 import BootSplash from 'react-native-bootsplash';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {navigationRef} from '../../RootNavigation';
+import useAppStore from '../../store/appStore';
 import useLanguageStore from '../../store/languageStore';
-import {checkUserRegistered} from '../../utils/methods';
 import {errorToast} from '../../utils/toast';
-import {
-  LOGIN_ASYNC_KEY,
-  REMEMBERED_USER_SESSION,
-} from '../constants/AsyncStorageKeys';
+import {REMEMBERED_USER_SESSION} from '../constants/AsyncStorageKeys';
 import {
   OnboardingResponse,
   OnboardingStepsResponse,
@@ -29,9 +26,9 @@ const useAuthNavigation = ({
   hasLoader = true,
   shouldCheckOnboarding = false,
 }: AuthNavigationProp = {}) => {
-  const {getItem} = useAsyncStorage(LOGIN_ASYNC_KEY);
   const {showLoader, hideLoader} = useFullPageLoader();
   const {languages} = useLanguageStore();
+  const {stayLoggedIn} = useAppStore();
 
   const {refetch: getAccountStatus} = useGetAccountStatus({
     enabled: false,
@@ -132,12 +129,11 @@ const useAuthNavigation = ({
     if (!navigationRef.isReady()) {
       return;
     }
-    const isRememberme = await getItem();
     const session = await EncryptedStorage.getItem(REMEMBERED_USER_SESSION);
     if (shouldCheckOnboarding) {
       return await checkForOnboardingStep();
     }
-    if (isRememberme !== 'true' || !session) {
+    if (!stayLoggedIn || !session) {
       // const isRegistered = await checkUserRegistered();
       return navigationRef.navigate('Login');
     }

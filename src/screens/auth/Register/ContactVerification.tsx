@@ -1,4 +1,3 @@
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import {
   NavigationProp,
   RouteProp,
@@ -29,10 +28,7 @@ import Icon from '../../../components/Icon';
 import CustomPhoneInput from '../../../components/PhoneInput';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
-import {
-  LOGIN_ASYNC_KEY,
-  REMEMBERED_USER_SESSION,
-} from '../../../constants/AsyncStorageKeys';
+import {REMEMBERED_USER_SESSION} from '../../../constants/AsyncStorageKeys';
 import useAuthNavigation from '../../../hooks/useAuthNavigation';
 import customColor from '../../../theme/customColor';
 import Header from './Header';
@@ -108,7 +104,6 @@ const ContactVerification = ({route}: OTPProps) => {
     };
   const [currentEmail, setCurrentEmail] = useState(email);
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState(phoneNumber);
-  const {setItem} = useAsyncStorage(LOGIN_ASYNC_KEY);
 
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
@@ -156,7 +151,6 @@ const ContactVerification = ({route}: OTPProps) => {
       await login({username: currentEmail, password: encryptedPassword});
       if (currentEmail !== email || password !== route.params?.password) {
         await storeUserSession();
-        await setItem('true');
         await queryClient.invalidateQueries({queryKey: ['Remember_Me']});
       }
     } catch (error: any) {

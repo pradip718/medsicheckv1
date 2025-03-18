@@ -1,4 +1,3 @@
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
@@ -28,10 +27,7 @@ import {login, signup} from '../../../api/auth';
 import CustomPhoneInput from '../../../components/PhoneInput';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
-import {
-  LOGIN_ASYNC_KEY,
-  REMEMBERED_USER_SESSION,
-} from '../../../constants/AsyncStorageKeys';
+import {REMEMBERED_USER_SESSION} from '../../../constants/AsyncStorageKeys';
 import useAuthNavigation from '../../../hooks/useAuthNavigation';
 import customColor from '../../../theme/customColor';
 import Header from './Header';
@@ -49,7 +45,6 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-  const {setItem} = useAsyncStorage(LOGIN_ASYNC_KEY);
   const queryClient = useQueryClient();
 
   const {mutateAsync: navigateIfExistingUser} = useAuthNavigation({
@@ -146,7 +141,6 @@ const Register = () => {
       const encryptedPassword = await encryptText(password);
       await login({username: email, password: encryptedPassword});
       await storeUserSession();
-      await setItem('true');
       await queryClient.invalidateQueries({queryKey: ['Remember_Me']});
     } catch (error: any) {
       navigation.navigate('Login');
