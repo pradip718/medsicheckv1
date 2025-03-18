@@ -3,20 +3,25 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
+import {useQueryClient} from '@tanstack/react-query';
 import moment from 'moment';
-import React from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {
+  ActivityIndicator,
+  PermissionsAndroid,
+  Platform,
+  View,
+} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import uuid from 'react-native-uuid';
 import useBinahConfigStore from '../../../store/binahConfigStore';
+import useHealthRiskStore from '../../../store/healthRisksStore';
+import useLanguageStore from '../../../store/languageStore';
 import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import BackgroundImage from '../../components/BackgroundImage';
 import CustomText from '../../components/Text';
 import Event from '../../config/Event';
-// import EventBridge from '../../config/EventBridge';
-import {useQueryClient} from '@tanstack/react-query';
-import useHealthRiskStore from '../../../store/healthRisksStore';
-import useLanguageStore from '../../../store/languageStore';
 import useEventBridge from '../../config/EventBridge';
 import {RESCAN_CONFIGURATION} from '../../constants/hooks';
 import usePostReadings from '../../hooks/api/usePostReading';
@@ -30,6 +35,53 @@ const AnuraIntermediateLoader = () => {
   const {actionData, executeAction} = useAIReportFacescanStore();
   const {executeAction: executeHealthRisksAction} = useHealthRiskStore();
   const EventBridge = useEventBridge();
+
+  const requestLocationPermission = useCallback(async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        const status = await Geolocation.requestAuthorization('whenInUse');
+        return status === 'granted';
+      }
+
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Location Permission',
+          message: 'We need access to your location for accurate readings',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  }, []);
+
+  const getLocation = useCallback(async () => {
+    const hasPermission = await requestLocationPermission();
+    if (hasPermission) {
+      return new Promise(resolve => {
+        Geolocation.getCurrentPosition(
+          position => {
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              altitude: position.coords.altitude || undefined,
+            });
+          },
+          error => {
+            console.log(error.code, error.message);
+            resolve({}); // Resolve with empty object if there's an error
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      });
+    }
+    return {};
+  }, [requestLocationPermission]);
 
   const {mutateAsync: postReadings} = usePostReadings({
     onSuccess: async (data, variable) => {
@@ -57,18 +109,10 @@ const AnuraIntermediateLoader = () => {
     },
   });
 
-  React.useEffect(() => {
-    addResultsListener();
-    return () => {
-      EventBridge.removeResultsListener();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const addResultsListener = async () => {
     EventBridge.addResultsListener(async (name, data) => {
-      // clearInterval(timer);
       if (name == Event.anuraMeasurementGetResultsSuccess) {
+        const locationData = await getLocation();
         await postReadings({
           payload: {
             data: data?.results,
@@ -77,18 +121,20 @@ const AnuraIntermediateLoader = () => {
             timestamp: moment().format('YYYY-MM-DD HH:mm'),
             sdk_name: anuraConfig?.sdk_name,
             sdk_type: anuraConfig?.sdk_type,
+            geo_location: locationData,
           },
         });
       }
     });
-
-    // const timer = setTimeout(() => {
-    //   if (resultsData.results == null) {
-    //     EventBridge.removeResultsListener();
-
-    //   }
-    // }, 30000);
   };
+
+  useEffect(() => {
+    addResultsListener();
+    return () => {
+      EventBridge.removeResultsListener();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <BackgroundImage>

@@ -130,7 +130,11 @@ async function getMiscellanousFileDetails(
   }
 }
 
-async function preReading() {
+async function preReading(params?: {
+  longitude?: number;
+  latitude?: number;
+  altitude?: number;
+}) {
   const locale = getDeviceLocaleInformation();
   const profile_id = useUserProfileStore.getState().currentActiveProfileId;
   const {deeplinkAuth} = useAuthStore.getState();
@@ -139,9 +143,24 @@ async function preReading() {
     : axiosInstance;
 
   try {
+    const queryParams = new URLSearchParams({
+      locale,
+      profile_id: profile_id.toString(),
+    });
+
+    if (params?.longitude !== undefined) {
+      queryParams.append('longitude', params.longitude.toString());
+    }
+    if (params?.latitude !== undefined) {
+      queryParams.append('latitude', params.latitude.toString());
+    }
+    if (params?.altitude !== undefined) {
+      queryParams.append('altitude', params.altitude.toString());
+    }
+
     const response = await activeAxiosInstance({
       method: 'GET',
-      url: `v1/health-pre-reading?locale=${locale}&profile_id=${profile_id}`,
+      url: `v1/health-pre-reading?${queryParams.toString()}`,
     });
 
     return response?.data;
@@ -149,6 +168,7 @@ async function preReading() {
     throw error;
   }
 }
+
 async function syncScanSession(
   status: SCAN_SESSION_STATUS,
   payload?: any,
@@ -200,15 +220,26 @@ async function postReading({payload}: any) {
   const activeAxiosInstance = deeplinkAuth?.session_id
     ? axiosSessionInstance
     : axiosInstance;
+  const {geo_location, ...restPayload} = payload;
 
   const params = new URLSearchParams({
     locale: locale,
     profile_id: profile_id.toString(),
   });
 
+  if (geo_location?.longitude) {
+    params.append('longitude', geo_location.longitude.toString());
+  }
+  if (geo_location?.latitude) {
+    params.append('latitude', geo_location.latitude.toString());
+  }
+  if (geo_location?.altitude) {
+    params.append('altitude', geo_location.altitude.toString());
+  }
+
   const response = await activeAxiosInstance.post(
     `v1/health-report?${params}`,
-    payload,
+    restPayload,
   );
 
   return response?.data;
