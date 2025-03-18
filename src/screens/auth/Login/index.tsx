@@ -1,10 +1,9 @@
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import {
   NavigationProp,
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
-import {UseQueryResult, useQuery} from '@tanstack/react-query';
+import {UseQueryResult} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
 import {isEmpty} from 'lodash';
 import {AnimatePresence, View} from 'moti';
@@ -23,6 +22,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
 import {AuthBackground, QRCode} from '../../../../assets';
 import AppRoute from '../../../../navigation/AppRoute';
+import useAppStore from '../../../../store/appStore';
 import useLanguageStore from '../../../../store/languageStore';
 import useUserProfileStore from '../../../../store/profileStore';
 import {LoginSuccessResponse} from '../../../../types/api_response';
@@ -34,10 +34,7 @@ import {login} from '../../../api/auth';
 import {notifyApi} from '../../../api/user';
 import Pressable from '../../../components/Pressable';
 import CustomText from '../../../components/Text';
-import {
-  LOGIN_ASYNC_KEY,
-  REMEMBERED_USER_SESSION,
-} from '../../../constants/AsyncStorageKeys';
+import {REMEMBERED_USER_SESSION} from '../../../constants/AsyncStorageKeys';
 import useGetAccountStatus from '../../../hooks/api/useGetAccountStatus';
 import useGetFamilyMembers from '../../../hooks/api/useGetFamilyMembers';
 import useGetOnboarding from '../../../hooks/api/useGetOnboarding';
@@ -56,10 +53,10 @@ import {
 
 const Login = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-  const {getItem} = useAsyncStorage(LOGIN_ASYNC_KEY);
   const {languages} = useLanguageStore();
   const {setCurrentActiveProfileId, currentActiveProfileId} =
     useUserProfileStore();
+  const {stayLoggedIn} = useAppStore();
 
   const [isUserLoggingIn, setIsUserLoggingIn] = useState(false);
   const [loginType, setLoginType] = useState<LoginType>('Password');
@@ -93,13 +90,6 @@ const Login = () => {
     enabled: false,
     gcTime: 0,
     staleTime: Infinity,
-  });
-
-  const {data: rememberMe} = useQuery({
-    queryKey: ['Remember_Me'],
-    queryFn: async () => {
-      return getItem();
-    },
   });
 
   const fetchAndSetProfile = async () => {
@@ -236,7 +226,7 @@ const Login = () => {
         username: email,
         password: encryptedPassword,
       });
-      if (rememberMe === 'true') {
+      if (stayLoggedIn) {
         await storeUserSession();
       }
       await setUserRegistered();

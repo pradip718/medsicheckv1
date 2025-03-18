@@ -10,6 +10,8 @@ interface AppState {
   isFaceScanDeeplink: boolean;
   setScreenName(screen: screen): void;
   setIsFaceScanDeeplink(isFaceScan: boolean): void;
+  stayLoggedIn: boolean;
+  setStayLoggedIn(stayLoggedIn: boolean): void;
 }
 
 const useAppStore = create<AppState>(set => ({
@@ -18,6 +20,8 @@ const useAppStore = create<AppState>(set => ({
     previous: '',
   }, // Change from {} to null
   isFaceScanDeeplink: false,
+  stayLoggedIn: true,
+  setStayLoggedIn: stayLoggedIn => set({stayLoggedIn}),
   setScreenName: screen =>
     set({
       screenName: {
