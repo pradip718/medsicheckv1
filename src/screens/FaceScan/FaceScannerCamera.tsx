@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   NavigationProp,
-  RouteProp,
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
@@ -18,11 +17,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
   Alert,
   Linking,
+  PermissionsAndroid,
   Platform,
   RefreshControl,
   StyleSheet,
   View,
 } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import uuid from 'react-native-uuid';
 import {twMerge} from 'tailwind-merge';
 import useAlertStore from '../../../store/alertStore';
@@ -59,18 +60,17 @@ import StopButton from './components/StopButton';
 import FaceScanError from './modal/FaceScanError';
 import LowConfidence from './modal/LowConfidence';
 
-type FaceScanCameraRouteProp = RouteProp<MainStackParamList, 'FaceScanCamera'>;
-
-interface FaceScanCameraProps {
-  route: FaceScanCameraRouteProp;
-}
-
 type ValidityCount = {
   [key: string]: number;
 };
 
-const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
+const FaceScannerCamera = () => {
   const cameraLocation = 'front';
+  const [location, setLocation] = useState<{
+    longitude?: number;
+    latitude?: number;
+    altitude?: number;
+  }>({});
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
@@ -167,7 +167,51 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const requestLocationPermission = async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        const status = await Geolocation.requestAuthorization('whenInUse');
+        return status === 'granted';
+      }
+
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Location Permission',
+          message: 'We need access to your location for accurate readings',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  };
+
+  const getLocation = async () => {
+    const hasPermission = await requestLocationPermission();
+    if (hasPermission) {
+      Geolocation.getCurrentPosition(
+        position => {
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            altitude: position.coords.altitude || undefined,
+          });
+        },
+        error => {
+          console.log(error.code, error.message);
+        },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      );
+    }
+  };
+
   useEffect(() => {
+    getLocation();
     checkForOngoingSession();
   }, []);
 
@@ -178,7 +222,12 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [didFinishedMeasuring]);
 
-  const {data: preReadingConfig} = useGetPreHealthReading();
+  const {data: preReadingConfig} = useGetPreHealthReading({
+    longitude: location.longitude,
+    latitude: location.latitude,
+    altitude: location.altitude,
+    enabled: !!location.longitude && !!location.latitude,
+  });
 
   const {mutateAsync: postOnboardingStep, isPending: isPostOnboardingPending} =
     usePostOnboardingSteps();
@@ -259,6 +308,7 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
             timestamp: moment().format('YYYY-MM-DD HH:mm'),
             sdk_name: binahConfig?.sdk_name,
             sdk_type: binahConfig?.sdk_type,
+            geo_location: location,
           },
         });
       }
@@ -277,6 +327,7 @@ const FaceScannerCamera = ({route}: FaceScanCameraProps) => {
     const payload = assign(
       {user_activity, includeBinahKey},
       user_activity === 'scan_error' ? {scan_error: imageValidityJSON} : {},
+      {geo_location: location},
       ...rest,
     );
     await postCaptureUserActivity(payload);

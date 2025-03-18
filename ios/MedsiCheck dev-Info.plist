@@ -52,6 +52,12 @@
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to allow you to select photos for uploading.</string>
+	
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to provide better services.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to provide better services.</string>
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>FontAwesome.ttf</string>
