@@ -226,7 +226,6 @@ const FaceScannerCamera = () => {
     longitude: location.longitude,
     latitude: location.latitude,
     altitude: location.altitude,
-    enabled: !!location.longitude && !!location.latitude,
   });
 
   const {mutateAsync: postOnboardingStep, isPending: isPostOnboardingPending} =

@@ -11,8 +11,6 @@ interface GetPreReadingProps extends UseQueryOptions {
 const useGetPreHealthReading = (
   props?: Omit<GetPreReadingProps, 'queryKey'>,
 ) => {
-  const hasLocation = Boolean(props?.longitude) && Boolean(props?.latitude);
-
   const getParams = () => {
     const params: {longitude?: number; latitude?: number; altitude?: number} =
       {};
@@ -38,7 +36,6 @@ const useGetPreHealthReading = (
       props?.altitude,
     ],
     queryFn: () => preReading(getParams()),
-    enabled: hasLocation,
     ...props,
   }) as UseQueryResult<PreHealthConfiguration[]>;
 };
