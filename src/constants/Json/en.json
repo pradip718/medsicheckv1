@@ -448,7 +448,7 @@
   "maintenance_utc_start_time": "",
   "maintenance_utc_end_time": "",
 
-  "is_under_maintenance": "true",
+  "is_under_maintenance": "false",
   "compare_with_app_version": "true",
 
   "normal_update_heading": "Please Update",
