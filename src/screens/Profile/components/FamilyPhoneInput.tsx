@@ -20,48 +20,44 @@ const FamilyPhoneInput = ({
   const {languages} = useLanguageStore();
 
   return (
-    <>
-      <Controller
-        name="phone_number"
-        control={control}
-        rules={{
-          // required: 'Phone Number is Required',
-          pattern: {
-            value: /^\+(?:[0-9] ?){6,14}[0-9]$/,
-            message: languages?.phone_number_must_be_valid,
-          },
-        }}
-        render={({field: {onChange, value, onBlur}}) => (
-          <>
-            <PhoneInput
-              ref={phoneInput}
-              defaultCode={
-                value ? parsePhoneNumber(value)?.regionCode ?? 'MX' : 'MX'
-              }
-              layout="first"
-              value={
-                value ? parsePhoneNumber(value)?.nationalNumber ?? value : value
-              }
-              placeholder={languages?.phone}
-              onChangeFormattedText={onChange}
-              containerStyle={styles({disabled}).container}
-              textInputStyle={styles({disabled}).textInput}
-              codeTextStyle={styles({disabled}).codeTextStyle}
-              textContainerStyle={styles({disabled}).textContainerStyle}
-              flagButtonStyle={styles({disabled}).flagButtonStyle}
-              withShadow
-              textInputProps={{
-                placeholderTextColor: 'gray',
-                onBlur: onBlur,
-              }}
-              disabled={disabled}
-              // autoFocus
-              {...restProps}
-            />
-          </>
-        )}
-      />
-    </>
+    <Controller
+      name="phone_number"
+      control={control}
+      rules={{
+        // required: 'Phone Number is Required',
+        pattern: {
+          value: /^\+(?:[0-9] ?){6,14}[0-9]$/,
+          message: languages?.phone_number_must_be_valid,
+        },
+      }}
+      render={({field: {onChange, value, onBlur}}) => (
+        <PhoneInput
+          ref={phoneInput}
+          defaultCode={
+            value ? parsePhoneNumber(value)?.regionCode ?? 'MX' : 'MX'
+          }
+          layout="first"
+          value={
+            value ? parsePhoneNumber(value)?.nationalNumber ?? value : value
+          }
+          placeholder={languages?.phone}
+          onChangeFormattedText={onChange}
+          containerStyle={styles({disabled}).container}
+          textInputStyle={styles({disabled}).textInput}
+          codeTextStyle={styles({disabled}).codeTextStyle}
+          textContainerStyle={styles({disabled}).textContainerStyle}
+          flagButtonStyle={styles({disabled}).flagButtonStyle}
+          withShadow
+          textInputProps={{
+            placeholderTextColor: 'gray',
+            onBlur: onBlur,
+          }}
+          disabled={disabled}
+          // autoFocus
+          {...restProps}
+        />
+      )}
+    />
   );
 };
 
@@ -77,7 +73,6 @@ const styles = ({disabled}: {disabled: boolean | undefined}) =>
     textInput: {
       fontFamily: SEMIBOLD,
       color: disabled ? 'rgb(100 116 139)' : '#000',
-      backgroundColor: 'transparent',
     },
     codeTextStyle: {
       backgroundColor: 'transparent',
@@ -88,6 +83,7 @@ const styles = ({disabled}: {disabled: boolean | undefined}) =>
       backgroundColor: 'transparent',
       borderBottomWidth: 0,
       height: '100%',
+      paddingVertical: 0,
     },
     flagButtonStyle: {
       borderBottomWidth: 0,
