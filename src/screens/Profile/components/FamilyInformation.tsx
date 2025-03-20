@@ -569,6 +569,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                                 onChangeText={onChangeRelationInput}
                                 onBlur={relationOnBlur}
                                 style={styles.borderHighlightedColor}
+                                maxLength={30}
                               />
                               <ErrorText
                                 message={errors?.given_name?.message}
