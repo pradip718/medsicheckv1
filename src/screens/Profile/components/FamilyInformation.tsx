@@ -306,7 +306,13 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                     <RNTextInput
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
-                      onChangeText={text => onChange(text)}
+                      onChangeText={text => {
+                        const alphanumericText = text.replace(
+                          /[^a-zA-Z0-9]/g,
+                          '',
+                        );
+                        onChange(alphanumericText);
+                      }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
                     />
@@ -330,7 +336,13 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                     <RNTextInput
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
-                      onChangeText={text => onChange(text)}
+                      onChangeText={text => {
+                        const alphanumericText = text.replace(
+                          /[^a-zA-Z0-9]/g,
+                          '',
+                        );
+                        onChange(alphanumericText);
+                      }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
                     />
