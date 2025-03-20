@@ -195,7 +195,6 @@ const Login = () => {
   };
 
   const proceedLoginStep = async (loginResponse: LoginSuccessResponse) => {
-    notifyApi('login');
     const password = getValues('password');
     if (
       'user_id' in loginResponse &&
@@ -214,6 +213,7 @@ const Login = () => {
         },
       });
     }
+    notifyApi('login');
     await fetchAndSetProfile();
     await checkForOnboardingStep();
   };
