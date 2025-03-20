@@ -113,7 +113,7 @@ const QuestionnaireSection = ({route}: QuestionnaireSectionProps) => {
     <BackgroundImage className="flex-1">
       <SafeAreaScrollView>
         <View className="p-4">
-          <Navbar />
+          <Navbar hasLogout />
         </View>
 
         <EtchedGlass

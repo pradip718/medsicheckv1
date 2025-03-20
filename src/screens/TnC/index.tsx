@@ -77,7 +77,7 @@ const TnC = () => {
         style={styles.container}
         contentContainerStyle={{minHeight: '100%'}}>
         <View className="px-4">
-          <Navbar noBack />
+          <Navbar noBack hasLogout />
         </View>
         {isPending ? (
           <Loader />

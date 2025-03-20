@@ -270,6 +270,7 @@ export default function UserInformation({
           <Navbar
             noBack={fromScreen !== 'profile'}
             onBackClick={navigateBasedOnPrevRoute}
+            hasLogout
           />
           <View className="items-center mt-4">
             <Image
