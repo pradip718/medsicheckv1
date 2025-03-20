@@ -102,6 +102,7 @@ const FaceScannerCamera = () => {
     reading_id: reading_id,
     enabled: false,
   });
+  const {session} = useBinahConfigStore();
 
   const clearFaceScan = () => {
     if (intervalRef?.current) {
@@ -113,7 +114,11 @@ const FaceScannerCamera = () => {
     setDidFinishedMeasuring(false);
   };
 
-  const resetMeasurement = async (type: USER_ACTIVITY, msg?: string) => {
+  const resetMeasurement = async (
+    type: USER_ACTIVITY,
+    msg?: string,
+    readingId?: string,
+  ) => {
     if (intervalRef?.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -125,7 +130,7 @@ const FaceScannerCamera = () => {
     });
     notifyApi(type, true, {
       message: isString(msg) ? msg : JSON.stringify(msg),
-      reading_id,
+      reading_id: readingId || reading_id,
     });
   };
 
@@ -147,11 +152,10 @@ const FaceScannerCamera = () => {
     }
   };
 
-  const {session, finalValue, restartSession, isRestarting} =
-    useInitializeBinahSession({
-      resetMeasurement,
-      cameraLocation,
-    });
+  const {finalValue, restartSession, isRestarting} = useInitializeBinahSession({
+    resetMeasurement,
+    cameraLocation,
+  });
 
   useEffect(() => {
     if (!rescanConfigurations?.rescan_flag && !!rescanConfigurations?.error) {
@@ -336,20 +340,24 @@ const FaceScannerCamera = () => {
     if (!session) {
       return;
     }
+    const readingId = uuid.v4() as string;
+    setReadingId(readingId as string);
     try {
-      const readingId = uuid.v4() as string;
-      setReadingId(readingId as string);
       if (sessionState == SessionState.READY && binahConfig?.scan_duration) {
         syncWebScan('start_scan', readingId || '');
         notifyApi('start_scan', true, {
           reading_id: readingId,
         });
-        await session.current?.start(+binahConfig?.scan_duration);
+        await session?.start(+binahConfig?.scan_duration);
       } else {
-        await session.current?.stop();
+        await session?.stop();
       }
     } catch (e) {
-      resetMeasurement('scan_error', 'Error while trying to start the session');
+      resetMeasurement(
+        'scan_error',
+        'Error while trying to start the session',
+        readingId,
+      );
       const exception = e as HealthMonitorException;
       const error = errorMessages?.find(err => err.code === exception.code);
 
