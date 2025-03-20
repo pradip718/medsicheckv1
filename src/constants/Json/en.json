@@ -627,5 +627,16 @@
   "report_load_error": "Unable to load report. Please try again later.",
   "round_off_vitals": ["HR_BPM"],
   "anura_intermediate_loader": "Analyzing Your Data And Generating Report",
-  "anura_preparation_loader": "Processing..."
+  "anura_preparation_loader": "Processing...",
+
+  "height_required": "Height is Required",
+  "min_height_cm_error": "Minimum height is 50 cm.",
+  "max_height_cm_error": "Maximum height is 300 cm.",
+  "min_height_ft_error": "Minimum height is 1.5 feet.",
+  "max_height_ft_error": "Maximum height is 9 feet.",
+  "weight_required": "Weight is Required",
+  "min_weight_kgs_error": "Minimum weight is 20 kg",
+  "max_weight_kgs_error": "Maximum weight is 250 kg.",
+  "min_weight_lbs_error": "Minimum weight is 44 lbs.",
+  "max_weight_lbs_error": "Maximum weight is 551 lbs."
 }

@@ -589,7 +589,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
             </View>
 
             <View className="mt-4 flex-row">
-              <View className="flex-grow">
+              <View className="flex-1">
                 <CustomText
                   style={styles.highlightedColor}
                   className="text-sm font-isidoraSemiBold">
@@ -601,33 +601,56 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   <Controller
                     control={control}
                     render={({field: {onChange, value, onBlur}}) => (
-                      <>
-                        <RNTextInput
-                          value={value}
-                          onBlur={onBlur}
-                          style={styles.borderWidthZero}
-                          contextMenuHidden={true}
-                          onChangeText={text => {
-                            const unit = getValues().height_unit;
-                            if (unit === 'cm') {
-                              const integerOnly = text.replace(/[^0-9]/g, '');
-                              onChange(integerOnly);
-                            } else {
-                              onChange(text);
-                            }
-                          }}
-                          keyboardType={
-                            getValues()?.height_unit === 'cm'
-                              ? 'number-pad'
-                              : 'decimal-pad'
+                      <RNTextInput
+                        value={value}
+                        onBlur={onBlur}
+                        style={styles.borderWidthZero}
+                        contextMenuHidden={true}
+                        onChangeText={text => {
+                          const unit = getValues().height_unit;
+                          if (unit === 'cm') {
+                            const integerOnly = text.replace(/[^0-9]/g, '');
+                            onChange(integerOnly);
+                          } else {
+                            onChange(text);
                           }
-                          className="flex-1 h-10 text-base bg-transparent px-2 font-isidoraSemiBold text-black"
-                        />
-                        <ErrorText message={errors?.height?.message} />
-                      </>
+                        }}
+                        keyboardType={
+                          getValues()?.height_unit === 'cm'
+                            ? 'number-pad'
+                            : 'decimal-pad'
+                        }
+                        className="flex-1 h-10 text-base bg-transparent px-2 font-isidoraSemiBold text-black"
+                      />
                     )}
                     name="height"
-                    rules={{required: true}}
+                    rules={{
+                      required: languages?.height_required,
+                      validate: value => {
+                        const unit = getValues().height_unit;
+                        const minHeight = unit === 'cm' ? 50 : 1.5;
+                        const maxHeight = unit === 'cm' ? 300 : 9;
+                        const heightValue = parseFloat(value);
+
+                        if (isNaN(heightValue)) {
+                          return 'Please enter a valid height.';
+                        }
+
+                        if (heightValue < minHeight) {
+                          return unit === 'cm'
+                            ? languages?.min_height_cm_error
+                            : languages?.min_height_ft_error;
+                        }
+
+                        if (heightValue > maxHeight) {
+                          return unit === 'cm'
+                            ? languages?.max_height_cm_error
+                            : languages?.max_height_ft_error;
+                        }
+
+                        return true;
+                      },
+                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -656,9 +679,10 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                     />
                   </View>
                 </View>
+                <ErrorText message={errors?.height?.message} />
               </View>
 
-              <View className="flex-grow ml-4">
+              <View className="flex-1 ml-4">
                 <CustomText
                   style={styles.highlightedColor}
                   className="text-sm font-isidoraSemiBold">
@@ -670,20 +694,50 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   <Controller
                     control={control}
                     render={({field: {onChange, value, onBlur}}) => (
-                      <>
-                        <RNTextInput
-                          value={value}
-                          onBlur={onBlur}
-                          style={styles.borderWidthZero}
-                          onChangeText={onChange}
-                          keyboardType="numeric"
-                          className="flex-1 h-10 text-base bg-transparent px-2 font-isidoraSemiBold text-black"
-                        />
-                        <ErrorText message={errors?.weight?.message} />
-                      </>
+                      <RNTextInput
+                        value={value}
+                        onBlur={onBlur}
+                        style={styles.borderWidthZero}
+                        onChangeText={text => {
+                          const validText = text.replace(/[^0-9.]/g, '');
+                          const decimalCount = validText.split('.').length - 1;
+                          if (decimalCount <= 1) {
+                            onChange(validText);
+                          }
+                        }}
+                        keyboardType="numeric"
+                        className="flex-1 h-10 text-base bg-transparent px-2 font-isidoraSemiBold text-black"
+                      />
                     )}
                     name="weight"
-                    rules={{required: true}}
+                    rules={{
+                      required: 'Weight is required',
+                      validate: value => {
+                        const unit = getValues().weight_unit;
+                        const minWeight = unit === 'kg' ? 20 : 44;
+                        const maxWeight = unit === 'kg' ? 250 : 551;
+
+                        const weightValue = parseFloat(value);
+
+                        if (isNaN(weightValue)) {
+                          return 'Please enter a valid weight.';
+                        }
+
+                        if (weightValue < minWeight) {
+                          return unit === 'kg'
+                            ? languages?.min_weight_kgs_error
+                            : languages?.min_weight_lbs_error;
+                        }
+
+                        if (weightValue > maxWeight) {
+                          return unit === 'kg'
+                            ? languages?.max_weight_kgs_error
+                            : languages?.max_weight_lbs_error;
+                        }
+
+                        return true;
+                      },
+                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -709,6 +763,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                     />
                   </View>
                 </View>
+                <ErrorText message={errors?.weight?.message} />
               </View>
             </View>
 
