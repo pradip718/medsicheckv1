@@ -270,7 +270,7 @@ export default function UserInformation({
           <Navbar
             noBack={fromScreen !== 'profile'}
             onBackClick={navigateBasedOnPrevRoute}
-            hasLogout
+            hasLogout={!users?.user_id}
           />
           <View className="items-center mt-4">
             <Image
@@ -541,11 +541,25 @@ export default function UserInformation({
                         onBlur={onBlur}
                         style={styles.borderWidthZero}
                         onChangeText={text => {
-                          const validText = text.replace(/[^0-9.]/g, '');
+                          let validText = text.replace(/[^0-9.]/g, '');
                           const decimalCount = validText.split('.').length - 1;
-                          if (decimalCount <= 1) {
-                            onChange(validText);
+                          if (decimalCount > 1) {
+                            validText = validText.substring(
+                              0,
+                              validText.lastIndexOf('.'),
+                            );
                           }
+                          if (validText.includes('.')) {
+                            const [integerPart, decimalPart] =
+                              validText.split('.');
+                            if (decimalPart.length > 2) {
+                              validText = `${integerPart}.${decimalPart.substring(
+                                0,
+                                2,
+                              )}`;
+                            }
+                          }
+                          onChange(validText);
                         }}
                         keyboardType="numeric"
                         className="flex-1 h-10 text-base bg-transparent px-2 font-isidoraSemiBold text-black"
