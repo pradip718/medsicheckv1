@@ -78,7 +78,7 @@ const AdditionalInformation = ({route}: AdditionalInformationProps) => {
   return (
     <BackgroundImage className="flex-1 p-4">
       <SafeAreaScrollView style={styles.container} className="px-2 my-6">
-        <Navbar noBack={isNewUser} />
+        <Navbar noBack={isNewUser} hasLogout />
         <View className="mt-4 items-end">
           <Image
             source={Additional_Information_img as any}

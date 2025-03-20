@@ -13,6 +13,7 @@ import {Badge, Modal, Portal} from 'react-native-paper';
 import {Medsi_Check_Navabar_img} from '../../../assets';
 import colors from '../../../colors';
 import useLanguageStore from '../../../store/languageStore';
+import useLoaderStore from '../../../store/loaderStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {useGetHelpdeskDetails} from '../../hooks/api/helpdesk';
 import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
@@ -21,6 +22,7 @@ import {color} from '../../theme';
 import customColor from '../../theme/customColor';
 import ToolTipWalkthrough from '../CustomCopilot/ToolTipWalkthrough';
 import Icon from '../Icon';
+import SignoutModal from '../SignoutModal';
 import CustomText from '../Text';
 import ProfileModal from './ProfileModal';
 
@@ -31,6 +33,7 @@ type NavbarProps = {
   noBack?: boolean;
   hasDrawer?: boolean;
   hasShare?: boolean;
+  hasLogout?: boolean;
   handleShare?: () => void;
   handleSave?: () => void;
   onBackClick?: () => void;
@@ -89,9 +92,12 @@ const Navbar = (props: NavbarProps) => {
     onBackClick,
     hasDrawer = false,
     handleClose,
+    hasLogout = false,
   } = props;
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
+  const {setSignoutModalVisibility, signoutModalVisibility: modalVisible} =
+    useLoaderStore();
   const {data: userAttributes} = useGetUserAttributes();
   const {data: helpDeskDetails} = useGetHelpdeskDetails({enabled: false});
 
@@ -192,6 +198,14 @@ const Navbar = (props: NavbarProps) => {
             <Icon name="share" size={24} color={colors.primary} />
           </TouchableOpacity>
         );
+      case hasLogout:
+        return (
+          <TouchableOpacity
+            onPress={() => setSignoutModalVisibility(true)}
+            className="justify-center items-center p-2">
+            <Icon name="sign_out" size={20} color={colors.primary} />
+          </TouchableOpacity>
+        );
       default:
         return <View className="p-2" />;
     }
@@ -216,6 +230,8 @@ const Navbar = (props: NavbarProps) => {
           <ProfileModal hideModal={hideModal} />
         </Modal>
       </Portal>
+
+      <SignoutModal visible={modalVisible} />
     </View>
   );
 };
@@ -248,5 +264,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
+  },
+  signoutModalStyle: {
+    backgroundColor: '#fff',
+    height: 20,
   },
 });

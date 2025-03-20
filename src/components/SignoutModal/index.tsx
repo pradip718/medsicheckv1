@@ -1,7 +1,7 @@
 import {useQueryClient} from '@tanstack/react-query';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Modal} from 'react-native-paper';
+import {Modal, Portal} from 'react-native-paper';
 import {navigationRef} from '../../../RootNavigation';
 import useAuthStore from '../../../store/authStore';
 import useLanguageStore from '../../../store/languageStore';
@@ -23,6 +23,7 @@ const SignoutModal = ({visible}: {visible: boolean}) => {
   const {showLoader, hideLoader} = useFullPageLoader();
 
   const onProceed = async () => {
+    hideModal();
     showLoader();
     try {
       await notifyApi('logout');
@@ -38,40 +39,41 @@ const SignoutModal = ({visible}: {visible: boolean}) => {
     } catch (error) {
       console.log('error', error);
     } finally {
-      hideModal();
       hideLoader();
     }
   };
   return (
-    <Modal
-      visible={visible}
-      onDismiss={hideModal}
-      style={styles.modalStyle}
-      contentContainerStyle={styles.modalContentContainer}>
-      <View className="justify-center items-center bg-white h-[160px] min-w-[240px] max-w-[300px] rounded-3xl">
-        <CustomText className="text-lg font-isidoraSemiBold">
-          {languages?.close_app}
-        </CustomText>
-        <View className="flex-row mt-4 justify-center space-x-4  w-full">
-          <RoundedButton
-            resetStyle
-            className="px-4 py-2 bg-gray-400"
-            onPress={hideModal}>
-            <CustomText className="text-white font-isidoraMedium text-sm">
-              {languages?.cancel}
-            </CustomText>
-          </RoundedButton>
-          <RoundedButton
-            resetStyle
-            className="px-4 py-2 bg-red-500"
-            onPress={onProceed}>
-            <CustomText className="text-white font-isidoraMedium text-sm">
-              {languages?.sign_out}
-            </CustomText>
-          </RoundedButton>
+    <Portal>
+      <Modal
+        visible={visible}
+        onDismiss={hideModal}
+        style={styles.modalStyle}
+        contentContainerStyle={styles.modalContentContainer}>
+        <View className="justify-center items-center bg-white h-[160px] min-w-[240px] max-w-[300px] rounded-3xl">
+          <CustomText className="text-lg font-isidoraSemiBold">
+            {languages?.close_app}
+          </CustomText>
+          <View className="flex-row mt-4 justify-center space-x-4  w-full">
+            <RoundedButton
+              resetStyle
+              className="px-4 py-2 bg-gray-400"
+              onPress={hideModal}>
+              <CustomText className="text-white font-isidoraMedium text-sm">
+                {languages?.cancel}
+              </CustomText>
+            </RoundedButton>
+            <RoundedButton
+              resetStyle
+              className="px-4 py-2 bg-red-500"
+              onPress={onProceed}>
+              <CustomText className="text-white font-isidoraMedium text-sm">
+                {languages?.sign_out}
+              </CustomText>
+            </RoundedButton>
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </Portal>
   );
 };
 
