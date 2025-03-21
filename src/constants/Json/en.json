@@ -638,5 +638,10 @@
   "min_weight_kgs_error": "Minimum weight is 20 kg",
   "max_weight_kgs_error": "Maximum weight is 250 kg.",
   "min_weight_lbs_error": "Minimum weight is 44 lbs.",
-  "max_weight_lbs_error": "Maximum weight is 551 lbs."
+  "max_weight_lbs_error": "Maximum weight is 551 lbs.",
+
+  "first_name_required": "First Name is Required",
+  "last_name_required": "Last Name is Required",
+  "letter_space_validation": "Only letters and spaces are allowed",
+  "min_name_character": "Name must be at least 2 characters"
 }

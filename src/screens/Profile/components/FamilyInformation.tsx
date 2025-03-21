@@ -123,7 +123,8 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
       relation: '',
       other_relation: '',
     },
-    mode: 'onChange',
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
   });
 
   const {refetch: getFamilyDetails} = useQuery<Family>({
@@ -309,6 +310,9 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       onChangeText={text => {
                         const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
                         onChange(sanitizedText);
+                        if (errors.given_name) {
+                          trigger('given_name');
+                        }
                       }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
@@ -317,7 +321,17 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="given_name"
-                rules={{required: true}}
+                rules={{
+                  required: languages?.first_name_required,
+                  pattern: {
+                    value: /^[a-zA-Z ]+$/,
+                    message: languages?.letter_space_validation,
+                  },
+                  minLength: {
+                    value: 2,
+                    message: languages?.min_name_character,
+                  },
+                }}
               />
             </View>
             <View className="mt-4">
@@ -336,6 +350,9 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       onChangeText={text => {
                         const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
                         onChange(sanitizedText);
+                        if (errors.family_name) {
+                          trigger('family_name');
+                        }
                       }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
@@ -344,7 +361,13 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="family_name"
-                rules={{required: true}}
+                rules={{
+                  required: languages?.last_name_required,
+                  pattern: {
+                    value: /^[a-zA-Z ]+$/,
+                    message: languages?.letter_space_validation,
+                  },
+                }}
               />
             </View>
 
@@ -383,7 +406,12 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                         isEmailAsPrimary && 'text-slate-500',
                       )}
                       style={styles.borderHighlightedColor}
-                      onChangeText={text => onChange(text)}
+                      onChangeText={text => {
+                        onChange(text);
+                        if (errors.email) {
+                          trigger('email');
+                        }
+                      }}
                       editable={!isEmailAsPrimary}
                       onBlur={onBlur}
                       autoCapitalize="none"
@@ -573,6 +601,9 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                                 value={relationValue}
                                 className="mt-4 w-full h-10 text-base bg-transparent px-2 text-black"
                                 onChangeText={text => {
+                                  if (errors.other_relation) {
+                                    trigger('other_relation');
+                                  }
                                   const sanitizedText = text.replace(
                                     /[^a-zA-Z ]/g,
                                     '',
@@ -626,6 +657,9 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                             onChange(integerOnly);
                           } else {
                             onChange(text);
+                          }
+                          if (errors.height) {
+                            trigger('height');
                           }
                         }}
                         keyboardType={
@@ -716,6 +750,9 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                           const decimalCount = validText.split('.').length - 1;
                           if (decimalCount <= 1) {
                             onChange(validText);
+                          }
+                          if (errors.weight) {
+                            trigger('weight');
                           }
                         }}
                         keyboardType="numeric"
