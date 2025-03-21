@@ -115,11 +115,22 @@ const ViewRiskScore = () => {
       <StatusBar backgroundColor="#242E49" barStyle="light-content" />
       <SafeAreaView className="bg-[#242E49] rounded-b-[32px]">
         <View className={twMerge('px-4 pt-10', !isAndroid && 'pt-2')}>
-          <TouchableOpacity
-            className="bg-[#3D4966] self-start p-4 rounded-lg"
-            onPress={() => navigation.navigate('HealthRisks')}>
-            <Icon name="back" color="#fff" size={16} />
-          </TouchableOpacity>
+          <View className="flex-row justify-between">
+            <TouchableOpacity
+              className="bg-[#3D4966]  p-4 rounded-lg"
+              onPress={() => navigation.navigate('HealthRisks')}>
+              <Icon name="back" color="#fff" size={16} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="justify-center px-2"
+              onPress={() =>
+                navigation.navigate('HomepageStackScreens', {
+                  screen: 'Home',
+                })
+              }>
+              <Icon name="close" color="#fff" size={24} />
+            </TouchableOpacity>
+          </View>
           <CustomText className="text-white text-3xl font-isidoraSemiBold mt-6">
             {engine_name === 'hypertension_risk' && 'Hypertension Risk'}
             {engine_name === 'diabetes_risk' && 'Diabetes Risk'}
