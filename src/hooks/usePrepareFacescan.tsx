@@ -1,7 +1,10 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
+import {PermissionsAndroid, Platform} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import useAlertStore from '../../store/alertStore';
 import useBinahConfigStore from '../../store/binahConfigStore';
+import useLanguageStore from '../../store/languageStore';
 import {MainStackParamList} from '../../types/navigation';
 import {
   convertFeetAndInchesToCm,
@@ -11,7 +14,6 @@ import {
 } from '../../utils/methods';
 import Action from '../config/Action';
 import Event from '../config/Event';
-// import EventBridge from '../config/EventBridge';
 import useEventBridge from '../config/EventBridge';
 import useGetRescanConfiguration from './api/useGetRescanConfiguration';
 import useGetUserAttributes from './api/useGetUserAttributes';
@@ -20,7 +22,8 @@ import useFullPageLoader from './useFullPageLoader';
 
 const usePrepareFacescan = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-  const {anuraConfig} = useBinahConfigStore();
+  const {anuraConfig, setGeoPosition} = useBinahConfigStore();
+  const {languages} = useLanguageStore();
   const {showAlert} = useAlertStore();
   const {showLoader} = useFullPageLoader();
 
@@ -31,6 +34,46 @@ const usePrepareFacescan = () => {
 
   const {mutateAsync: getSdkConfig} = useFetchBinahConfig();
 
+  const requestLocationPermission = useCallback(async () => {
+    try {
+      if (Platform.OS === 'ios') {
+        const status = await Geolocation.requestAuthorization('whenInUse');
+        return status === 'granted';
+      }
+
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: languages?.location_permission_title,
+          message: languages?.location_permission_message,
+          buttonNeutral: languages?.ask_me_later,
+          buttonNegative: languages?.cancel,
+          buttonPositive: languages?.allow_txt,
+        },
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  }, [languages]);
+
+  const getLocation = useCallback(async () => {
+    const hasPermission = await requestLocationPermission();
+    if (hasPermission) {
+      Geolocation.getCurrentPosition(
+        position => {
+          setGeoPosition(position?.coords);
+        },
+        error => {
+          console.log(error.code, error.message);
+        },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [requestLocationPermission]);
+
   useEffect(() => {
     EventBridge.sendEvent(
       Action.synchronizeAppConfiguration,
@@ -38,6 +81,11 @@ const usePrepareFacescan = () => {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [anuraConfig]);
+
+  useEffect(() => {
+    setGeoPosition(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const startAnuraScan = () => {
     try {
@@ -87,6 +135,7 @@ const usePrepareFacescan = () => {
   const startScan = async () => {
     if (rescanConfigurations?.rescan_flag) {
       const {sdk_name} = await getSdkConfig();
+      await getLocation();
       if (sdk_name === 'binaah') {
         navigation?.navigate('FaceScanCamera');
       }

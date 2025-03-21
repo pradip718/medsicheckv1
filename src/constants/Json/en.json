@@ -643,5 +643,9 @@
   "first_name_required": "First Name is Required",
   "last_name_required": "Last Name is Required",
   "letter_space_validation": "Only letters and spaces are allowed",
-  "min_name_character": "Name must be at least 2 characters"
+  "min_name_character": "Name must be at least 2 characters",
+
+  "location_permission_title": "Location Permission",
+  "location_permission_message": "We need access to your location for accurate readings",
+  "ask_me_later": "Ask Me Later"
 }

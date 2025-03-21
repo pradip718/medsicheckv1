@@ -1,4 +1,5 @@
 import {Session} from 'biosensesignal-react-native-sdk';
+import {GeoCoordinates} from 'react-native-geolocation-service';
 import {create} from 'zustand';
 import {
   AnuraConfig,
@@ -25,6 +26,9 @@ interface ProfileState {
 
   session?: Session;
   setSession: (newSession: Session | undefined) => void;
+
+  geoPosition: GeoCoordinates | null;
+  setGeoPosition: (geoPosition: GeoCoordinates | null) => void;
 }
 
 const useBinahConfigStore = create<ProfileState>()(set => ({
@@ -46,6 +50,9 @@ const useBinahConfigStore = create<ProfileState>()(set => ({
       deepaffexStudyID: '',
     },
   },
+  geoPosition: null,
+
+  setGeoPosition: geoPosition => set({geoPosition}),
   setBinahConfig: config => set({binahConfig: config}),
   setAnuraConfig: config => {
     console.log('setting anura config', config);
