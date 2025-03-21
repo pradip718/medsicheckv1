@@ -298,11 +298,8 @@ export default function UserInformation({
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
                       onChangeText={text => {
-                        const alphanumericText = text.replace(
-                          /[^a-zA-Z0-9]/g,
-                          '',
-                        );
-                        onChange(alphanumericText);
+                        const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
+                        onChange(sanitizedText);
                       }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
@@ -328,11 +325,8 @@ export default function UserInformation({
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
                       onChangeText={text => {
-                        const alphanumericText = text.replace(
-                          /[^a-zA-Z0-9]/g,
-                          '',
-                        );
-                        onChange(alphanumericText);
+                        const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
+                        onChange(sanitizedText);
                       }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}

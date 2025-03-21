@@ -307,11 +307,8 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
                       onChangeText={text => {
-                        const alphanumericText = text.replace(
-                          /[^a-zA-Z0-9]/g,
-                          '',
-                        );
-                        onChange(alphanumericText);
+                        const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
+                        onChange(sanitizedText);
                       }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
@@ -337,11 +334,8 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
                       onChangeText={text => {
-                        const alphanumericText = text.replace(
-                          /[^a-zA-Z0-9]/g,
-                          '',
-                        );
-                        onChange(alphanumericText);
+                        const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
+                        onChange(sanitizedText);
                       }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
@@ -578,7 +572,13 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                                 placeholder={languages?.relation_placeholder}
                                 value={relationValue}
                                 className="mt-4 w-full h-10 text-base bg-transparent px-2 text-black"
-                                onChangeText={onChangeRelationInput}
+                                onChangeText={text => {
+                                  const sanitizedText = text.replace(
+                                    /[^a-zA-Z ]/g,
+                                    '',
+                                  );
+                                  onChangeRelationInput(sanitizedText);
+                                }}
                                 onBlur={relationOnBlur}
                                 style={styles.borderHighlightedColor}
                                 maxLength={30}
