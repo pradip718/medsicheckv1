@@ -118,7 +118,11 @@ const ScanReport = ({preReadingConfig}: ScanReportProps) => {
               </CustomText>
             </View>
             <View className="absolute bottom-2 left-2">
-              <Icon name={parameter?.iconName} size={20} color={color.white} />
+              <Icon
+                name={parameter?.iconName}
+                size={20}
+                color={color.ultramarineBlue}
+              />
             </View>
           </View>
         </EtchedGlass>
