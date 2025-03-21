@@ -287,8 +287,11 @@ const RootNavigator = () => {
       onStateChange={handleNavigationStateChange}
       onReady={async () => {
         if (!isOpenedFromDeepLink) {
-          await initializeAppParameters();
-          navigateIfExistingUser();
+          const {isAuthenticated} = await initializeAppParameters();
+          if (isAuthenticated) {
+            return navigateIfExistingUser();
+          }
+          BootSplash.hide({fade: true});
         }
       }}>
       <Stack.Navigator

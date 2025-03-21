@@ -47,7 +47,6 @@ export const useSetupUserProfile = (
   props?: Omit<UseMutationOptions, 'mutationFn'>,
 ) => {
   const {stayLoggedIn} = useAppStore();
-
   const {mutateAsync: fetchAndSetProfile} = useFetchAndSetProfile();
 
   return useMutation({
@@ -58,12 +57,16 @@ export const useSetupUserProfile = (
         if (session) {
           const userSession = JSON.parse(session);
           const encryptPassword = await encryptText(userSession?.password);
-          await login({
-            username: userSession.username,
-            password: encryptPassword,
-          });
-          await fetchAndSetProfile();
-          return {isAuthenticated: true};
+          try {
+            await login({
+              username: userSession.username,
+              password: encryptPassword,
+            });
+            await fetchAndSetProfile();
+            return {isAuthenticated: true};
+          } catch (error: any) {
+            return {isAuthenticated: false};
+          }
         }
       }
       return {isAuthenticated: false};

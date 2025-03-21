@@ -56,8 +56,11 @@ const useAppInitialization = (props?: MutationOptions) => {
         const {isAuthenticated} = setupUserProfileResult.value;
         if (!isAuthenticated) {
           navigationRef?.dispatch(StackActions.replace('Login'));
+          return {isAuthenticated: false};
         }
+        return {isAuthenticated: true};
       }
+      return {isAuthenticated: true};
     },
     mutationKey: ['appInitialization'],
     gcTime: 5000,
