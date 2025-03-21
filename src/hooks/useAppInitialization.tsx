@@ -2,8 +2,10 @@ import NetInfo, {NetInfoState} from '@react-native-community/netinfo';
 import {StackActions} from '@react-navigation/native';
 import {MutationOptions, useMutation} from '@tanstack/react-query';
 import {useEffect} from 'react';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {navigationRef} from '../../RootNavigation';
 import useAuthStore from '../../store/authStore';
+import {REMEMBERED_USER_SESSION} from '../constants/AsyncStorageKeys';
 import {useSetupUserProfile} from './api/auth';
 import useFetchBinahConfig from './useFetchBinahConfig';
 
@@ -55,6 +57,7 @@ const useAppInitialization = (props?: MutationOptions) => {
       if (setupUserProfileResult.status === 'fulfilled') {
         const {isAuthenticated} = setupUserProfileResult.value;
         if (!isAuthenticated) {
+          await EncryptedStorage.removeItem(REMEMBERED_USER_SESSION);
           navigationRef?.dispatch(StackActions.replace('Login'));
           return {isAuthenticated: false};
         }
