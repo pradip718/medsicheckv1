@@ -103,6 +103,7 @@ export default function UserInformation({
     handleSubmit,
     formState: {isDirty, isValid, errors},
     reset,
+    trigger,
     getValues,
     setValue,
   } = useForm<User>({
@@ -118,6 +119,7 @@ export default function UserInformation({
       middle_name: '',
     },
     mode: 'onBlur',
+    reValidateMode: 'onBlur',
   });
 
   useEffect(() => {
@@ -300,6 +302,9 @@ export default function UserInformation({
                       onChangeText={text => {
                         const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
                         onChange(sanitizedText);
+                        if (errors.given_name) {
+                          trigger('given_name');
+                        }
                       }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
@@ -308,7 +313,17 @@ export default function UserInformation({
                   </>
                 )}
                 name="given_name"
-                rules={{required: true}}
+                rules={{
+                  required: languages?.first_name_required,
+                  pattern: {
+                    value: /^[a-zA-Z ]+$/,
+                    message: languages?.letter_space_validation,
+                  },
+                  minLength: {
+                    value: 2,
+                    message: languages?.min_name_character,
+                  },
+                }}
               />
             </View>
             <View className="mt-4">
@@ -327,6 +342,9 @@ export default function UserInformation({
                       onChangeText={text => {
                         const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
                         onChange(sanitizedText);
+                        if (errors.family_name) {
+                          trigger('family_name');
+                        }
                       }}
                       onBlur={onBlur}
                       style={styles.borderHighlightedColor}
@@ -335,7 +353,17 @@ export default function UserInformation({
                   </>
                 )}
                 name="family_name"
-                rules={{required: true}}
+                rules={{
+                  required: languages?.last_name_required,
+                  pattern: {
+                    value: /^[a-zA-Z ]+$/,
+                    message: languages?.letter_space_validation,
+                  },
+                  minLength: {
+                    value: 2,
+                    message: languages?.min_name_character,
+                  },
+                }}
               />
             </View>
             <View className="mt-4">
@@ -450,6 +478,9 @@ export default function UserInformation({
                           } else {
                             onChange(text);
                           }
+                          if (errors.height) {
+                            trigger('height');
+                          }
                         }}
                         keyboardType={
                           getValues()?.height_unit === 'cm'
@@ -554,6 +585,9 @@ export default function UserInformation({
                             }
                           }
                           onChange(validText);
+                          if (errors.weight) {
+                            trigger('weight');
+                          }
                         }}
                         keyboardType="numeric"
                         className="flex-1 h-10 text-base bg-transparent px-2 font-isidoraSemiBold text-black"
