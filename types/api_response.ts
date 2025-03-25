@@ -210,6 +210,8 @@ export type QuestionnaireResponse = {
 };
 
 export type RiskScoreInfo = {
+  show_info: boolean;
+
   risk_level: string;
   probability: number;
   probability_color: string;
@@ -223,6 +225,12 @@ export type RiskScoreInfo = {
   pre_diabetes_probability_img_url?: string;
   diabetes_type_2_probability_img_url?: string;
   diabetes_type_2_probability_color?: string;
+
+  probability_text_color: string;
+  category_text_color: string;
+
+  pre_diabetes_probability_text_color?: string;
+  diabetes_type_2_probability_text_color?: string;
 };
 
 export type ReportSection = {

@@ -68,10 +68,12 @@ const InfoCard = ({
   info,
   iconColor,
   icon_url,
+  textColor,
 }: {
   info: string | number;
   icon_url: string;
   iconColor: string;
+  textColor: string | undefined;
 }) => {
   if (!isNumber(info) && !isString(info)) {
     return <></>;
@@ -88,7 +90,9 @@ const InfoCard = ({
         className="w-5 h-4"
         resizeMode="contain"
       />
-      <CustomText className="text-[#9f1239] font-isidoraMedium">
+      <CustomText
+        className="font-isidoraMedium"
+        style={{color: textColor ?? '#000'}}>
         {info}
       </CustomText>
     </AnimatedWrapper>
@@ -137,47 +141,59 @@ const ViewRiskScore = () => {
           </CustomText>
 
           <View className="flex-row my-4 shrink flex-wrap">
-            {scoreInfo?.risk_level && (
-              <InfoCard
-                info={scoreInfo?.risk_level ?? ''}
-                icon_url={scoreInfo?.risk_level_img_url ?? ''}
-                iconColor={scoreInfo?.category_color ?? ''}
-              />
-            )}
-            {scoreInfo?.probability && (
-              <InfoCard
-                info={
-                  scoreInfo?.probability
-                    ? `${scoreInfo?.probability}% chances`
-                    : ''
-                }
-                icon_url={scoreInfo?.probability_img_url ?? ''}
-                iconColor={scoreInfo?.probability_color ?? ''}
-              />
-            )}
-            {scoreInfo?.pre_diabetes_probability && (
-              <InfoCard
-                info={
-                  scoreInfo?.pre_diabetes_probability
-                    ? `${scoreInfo?.pre_diabetes_probability}% chances`
-                    : ''
-                }
-                icon_url={scoreInfo?.pre_diabetes_probability_img_url ?? ''}
-                iconColor={scoreInfo?.pre_diabetes_probability_color ?? ''}
-              />
-            )}
-            {scoreInfo?.diabetes_type_2_probability && (
-              <InfoCard
-                info={
-                  scoreInfo?.diabetes_type_2_probability
-                    ? `${scoreInfo?.diabetes_type_2_probability}% chances`
-                    : ''
-                }
-                icon_url={scoreInfo?.diabetes_type_2_probability_img_url ?? ''}
-                iconColor={
-                  scoreInfo?.diabetes_type_2_probability_color ?? '#fff'
-                }
-              />
+            {scoreInfo?.show_info !== false && (
+              <>
+                {!!scoreInfo?.risk_level && (
+                  <InfoCard
+                    info={scoreInfo?.risk_level ?? ''}
+                    icon_url={scoreInfo?.risk_level_img_url ?? ''}
+                    iconColor={scoreInfo?.category_color ?? ''}
+                    textColor={scoreInfo?.category_text_color}
+                  />
+                )}
+                {!!scoreInfo?.probability && (
+                  <InfoCard
+                    info={
+                      scoreInfo?.probability
+                        ? `${scoreInfo?.probability}% chances`
+                        : ''
+                    }
+                    icon_url={scoreInfo?.probability_img_url ?? ''}
+                    iconColor={scoreInfo?.probability_color ?? ''}
+                    textColor={scoreInfo?.probability_text_color}
+                  />
+                )}
+                {!!scoreInfo?.pre_diabetes_probability && (
+                  <InfoCard
+                    info={
+                      scoreInfo?.pre_diabetes_probability
+                        ? `${scoreInfo?.pre_diabetes_probability}% chances`
+                        : ''
+                    }
+                    icon_url={scoreInfo?.pre_diabetes_probability_img_url ?? ''}
+                    iconColor={scoreInfo?.pre_diabetes_probability_color ?? ''}
+                    textColor={scoreInfo?.pre_diabetes_probability_text_color}
+                  />
+                )}
+                {!!scoreInfo?.diabetes_type_2_probability && (
+                  <InfoCard
+                    info={
+                      scoreInfo?.diabetes_type_2_probability
+                        ? `${scoreInfo?.diabetes_type_2_probability}% chances`
+                        : ''
+                    }
+                    icon_url={
+                      scoreInfo?.diabetes_type_2_probability_img_url ?? ''
+                    }
+                    iconColor={
+                      scoreInfo?.diabetes_type_2_probability_color ?? ''
+                    }
+                    textColor={
+                      scoreInfo?.diabetes_type_2_probability_text_color
+                    }
+                  />
+                )}
+              </>
             )}
           </View>
         </View>
@@ -215,6 +231,7 @@ const ViewRiskScore = () => {
                     onFillColor="#00B3C1"
                     onCheckColor="white"
                     onTintColor="transparent"
+                    disabled={true}
                   />
                   <CustomText className="text-sm shrink">{eachInfo}</CustomText>
                 </View>
