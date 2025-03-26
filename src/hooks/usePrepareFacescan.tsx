@@ -12,6 +12,7 @@ import {
   getAgeFromBirthdate,
   hasValidUserDemographics,
 } from '../../utils/methods';
+import {notifyApi} from '../api/user';
 import Action from '../config/Action';
 import Event from '../config/Event';
 import useEventBridge from '../config/EventBridge';
@@ -51,6 +52,7 @@ const usePrepareFacescan = () => {
           buttonPositive: languages?.allow_txt,
         },
       );
+      notifyApi('geo_location_permission_granted', granted);
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
       console.warn(err);
@@ -60,6 +62,7 @@ const usePrepareFacescan = () => {
 
   const getLocation = useCallback(async () => {
     const hasPermission = await requestLocationPermission();
+    notifyApi('geo_location_permission_granted', hasPermission);
     if (hasPermission) {
       Geolocation.getCurrentPosition(
         position => {
