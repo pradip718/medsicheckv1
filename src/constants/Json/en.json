@@ -647,5 +647,8 @@
 
   "location_permission_title": "Location Permission",
   "location_permission_message": "We need access to your location for accurate readings",
-  "ask_me_later": "Ask Me Later"
+  "ask_me_later": "Ask Me Later",
+
+  "camera_permission_title": "Camera Permission Required",
+  "camera_permission_description": "To proceed, enable camera access in settings."
 }

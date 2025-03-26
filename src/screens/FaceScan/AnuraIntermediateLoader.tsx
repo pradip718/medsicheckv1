@@ -13,6 +13,7 @@ import useHealthRiskStore from '../../../store/healthRisksStore';
 import useLanguageStore from '../../../store/languageStore';
 import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
+import {notifyApi} from '../../api/user';
 import BackgroundImage from '../../components/BackgroundImage';
 import CustomText from '../../components/Text';
 import Event from '../../config/Event';
@@ -58,6 +59,7 @@ const AnuraIntermediateLoader = () => {
 
   const addResultsListener = async () => {
     EventBridge.addResultsListener(async (name, data) => {
+      notifyApi('anura_event', {name, data, screen: 'AnuraIntermediateLoader'});
       if (name == Event.anuraMeasurementGetResultsSuccess) {
         await postReadings({
           payload: {
