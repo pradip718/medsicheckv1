@@ -33,7 +33,8 @@ export type USER_ACTIVITY =
   | 'change_pwd'
   | 'geo_location_permission_granted'
   | 'has_geo_locaton_permission'
-  | 'anura_event';
+  | 'anura_event'
+  | 'camera_permission_granted';
 
 export type SCAN_SESSION_STATUS =
   | 'start_scan'

@@ -1,7 +1,14 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect} from 'react';
-import {PermissionsAndroid, Platform} from 'react-native';
+import {Alert, PermissionsAndroid, Platform} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import {
+  check,
+  openSettings,
+  PERMISSIONS,
+  request,
+  RESULTS,
+} from 'react-native-permissions';
 import useAlertStore from '../../store/alertStore';
 import useBinahConfigStore from '../../store/binahConfigStore';
 import useLanguageStore from '../../store/languageStore';
@@ -135,8 +142,40 @@ const usePrepareFacescan = () => {
     }
   };
 
+  const checkCameraPermission = async () => {
+    const permission =
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.CAMERA
+        : PERMISSIONS.ANDROID.CAMERA;
+
+    const requestResult = await request(permission);
+
+    if (requestResult === RESULTS.GRANTED) {
+      return true;
+    }
+    if (requestResult === RESULTS.BLOCKED) {
+      Alert.alert(
+        languages?.camera_permission_title,
+        languages?.camera_permission_description,
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Open Settings', onPress: openSettings},
+        ],
+      );
+      return false;
+    }
+
+    return false;
+  };
+
   const startScan = async () => {
     if (rescanConfigurations?.rescan_flag) {
+      const hasPermission = await checkCameraPermission();
+      notifyApi('camera_permission_granted', hasPermission);
+      if (!hasPermission) {
+        return;
+      }
+
       const {sdk_name} = await getSdkConfig();
       await getLocation();
       if (sdk_name === 'binaah') {
