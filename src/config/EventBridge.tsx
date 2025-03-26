@@ -16,6 +16,7 @@
 import {useEffect, useRef} from 'react';
 import {LogBox, NativeEventEmitter, NativeModules} from 'react-native';
 // import useLoaderStore from '../../store/loaderStore.js';
+import {notifyApi} from '../api/user';
 import useFullPageLoader from '../hooks/useFullPageLoader';
 import Action from './Action.js';
 import Event from './Event.js';
@@ -73,6 +74,7 @@ const useEventBridge = () => {
   };
 
   const parseActionsFromNative = (name: String, data: any) => {
+    notifyApi('anura_event', {name, data});
     if (name == Event.anuraMeasurementPageDidLoad) {
       console.log('rn--js...anuraMeasurementPageDidLoad');
     } else if (name == Event.anuraMeasurementPageDidAppear) {
