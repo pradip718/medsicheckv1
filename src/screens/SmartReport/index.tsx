@@ -1,8 +1,4 @@
-import {
-  DrawerActions,
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {Image, View} from 'moti';
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';

@@ -6,13 +6,13 @@ import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
 import moment from 'moment';
 import {Alert, NativeModules, Platform, Share as RNShare} from 'react-native';
+import RNFetchBlob from 'react-native-blob-util';
 import {CountryCode, CountryCodeList} from 'react-native-country-picker-modal';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import RNFS from 'react-native-fs';
 import {Asset} from 'react-native-image-picker';
 import Share from 'react-native-share';
-import RNFetchBlob from 'rn-fetch-blob';
 import {isAndroid} from '.';
 import {updateLocale} from '../src/api/language';
 import {notifyApi} from '../src/api/user';
@@ -529,6 +529,7 @@ export const downloadFile = async (report_link: string, name?: string) => {
           })
           .catch(_ => useLoaderStore.getState().setVisibility(false));
       }
+      useLoaderStore.getState().setVisibility(false);
     })
     .catch(_ => useLoaderStore.getState().setVisibility(false));
 
