@@ -30,7 +30,9 @@ export type USER_ACTIVITY =
   | 'share_report'
   | 'login'
   | 'logout'
-  | 'change_pwd';
+  | 'change_pwd'
+  | 'geo_location_permission_granted'
+  | 'has_geo_locaton_permission';
 
 export type SCAN_SESSION_STATUS =
   | 'start_scan'
