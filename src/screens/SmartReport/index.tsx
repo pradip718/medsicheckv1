@@ -107,7 +107,6 @@ const SmartReport = () => {
   const handleBackClick = () => {
     if (navigation?.canGoBack()) {
       navigation.goBack();
-      navigation.dispatch(DrawerActions.openDrawer());
     }
   };
   return (

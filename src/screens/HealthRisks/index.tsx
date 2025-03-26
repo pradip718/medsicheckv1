@@ -1,8 +1,4 @@
-import {
-  DrawerActions,
-  NavigationProp,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useMutation} from '@tanstack/react-query';
 import {Image, View} from 'moti';
 import React from 'react';
@@ -133,7 +129,6 @@ const HealthRisks = () => {
   const handleBackClick = () => {
     if (navigation?.canGoBack()) {
       navigation.goBack();
-      navigation.dispatch(DrawerActions.openDrawer());
     }
   };
 
