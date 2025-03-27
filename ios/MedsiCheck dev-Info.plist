@@ -48,8 +48,6 @@
 	<string>This app uses Bluetooth to connect to nearby devices for health monitoring purposes.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Used for vital signs monitoring</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to allow you to select photos for uploading.</string>
 	

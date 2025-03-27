@@ -49,7 +49,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Used for vital signs monitoring</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>We need your location to provide better services.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to provide better services.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to allow you to select photos for uploading.</string>
 	<key>UIAppFonts</key>
