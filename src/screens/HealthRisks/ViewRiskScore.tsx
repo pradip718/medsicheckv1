@@ -81,14 +81,14 @@ const InfoCard = ({
   return (
     <AnimatedWrapper
       isTranslateY={false}
-      className="bg-[#FFE4E6] p-2 rounded-lg flex-row items-center space-x-2 mr-2 mb-2"
+      className="p-2 rounded-lg flex-row items-center space-x-2 mr-2 mb-2 h-8"
       style={{
         backgroundColor: iconColor ?? '#FFE4E6',
       }}>
       <Image
         source={{uri: icon_url}}
-        className="w-5 h-4"
-        resizeMode="contain"
+        className="w-5 h-full"
+        resizeMode="cover"
       />
       <CustomText
         className="font-isidoraMedium"
