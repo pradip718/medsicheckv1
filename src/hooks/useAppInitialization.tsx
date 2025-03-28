@@ -1,6 +1,10 @@
 import NetInfo, {NetInfoState} from '@react-native-community/netinfo';
 import {StackActions} from '@react-navigation/native';
-import {MutationOptions, useMutation} from '@tanstack/react-query';
+import {
+  MutationOptions,
+  useMutation,
+  UseMutationResult,
+} from '@tanstack/react-query';
 import {useEffect} from 'react';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {navigationRef} from '../../RootNavigation';
@@ -49,26 +53,30 @@ const useAppInitialization = (props?: MutationOptions) => {
   }, [navigationRef]);
 
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async (): Promise<{isAuthenticated: boolean}> => {
       const [_, setupUserProfileResult] = await Promise.allSettled([
         fetchBinahConfig(),
         setupUserProfile(),
       ]);
+
       if (setupUserProfileResult.status === 'fulfilled') {
         const {isAuthenticated} = setupUserProfileResult.value;
         if (!isAuthenticated) {
-          await EncryptedStorage.removeItem(REMEMBERED_USER_SESSION);
-          navigationRef?.dispatch(StackActions.replace('Login'));
+          try {
+            await EncryptedStorage.removeItem(REMEMBERED_USER_SESSION);
+            navigationRef?.dispatch(StackActions.replace('Login'));
+          } catch (error) {
+            console.log('error', error);
+          }
           return {isAuthenticated: false};
         }
-        return {isAuthenticated: true};
       }
       return {isAuthenticated: true};
     },
     mutationKey: ['appInitialization'],
     gcTime: 5000,
     ...props,
-  });
+  }) as UseMutationResult<{isAuthenticated: boolean}, unknown, void>;
 };
 
 export default useAppInitialization;

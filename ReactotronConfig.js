@@ -2,8 +2,10 @@ import {NativeModules} from 'react-native';
 import Config from 'react-native-config';
 import reactotronZustand from 'reactotron-plugin-zustand';
 import Reactotron, {networking} from 'reactotron-react-native';
+import useAuthStore from './store/authStore';
 import useBinahConfigStore from './store/binahConfigStore';
 import useHealthRiskStore from './store/healthRisksStore';
+import useUserProfileStore from './store/profileStore';
 
 let scriptHostname;
 if (__DEV__) {
@@ -22,6 +24,8 @@ Reactotron.configure({
       stores: [
         {name: 'binah', store: useBinahConfigStore},
         {name: 'health_risk', store: useHealthRiskStore},
+        {name: 'profile_store', store: useUserProfileStore},
+        {name: 'auth_store', store: useAuthStore},
       ],
       omitFunctionKeys: true,
     }),

@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useQueryClient} from '@tanstack/react-query';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Linking} from 'react-native';
 import BootSplash from 'react-native-bootsplash';
 import {navigationRef} from '../RootNavigation';
@@ -84,8 +84,7 @@ const Stack = createNativeStackNavigator<MainStackParamList>();
 const RootNavigator = () => {
   const queryClient = useQueryClient();
   useUpdateLocale();
-  const {mutateAsync: initializeAppParameters, isPending} =
-    useAppInitialization();
+  const {mutateAsync: initializeAppParameters} = useAppInitialization();
   const {
     setScreenName,
     screenName,
@@ -97,13 +96,6 @@ const RootNavigator = () => {
   const {mutateAsync: navigateIfExistingUser} = useAuthNavigation();
 
   const [isOpenedFromDeepLink, setIsOpenedFromDeepLink] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      setIsOpenedFromDeepLink(false);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const prefetchApiBasedOnNavigation = async (path: string) => {
     switch (path) {
@@ -164,6 +156,47 @@ const RootNavigator = () => {
     return '';
   };
 
+  let initialURLPromise: Promise<string | null> | null = null;
+
+  async function fetchInitialURL() {
+    const processDeepLink = async (url: string | null) => {
+      if (!url) {
+        return '';
+      }
+      setIsOpenedFromDeepLink(true);
+      const {isAuthenticated} = await initializeAppParameters();
+
+      if (!isAuthenticated) {
+        await BootSplash.hide({fade: true});
+        return '';
+      }
+
+      try {
+        const finalUrl = await redirectFromDeeplink(url);
+        const path = finalUrl?.split('?')[0]?.split('/').pop();
+        await prefetchApiBasedOnNavigation(path || '');
+        return finalUrl;
+      } catch (error) {
+        console.error('Error processing deep link:', error);
+        return '';
+      } finally {
+        await BootSplash.hide({fade: true});
+      }
+    };
+
+    const initialUrl = await Linking.getInitialURL();
+    if (initialUrl) {
+      return processDeepLink(initialUrl);
+    }
+
+    const remoteMessage = await messaging().getInitialNotification();
+    if (remoteMessage?.data?.redirect_url) {
+      return processDeepLink(remoteMessage?.data?.redirect_url as string);
+    }
+
+    return '';
+  }
+
   const linking: LinkingOptions<{}> = {
     prefixes: [
       'https://main.d1p9s5r42tah7c.amplifyapp.com',
@@ -177,6 +210,7 @@ const RootNavigator = () => {
         QRFaceScan: 'face_scan',
         HealthWallet: 'health-wallet',
         AdditionalDetail: 'additional_info',
+        QuestionnaireSection: 'questionniare-section',
         PersonalisedAI: 'initiate_ai_report',
         LabReport: 'initiate_lab_report',
         FaceScan: 'initiate_face_scan',
@@ -189,16 +223,20 @@ const RootNavigator = () => {
         },
       },
     },
+    getInitialURL: () => {
+      if (!initialURLPromise) {
+        initialURLPromise = fetchInitialURL();
+      }
+      return initialURLPromise;
+    },
     getStateFromPath: (path, options) => {
       const queryParams = extractQueryParams(path);
       const state = getStateFromPath(path, options);
       if (!state || !state.routes) {
-        return {
-          routes: [],
-        };
+        return {routes: []};
       }
 
-      const newState = {
+      return {
         ...state,
         routes: state.routes.map(route => {
           if (route.name === 'LabReportDetail') {
@@ -206,54 +244,17 @@ const RootNavigator = () => {
               ...route,
               params: {
                 ...route.params,
-                ...queryParams, // Add the extracted query params here
+                ...queryParams,
               },
             };
           }
           return route;
         }),
       };
-      return newState;
-    },
-
-    async getInitialURL() {
-      const initialUrl = await Linking.getInitialURL();
-      if (initialUrl) {
-        if (!isPending) {
-          await initializeAppParameters();
-        }
-        try {
-          const url = await redirectFromDeeplink(initialUrl);
-          const path = url?.split('?')[0]?.split('/').pop();
-          await prefetchApiBasedOnNavigation(path || '');
-          await BootSplash.hide({fade: true});
-          return url;
-        } catch (error) {
-          await BootSplash.hide({fade: true});
-        }
-      }
-
-      const remoteMessage = await messaging().getInitialNotification();
-      if (remoteMessage) {
-        console.log(
-          'Notification caused app to open from quit state:',
-          remoteMessage.notification,
-        );
-
-        const redirect_url = remoteMessage?.data?.redirect_url || null;
-        if (typeof redirect_url === 'string') {
-          const url = await redirectFromDeeplink(redirect_url);
-          const path = url?.split('?')[0]?.split('/').pop();
-          await prefetchApiBasedOnNavigation(path || '');
-          await BootSplash.hide({fade: true});
-
-          return url;
-        }
-      }
-      return '';
     },
     subscribe(listener) {
       const onReceiveURL = async ({url}: {url: string}) => {
+        console.log('Received deep link:', url);
         const updatedUrl = await redirectFromDeeplink(url);
         const path = updatedUrl?.split('?')[0]?.split('/').pop();
         await prefetchApiBasedOnNavigation(path || '');
@@ -287,7 +288,10 @@ const RootNavigator = () => {
       onStateChange={handleNavigationStateChange}
       onReady={async () => {
         if (!isOpenedFromDeepLink) {
+          console.log('onReady');
+          await new Promise(resolve => setTimeout(resolve, 200)); // Small delay to ensure linking is processed
           const {isAuthenticated} = await initializeAppParameters();
+          console.log('isAuthenticated', isAuthenticated);
           if (isAuthenticated) {
             return navigateIfExistingUser();
           }

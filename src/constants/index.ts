@@ -8,6 +8,7 @@ export const DEEPLINK_CONFIG: Record<string, keyof MainStackParamList> = {
   'about-app': 'AboutApp',
   'health-wallet': 'HealthWallet',
   additional_info: 'AdditionalDetail',
+  'questionniare-section': 'QuestionnaireSection',
   initiate_ai_report: 'PersonalisedAI',
   initiate_lab_report: 'LabReport',
   initiate_face_scan: 'FaceScan',
