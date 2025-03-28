@@ -216,6 +216,7 @@ const RootNavigator = () => {
         FaceScan: 'initiate_face_scan',
         LabReportDetail: 'lab_report',
         AIHealthReportDetail: 'ai_report',
+        HealthRisks: 'health_risks',
         ReportStackScreens: {
           screens: {
             Report: 'scan_report',
