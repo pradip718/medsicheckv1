@@ -5,12 +5,14 @@ import {Dimensions, Image, ScrollView, StyleSheet, View} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import useLanguageStore from '../../../store/languageStore';
+import useLoaderStore from '../../../store/loaderStore';
 import {MainStackParamList} from '../../../types/navigation';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
 import CustomText from '../../components/Text';
+import useBackButton from '../../hooks/useBackButton';
 import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import Header from './Header';
 import {ENTRIES1} from './data';
@@ -22,10 +24,17 @@ const FaceScan = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {startScan} = usePrepareFacescan();
   const {languages} = useLanguageStore();
+  const {setSignoutModalVisibility} = useLoaderStore();
   const progressValue = useSharedValue(0);
   const [activeSlide, setActiveSlide] = useState(0);
   const [doNotShowChecked, setDoNotShowChecked] = useState(false);
   const ref = React.useRef<ICarouselInstance>(null);
+
+  const showSignoutModal = () => {
+    setSignoutModalVisibility(true);
+    return true;
+  };
+  useBackButton(showSignoutModal);
 
   const isLastSlide = activeSlide === TOTAL_SLIDE - 1;
 

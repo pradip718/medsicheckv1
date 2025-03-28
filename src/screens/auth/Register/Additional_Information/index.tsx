@@ -8,6 +8,7 @@ import React, {useEffect} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Additional_Information_img} from '../../../../../assets';
 import useLanguageStore from '../../../../../store/languageStore';
+import useLoaderStore from '../../../../../store/loaderStore';
 import {MainStackParamList} from '../../../../../types/navigation';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import Navbar from '../../../../components/Navbar';
@@ -16,6 +17,7 @@ import SafeAreaScrollView from '../../../../components/SafeAreaScrollView';
 import CustomText from '../../../../components/Text';
 import {useGetQuestionnaireSection} from '../../../../hooks/api/useGetQuestions';
 import usePostOnboardingSteps from '../../../../hooks/api/usePostOnboardingSteps';
+import useBackButton from '../../../../hooks/useBackButton';
 import useFullPageLoader from '../../../../hooks/useFullPageLoader';
 import customColor from '../../../../theme/customColor';
 
@@ -34,6 +36,14 @@ const AdditionalInformation = ({route}: AdditionalInformationProps) => {
   const {languages} = useLanguageStore();
 
   const {showLoader, hideLoader} = useFullPageLoader();
+
+  const {setSignoutModalVisibility} = useLoaderStore();
+
+  const showSignoutModal = () => {
+    setSignoutModalVisibility(true);
+    return true;
+  };
+  useBackButton(showSignoutModal);
 
   const {data: questions, isLoading} = useGetQuestionnaireSection({
     cacheTime: 0,
