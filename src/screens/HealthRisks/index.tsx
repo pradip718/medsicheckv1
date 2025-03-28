@@ -1,7 +1,11 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
 import {useMutation} from '@tanstack/react-query';
 import {Image, View} from 'moti';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {twMerge} from 'tailwind-merge';
 import useHealthRiskStore from '../../../store/healthRisksStore';
@@ -62,8 +66,23 @@ const MenuItem = ({
   );
 };
 
-const HealthRisks = () => {
+type HealthRiskRouteProp = RouteProp<MainStackParamList, 'HealthRisks'>;
+
+interface HealthRiskProps {
+  route: HealthRiskRouteProp;
+}
+
+const HealthRisks = ({route}: HealthRiskProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const {type} = route?.params ?? {type: ''};
+
+  useEffect(() => {
+    if (type === 'hypertension_risk' || type === 'diabetes_risk') {
+      setEngineName(type);
+      fetchHealthRisks({risk_type: type});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type]);
 
   const {languages} = useLanguageStore();
   const {setCurrentQuestion, setEngineName, setViewRiskDetails} =
