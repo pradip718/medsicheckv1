@@ -6,7 +6,6 @@ import {Easing} from 'react-native-reanimated';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
-import {navigateToFaceScan} from '../../../utils/navigation';
 import Icon from '../../components/Icon';
 import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
@@ -21,6 +20,7 @@ import {
 import useGetAIQuestionnaire from '../../hooks/api/useGetAIQuestionnaire';
 import useGetUserReading from '../../hooks/api/useGetUserReading';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
+import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import customColor from '../../theme/customColor';
 import {HEALTH_WALLET_CATEGORY_LIST} from './data';
 import {HealthWalletCategory} from './type';
@@ -30,6 +30,7 @@ const HealthWallet = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const {showLoader, hideLoader} = useFullPageLoader();
+  const {startScan} = usePrepareFacescan();
 
   const {data: reportData, isFetching: isUserReadingFetching} =
     useGetUserReading();
@@ -127,9 +128,7 @@ const HealthWallet = () => {
   ): (() => void) => {
     switch (row_name) {
       case 'vital_scan_report':
-        return () => {
-          navigateToFaceScan();
-        };
+        return startScan;
       case 'ai_health_report':
         return generateAIReport;
       case 'interpret_lab_report':

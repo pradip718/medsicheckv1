@@ -28,6 +28,7 @@ import useAlertStore from '../../../store/alertStore';
 import useBinahConfigStore from '../../../store/binahConfigStore';
 import useHealthRiskStore from '../../../store/healthRisksStore';
 import useLanguageStore from '../../../store/languageStore';
+import useLoaderStore from '../../../store/loaderStore';
 import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
@@ -47,6 +48,7 @@ import useGetRescanConfiguration from '../../hooks/api/useGetRescanConfiguration
 import useGetUserReading from '../../hooks/api/useGetUserReading';
 import usePostOnboardingSteps from '../../hooks/api/usePostOnboardingSteps';
 import usePostReadings from '../../hooks/api/usePostReading';
+import useBackButton from '../../hooks/useBackButton';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useInitializeBinahSession from '../../hooks/useInitializeBinahSession';
 import useScreenOrientation from '../../hooks/useScreenOrientation';
@@ -100,6 +102,13 @@ const FaceScannerCamera = () => {
     enabled: false,
   });
   const {session} = useBinahConfigStore();
+  const {setSignoutModalVisibility} = useLoaderStore();
+
+  const showSignoutModal = () => {
+    setSignoutModalVisibility(true);
+    return true;
+  };
+  useBackButton(showSignoutModal);
 
   const clearFaceScan = () => {
     if (intervalRef?.current) {
