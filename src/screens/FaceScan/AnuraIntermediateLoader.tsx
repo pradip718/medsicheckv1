@@ -19,6 +19,8 @@ import CustomText from '../../components/Text';
 import Event from '../../config/Event';
 import useEventBridge from '../../config/EventBridge';
 import {RESCAN_CONFIGURATION} from '../../constants/hooks';
+import useGetOnboarding from '../../hooks/api/useGetOnboarding';
+import usePostOnboardingSteps from '../../hooks/api/usePostOnboardingSteps';
 import usePostReadings from '../../hooks/api/usePostReading';
 import customColor from '../../theme/customColor';
 
@@ -28,11 +30,17 @@ const AnuraIntermediateLoader = () => {
   const {languages} = useLanguageStore();
   const {anuraConfig, geoPosition} = useBinahConfigStore();
   const {actionData, executeAction} = useAIReportFacescanStore();
+  const {data: onboarding} = useGetOnboarding({
+    gcTime: 0,
+    staleTime: Infinity,
+  });
   const {
     actionData: healthRiskAction,
     executeAction: executeHealthRisksAction,
   } = useHealthRiskStore();
   const EventBridge = useEventBridge();
+
+  const {mutateAsync: postOnboardingStep} = usePostOnboardingSteps();
 
   const {mutateAsync: postReadings} = usePostReadings({
     onSuccess: async (data, variable) => {
@@ -46,6 +54,18 @@ const AnuraIntermediateLoader = () => {
         await executeHealthRisksAction();
         return navigation.goBack();
       }
+
+      await Promise.all([
+        onboarding?.data?.some(
+          onboardingStep =>
+            onboardingStep.milestone_tag === 'first-health-measurement',
+        )
+          ? Promise.resolve()
+          : postOnboardingStep({milestone: 'first-health-measurement'}),
+        queryClient.invalidateQueries({queryKey: ['readings']}),
+        queryClient.invalidateQueries({queryKey: [RESCAN_CONFIGURATION]}),
+      ]);
+
       const {
         payload: {reading_id},
       } = variable;

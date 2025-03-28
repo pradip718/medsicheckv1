@@ -1,4 +1,3 @@
-import {useAsyncStorage} from '@react-native-async-storage/async-storage';
 import {StackActions} from '@react-navigation/native';
 import {useMutation, UseQueryResult} from '@tanstack/react-query';
 import BootSplash from 'react-native-bootsplash';

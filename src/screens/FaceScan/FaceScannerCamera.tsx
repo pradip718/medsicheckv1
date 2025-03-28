@@ -43,9 +43,9 @@ import SafeAreaScrollView from '../../components/SafeAreaScrollView';
 import CustomText from '../../components/Text';
 import {RESCAN_CONFIGURATION} from '../../constants/hooks';
 import {useGetUserReadingDetail} from '../../hooks/api/readings';
+import useGetOnboarding from '../../hooks/api/useGetOnboarding';
 import useGetPreHealthReading from '../../hooks/api/useGetPreHealthReading';
 import useGetRescanConfiguration from '../../hooks/api/useGetRescanConfiguration';
-import useGetUserReading from '../../hooks/api/useGetUserReading';
 import usePostOnboardingSteps from '../../hooks/api/usePostOnboardingSteps';
 import usePostReadings from '../../hooks/api/usePostReading';
 import useBackButton from '../../hooks/useBackButton';
@@ -95,12 +95,16 @@ const FaceScannerCamera = () => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [imageValidity, setImageValidity] = useState<string>();
 
-  const {data: reportData} = useGetUserReading();
   const {data: rescanConfigurations} = useGetRescanConfiguration();
   const {refetch: getReadingDetail} = useGetUserReadingDetail({
     reading_id: reading_id,
     enabled: false,
   });
+  const {data: onboarding} = useGetOnboarding({
+    gcTime: 0,
+    staleTime: Infinity,
+  });
+
   const {session} = useBinahConfigStore();
   const {setSignoutModalVisibility} = useLoaderStore();
 
@@ -213,9 +217,14 @@ const FaceScannerCamera = () => {
         scan_information: imageValidityJSON,
         reading_id,
       }),
-      reportData?.data?.count === 0
-        ? postOnboardingStep({milestone: 'first-health-measurement'})
-        : Promise.resolve(),
+
+      onboarding?.data?.some(
+        onboardingStep =>
+          onboardingStep.milestone_tag === 'first-health-measurement',
+      )
+        ? Promise.resolve()
+        : postOnboardingStep({milestone: 'first-health-measurement'}),
+
       getReadingDetail(),
       queryClient.invalidateQueries({queryKey: ['readings']}),
       queryClient.invalidateQueries({queryKey: [RESCAN_CONFIGURATION]}),
