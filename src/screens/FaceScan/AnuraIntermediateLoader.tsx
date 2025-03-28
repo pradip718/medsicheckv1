@@ -28,7 +28,10 @@ const AnuraIntermediateLoader = () => {
   const {languages} = useLanguageStore();
   const {anuraConfig, geoPosition} = useBinahConfigStore();
   const {actionData, executeAction} = useAIReportFacescanStore();
-  const {executeAction: executeHealthRisksAction} = useHealthRiskStore();
+  const {
+    actionData: healthRiskAction,
+    executeAction: executeHealthRisksAction,
+  } = useHealthRiskStore();
   const EventBridge = useEventBridge();
 
   const {mutateAsync: postReadings} = usePostReadings({
@@ -39,7 +42,7 @@ const AnuraIntermediateLoader = () => {
         await executeAction();
         return navigation.goBack();
       }
-      if (actionData?.fromScreen === 'HealthRisks') {
+      if (healthRiskAction?.fromScreen === 'HealthRisks') {
         await executeHealthRisksAction();
         return navigation.goBack();
       }
