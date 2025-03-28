@@ -1,5 +1,6 @@
 import React from 'react';
 import Tooltip, {TooltipProps} from 'react-native-walkthrough-tooltip';
+import useLanguageStore from '../../../store/languageStore';
 import useWalkthroughStore, {
   WalkthroughKey,
 } from '../../../store/walkthroughStore';
@@ -15,10 +16,15 @@ const ToolTipWalkthrough = ({
   walkthroughName,
   ...restProps
 }: ToolTipWalkthroughProps) => {
+  const {languages} = useLanguageStore();
   const {walkthroughs, currentWalkthroughScreen} = useWalkthroughStore();
   const visible =
     walkthroughs?.[currentWalkthroughScreen]?.[walkthroughName]?.visible ||
     false;
+
+  if (languages?.showWalkthrough?.toLocaleLowerCase() !== 'true') {
+    return children;
+  }
 
   return (
     <Tooltip

@@ -61,6 +61,7 @@
   "initiate_recording_title": "¿Listo para medir tus signos vitales?",
   "initiate_recording_msg": "Siéntate quieto, asegúrate de que tu cara esté iluminada uniformemente y que no hay una fuente de luz en el fondo",
   "measure_button_txt": "Medir Ahora",
+  "showWalkthrough": "False",
 
   "during_recording_title": "Midiendo tus signos vitales...",
   "during_recording_msg": "Espera, todos tus resultados aparecerán en unos segundos...",

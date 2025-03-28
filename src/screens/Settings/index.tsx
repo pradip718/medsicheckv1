@@ -78,24 +78,30 @@ const Settings = () => {
   const {data: reportData} = useGetUserReading();
 
   const readingLength = reportData?.data?.reading_data?.length || 0;
+  const shouldShowWalkthrough =
+    languages?.showWalkthrough?.toLocaleLowerCase() === 'true';
 
   const MENU_ITEM = [
-    {
-      name: languages?.app_Walkthrough,
-      icon: 'information',
-      disabled: false,
-      action: async () => {
-        if (readingLength === 1) {
-          combineWalkthrough('homepage', 'single-report');
-        }
-        if (readingLength > 1) {
-          combineWalkthrough('homepage', 'multiple-report');
-        }
-        setCurrentWalkthroughScreen('homepage');
-        setIsWalkthroughVisible(true);
-        navigation.navigate('Homepage' as any);
-      },
-    },
+    ...(shouldShowWalkthrough
+      ? [
+          {
+            name: languages?.app_Walkthrough,
+            icon: 'information',
+            disabled: false,
+            action: async () => {
+              if (readingLength === 1) {
+                combineWalkthrough('homepage', 'single-report');
+              }
+              if (readingLength > 1) {
+                combineWalkthrough('homepage', 'multiple-report');
+              }
+              setCurrentWalkthroughScreen('homepage');
+              setIsWalkthroughVisible(true);
+              navigation.navigate('Homepage' as any);
+            },
+          },
+        ]
+      : []),
     {
       name: languages?.send_feedback,
       icon: 'personal_report',
