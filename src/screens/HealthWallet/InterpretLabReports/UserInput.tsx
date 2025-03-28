@@ -1,14 +1,14 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import _ from 'lodash';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import useLanguageStore from '../../../../store/languageStore';
-import { MainStackParamList } from '../../../../types/navigation';
-import { downloadFile, onShareFile } from '../../../../utils/methods';
+import {MainStackParamList} from '../../../../types/navigation';
+import {downloadFile, onShareFile} from '../../../../utils/methods';
 import EmptyScreen from '../../../components/EmptyScreen';
 import Icon from '../../../components/Icon';
 import CustomText from '../../../components/Text';
-import { useGetLabReportDetails } from '../../../hooks/api/report';
+import {useGetLabReportDetails} from '../../../hooks/api/report';
 import customColor from '../../../theme/customColor';
 
 const UserInput = () => {
