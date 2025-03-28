@@ -44,7 +44,7 @@ const AIScanDetails = ({route}: AIScanDetailProps) => {
         <View className="p-4">
           <Navbar />
         </View>
-        <View className="px-4" style={styles.contentContainer}>
+        <View style={styles.contentContainer}>
           <Report
             reading={reportDetail}
             reportData={reportData}
