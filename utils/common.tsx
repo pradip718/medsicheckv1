@@ -102,7 +102,7 @@ export const ParseAndRenderText = (text: string) => {
 
 export const redirectFromDeeplink = async (url: string) => {
   if (url) {
-    const {session_id, profile_id} = extractQueryParams(url);
+    const {session_id, profile_id, ...restParams} = extractQueryParams(url);
     const path = url?.split('?')[0]?.split('/').pop();
 
     if (session_id && profile_id) {
@@ -132,7 +132,20 @@ export const redirectFromDeeplink = async (url: string) => {
 
     if (path && DEEPLINK_CONFIG[path]) {
       if (navigationRef.isReady()) {
-        navigationRef.dispatch(StackActions.replace(DEEPLINK_CONFIG[path]));
+        if (path === 'scan_report') {
+          navigationRef.dispatch(
+            StackActions.replace('ReportStackScreens', {
+              screen: 'Report',
+              params: {
+                ...restParams,
+              },
+            }),
+          );
+          return;
+        }
+        navigationRef.dispatch(
+          StackActions.replace(DEEPLINK_CONFIG[path], restParams),
+        );
       }
       return `medsicheck://${path}`;
     }
