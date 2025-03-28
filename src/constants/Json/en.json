@@ -604,7 +604,7 @@
     "WAIST_TO_HEIGHT": "https://medsi-check-image-assets.s3.us-west-2.amazonaws.com/anura_waist_to_height.png",
     "BP_STROKE": "https://medsi-check-image-assets.s3.us-west-2.amazonaws.com/anura_stroke.png"
   },
-  "showQRScanner": "True",
+  "showQRScanner": "False",
 
   "questionnaire_section_header_1": "The more details you provide, the more tailored and effective your personalised profile will be.",
   "questionnaire_section_header_2": "Let's work together towards a healthier and happier you! 🌿💪",

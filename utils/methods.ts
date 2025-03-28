@@ -1,4 +1,8 @@
-import {EncryptCommand, EncryptCommandInput} from '@aws-sdk/client-kms';
+import {
+  EncryptCommand,
+  EncryptCommandInput,
+  KMSClient,
+} from '@aws-sdk/client-kms';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Sex} from 'biosensesignal-react-native-sdk';
 import {Buffer} from 'buffer';
@@ -14,9 +18,9 @@ import RNFS from 'react-native-fs';
 import {Asset} from 'react-native-image-picker';
 import Share from 'react-native-share';
 import {isAndroid} from '.';
+import {getAWSSecretKeys} from '../src/api/auth';
 import {updateLocale} from '../src/api/language';
 import {notifyApi} from '../src/api/user';
-import {kmsClient} from '../src/config';
 import {
   DEVICE_LOCALE,
   REMEMBERED_USER_DEVICE,
@@ -39,6 +43,9 @@ import {ColorRangeItem, ReadingData} from '../types/jsons';
 import {ConfidenceLevelKeys} from '../types/reports';
 import {FamilyMembers, User} from '../types/users/user';
 import {successToast} from './toast';
+
+import 'react-native-get-random-values';
+import 'react-native-url-polyfill/auto';
 
 export const getImgBasedOnScore = (score: number) => {
   switch (true) {
@@ -704,18 +711,25 @@ export const extractQueryParams = (url: string): Record<string, string> => {
 };
 
 export async function encryptText(text: string) {
-  const cred = useAuthStore.getState()?.awsCred;
+  let credentials = await getAWSSecretKeys();
 
   const params: EncryptCommandInput = {
-    KeyId: cred?.kms_arn,
+    KeyId: credentials?.kms_arn,
     Plaintext: Buffer.from(text),
-    EncryptionAlgorithm: cred?.kms_algorithm,
+    EncryptionAlgorithm: credentials?.kms_algorithm,
   };
+
+  const kmsClient = new KMSClient({
+    region: 'us-west-2',
+    credentials: {
+      accessKeyId: credentials?.access_key ?? '',
+      secretAccessKey: credentials?.secret_access_key ?? '',
+    },
+  });
 
   try {
     const command = new EncryptCommand(params);
     const response = await kmsClient.send(command);
-
     if (!response.CiphertextBlob) {
       throw new Error('Encryption failed: CiphertextBlob is undefined');
     }

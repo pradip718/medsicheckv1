@@ -1,7 +1,6 @@
 import {useMutation, UseMutationOptions} from '@tanstack/react-query';
 import {isEmpty} from 'lodash';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {navigationRef} from '../../../RootNavigation';
 import useAppStore from '../../../store/appStore';
 import useUserProfileStore from '../../../store/profileStore';
 import {encryptText} from '../../../utils/methods';
@@ -51,12 +50,15 @@ export const useSetupUserProfile = (
 
   return useMutation({
     mutationFn: async (): Promise<{isAuthenticated: boolean}> => {
-      if (stayLoggedIn && navigationRef?.isReady()) {
+      if (stayLoggedIn) {
         const session = await EncryptedStorage.getItem(REMEMBERED_USER_SESSION);
-
+        console.log('session', session);
         if (session) {
           const userSession = JSON.parse(session);
           const encryptPassword = await encryptText(userSession?.password);
+          if (!encryptPassword) {
+            return {isAuthenticated: false};
+          }
           try {
             await login({
               username: userSession.username,

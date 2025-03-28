@@ -103,35 +103,34 @@ export const ParseAndRenderText = (text: string) => {
 export const redirectFromDeeplink = async (url: string) => {
   if (url) {
     const {session_id, profile_id} = extractQueryParams(url);
-
-    const {token} = await getSessionToken({session_id, profile_id});
-
-    if (!token) {
-      return '';
-    }
     const path = url?.split('?')[0]?.split('/').pop();
 
-    if (path === 'face_scan') {
-      useAuthStore.getState().setDeeplinkAuth({
-        session_id: session_id || '',
-        token: token || '',
-      });
-      useAppStore.getState().setIsFaceScanDeeplink(true);
+    if (session_id && profile_id) {
+      const {token} = await getSessionToken({session_id, profile_id});
 
-      useUserProfileStore
-        .getState()
-        .setCurrentActiveProfileId(profile_id || '');
-      syncScanSession('deeplink_opened');
-      if (navigationRef.isReady()) {
-        navigationRef.dispatch(StackActions.replace('QRFaceScan'));
+      if (!token) {
+        return '';
       }
-      return 'medsicheck://face_scan';
+
+      if (path === 'face_scan') {
+        useAuthStore.getState().setDeeplinkAuth({
+          session_id: session_id || '',
+          token: token || '',
+        });
+        useAppStore.getState().setIsFaceScanDeeplink(true);
+
+        useUserProfileStore
+          .getState()
+          .setCurrentActiveProfileId(profile_id || '');
+        syncScanSession('deeplink_opened');
+        if (navigationRef.isReady()) {
+          navigationRef.dispatch(StackActions.replace('QRFaceScan'));
+        }
+        return 'medsicheck://face_scan';
+      }
     }
-    if (
-      path &&
-      DEEPLINK_CONFIG[path] &&
-      useAuthStore.getState()?.userAuth?.idToken
-    ) {
+
+    if (path && DEEPLINK_CONFIG[path]) {
       if (navigationRef.isReady()) {
         navigationRef.dispatch(StackActions.replace(DEEPLINK_CONFIG[path]));
       }

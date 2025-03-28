@@ -18,7 +18,6 @@ import {PaperProvider} from 'react-native-paper';
 import 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 import RootNavigator from './navigation';
-import {getAWSSecretKeys} from './src/api/auth';
 import {getLanguage} from './src/api/language';
 import AlertModal from './src/components/AlertModal';
 import AppUpdateModal from './src/components/AlertModal/AppUpdateModal';
@@ -26,7 +25,6 @@ import {ErrorFallback} from './src/components/ErrorFallback';
 import FullScreenLoader from './src/components/FullScreenLoader';
 import SignoutModal from './src/components/SignoutModal';
 import Maintenance from './src/screens/Maintenance';
-import useAuthStore from './store/authStore';
 import useLanguageStore from './store/languageStore';
 import useLoaderStore from './store/loaderStore';
 import {toastConfig} from './utils/common';
@@ -52,9 +50,7 @@ export const queryClient = new QueryClient({
 
 function App(): JSX.Element {
   const {languages, setLanguages} = useLanguageStore();
-  const {setAWSCred} = useAuthStore();
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
-  const [isAWSKeyFetching, setIsAWSKeyFetching] = useState(false);
 
   if (!__DEV__) {
     Sentry.init({
@@ -87,24 +83,6 @@ function App(): JSX.Element {
   }, [languages]);
 
   useEffect(() => {
-    const initializeAWS = async () => {
-      try {
-        setIsAWSKeyFetching(true);
-        const credentials = await getAWSSecretKeys();
-        if (credentials) {
-          setAWSCred(credentials);
-        }
-      } catch (error) {
-        console.log('error', error);
-      } finally {
-        setIsAWSKeyFetching(false);
-      }
-    };
-    initializeAWS();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     const unsubscribe = registerListenerWithFCM();
     return unsubscribe;
   }, []);
@@ -123,10 +101,6 @@ function App(): JSX.Element {
     };
 
     LogBox.ignoreLogs(ignoreWarns);
-  }
-
-  if (isAWSKeyFetching) {
-    return <></>;
   }
 
   return (
