@@ -55,6 +55,9 @@
 	<string>We need your location to provide better services.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location to provide better services.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need your location to provide better services.</string>
+
 
 	<key>UIAppFonts</key>
 	<array>

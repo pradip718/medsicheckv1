@@ -210,7 +210,7 @@ const RootNavigator = () => {
         QRFaceScan: 'face_scan',
         HealthWallet: 'health-wallet',
         AdditionalDetail: 'additional_info',
-        QuestionnaireSection: 'questionniare-section',
+        QuestionnaireSection: 'questionniare_section',
         PersonalisedAI: 'initiate_ai_report',
         LabReport: 'initiate_lab_report',
         FaceScan: 'initiate_face_scan',
