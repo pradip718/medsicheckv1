@@ -163,6 +163,12 @@ const RootNavigator = () => {
       if (!url) {
         return '';
       }
+      const path = url.split('?')[0].split('/').pop();
+      if (!path || !(path in DEEPLINK_CONFIG)) {
+        console.warn(`Deep link path not found in config: ${path}`);
+        return '';
+      }
+
       setIsOpenedFromDeepLink(true);
       const {isAuthenticated} = await initializeAppParameters();
 
@@ -173,7 +179,6 @@ const RootNavigator = () => {
 
       try {
         const finalUrl = await redirectFromDeeplink(url);
-        const path = finalUrl?.split('?')[0]?.split('/').pop();
         await prefetchApiBasedOnNavigation(path || '');
         return finalUrl;
       } catch (error) {

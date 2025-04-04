@@ -212,7 +212,7 @@ const ViewRiskScore = () => {
 
           {MedicalReferralInfo && (
             <CollapsibleCard
-              title="Medical Referrals"
+              title={MedicalReferralInfo?.name}
               classNameValue="mt-8"
               icon_url={MedicalReferralInfo?.image_url ?? ''}>
               {!!MedicalReferralInfo?.body && (
