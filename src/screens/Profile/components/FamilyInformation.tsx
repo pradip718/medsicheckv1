@@ -277,6 +277,8 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
     }
   };
 
+  console.log('errors', errors);
+
   return (
     <ImageBackground source={Background as any}>
       <SafeAreaView className="h-full">
@@ -615,19 +617,32 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                                 maxLength={30}
                               />
                               <ErrorText
-                                message={errors?.given_name?.message}
+                                message={errors?.other_relation?.message}
                               />
                             </>
                           )}
                           name="other_relation"
-                          rules={{required: true}}
+                          rules={{
+                            required:
+                              value ===
+                              getKeyByValue(
+                                languages?.relation_list?.other,
+                                languages?.relation_list,
+                              )
+                                ? languages?.other_relation_required
+                                : undefined,
+                            pattern: {
+                              value: /^[a-zA-Z ]+$/,
+                              message: languages?.letter_space_validation,
+                            },
+                          }}
                         />
                       )}
                       <ErrorText message={errors?.relation?.message} />
                     </>
                   )}
                   name="relation"
-                  rules={{required: true}}
+                  rules={{required: languages?.relation_required}}
                 />
               </View>
             </View>

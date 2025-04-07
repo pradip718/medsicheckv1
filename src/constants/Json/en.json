@@ -651,5 +651,8 @@
   "ask_me_later": "Ask Me Later",
 
   "camera_permission_title": "Camera Permission Required",
-  "camera_permission_description": "To proceed, enable camera access in settings."
+  "camera_permission_description": "To proceed, enable camera access in settings.",
+
+  "other_relation_required": "Other Relation is Required",
+  "relation_required": "Relation is Required"
 }

@@ -202,7 +202,7 @@ const CustomDrawer = () =>
       },
       {
         name: languages?.health_risk,
-        icon: 'risk',
+        icon: 'warning',
         disabled: false,
         action: () => navigation.navigate('HealthRisks'),
       },
