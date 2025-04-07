@@ -1,12 +1,18 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+// import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'moti';
 import React, {useState} from 'react';
 import {Dimensions, Image, ScrollView, StyleSheet, View} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
+import {
+  BatteryStatus,
+  CorrectPosition,
+  FreepikDevice,
+  PersonAtTable,
+} from '../../../assets';
 import useLanguageStore from '../../../store/languageStore';
 import useLoaderStore from '../../../store/loaderStore';
-import {MainStackParamList} from '../../../types/navigation';
+// import {MainStackParamList} from '../../../types/navigation';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
@@ -15,13 +21,11 @@ import CustomText from '../../components/Text';
 import useBackButton from '../../hooks/useBackButton';
 import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import Header from './Header';
-import {ENTRIES1} from './data';
 
-const TOTAL_SLIDE = ENTRIES1.length;
 const {width} = Dimensions.get('window');
 
 const FaceScan = () => {
-  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  // const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {startScan} = usePrepareFacescan();
   const {languages} = useLanguageStore();
   const {setSignoutModalVisibility} = useLoaderStore();
@@ -29,6 +33,31 @@ const FaceScan = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [doNotShowChecked, setDoNotShowChecked] = useState(false);
   const ref = React.useRef<ICarouselInstance>(null);
+
+  const ENTRIES1 = [
+    {
+      title: '',
+      subtitle: languages?.first_carousal_text,
+      illustration: FreepikDevice,
+    },
+    {
+      title: '',
+      subtitle: languages?.second_carousal_text,
+      illustration: PersonAtTable,
+    },
+    {
+      title: '',
+      subtitle: languages?.third_carousal_text,
+      illustration: CorrectPosition,
+    },
+    {
+      title: '',
+      subtitle: languages?.fourth_carousal_text,
+      illustration: BatteryStatus,
+    },
+  ];
+
+  const TOTAL_SLIDE = ENTRIES1.length;
 
   const showSignoutModal = () => {
     setSignoutModalVisibility(true);
