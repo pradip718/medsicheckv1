@@ -14,6 +14,7 @@ import {
 import {Card} from 'react-native-paper';
 import {twMerge} from 'tailwind-merge';
 import useHealthRiskStore from '../../../store/healthRisksStore';
+import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {isAndroid} from '../../../utils';
 import AnimatedWrapper from '../../components/AnimatedWrapper';
@@ -103,6 +104,7 @@ const ViewRiskScore = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const {engine_name, viewRiskDetails} = useHealthRiskStore();
+  const {languages} = useLanguageStore();
   const {startScan} = usePrepareFacescan();
 
   const ResultInfo = viewRiskDetails?.report_info?.result;
@@ -136,8 +138,9 @@ const ViewRiskScore = () => {
             </TouchableOpacity>
           </View>
           <CustomText className="text-white text-3xl font-isidoraSemiBold mt-6">
-            {engine_name === 'hypertension_risk' && 'Hypertension Risk'}
-            {engine_name === 'diabetes_risk' && 'Diabetes Risk'}
+            {engine_name === 'hypertension_risk' &&
+              languages?.hypertension_risk_title}
+            {engine_name === 'diabetes_risk' && languages?.diabetes_risk_title}
           </CustomText>
 
           <View className="flex-row my-4 shrink flex-wrap">
