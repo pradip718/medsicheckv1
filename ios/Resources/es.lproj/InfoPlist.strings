@@ -1,0 +1,12 @@
+/* 
+  InfoPlist.strings
+  MedsiCheck
+
+  Created by Pradip Shrestha on 07/04/2025.
+  
+*/
+NSLocationWhenInUseUsageDescription = "El acceso a la ubicación ayuda a la aplicación a proporcionar contenido y servicios relevantes.";
+NSLocationAlwaysUsageDescription = "El acceso a la ubicación ayuda a la aplicación a proporcionar contenido y servicios relevantes.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "El acceso a la ubicación ayuda a la aplicación a proporcionar contenido y servicios relevantes.";
+NSCameraUsageDescription = "La aplicación Medsi Check necesita acceso a tu cámara frontal para medir tu salud. La aplicación no captura ninguna foto o características faciales.";
+NSPhotoLibraryUsageDescription = "Necesitamos acceder a tu biblioteca de fotos para que puedas seleccionar fotos para subir.";

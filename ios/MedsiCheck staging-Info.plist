@@ -46,16 +46,17 @@
 	<string>This app uses Bluetooth to perform health monitoring tasks even when the app is in the background.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>This app uses Bluetooth to connect to nearby devices for health monitoring purposes.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Used for vital signs monitoring</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to provide better services.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need your location to provide better services.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library to allow you to select photos for uploading.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need your location to provide better services.</string>
+
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>$(NSPhotoLibraryUsageDescription)</string>
+		<key>NSCameraUsageDescription</key>
+		<string>$(NSCameraUsageDescription)</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>$(NSLocationWhenInUseUsageDescription)</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>$(NSLocationAlwaysUsageDescription)</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>$(NSLocationAlwaysAndWhenInUseUsageDescription)</string>
 
 
 	<key>UIAppFonts</key>

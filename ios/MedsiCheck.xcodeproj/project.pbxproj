@@ -13,6 +13,9 @@
 		56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */; };
 		6FC0CCDF815666EF3F852CB2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */; };
 		9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */; };
+		AE962B642DA3AE6700C86AAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE962B622DA3AE6700C86AAA /* InfoPlist.strings */; };
+		AE962B652DA3AE6700C86AAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE962B622DA3AE6700C86AAA /* InfoPlist.strings */; };
+		AE962B662DA3AE6700C86AAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE962B622DA3AE6700C86AAA /* InfoPlist.strings */; };
 		AE9813E62D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813E12D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf */; };
 		AE9813E72D4755AD001E7BD8 /* IsidoraSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DE2D4755AD001E7BD8 /* IsidoraSans-Bold.ttf */; };
 		AE9813EB2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE9813DF2D4755AD001E7BD8 /* IsidoraSans-Medium.ttf */; };
@@ -141,6 +144,10 @@
 		8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
 		9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; sourceTree = "<group>"; };
 		AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; sourceTree = "<group>"; };
+		AE962B632DA3AE6700C86AAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AE962B672DA3AE8100C86AAA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		AE962C182DA3B54400C86AAA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AE962C192DA3B54400C86AAA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AE9813D72D4755AD001E7BD8 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
 		AE9813D82D4755AD001E7BD8 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
 		AE9813D92D4755AD001E7BD8 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
@@ -344,6 +351,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AE98144B2D478545001E7BD8 /* LaunchScreen.storyboard */,
 				AE98144E2D478545001E7BD8 /* Localizable.strings */,
+				AE962B622DA3AE6700C86AAA /* InfoPlist.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -494,6 +502,7 @@
 				en,
 				Base,
 				"zh-Hans",
+				es,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			preferredProjectObjectVersion = 77;
@@ -522,6 +531,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEEF05A62D46C52C002EE9AB /* Firebase in Resources */,
+				AE962B652DA3AE6700C86AAA /* InfoPlist.strings in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				AE9814022D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */,
 				AE9814762D478545001E7BD8 /* Assets.xcassets in Resources */,
@@ -541,6 +551,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE9814A32D478545001E7BD8 /* Assets.xcassets in Resources */,
+				AE962B662DA3AE6700C86AAA /* InfoPlist.strings in Resources */,
 				AE9814A42D478545001E7BD8 /* LaunchScreen.storyboard in Resources */,
 				AE9814A82D478545001E7BD8 /* Localizable.strings in Resources */,
 				AEEF05A82D46C52C002EE9AB /* Firebase in Resources */,
@@ -560,6 +571,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEEF05A72D46C52C002EE9AB /* Firebase in Resources */,
+				AE962B642DA3AE6700C86AAA /* InfoPlist.strings in Resources */,
 				AEEF05922D46B9C9002EE9AB /* Images.xcassets in Resources */,
 				AE9813F42D4755AD001E7BD8 /* IsidoraSans-SemiBold.ttf in Resources */,
 				AE9814D02D478545001E7BD8 /* Assets.xcassets in Resources */,
@@ -964,11 +976,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		AE962B622DA3AE6700C86AAA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AE962B632DA3AE6700C86AAA /* en */,
+				AE962B672DA3AE8100C86AAA /* zh-Hans */,
+				AE962C192DA3B54400C86AAA /* es */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		AE98144E2D478545001E7BD8 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				AE98144C2D478545001E7BD8 /* en */,
 				AE98144D2D478545001E7BD8 /* zh-Hans */,
+				AE962C182DA3B54400C86AAA /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

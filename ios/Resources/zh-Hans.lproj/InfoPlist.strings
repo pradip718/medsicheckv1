@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  MedsiCheck
+
+  Created by Pradip Shrestha on 07/04/2025.
+  
+*/
+
+NSLocationWhenInUseUsageDescription = "STAGING：我们需要您的位置来测试功能。";
+NSLocationAlwaysUsageDescription = "DEV: Always location access helps test persistent location services.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "DEV: This app needs both modes for testing.";
