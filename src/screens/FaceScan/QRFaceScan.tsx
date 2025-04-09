@@ -8,7 +8,7 @@ import {
 import {assign, isArray, isString} from 'lodash';
 import moment from 'moment';
 import React, {useEffect, useRef, useState} from 'react';
-import {Alert, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {twMerge} from 'tailwind-merge';
 import useAlertStore from '../../../store/alertStore';
 import useAuthStore from '../../../store/authStore';
@@ -21,7 +21,6 @@ import {syncScanSession} from '../../api/report';
 import {postCaptureUserActivity} from '../../api/user';
 import BottomAlert from '../../components/AlertModal/BottomAlert';
 import BackgroundImage from '../../components/BackgroundImage';
-import Icon from '../../components/Icon';
 import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
 import SafeAreaScrollView from '../../components/SafeAreaScrollView';
@@ -35,12 +34,10 @@ import usePostReadings from '../../hooks/api/usePostReading';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useInitializeBinahSession from '../../hooks/useInitializeBinahSession';
 import useScreenOrientation from '../../hooks/useScreenOrientation';
-import customColor from '../../theme/customColor';
 import ScanReport from './ScanReport';
 import {ImageValidityView} from './components/ImageValidityView';
 import RenderCamera from './components/RenderCamera';
 import RenderInformationCard from './components/RenderInformationCard';
-import RenderProgressBar from './components/RenderProgressBar';
 import StopButton from './components/StopButton';
 import FaceScanError from './modal/FaceScanError';
 import LowConfidence from './modal/LowConfidence';
@@ -55,7 +52,11 @@ const QRFaceScan = () => {
   const queryClient = useQueryClient();
 
   const {languages} = useLanguageStore();
-  const {binahConfig, errorMessages} = useBinahConfigStore();
+  const {
+    binahConfig,
+    errorMessages,
+    geoPosition: location,
+  } = useBinahConfigStore();
   const {deeplinkAuth} = useAuthStore();
   const {showAlert} = useAlertStore();
 
@@ -63,12 +64,13 @@ const QRFaceScan = () => {
   const {showLoader, hideLoader} = useFullPageLoader();
   const {isLandscape} = useScreenOrientation();
 
-  const [cameraLocation, setCameraLocation] = useState('front');
+  const [cameraLocation] = useState('front');
   const [fakeRecording, setFakeRecording] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [didFinishedMeasuring, setDidFinishedMeasuring] =
     useState<boolean>(false);
   const [imageValidityJSON, setImageValidityJSON] = useState<ValidityCount>({});
+  const [imageValidity, setImageValidity] = useState<string>();
   const [visible, setVisible] = useState<boolean>(false);
   const [reading_id, setReadingId] = useState(deeplinkAuth?.session_id || '');
 
@@ -193,6 +195,9 @@ const QRFaceScan = () => {
             scan_error: imageValidityJSON,
             reading_id,
             timestamp: moment().format('YYYY-MM-DD HH:mm'),
+            sdk_name: binahConfig?.sdk_name,
+            sdk_type: binahConfig?.sdk_type,
+            geo_location: location,
           },
         });
       }
@@ -283,6 +288,10 @@ const QRFaceScan = () => {
     await submitResult();
   };
 
+  const handleImageValidity = (validity: string | undefined) => {
+    setImageValidity(validity);
+  };
+
   const isEnabled =
     sessionState == SessionState.READY ||
     sessionState == SessionState.PROCESSING;
@@ -298,57 +307,32 @@ const QRFaceScan = () => {
   }
 
   return (
-    <BackgroundImage className="flex-1" style={styles.container}>
-      <SafeAreaScrollView contentContainerStyle={styles.contentContainer}>
+    <BackgroundImage className="h-full" style={styles.container}>
+      <SafeAreaScrollView
+        contentContainerStyle={styles.contentContainer}
+        className="h-full">
         <View className="px-6 py-4">
-          <Navbar noBack={!navigation?.canGoBack()} />
+          <Navbar />
         </View>
-        <View className="relative flex-1">
+        <View className="relative px-2 items-center smallPhone:h-2/5 mediumPhone:h-1/2">
           <RenderCamera
-            session={session}
             didFinishedMeasuring={didFinishedMeasuring}
             progress={progress}
             readingId={reading_id}
+            imageValidity={imageValidity}
           />
-          <View className="absolute left-0 right-0 top-5 items-center">
-            <ImageValidityView handleValidityJSON={handleValidityJSON} />
-          </View>
-
-          {!progress && (
-            <TouchableOpacity
-              className={twMerge(
-                'border-2 border-white px-4 py-2 rounded-2xl z-50 absolute top-2 left-5',
-                isRestarting && 'opacity-50',
-              )}
-              onPress={() => {
-                if (cameraLocation === 'front') {
-                  return setCameraLocation('back');
-                }
-                return setCameraLocation('front');
-              }}>
-              <Icon name="refresh" size={20} color={customColor.white} />
-            </TouchableOpacity>
-          )}
-
-          {!!progress && (
-            <View
-              className={twMerge(
-                'z-50 absolute top-2 right-3',
-                isRestarting && 'opacity-50',
-              )}>
-              <StopButton restartSession={restartSession} />
+        </View>
+        <View className="justify-between flex-grow py-4">
+          {fakeRecording ? (
+            <View className="px-4 items-center">
+              <ImageValidityView
+                handleValidityJSON={handleValidityJSON}
+                progress={progress}
+                imageValidity={imageValidity}
+                handleImageValidity={handleImageValidity}
+              />
             </View>
-          )}
-
-          <View className="absolute inset-x-0 bottom-2">
-            {progress >= 0.3 && (
-              <View>
-                <ScanReport
-                  progress={progress}
-                  preReadingConfig={preReadingConfig || []}
-                />
-              </View>
-            )}
+          ) : (
             <View className="px-8 pt-2">
               <RenderInformationCard
                 progress={progress}
@@ -356,28 +340,40 @@ const QRFaceScan = () => {
                 didFinishedMeasuring={didFinishedMeasuring}
               />
             </View>
-          </View>
-        </View>
-        <View className="px-2 py-1">
-          {fakeRecording ? <RenderProgressBar progress={progress} /> : <></>}
+          )}
+
+          {progress >= 0.3 ? (
+            <ScanReport
+              progress={progress}
+              preReadingConfig={preReadingConfig || []}
+            />
+          ) : progress ? (
+            <View
+              className={twMerge('items-center', isRestarting && 'opacity-50')}>
+              <StopButton restartSession={restartSession} />
+            </View>
+          ) : null}
+
           {!didFinishedMeasuring && !fakeRecording && (
-            <RoundedButton
-              // className="mt-4"
-              onPress={handleMeasureNowPress}
-              loading={fakeRecording || isResultSubmitting}
-              disabled={
-                fakeRecording ||
-                isResultSubmitting ||
-                !isEnabled ||
-                !rescanConfigurations?.rescan_flag
-              }>
-              <CustomText className="text-xl text-white font-isidoraSemiBold">
-                {languages?.measure_button_txt}
-              </CustomText>
-            </RoundedButton>
+            <View className="px-2 py-1">
+              <RoundedButton
+                onPress={handleMeasureNowPress}
+                loading={fakeRecording || isResultSubmitting}
+                disabled={
+                  fakeRecording ||
+                  isResultSubmitting ||
+                  !isEnabled ||
+                  !rescanConfigurations?.rescan_flag
+                }>
+                <CustomText className="text-xl text-white font-isidoraSemiBold">
+                  {languages?.measure_button_txt}
+                </CustomText>
+              </RoundedButton>
+            </View>
           )}
         </View>
       </SafeAreaScrollView>
+
       <BottomAlert
         visible={visible}
         hideModal={() => {
