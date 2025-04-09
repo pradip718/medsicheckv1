@@ -136,7 +136,7 @@ android {
             applicationId "mx.medsi.medsicheck.staging"
             targetSdkVersion rootProject.ext.targetSdkVersion
             resValue "string", "build_config_package", "mx.medsi.medsicheck"
-            manifestPlaceholders = [appHost: "staging.d1p9s5r42tah7c.amplifyapp.com"]
+            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/stage"]
             // resValue "string", "app_name", "Medsi Check Staging"
         }
         development {
@@ -144,7 +144,8 @@ android {
             applicationId "mx.medsi.medsicheck.dev"
             targetSdkVersion rootProject.ext.targetSdkVersion
             resValue "string", "build_config_package", "mx.medsi.medsicheck"
-            manifestPlaceholders = [appHost: "dev.d1p9s5r42tah7c.amplifyapp.com"]
+            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/dev"]
+            
             // resValue "string", "app_name", "Medsi Check Dev"
         }
         production {
@@ -152,7 +153,7 @@ android {
             applicationId "mx.medsi.medsicheck"
             targetSdkVersion rootProject.ext.targetSdkVersion
             resValue "string", "build_config_package", "mx.medsi.medsicheck"
-            manifestPlaceholders = [appHost: "main.d1p9s5r42tah7c.amplifyapp.com"]
+            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/prod"]
             // resValue "string", "app_name", "Medsi Check"
         }
     }
