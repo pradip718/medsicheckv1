@@ -112,6 +112,10 @@ export function registerListenerWithFCM() {
       'onNotificationOpenedApp Received',
       JSON.stringify(remoteMessage),
     );
+    const redirect_url = remoteMessage?.data?.redirect_url;
+    if (redirect_url && typeof redirect_url === 'string') {
+      await redirectFromDeeplink(redirect_url);
+    }
   });
 
   messaging().setBackgroundMessageHandler(async remoteMessage => {

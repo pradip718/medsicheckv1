@@ -148,6 +148,10 @@ const HealthRisks = ({route}: HealthRiskProps) => {
   const handleBackClick = () => {
     if (navigation?.canGoBack()) {
       navigation.goBack();
+    } else {
+      navigation.navigate('HomepageStackScreens', {
+        screen: 'Home',
+      });
     }
   };
 

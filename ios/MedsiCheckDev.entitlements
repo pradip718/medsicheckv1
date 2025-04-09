@@ -7,6 +7,8 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:dev.d1p9s5r42tah7c.amplifyapp.com</string>
+		<string>applinks:redirect-medsicheck.medsi.ai</string>
+		<string>applinks:redirect.medsicheck.medsi.ai</string>
 	</array>
 </dict>
 </plist>
