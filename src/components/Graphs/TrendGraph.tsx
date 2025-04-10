@@ -64,8 +64,8 @@ const TrendGraph = ({data = [], stats}: TrendGraphProps) => {
         yAxisColor="white"
         yAxisOffset={stats?.min}
         maxValue={Math.min(stats?.max - stats?.min, 100 - stats?.min)}
-        // scrollToEnd
-        scrollToIndex={stats?.count}
+        scrollToEnd={modifiedData?.length > 2}
+        // scrollToIndex={stats?.count}
       />
     </View>
   );

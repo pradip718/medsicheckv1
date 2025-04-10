@@ -232,6 +232,15 @@ const FaceScannerCamera = () => {
 
     hideLoader();
 
+    if (actionData?.fromScreen === 'PersonalisedAI') {
+      await executeAction();
+      return navigation.goBack();
+    }
+    if (healthRiskAction?.fromScreen === 'HealthRisks') {
+      await executeHealthRiskAction();
+      return navigation.goBack();
+    }
+
     navigation.dispatch(
       StackActions.replace('ReportStackScreens', {
         screen: 'Report',
@@ -243,15 +252,6 @@ const FaceScannerCamera = () => {
   };
 
   const handleReportSuccess = async (data: any) => {
-    if (actionData?.fromScreen === 'PersonalisedAI') {
-      await executeAction();
-      return navigation.goBack();
-    }
-    if (healthRiskAction?.fromScreen === 'HealthRisks') {
-      await executeHealthRiskAction();
-      return navigation.goBack();
-    }
-
     if (
       !data?.success &&
       (data?.error || (isArray(data?.error_msg) && data?.error_msg?.length))
@@ -263,6 +263,7 @@ const FaceScannerCamera = () => {
     notifyApi('end_scan', true, {
       reading_id,
     });
+
     await proceedToReportScreen();
   };
 
