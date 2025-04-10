@@ -46,15 +46,6 @@ const AnuraIntermediateLoader = () => {
     onSuccess: async (data, variable) => {
       queryClient.invalidateQueries({queryKey: ['readings']});
       queryClient.invalidateQueries({queryKey: [RESCAN_CONFIGURATION]});
-      if (actionData?.fromScreen === 'PersonalisedAI') {
-        await executeAction();
-        return navigation.goBack();
-      }
-      if (healthRiskAction?.fromScreen === 'HealthRisks') {
-        await executeHealthRisksAction();
-        return navigation.goBack();
-      }
-
       await Promise.all([
         onboarding?.data?.some(
           onboardingStep =>
@@ -65,6 +56,14 @@ const AnuraIntermediateLoader = () => {
         queryClient.invalidateQueries({queryKey: ['readings']}),
         queryClient.invalidateQueries({queryKey: [RESCAN_CONFIGURATION]}),
       ]);
+      if (actionData?.fromScreen === 'PersonalisedAI') {
+        await executeAction();
+        return navigation.goBack();
+      }
+      if (healthRiskAction?.fromScreen === 'HealthRisks') {
+        await executeHealthRisksAction();
+        return navigation.goBack();
+      }
 
       const {
         payload: {reading_id},
