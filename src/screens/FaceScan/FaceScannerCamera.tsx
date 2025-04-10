@@ -187,7 +187,7 @@ const FaceScannerCamera = () => {
 
   useEffect(() => {
     if (didFinishedMeasuring) {
-      handleCheckResult();
+      submitResult();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [didFinishedMeasuring]);
@@ -259,6 +259,10 @@ const FaceScannerCamera = () => {
       await resetMeasurement('scan_error', data.error_msg);
       return setVisible(true);
     }
+    syncWebScan('end_scan', reading_id || '');
+    notifyApi('end_scan', true, {
+      reading_id,
+    });
     await proceedToReportScreen();
   };
 
@@ -311,8 +315,8 @@ const FaceScannerCamera = () => {
     if (!session) {
       return;
     }
-    const readingId = uuid.v4() as string;
-    setReadingId(readingId as string);
+    const readingId = uuid.v4();
+    setReadingId(readingId);
     try {
       if (sessionState == SessionState.READY && binahConfig?.scan_duration) {
         syncWebScan('start_scan', readingId || '');
@@ -386,14 +390,6 @@ const FaceScannerCamera = () => {
   const handleMeasureNowPress = () => {
     startMeasurement();
     startFakeLoader();
-  };
-
-  const handleCheckResult = async () => {
-    syncWebScan('end_scan', reading_id);
-    notifyApi('end_scan', true, {
-      reading_id,
-    });
-    await submitResult();
   };
 
   const handleRefresh = async () => {
