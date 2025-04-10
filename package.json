@@ -39,7 +39,7 @@
     "add": "^2.0.6",
     "async-mutex": "^0.5.0",
     "axios": "^1.6.7",
-    "biosensesignal-react-native-sdk": "./BiosenseSignal_ReactNative_SDK_5.9.1.tgz",
+    "biosensesignal-react-native-sdk": "./BiosenseSignal_ReactNative_SDK_5.9.3.tgz",
     "buffer": "^6.0.3",
     "google-libphonenumber": "^3.2.38",
     "lodash": "^4.17.21",

@@ -131,7 +131,7 @@ const QRFaceScan = () => {
 
   useEffect(() => {
     if (didFinishedMeasuring) {
-      handleCheckResult();
+      submitResult();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [didFinishedMeasuring]);
@@ -174,6 +174,11 @@ const QRFaceScan = () => {
       await resetMeasurement('scan_error', data.error_msg);
       return setVisible(true);
     }
+
+    syncScanSession('end_scan');
+    notifyApi('end_scan', true, {
+      reading_id,
+    });
     await proceedToReportScreen();
   };
 
@@ -278,14 +283,6 @@ const QRFaceScan = () => {
   const handleMeasureNowPress = () => {
     startMeasurement();
     startFakeLoader();
-  };
-
-  const handleCheckResult = async () => {
-    syncScanSession('end_scan');
-    notifyApi('end_scan', true, {
-      reading_id,
-    });
-    await submitResult();
   };
 
   const handleImageValidity = (validity: string | undefined) => {
