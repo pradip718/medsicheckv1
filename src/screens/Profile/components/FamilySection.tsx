@@ -68,7 +68,9 @@ const FamilySection = ({
 
   const onChangeCurrentProfile = (profileId: string) => {
     setCurrentActiveProfileId(profileId);
-    queryClient.resetQueries();
+    queryClient.resetQueries({
+      predicate: query => !query.queryKey.includes('reading-detail'),
+    });
   };
 
   if ((!otherMembers || otherMembers.length === 0) && !admin) {
