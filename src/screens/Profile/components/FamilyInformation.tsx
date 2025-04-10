@@ -178,7 +178,9 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
         if ('profile_id' in user) {
           await notifyApi('adding_profile');
           setCurrentActiveProfileId(user?.profile_id);
-          await queryClient.resetQueries();
+          await queryClient.resetQueries({
+            predicate: query => !query.queryKey.includes('reading-detail'),
+          });
           reset();
           navigation.navigate('Profile');
         }
