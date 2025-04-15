@@ -3,6 +3,7 @@ import Homepage_Person from './images/homepage_person.png';
 import Medsi_Check_Navabar_img from './images/medsi_check_navbar.png';
 import Personal_Details from './images/personal_details.png';
 import ScanTabbarIcon from './images/scan.png';
+import VoiceScanTabbarIcon from './images/voice_scan.png';
 
 import InternetConnected from './images/InternetConnected.png';
 import InternetDisconnected from './images/InternetDisconnected.png';
@@ -55,4 +56,5 @@ export {
   SingleReportBackground,
   SliderGradient,
   TransparentCircularBg,
+  VoiceScanTabbarIcon,
 };
