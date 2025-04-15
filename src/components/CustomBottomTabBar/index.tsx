@@ -6,13 +6,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../store/languageStore';
+import {isAndroid} from '../../../utils';
 import {shouldGoToFaceScan} from '../../../utils/navigation';
 import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import customColor from '../../theme/customColor';
 import ToolTipWalkthrough from '../CustomCopilot/ToolTipWalkthrough';
 import Icon from '../Icon';
 import ScanButton from '../ScanButton';
+import VoiceScanButton from '../ScanButton/VoiceScan';
 import CustomText from '../Text';
 
 interface CustomTabBarProps extends BottomTabBarProps {}
@@ -37,123 +40,150 @@ const CustomTabBar = ({
 
   return (
     <View style={[styles.tabBar]}>
-      <View style={styles.tabBarContainer}>
-        <ImageBackground
-          source={require('../../../assets/images/tabbar.png')}
-          className="relative"
-          style={styles.backgroundImage}>
-          {routes.map((route, index: number) => {
-            const isFocused = index === activeIndex;
+      <ImageBackground
+        source={require('../../../assets/images/tabbar.png')}
+        className="relative"
+        style={styles.backgroundImage}>
+        {routes.map((route, index: number) => {
+          const isFocused = index === activeIndex;
 
-            const onPress = () => {
-              const event = navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
 
-              if (!isFocused && !event.defaultPrevented) {
-                navigation.navigate(route.name, route.params);
-              }
-            };
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name, route.params);
+            }
+          };
 
-            const onLongPress = () => {
-              navigation.emit({
-                type: 'tabLongPress',
-                target: route.key,
-              });
-            };
+          const onLongPress = () => {
+            navigation.emit({
+              type: 'tabLongPress',
+              target: route.key,
+            });
+          };
 
-            // const {options} = descriptors[route.key];
-            if (route.name === 'Scan') {
-              return (
-                <View key={`${route.name}-${index}`}>
-                  <View
-                    style={styles.scanContainer}
-                    className="absolute left-[50%]  bg-green-400"
-                    key={`${route.name}-${index}`}>
-                    <ToolTipWalkthrough
-                      walkthroughName="scan_button"
-                      placement="top">
-                      <ScanButton onPressScanButton={handleScanButtonPress} />
-                    </ToolTipWalkthrough>
-                  </View>
-                  <CustomText className="absolute bottom-3 -left-7 w-[150] font-isidoraMedium">
-                    {languages?.faceScan}
+          if (route.name === 'Scan') {
+            return (
+              <View
+                key={`${route.name}-${index}`}
+                className="w-[18%] items-center">
+                <View
+                  style={styles.scanContainer}
+                  className="w-[100%] items-center"
+                  key={`${route.name}-${index}`}>
+                  <ToolTipWalkthrough
+                    walkthroughName="scan_button"
+                    placement="top">
+                    <ScanButton onPressScanButton={handleScanButtonPress} />
+                  </ToolTipWalkthrough>
+                </View>
+                <CustomText
+                  className={twMerge(
+                    'font-isidoraMedium',
+                    !isAndroid && '-mt-2',
+                  )}>
+                  {languages?.faceScan}
+                </CustomText>
+              </View>
+            );
+          }
+
+          if (route.name === 'VoiceScan') {
+            return (
+              <View
+                key={`${route.name}-${index}`}
+                className="w-[19%] items-center ml-[6%]">
+                <View
+                  style={styles.voiceScanContainer}
+                  className="w-full items-center"
+                  key={`${route.name}-${index}`}>
+                  <ToolTipWalkthrough
+                    walkthroughName="scan_button"
+                    placement="top">
+                    <VoiceScanButton
+                      onPressScanButton={handleScanButtonPress}
+                    />
+                  </ToolTipWalkthrough>
+                </View>
+                <CustomText
+                  className={twMerge(
+                    'font-isidoraMedium',
+                    !isAndroid && '-mt-2',
+                  )}>
+                  {languages?.voice_scan}
+                </CustomText>
+              </View>
+            );
+          }
+
+          if (route.name === 'Homepage') {
+            return (
+              <TouchableOpacity
+                key={`${route.name}-${index}`}
+                className="h-[80px] pt-2 w-[29.5%] items-center"
+                onPress={onPress}
+                onLongPress={onLongPress}>
+                <View
+                  className={twMerge(
+                    'p-2 items-center space-y-1',
+                    isFocused &&
+                      'bg-white rounded-xl p-2 items-center space-y-1',
+                  )}>
+                  <Icon
+                    name="Home"
+                    size={24}
+                    color={
+                      isFocused ? customColor.blueBerry : customColor.extraGrey
+                    }
+                  />
+                  <CustomText
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    className={`w-[50] text-center ${
+                      isFocused ? 'font-isidoraBold' : ''
+                    }`}>
+                    {languages?.home}
                   </CustomText>
                 </View>
-              );
-            }
-
-            if (route.name === 'Homepage') {
-              return (
-                <TouchableOpacity
-                  key={`${route.name}-${index}`}
-                  className="h-[80px] pt-4"
-                  onPress={onPress}
-                  onLongPress={onLongPress}>
-                  <View
-                    className={
-                      isFocused
-                        ? 'bg-white rounded-xl p-2 items-center space-y-1'
-                        : 'p-2 items-center space-y-1'
-                    }>
-                    <Icon
-                      name="Home"
-                      size={24}
-                      color={
-                        isFocused
-                          ? customColor.blueBerry
-                          : customColor.extraGrey
-                      }
-                    />
-                    <CustomText
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                      className={`w-[50] text-center ${
-                        isFocused ? 'font-isidoraBold' : ''
-                      }`}>
-                      {languages?.home}
-                    </CustomText>
-                  </View>
-                </TouchableOpacity>
-              );
-            }
-            if (route.name === 'Profile') {
-              return (
-                <TouchableOpacity
-                  key={`${route.name}-${index}`}
-                  className="h-[80px] pt-4"
-                  onPress={onPress}
-                  onLongPress={onLongPress}>
-                  <View
-                    className={`p-2 items-center space-y-1 ${
-                      isFocused ? 'bg-white rounded-xl ' : ''
+              </TouchableOpacity>
+            );
+          }
+          if (route.name === 'Profile') {
+            return (
+              <TouchableOpacity
+                key={`${route.name}-${index}`}
+                className="h-[80px] pt-2 w-[29.5%] items-center"
+                onPress={onPress}
+                onLongPress={onLongPress}>
+                <View
+                  className={`p-2 items-center space-y-1 ${
+                    isFocused ? 'bg-white rounded-xl ' : ''
+                  }`}>
+                  <Icon
+                    name="profile"
+                    size={20}
+                    color={
+                      isFocused ? customColor.blueBerry : customColor.extraGrey
+                    }
+                  />
+                  <CustomText
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    className={`w-[50] text-center ${
+                      isFocused ? 'font-isidoraBold' : ''
                     }`}>
-                    <Icon
-                      name="profile"
-                      size={20}
-                      color={
-                        isFocused
-                          ? customColor.blueBerry
-                          : customColor.extraGrey
-                      }
-                    />
-                    <CustomText
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                      className={`w-[50] text-center ${
-                        isFocused ? 'font-isidoraBold' : ''
-                      }`}>
-                      {languages?.profile}
-                    </CustomText>
-                  </View>
-                </TouchableOpacity>
-              );
-            }
-          })}
-        </ImageBackground>
-      </View>
+                    {languages?.profile}
+                  </CustomText>
+                </View>
+              </TouchableOpacity>
+            );
+          }
+        })}
+      </ImageBackground>
     </View>
   );
 };
@@ -165,22 +195,28 @@ export const styles = StyleSheet.create({
     // backgroundColor: 'white',
     position: 'absolute',
     bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   activeBackground: {
     position: 'absolute',
     top: 0,
   },
-  tabBarContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
   scanContainer: {
-    backgroundColor: 'transparent',
-    // marginRight: 2,
     transform: [
+      // {
+      //   translateX: 6,
+      // },
       {
-        translateX: -30,
+        translateY: -8,
       },
+    ],
+  },
+  voiceScanContainer: {
+    transform: [
+      // {
+      //   translateX: 6,
+      // },
       {
         translateY: -8,
       },
@@ -188,7 +224,7 @@ export const styles = StyleSheet.create({
   },
   backgroundImage: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    // justifyContent: 'space-between',
     height: 88,
     width: '100%',
   },

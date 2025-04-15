@@ -654,5 +654,7 @@
   "camera_permission_description": "To proceed, enable camera access in settings.",
 
   "other_relation_required": "Other Relation is Required",
-  "relation_required": "Relation is Required"
+  "relation_required": "Relation is Required",
+
+  "voice_scan": "Voice Scan"
 }
