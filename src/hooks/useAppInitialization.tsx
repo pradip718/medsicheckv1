@@ -59,6 +59,8 @@ const useAppInitialization = (props?: MutationOptions) => {
         setupUserProfile(),
       ]);
 
+      console.log('setupUserProfileResult', setupUserProfileResult);
+
       if (setupUserProfileResult.status === 'fulfilled') {
         const {isAuthenticated} = setupUserProfileResult.value;
         if (!isAuthenticated) {

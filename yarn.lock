@@ -3310,6 +3310,13 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
+"@simform_solutions/react-native-audio-waveform@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@simform_solutions/react-native-audio-waveform/-/react-native-audio-waveform-2.1.5.tgz#7bc626945c76d93400805fe0aafa4b399919cdb2"
+  integrity sha512-Ok0EXKlS9JNERWMKJ+2Tp1ZORCfiLtDtBzLVLPNsX4LQIyqUrK67YaurCy9UxjuIYHWwfNTzcV8PTJrjg0yYvw==
+  dependencies:
+    lodash "^4.17.21"
+
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"

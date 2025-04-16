@@ -9,7 +9,7 @@ const WelcomeCard = () => {
   const {languages} = useLanguageStore();
 
   return (
-    <View className="bg-ultramarineBlue px-4 py-10 mt-10 rounded-3xl">
+    <View className="bg-[#162244] px-4 py-10 mt-10 rounded-3xl">
       <CustomText className="text-white text-2xl font-isidoraBold">
         {userAttributes?.gender === 'female'
           ? languages?.welcome_female

@@ -28,6 +28,10 @@ import SingleReportBackground from './images/singleReportBackground.png';
 import SliderGradient from './images/sliderGradient.png';
 import TransparentCircularBg from './images/transCircularBg.png';
 
+import VoiceScanCarousel1 from './images/VoiceScan/voice_scan_carousel_1.png';
+import VoiceScanCarousel2 from './images/VoiceScan/voice_scan_carousel_2.png';
+import VoiceScanCarousel3 from './images/VoiceScan/voice_scan_carousel_3.png';
+
 export {
   AddBackgroundImg,
   Additional_Information_img,
@@ -56,5 +60,8 @@ export {
   SingleReportBackground,
   SliderGradient,
   TransparentCircularBg,
+  VoiceScanCarousel1,
+  VoiceScanCarousel2,
+  VoiceScanCarousel3,
   VoiceScanTabbarIcon,
 };

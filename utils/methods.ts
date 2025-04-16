@@ -164,6 +164,8 @@ export const getDeviceLocaleInformation = () => {
         NativeModules.SettingsManager.settings.AppleLanguages[0] //iOS 13
       : NativeModules?.I18nManager?.localeIdentifier;
 
+  console.log('locale', locale);
+
   return locale?.toLowerCase().replace('_', '-');
 };
 
@@ -713,6 +715,8 @@ export const extractQueryParams = (url: string): Record<string, string> => {
 export async function encryptText(text: string) {
   let credentials = await getAWSSecretKeys();
 
+  console.log('credentials', credentials);
+
   const params: EncryptCommandInput = {
     KeyId: credentials?.kms_arn,
     Plaintext: Buffer.from(text),
@@ -730,6 +734,8 @@ export async function encryptText(text: string) {
   try {
     const command = new EncryptCommand(params);
     const response = await kmsClient.send(command);
+
+    console.log('response', response);
     if (!response.CiphertextBlob) {
       throw new Error('Encryption failed: CiphertextBlob is undefined');
     }

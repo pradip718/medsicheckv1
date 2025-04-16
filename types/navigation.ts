@@ -132,6 +132,10 @@ export type MainStackParamList = {
   SessionReportDetail: SessionReportParamList;
   OfflineScreen: undefined;
   MaintenanceScreen: undefined;
+
+  VoiceScanScreen: undefined;
+  VoiceScanIntroScreen: undefined;
+  VoiceScanGeneratingReport: undefined;
 };
 
 export type PreventixInformationParamList = {

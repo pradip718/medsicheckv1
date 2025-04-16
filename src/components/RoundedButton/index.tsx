@@ -52,6 +52,7 @@ interface RoundedButtonProps extends TouchableOpacityProps {
   loading?: boolean;
 
   className?: string;
+  hasDisabledStyle?: boolean;
 }
 
 const RoundedButton = (props: React.PropsWithChildren<RoundedButtonProps>) => {
@@ -66,6 +67,7 @@ const RoundedButton = (props: React.PropsWithChildren<RoundedButtonProps>) => {
     disabled = false,
     loading = false,
     resetStyle,
+    hasDisabledStyle = true,
     className,
     ...rest
   } = props;
@@ -83,7 +85,7 @@ const RoundedButton = (props: React.PropsWithChildren<RoundedButtonProps>) => {
   const textStyle = textPresets[preset] || textPresets.primary;
   const textStyles = [textStyle, textStyleOverride];
 
-  if (disabled) {
+  if (disabled && hasDisabledStyle) {
     viewStyles.push({backgroundColor: color.lightGrey});
   }
 
