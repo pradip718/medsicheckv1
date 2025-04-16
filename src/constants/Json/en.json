@@ -74,8 +74,8 @@
   "oxygen_saturation": "Oxygen Saturation",
   "sign_out": "Sign Out",
   "take_test": "Take Test",
-  "personalizedHealthInsightsPrompt": "Your personalized health insights are just a scan away!",
-  "faceScanReportPrompt": "Unlock a healthier you! Take your first step towards well-being by experiencing our face scan report.",
+  "personalizedHealthInsightsPrompt": "Scan for instant insights",
+  "faceScanReportPrompt": "Use your camera to capture key health signals - quick and effortlessly.",
 
   "verificationTitlePrompt": "Thank you for your patience...",
   "verificationTitleContent": "The verification process ensures the security of this platform. Your account will typically be verified within 24 to 48 hours. If your account is not verified within this time frame, please feel free to contact our team for assistance.",
@@ -656,5 +656,22 @@
   "other_relation_required": "Other Relation is Required",
   "relation_required": "Relation is Required",
 
-  "voice_scan": "Voice Scan"
+  "voice_scan": "Voice Scan",
+  "voice_scan_carousel_1_title": "Make sure your environment is quiet",
+  "voice_scan_carousel_1_description": "Avoid background noise like fans, TV, or street sounds. Place your phone nearby with the microphone facing you — don’t cover it with your hand or case.",
+  "voice_scan_carousel_2_title": "Position your phone right",
+  "voice_scan_carousel_2_description": "Place your phone about 6–12 inches from your mouth. Make sure the microphone isn’t covered or blocked by a case or hand.",
+  "voice_scan_carousel_3_title": "Speak Calmly and Naturally",
+  "voice_scan_carousel_3_description": "Avoid rushing, whispering, or shouting. Speak in your normal tone so we can analyze your voice accurately.",
+
+  "retry": "Retry",
+  "voice_analysis": "Voice Analysis",
+
+  "scan_instant_insights": "Scan for instant insights",
+  "camera_capture_health_signals": "Use your camera to capture key health signals - quick and effortlessly.",
+  "voice_check_in": "Check in with your voice",
+  "voice_note_description": "A quick voice note can reveal valuable clues about your mood, stress, and overall well-being.",
+  "report_processing_message": "We’re working on your report now. In just a few minutes, you’ll be able to access it through your registered email and your Health Wallet.",
+  "go_to_home": "Go To Home",
+  "stop_recording": "Stop Recording"
 }

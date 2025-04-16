@@ -9,7 +9,7 @@ type ScanButtonProps = {
 
 const ScanButton = ({onPressScanButton}: ScanButtonProps) => {
   return (
-    <TouchableOpacity onPress={onPressScanButton}>
+    <TouchableOpacity onPress={onPressScanButton} activeOpacity={0.8}>
       <Image source={ScanTabbarIcon as any} style={styles.scanTabbarIcon} />
     </TouchableOpacity>
   );

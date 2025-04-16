@@ -1,25 +1,25 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Feather from 'react-native-vector-icons/Feather';
 import useLanguageStore from '../../../../store/languageStore';
 import {navigateToFaceScan} from '../../../../utils/navigation';
+import Icon from '../../../components/Icon';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
 import customColor from '../../../theme/customColor';
 
-const ScanCard = () => {
+const VoiceScanCard = () => {
   const {languages} = useLanguageStore();
   return (
     <LinearGradient
-      colors={['#12A0B4', '#074E58']}
-      className="pl-5 py-5 mt-2 rounded-3xl flex-row flex-1 max-h-[20%]">
+      colors={['#148CBF', '#0A60B7']}
+      className="pl-4 pt-4 rounded-3xl mt-2 flex-row flex-1">
       <View className="flex-1">
         <CustomText className="text-white text-lg font-isidoraSemiBold">
-          {languages?.scan_instant_insights}
+          {languages?.voice_check_in}
         </CustomText>
-        <CustomText className="text-white text-base font-isidoraMedium  ">
-          {languages?.camera_capture_health_signals}
+        <CustomText className="text-white text-base font-isidoraMedium  mt-4">
+          {languages?.voice_note_description}
         </CustomText>
 
         <View className="items-start mt-4">
@@ -27,21 +27,18 @@ const ScanCard = () => {
             className="px-5 py-2 bg-red-400"
             resetStyle
             onPress={navigateToFaceScan}>
-            <View className="flex-row items-center">
-              <Feather name="camera" size={20} color={customColor.white} />
-              <CustomText className="text-white pl-2 font-isidoraMedium text-base">
-                {languages?.take_test}
-              </CustomText>
-            </View>
+            <Icon name="person" size={20} color={customColor.white} />
+            <CustomText className="text-white pl-2">
+              {languages?.take_test}
+            </CustomText>
           </RoundedButton>
         </View>
       </View>
-      <View className="-mr-8 self-end bg-red-400 h-full">
+      <View className="flex-[0.8] mt-4 justify-end items-end">
         <Image
-          source={require('../../../../assets/images/LoginImgPerson.png')}
+          source={require('../../../../assets/images/voice_scan_dashboard_user.png')}
           style={styles.homepagePersonImg}
-          // className="flex-[0.4]"
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
     </LinearGradient>
@@ -52,8 +49,8 @@ const styles = StyleSheet.create({
   homepagePersonImg: {
     height: '100%',
     width: '100%',
-    aspectRatio: 0.68,
+    // aspectRatio: 0.68,
   },
 });
 
-export default ScanCard;
+export default VoiceScanCard;

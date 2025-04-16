@@ -62,6 +62,9 @@ import CommunicationPreferences from '../src/screens/Settings/CommunicationPrefe
 import MobileVerification from '../src/screens/Settings/MobileVerification';
 import TnC from '../src/screens/TnC';
 import ViewReport from '../src/screens/ViewReport';
+import VoiceScan from '../src/screens/VoiceScan';
+import VoiceScanGeneratingReport from '../src/screens/VoiceScan/VoiceScanGeneratingReport';
+import VoiceScanIntro from '../src/screens/VoiceScan/VoiceScanIntro';
 import ForgotPassword from '../src/screens/auth/ForgotPassword';
 import Login from '../src/screens/auth/Login';
 import Register from '../src/screens/auth/Register';
@@ -292,6 +295,7 @@ const RootNavigator = () => {
         if (!isOpenedFromDeepLink) {
           console.log('onReady');
           await new Promise(resolve => setTimeout(resolve, 200)); // Small delay to ensure linking is processed
+          console.log('check');
           const {isAuthenticated} = await initializeAppParameters();
           console.log('isAuthenticated', isAuthenticated);
           if (isAuthenticated) {
@@ -455,6 +459,18 @@ const RootNavigator = () => {
             options={{
               animation: 'fade_from_bottom',
             }}
+          />
+        </Stack.Group>
+
+        <Stack.Group>
+          <Stack.Screen name="VoiceScanScreen" component={VoiceScan} />
+          <Stack.Screen
+            name="VoiceScanIntroScreen"
+            component={VoiceScanIntro}
+          />
+          <Stack.Screen
+            name="VoiceScanGeneratingReport"
+            component={VoiceScanGeneratingReport}
           />
         </Stack.Group>
       </Stack.Navigator>

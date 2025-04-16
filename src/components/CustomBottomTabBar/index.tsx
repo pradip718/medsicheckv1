@@ -38,6 +38,10 @@ const CustomTabBar = ({
     }
   };
 
+  const handleVoiceScanButtonPress = async () => {
+    navigation.navigate('VoiceScanIntroScreen');
+  };
+
   return (
     <View style={[styles.tabBar]}>
       <ImageBackground
@@ -105,7 +109,7 @@ const CustomTabBar = ({
                     walkthroughName="scan_button"
                     placement="top">
                     <VoiceScanButton
-                      onPressScanButton={handleScanButtonPress}
+                      onPressVoiceScanButton={handleVoiceScanButtonPress}
                     />
                   </ToolTipWalkthrough>
                 </View>

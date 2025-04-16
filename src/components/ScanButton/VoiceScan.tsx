@@ -3,13 +3,13 @@ import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {VoiceScanTabbarIcon} from '../../../assets';
 
 type VoiceScanButtonProps = {
-  onPressScanButton: () => void;
+  onPressVoiceScanButton: () => void;
   copilot?: any;
 };
 
-const VoiceScanButton = ({onPressScanButton}: VoiceScanButtonProps) => {
+const VoiceScanButton = ({onPressVoiceScanButton}: VoiceScanButtonProps) => {
   return (
-    <TouchableOpacity onPress={onPressScanButton}>
+    <TouchableOpacity onPress={onPressVoiceScanButton} activeOpacity={0.8}>
       <Image
         source={VoiceScanTabbarIcon as any}
         style={styles.scanTabbarIcon}
