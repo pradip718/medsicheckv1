@@ -2,6 +2,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Alert, Share, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import useLanguageStore from '../../../../store/languageStore';
 import {MainStackParamList} from '../../../../types/navigation';
 import DonutChart from '../../../components/Graphs/DonutChart';
@@ -12,7 +13,7 @@ import {useGetUserReadingDetail} from '../../../hooks/api/readings';
 import useGetUserReading from '../../../hooks/api/useGetUserReading';
 import customColor from '../../../theme/customColor';
 
-const SingleReportCard = () => {
+const VoiceScanSingleReportCard = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
   const {data: reportData} = useGetUserReading();
@@ -58,14 +59,20 @@ const SingleReportCard = () => {
   return (
     <>
       <LinearGradient
-        colors={['#074E58', '#12A0B4']}
+        colors={['#0A60B7', '#148CBF']}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
         className="px-5 pt-5 mt-2 rounded-3xl flex-row flex-1 overflow-hidden space-x-2">
         <View className="flex-1 pb-5">
           <View className="flex-row justify-between items-center w-full">
             <CustomText className="text-white text-lg font-isidoraSemiBold">
-              <Icon name="face_scan" size={20} color={customColor.white} />
+              <FontAwesome
+                name="microphone"
+                size={20}
+                color={customColor.white}
+              />
               {'   '}
-              {languages?.face_scan_snapshot_title}
+              {languages?.voice_scan_snapshot_title}
             </CustomText>
             <TouchableOpacity
               onPress={onShare}
@@ -78,10 +85,7 @@ const SingleReportCard = () => {
           <View className="flex-row mt-2">
             <View className="flex-1">
               <CustomText className="text-white text-base font-isidoraRegular">
-                {languages?.vital_signs_result_title}
-              </CustomText>
-              <CustomText className="text-white text-base font-isidoraRegular">
-                {languages?.vital_signs_trend_message}
+                {languages?.voice_wellness_insight}
               </CustomText>
 
               <View className="items-start mt-4">
@@ -193,7 +197,7 @@ const SingleReportCard = () => {
   );
 };
 
-export default SingleReportCard;
+export default VoiceScanSingleReportCard;
 
 // const styles = StyleSheet.create({
 //   container: {},
