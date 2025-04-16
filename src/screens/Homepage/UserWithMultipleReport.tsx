@@ -54,10 +54,10 @@ const UserWithMultipleReport = () => {
   return (
     <View style={styles.container}>
       {/* <WelcomeCard /> */}
-      <View className="mt-4">
+      <View className="mt-3">
         <MultipleReportCard />
 
-        <CustomText
+        {/* <CustomText
           style={styles.lastScanTitle}
           className="text-sm font-isidoraSemiBold mt-4">
           {languages?.last_scan_label}
@@ -68,7 +68,7 @@ const UserWithMultipleReport = () => {
             timeframe={recentReading?.created_at}
             id={recentReading?.reading_id || ''}
           />
-        </View>
+        </View> */}
         {/* <View className="mt-4">
           <CustomText
             style={styles.lastScanTitle}
@@ -77,14 +77,14 @@ const UserWithMultipleReport = () => {
           </CustomText>
           <UserPreferencesVital />
         </View> */}
-        <View className="mt-4">
-          {/* <CustomText
+        {/* <View className="mt-4"> */}
+        {/* <CustomText
             style={styles.lastScanTitle}
             className="text-sm font-isidoraSemiBold py-2">
             {languages?.menu_smart_report}
           </CustomText> */}
-          <SmartReports />
-        </View>
+        {/* <SmartReports /> */}
+        {/* </View> */}
       </View>
     </View>
   );

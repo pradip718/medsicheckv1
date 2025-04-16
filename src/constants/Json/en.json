@@ -673,5 +673,15 @@
   "voice_note_description": "A quick voice note can reveal valuable clues about your mood, stress, and overall well-being.",
   "report_processing_message": "We’re working on your report now. In just a few minutes, you’ll be able to access it through your registered email and your Health Wallet.",
   "go_to_home": "Go To Home",
-  "stop_recording": "Stop Recording"
+  "stop_recording": "Stop Recording",
+
+  "face_scan_snapshot_title": "Your Face Scan Snapshot",
+  "vital_signs_result_title": "Your vital signs are in!",
+  "vital_signs_trend_message": "Start building a trend by scanning regularly.",
+  "voice_scan_snapshot_title": "Your Voice Scan Snapshot",
+  "voice_wellness_insight": "Your voice reveals your wellness state. Let's start tracking how you feel.",
+  "smart_reports": "Smart Reports",
+  "face_scan_trend_title": "Face Scan Trend",
+  "voice_scan_trend_title": "Voice Scan Trend",
+  "view_all": "View All"
 }

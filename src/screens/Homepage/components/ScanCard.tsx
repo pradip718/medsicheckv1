@@ -12,9 +12,9 @@ const ScanCard = () => {
   const {languages} = useLanguageStore();
   return (
     <LinearGradient
-      colors={['#12A0B4', '#074E58']}
-      className="pl-5 py-5 mt-2 rounded-3xl flex-row flex-1 max-h-[20%]">
-      <View className="flex-1">
+      colors={['#074E58', '#12A0B4']}
+      className="pl-5 pt-5 mt-2 rounded-3xl flex-row flex-1 overflow-hidden space-x-2">
+      <View className="flex-1 pb-5">
         <CustomText className="text-white text-lg font-isidoraSemiBold">
           {languages?.scan_instant_insights}
         </CustomText>
@@ -36,13 +36,14 @@ const ScanCard = () => {
           </RoundedButton>
         </View>
       </View>
-      <View className="-mr-8 self-end bg-red-400 h-full">
-        <Image
-          source={require('../../../../assets/images/LoginImgPerson.png')}
-          style={styles.homepagePersonImg}
-          // className="flex-[0.4]"
-          resizeMode="cover"
-        />
+      <View className="w-[40%] justify-end h-full -mr-[5%] mt-[2%] tablet:w-[20%]">
+        <View style={styles.homepagePersonImg}>
+          <Image
+            source={require('../../../../assets/images/LoginImgPerson.png')}
+            className="h-full w-full"
+            resizeMode="contain"
+          />
+        </View>
       </View>
     </LinearGradient>
   );
@@ -50,7 +51,7 @@ const ScanCard = () => {
 
 const styles = StyleSheet.create({
   homepagePersonImg: {
-    height: '100%',
+    // height: '100%',
     width: '100%',
     aspectRatio: 0.68,
   },

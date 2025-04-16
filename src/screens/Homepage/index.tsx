@@ -20,9 +20,14 @@ import useGetUserReading from '../../hooks/api/useGetUserReading';
 import useBackButton from '../../hooks/useBackButton';
 import customColor from '../../theme/customColor';
 import AddProfileDetails from './Modal/AddProfileDetails';
-import NewUser from './NewUser';
 import UserWithMultipleReport from './UserWithMultipleReport';
-import UserWithOneReport from './UserWithOneReport';
+import ScanCard from './components/ScanCard';
+import SingleReportCard from './components/SingleReportCard';
+import SmartReports from './components/SmartReports';
+import VoiceScanCard from './components/VoiceScanCard';
+import VoiceScanMultipleReportCard from './components/VoiceScanMultipleReportCard';
+import VoiceScanSingleReportCard from './components/VoiceScanSingleReportCard';
+import WelcomeCard from './components/WelcomeCard';
 
 const Homepage = () => {
   const {setSignoutModalVisibility} = useLoaderStore();
@@ -129,16 +134,32 @@ const Homepage = () => {
     startWalkthrough('menu_button');
   };
 
-  const renderUserDetails = () => {
+  const renderFaceScanDetails = () => {
     switch (true) {
       case readingLength === 0:
-        return <NewUser />;
+        return <ScanCard />;
 
       case readingLength === 1:
-        return <UserWithOneReport />;
+        return <SingleReportCard />;
 
       case readingLength >= 2:
         return <UserWithMultipleReport />;
+
+      default:
+        return <></>;
+    }
+  };
+
+  const renderVoiceScanDetails = () => {
+    switch (true) {
+      case readingLength === 0:
+        return <VoiceScanCard />;
+
+      case readingLength === 1:
+        return <VoiceScanSingleReportCard />;
+
+      case readingLength >= 2:
+        return <VoiceScanMultipleReportCard />;
 
       default:
         return <></>;
@@ -153,8 +174,23 @@ const Homepage = () => {
           <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
         }>
         <Navbar hasProfile={true} noBack hasDrawer />
-        {renderUserDetails()}
+
+        <WelcomeCard />
+        {renderFaceScanDetails()}
+        {renderVoiceScanDetails()}
+
+        {readingLength >= 1 && (
+          <View className="mt-4">
+            <CustomText
+              style={styles.lastScanTitle}
+              className="text-sm font-isidoraSemiBold py-2">
+              {languages?.smart_reports}
+            </CustomText>
+            <SmartReports />
+          </View>
+        )}
       </SafeAreaScrollView>
+
       <AnimatePresence>
         {isQuestionnaireFilled === false && (
           <View className="absolute bottom-0 inset-x-0">
@@ -199,5 +235,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 200,
     paddingTop: 16,
+  },
+  lastScanTitle: {
+    color: 'rgba(0, 0, 0, 0.49)',
   },
 });

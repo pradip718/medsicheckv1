@@ -16,7 +16,7 @@ import CustomText from '../../../components/Text';
 // import useGetUserAttributes from '../../../hooks/api/useGetUserAttributes';
 import useGetUserReading from '../../../hooks/api/useGetUserReading';
 
-const MultipleReportCard = () => {
+const VoiceScanMultipleReportCard = () => {
   const navigation = useNavigation<NavigationProp<HomepageParamList>>();
   const {languages} = useLanguageStore();
   const {data: reportData} = useGetUserReading();
@@ -67,9 +67,11 @@ const MultipleReportCard = () => {
 
   return (
     <LinearGradient
-      colors={['#074E58', '#12A0B4']}
+      colors={['#0A60B7', '#148CBF']}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
       style={styles.container}
-      className="rounded-3xl pb-10">
+      className="rounded-3xl pb-10 mt-3">
       <ImageBackground
         source={SingleReportBackground as any}
         style={styles.reportBg}
@@ -85,7 +87,7 @@ const MultipleReportCard = () => {
         </CustomText> */}
         <View className="flex-row items-center justify-between">
           <CustomText className="text-white text-base font-isidoraSemiBold">
-            {languages?.face_scan_trend_title}
+            {languages?.voice_scan_trend_title}
           </CustomText>
           <TouchableOpacity
             className="p-2"
@@ -128,7 +130,7 @@ const MultipleReportCard = () => {
   );
 };
 
-export default MultipleReportCard;
+export default VoiceScanMultipleReportCard;
 
 const styles = StyleSheet.create({
   container: {},
