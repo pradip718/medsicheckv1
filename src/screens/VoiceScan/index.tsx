@@ -1,18 +1,14 @@
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {
   IWaveformRef,
   RecorderState,
   useAudioPlayer,
 } from '@simform_solutions/react-native-audio-waveform';
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  Alert,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import RNFS from 'react-native-fs';
 import useLanguageStore from '../../../store/languageStore';
+import {MainStackParamList} from '../../../types/navigation';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
@@ -21,7 +17,9 @@ import useTimer from '../../hooks/useTimer';
 import {AudioProvider} from './AudioRecordingContext';
 import AudioPlayer from './components/AudioPlayer';
 import AudioRecorder from './components/AudioRecorder';
+import ChangeRecorderImageBottomSheet from './components/ChangeRecorderImageSheet';
 import RecorderImageViewer from './components/RecorderImageViewer';
+import {getRecordedAudios} from './components/audio';
 
 let currentPlayingRef: React.RefObject<IWaveformRef | null> | undefined;
 const IMAGE_LENGTH = 3;
@@ -29,6 +27,7 @@ const IMAGE_LENGTH = 3;
 const VoiceScan = () => {
   const {languages} = useLanguageStore();
   const {stopPlayersAndExtractors} = useAudioPlayer();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const [audioPath, setAudioPath] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
@@ -81,35 +80,35 @@ const VoiceScan = () => {
     }
   };
 
-  // const onImageChange = async () => {
-  //   console.log('hello', recordingRef?.current);
+  const onImageChange = async () => {
+    console.log('hello', recordingRef?.current);
 
-  //   try {
-  //     const recordings = await getRecordedAudios();
-  //     await stopPlayersAndExtractors();
+    try {
+      const recordings = await getRecordedAudios();
+      await stopPlayersAndExtractors();
 
-  //     await recordingRef?.current?.stopRecord();
+      await recordingRef?.current?.stopRecord();
 
-  //     await Promise.all(
-  //       recordings.map(async recording => RNFS.unlink(recording)),
-  //     )
-  //       .then(() => {
-  //         const newIndex =
-  //           currentImageIndex !== IMAGE_LENGTH - 1 ? currentImageIndex + 1 : 0;
-  //         setCurrentImageIndex(newIndex);
-  //         setChangeImage(false);
-  //       })
-  //       .catch(error => {
-  //         Alert.alert(
-  //           'Error deleting recordings',
-  //           'Below error happened while deleting recordings:\n' + error,
-  //           [{text: 'Dismiss'}],
-  //         );
-  //       });
-  //   } catch (error) {
-  //     console.log('🚀 ~ onImageChange ~ error:', error);
-  //   }
-  // };
+      await Promise.all(
+        recordings.map(async recording => RNFS.unlink(recording)),
+      )
+        .then(() => {
+          const newIndex =
+            currentImageIndex !== IMAGE_LENGTH - 1 ? currentImageIndex + 1 : 0;
+          setCurrentImageIndex(newIndex);
+          setChangeImage(false);
+        })
+        .catch(error => {
+          Alert.alert(
+            'Error deleting recordings',
+            'Below error happened while deleting recordings:\n' + error,
+            [{text: 'Dismiss'}],
+          );
+        });
+    } catch (error) {
+      console.log('🚀 ~ onImageChange ~ error:', error);
+    }
+  };
 
   const onCloseImageSheet = async () => {
     if (recorderState === RecorderState.paused) {
@@ -161,9 +160,17 @@ const VoiceScan = () => {
             audioPath={audioPath}
             setAudioPath={setAudioPath}
             // onNext={onNext}
-            onNext={() => {}}
+            onNext={() => {
+              navigation.navigate('VoiceScanGeneratingReport');
+            }}
           />
         </AudioProvider>
+
+        <ChangeRecorderImageBottomSheet
+          open={changeImage}
+          onClose={onCloseImageSheet}
+          onImageChange={onImageChange}
+        />
       </SafeAreaView>
     </BackgroundImage>
   );
