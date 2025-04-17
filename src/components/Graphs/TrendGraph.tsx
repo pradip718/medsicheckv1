@@ -43,8 +43,9 @@ const TrendGraph = ({data = [], stats}: TrendGraphProps) => {
     <View style={styles.container}>
       <LineChart
         isAnimated
-        showVerticalLines
+        showVerticalLines={false}
         hideRules
+        hideDataPoints1
         thickness={3}
         lineGradient
         lineGradientId="ggrd" // same as the id passed in <LinearGradient> below
