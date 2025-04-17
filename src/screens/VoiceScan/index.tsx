@@ -4,15 +4,19 @@ import {
   RecorderState,
   useAudioPlayer,
 } from '@simform_solutions/react-native-audio-waveform';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import React, {useEffect, useRef, useState} from 'react';
 import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
+import {getVoiceScanImage} from '../../api/voicescan';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
 import CustomText from '../../components/Text';
+import {GET_VOICE_SCAN_IMAGE} from '../../constants/hooks';
+import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useTimer from '../../hooks/useTimer';
 import {AudioProvider} from './AudioRecordingContext';
 import AudioPlayer from './components/AudioPlayer';
@@ -25,8 +29,10 @@ let currentPlayingRef: React.RefObject<IWaveformRef | null> | undefined;
 const IMAGE_LENGTH = 3;
 
 const VoiceScan = () => {
+  const queryClient = useQueryClient();
   const {languages} = useLanguageStore();
   const {stopPlayersAndExtractors} = useAudioPlayer();
+  const {showLoader, hideLoader} = useFullPageLoader();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const [audioPath, setAudioPath] = useState('');
@@ -37,6 +43,13 @@ const VoiceScan = () => {
   const {startTimer, pauseTimer, resetTimer, recordedTime} = useTimer();
 
   const recordingRef = useRef<IWaveformRef>(null);
+
+  const {data: voiceScanImageData} = useQuery({
+    queryKey: [GET_VOICE_SCAN_IMAGE],
+    queryFn: getVoiceScanImage,
+  });
+
+  console.log('voiceScanImageData', voiceScanImageData);
 
   useEffect(() => {
     if (recorderState === RecorderState.recording) {
@@ -84,6 +97,7 @@ const VoiceScan = () => {
     console.log('hello', recordingRef?.current);
 
     try {
+      showLoader();
       const recordings = await getRecordedAudios();
       await stopPlayersAndExtractors();
 
@@ -93,9 +107,7 @@ const VoiceScan = () => {
         recordings.map(async recording => RNFS.unlink(recording)),
       )
         .then(() => {
-          const newIndex =
-            currentImageIndex !== IMAGE_LENGTH - 1 ? currentImageIndex + 1 : 0;
-          setCurrentImageIndex(newIndex);
+          queryClient.invalidateQueries({queryKey: [GET_VOICE_SCAN_IMAGE]});
           setChangeImage(false);
         })
         .catch(error => {
@@ -107,6 +119,8 @@ const VoiceScan = () => {
         });
     } catch (error) {
       console.log('🚀 ~ onImageChange ~ error:', error);
+    } finally {
+      hideLoader();
     }
   };
 
@@ -117,41 +131,41 @@ const VoiceScan = () => {
     setChangeImage(false);
   };
 
-  console.log('recorderState', recorderState);
-
   return (
-    <BackgroundImage>
-      <SafeAreaView className="flex-1">
-        <View className="px-4">
-          <Navbar />
-        </View>
-        <EtchedGlass
-          className="rounded-none mt-4"
-          cardContentContainerClassName="h-[52px] p-0 items-center justify-center">
-          <CustomText className="font-isidoraSemiBold text-lg text-black">
-            {languages?.voice_analysis}
-          </CustomText>
-        </EtchedGlass>
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          {audioPath ? (
-            <AudioPlayer
-              audioPath={audioPath}
-              currentPlayingRef={currentPlayingRef}
-            />
-          ) : (
-            <RecorderImageViewer
-              onChangeImage={onOpenImageSheet}
-              currentImageIndex={currentImageIndex}
-              recordedTime={recordedTime}
-              recorderState={recorderState}
-            />
-          )}
-        </ScrollView>
-        <AudioProvider
-          value={{
-            recordedTime,
-            onSave,
-          }}>
+    <AudioProvider
+      value={{
+        recordedTime,
+        onSave,
+        imageData: voiceScanImageData,
+      }}>
+      <BackgroundImage>
+        <SafeAreaView className="flex-1">
+          <View className="px-4">
+            <Navbar />
+          </View>
+          <EtchedGlass
+            className="rounded-none mt-4"
+            cardContentContainerClassName="h-[52px] p-0 items-center justify-center">
+            <CustomText className="font-isidoraSemiBold text-lg text-black">
+              {languages?.voice_analysis}
+            </CustomText>
+          </EtchedGlass>
+          <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+            {audioPath ? (
+              <AudioPlayer
+                audioPath={audioPath}
+                currentPlayingRef={currentPlayingRef}
+              />
+            ) : (
+              <RecorderImageViewer
+                onChangeImage={onOpenImageSheet}
+                currentImageIndex={currentImageIndex}
+                recordedTime={recordedTime}
+                recorderState={recorderState}
+              />
+            )}
+          </ScrollView>
+
           <AudioRecorder
             currentPlayingRef={currentPlayingRef}
             recorderState={recorderState}
@@ -164,15 +178,15 @@ const VoiceScan = () => {
               navigation.navigate('VoiceScanGeneratingReport');
             }}
           />
-        </AudioProvider>
 
-        <ChangeRecorderImageBottomSheet
-          open={changeImage}
-          onClose={onCloseImageSheet}
-          onImageChange={onImageChange}
-        />
-      </SafeAreaView>
-    </BackgroundImage>
+          <ChangeRecorderImageBottomSheet
+            open={changeImage}
+            onClose={onCloseImageSheet}
+            onImageChange={onImageChange}
+          />
+        </SafeAreaView>
+      </BackgroundImage>
+    </AudioProvider>
   );
 };
 

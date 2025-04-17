@@ -1,8 +1,10 @@
 import React from 'react';
+import {VoiceScanImageDataResponse} from '../../../types/api_response';
 
 type AudioContextType = {
   recordedTime: number;
   onSave: () => void;
+  imageData: VoiceScanImageDataResponse | undefined;
 };
 
 const AudioContext = React.createContext<AudioContextType | null>(null);

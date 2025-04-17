@@ -280,3 +280,12 @@ export type GenerateRiskScoreResponse = {
   screen_name: 'generate_risk_score';
   data: null;
 };
+
+// ----------------- VoiceScan -----------------
+
+export type VoiceScanImageDataResponse = {
+  image_id: string;
+  image_url: string;
+};
+
+export type InitiateVoiceScanResponse = {message: string; session_id: string};

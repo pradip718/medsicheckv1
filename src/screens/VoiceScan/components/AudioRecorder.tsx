@@ -12,8 +12,11 @@ import React, {Alert, Linking, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import {PERMISSIONS, request} from 'react-native-permissions';
 
+import {useMutation} from '@tanstack/react-query';
 import useLanguageStore from '../../../../store/languageStore';
+import {initiateVoiceScanSession} from '../../../api/voicescan';
 import RoundedButton from '../../../components/RoundedButton';
+import {INITIATE_VOICE_SCAN} from '../../../constants/hooks';
 import customColor from '../../../theme/customColor';
 import {useAudio} from '../AudioRecordingContext';
 import VoiceRecorderMic from './VoiceRecorderMic';
@@ -42,7 +45,15 @@ const AudioRecorder = ({
 
   const {checkHasAudioRecorderPermission} = useAudioPermission();
   const {stopPlayersAndExtractors} = useAudioPlayer();
-  const {recordedTime} = useAudio();
+  const {recordedTime, imageData} = useAudio();
+
+  const {mutateAsync: initiateSession} = useMutation({
+    mutationKey: [INITIATE_VOICE_SCAN],
+    mutationFn: initiateVoiceScanSession,
+    onSuccess: () => {
+      startRecording();
+    },
+  });
 
   const startRecording = () => {
     recordingRef.current
@@ -66,7 +77,9 @@ const AudioRecorder = ({
 
       if (hasPermission === PermissionStatus.granted) {
         currentPlayingRef = recordingRef;
-        startRecording();
+        initiateSession({
+          image_id: imageData?.image_id ?? '',
+        });
       }
       // else if (hasPermission === PermissionStatus.undetermined) {
       //   const permissionStatus = await getAudioRecorderPermission();
@@ -99,7 +112,9 @@ const AudioRecorder = ({
 
           if (status === PermissionStatus.granted) {
             currentPlayingRef = recordingRef;
-            startRecording();
+            initiateSession({
+              image_id: imageData?.image_id ?? '',
+            });
           }
         });
       }

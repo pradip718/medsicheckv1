@@ -35,3 +35,7 @@ export const POST_USER_PREFERENCES = 'post-user-preferences';
 // ----------------------------------------------Health Risks ----------------------------------------------
 export const HYPERTENSION_RISK = 'hypertension-risk';
 export const EXECUTE_RISK_ENGINE = 'execute-risk-engine';
+
+// ----------------------------------------------Voice Scan ----------------------------------------------
+export const GET_VOICE_SCAN_IMAGE = 'get-voice-scan-image';
+export const INITIATE_VOICE_SCAN = 'initiate-voice-scan';

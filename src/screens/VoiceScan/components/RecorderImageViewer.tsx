@@ -3,6 +3,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {RecorderState} from '@simform_solutions/react-native-audio-waveform';
+import {useAudio} from '../AudioRecordingContext';
 
 interface RecorderImageViewerProps {
   onChangeImage: () => void;
@@ -26,6 +27,7 @@ const RecorderImageViewer = ({
   const [fullView, setFullView] = useState<boolean>(false);
 
   const imageSource = images[currentImageIndex];
+  const {imageData} = useAudio();
 
   return (
     <View style={styles.container}>
@@ -58,7 +60,7 @@ const RecorderImageViewer = ({
               borderCurve: 'continuous',
             }}>
             <Image
-              source={imageSource}
+              source={{uri: imageData?.image_url}}
               style={styles.image}
               resizeMode="contain"
             />

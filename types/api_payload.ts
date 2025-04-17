@@ -57,3 +57,8 @@ export type VerifyPhonePayload = {
 export type HealthRisksPayload = {
   risk_type: string;
 };
+
+//--------------------------------------------Voice Scan--------------------------------------------
+export type InitiateVoiceScanPayload = {
+  image_id: string;
+};
