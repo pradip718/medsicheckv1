@@ -173,7 +173,32 @@ async function getVoiceScanReportDetail({
   return response?.data;
 }
 
+async function getVoiceReportList(page?: number) {
+  const profile_id = useUserProfileStore.getState().currentActiveProfileId;
+  const {deeplinkAuth} = useAuthStore.getState();
+  const activeAxiosInstance = deeplinkAuth?.session_id
+    ? axiosSessionInstance
+    : axiosInstance;
+
+  const params = new URLSearchParams({
+    profile_id: profile_id.toString(),
+  });
+
+  if (page) {
+    params.append('page_number', page.toString());
+    params.append('page_size', '10');
+  }
+
+  const response = await activeAxiosInstance({
+    method: 'GET',
+    url: `v1/voice-report?${params}`,
+  });
+
+  return response?.data;
+}
+
 export {
+  getVoiceReportList,
   getVoiceScanImage,
   getVoiceScanReportDetail,
   getVoiceScanReportList,
