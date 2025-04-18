@@ -39,3 +39,7 @@ export const EXECUTE_RISK_ENGINE = 'execute-risk-engine';
 // ----------------------------------------------Voice Scan ----------------------------------------------
 export const GET_VOICE_SCAN_IMAGE = 'get-voice-scan-image';
 export const INITIATE_VOICE_SCAN = 'initiate-voice-scan';
+export const UPLOAD_VOICE_RECORDING = 'upload-voice-recording';
+export const PROCESS_VOICE_RECORDING = 'process-voice-recording';
+export const GET_VOICE_SCAN_REPORT_LIST = 'get-voice-scan-report-list';
+export const GET_VOICE_SCAN_REPORT_DETAIL = 'get-voice-scan-report-detail';

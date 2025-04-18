@@ -45,13 +45,14 @@ const AudioRecorder = ({
 
   const {checkHasAudioRecorderPermission} = useAudioPermission();
   const {stopPlayersAndExtractors} = useAudioPlayer();
-  const {recordedTime, imageData} = useAudio();
+  const {recordedTime, imageData, onSetSession} = useAudio();
 
   const {mutateAsync: initiateSession} = useMutation({
     mutationKey: [INITIATE_VOICE_SCAN],
     mutationFn: initiateVoiceScanSession,
-    onSuccess: () => {
+    onSuccess: sessionDetail => {
       startRecording();
+      onSetSession(sessionDetail?.session_id);
     },
   });
 

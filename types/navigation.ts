@@ -135,7 +135,9 @@ export type MainStackParamList = {
 
   VoiceScanScreen: undefined;
   VoiceScanIntroScreen: undefined;
-  VoiceScanGeneratingReport: undefined;
+  VoiceScanGeneratingReport: {
+    session_id: string;
+  };
 };
 
 export type PreventixInformationParamList = {

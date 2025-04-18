@@ -62,3 +62,18 @@ export type HealthRisksPayload = {
 export type InitiateVoiceScanPayload = {
   image_id: string;
 };
+
+export type VoiceUploadPayload = {
+  audio_file: string;
+  session_id: string;
+  format: 'm4a';
+  duration: number;
+};
+
+export type ProcessVoiceRecordPayload = {
+  session_id: string;
+};
+
+export type VoiceScanReportDetailPayload = {
+  sessoin_id: string;
+};

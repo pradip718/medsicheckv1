@@ -289,3 +289,72 @@ export type VoiceScanImageDataResponse = {
 };
 
 export type InitiateVoiceScanResponse = {message: string; session_id: string};
+
+export type VoiceUploadResponse = {
+  message: string;
+  s3_key: string;
+};
+
+export type ProcessVoiceRecordResponse = {
+  message: string;
+  assessment_id: string;
+};
+
+export type VoiceScanReportDetailErrorResponse = {
+  error: boolean;
+  message: {
+    header: string;
+    description: string;
+  };
+};
+
+export type VoiceScanReportDetailSuccessResponse = {
+  error: false;
+  data: {
+    [key: string]: any;
+  };
+};
+
+interface ReportItem {
+  key: string;
+  value: number | string;
+  color?: string;
+  category?: string;
+}
+
+interface ColorRange {
+  range?: [number, number];
+  color: string;
+  category: string;
+  map?: number;
+}
+
+interface ScaleConfigItem {
+  display: string;
+  unit?: string;
+  range?: [number, number];
+  color_range?: ColorRange[];
+  scale?: string[];
+  type?: string;
+  short_info?: string;
+  long_info?: string;
+  long_intro?: string;
+  scale_type?: number;
+  short_intro?: string;
+}
+
+export interface VoiceScanReport {
+  report_generation_time: string;
+  wellness_score: number;
+  voice_scan_report: ReportItem[];
+  scale_config: {
+    [key: string]: ScaleConfigItem;
+  };
+  sub_categorization: {
+    [category: string]: string[];
+  };
+}
+
+export type VoiceScanReportDetailResponse =
+  | VoiceScanReport
+  | VoiceScanReportDetailErrorResponse;
