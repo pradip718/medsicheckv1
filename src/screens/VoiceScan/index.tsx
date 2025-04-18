@@ -4,18 +4,22 @@ import {
   RecorderState,
   useAudioPlayer,
 } from '@simform_solutions/react-native-audio-waveform';
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import React, {useEffect, useRef, useState} from 'react';
 import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
-import {getVoiceScanImage} from '../../api/voicescan';
+import {getVoiceScanImage, uploadVoiceRecording} from '../../api/voicescan';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
+import RoundedButton from '../../components/RoundedButton';
 import CustomText from '../../components/Text';
-import {GET_VOICE_SCAN_IMAGE} from '../../constants/hooks';
+import {
+  GET_VOICE_SCAN_IMAGE,
+  UPLOAD_VOICE_RECORDING,
+} from '../../constants/hooks';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useTimer from '../../hooks/useTimer';
 import {AudioProvider} from './AudioRecordingContext';
@@ -39,6 +43,7 @@ const VoiceScan = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [recorderState, setRecorderState] = useState(RecorderState.stopped);
   const [changeImage, setChangeImage] = useState<boolean>(false);
+  const [session, setSession] = useState<string>();
 
   const {startTimer, pauseTimer, resetTimer, recordedTime} = useTimer();
 
@@ -47,6 +52,17 @@ const VoiceScan = () => {
   const {data: voiceScanImageData} = useQuery({
     queryKey: [GET_VOICE_SCAN_IMAGE],
     queryFn: getVoiceScanImage,
+  });
+
+  const {mutateAsync: uploadRecording} = useMutation({
+    mutationKey: [UPLOAD_VOICE_RECORDING],
+    mutationFn: uploadVoiceRecording,
+    onSuccess: data => {
+      console.log('data', data);
+    },
+    onError: error => {
+      console.log('error', error);
+    },
   });
 
   console.log('voiceScanImageData', voiceScanImageData);
@@ -76,8 +92,14 @@ const VoiceScan = () => {
   }, [recordedTime]);
 
   const onSave = () => {
-    recordingRef.current?.stopRecord().then(path => {
+    recordingRef.current?.stopRecord().then(async path => {
       setAudioPath(path);
+      await uploadRecording({
+        audio_file: path,
+        session_id: session ?? '',
+        duration: 60,
+        format: 'm4a',
+      });
     });
     currentPlayingRef = undefined;
   };
@@ -131,12 +153,17 @@ const VoiceScan = () => {
     setChangeImage(false);
   };
 
+  const onSetSession = (sessionId: string) => {
+    setSession(sessionId);
+  };
+
   return (
     <AudioProvider
       value={{
         recordedTime,
         onSave,
         imageData: voiceScanImageData,
+        onSetSession,
       }}>
       <BackgroundImage>
         <SafeAreaView className="flex-1">
@@ -175,7 +202,9 @@ const VoiceScan = () => {
             setAudioPath={setAudioPath}
             // onNext={onNext}
             onNext={() => {
-              navigation.navigate('VoiceScanGeneratingReport');
+              navigation.navigate('VoiceScanGeneratingReport', {
+                session_id: session ?? '',
+              });
             }}
           />
 

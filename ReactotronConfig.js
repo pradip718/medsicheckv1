@@ -7,6 +7,7 @@ import useBinahConfigStore from './store/binahConfigStore';
 import useHealthRiskStore from './store/healthRisksStore';
 import useUserProfileStore from './store/profileStore';
 import {useAIReportFacescanStore} from './store/smartReportStore';
+import useVoiceScanStore from './store/voiceScanStore';
 
 let scriptHostname;
 if (__DEV__) {
@@ -28,6 +29,7 @@ Reactotron.configure({
         {name: 'profile_store', store: useUserProfileStore},
         {name: 'auth_store', store: useAuthStore},
         {name: 'ai_report_store', store: useAIReportFacescanStore},
+        {name: 'voice_scan', store: useVoiceScanStore},
       ],
       omitFunctionKeys: true,
     }),
