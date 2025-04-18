@@ -54,72 +54,85 @@ const ReportBlockScale = ({
     value = scaleValueMapping[value] || value;
   }
 
-  const calculateBoxHeight = (range: ReportScaleRange) => {
-    if (
-      range[0] != null &&
-      range[1] != null &&
-      typeof range[0] === 'number' &&
-      typeof range[1] === 'number'
-    ) {
-      const [rangeMin, rangeMax] = range;
-      const isInRange = value >= rangeMin && value <= rangeMax;
-      return isInRange ? 16 : 8;
-    }
-    if (typeof range[0] === 'string') {
-      const comparison = range[0].charAt(0);
-      const rangeValue = range[0].substring(1);
+  const calculateBoxHeight = (range?: ReportScaleRange, map?: number) => {
+    if (range) {
       if (
-        (comparison === '>' && value > +rangeValue) ||
-        (comparison === '<' && value < +rangeValue)
+        range[0] != null &&
+        range[1] != null &&
+        typeof range[0] === 'number' &&
+        typeof range[1] === 'number'
       ) {
-        return 16;
-      } else {
-        return 8;
+        const [rangeMin, rangeMax] = range;
+        const isInRange = value >= rangeMin && value <= rangeMax;
+        return isInRange ? 16 : 8;
       }
+      if (typeof range[0] === 'string') {
+        const comparison = range[0].charAt(0);
+        const rangeValue = range[0].substring(1);
+        if (
+          (comparison === '>' && value > +rangeValue) ||
+          (comparison === '<' && value < +rangeValue)
+        ) {
+          return 16;
+        } else {
+          return 8;
+        }
+      }
+    } else if (map != null) {
+      const isMapped = value === map;
+      return isMapped ? 16 : 8;
     }
   };
 
-  const calculateMargin = (range: ReportScaleRange) => {
-    if (
-      range[0] != null &&
-      range[1] != null &&
-      typeof range[0] === 'number' &&
-      typeof range[1] === 'number'
-    ) {
-      const [rangeMin, rangeMax] = range;
-      const totalRange = rangeMax - rangeMin;
-      const distanceFromMin = value - rangeMin;
-      const percentFromMin = (distanceFromMin / totalRange) * 100;
-      return percentFromMin - pointerAdjustment;
-    }
-    if (typeof range[0] === 'string') {
-      const comparison = range[0].charAt(0);
-      const rangeValue = range[0].substring(1);
-      if (comparison === '>') {
-        return ((value - +rangeValue) / +rangeValue) * 100;
+  const calculateMargin = (range?: ReportScaleRange, map?: number) => {
+    if (range) {
+      if (
+        range[0] != null &&
+        range[1] != null &&
+        typeof range[0] === 'number' &&
+        typeof range[1] === 'number'
+      ) {
+        const [rangeMin, rangeMax] = range;
+        const totalRange = rangeMax - rangeMin;
+        const distanceFromMin = value - rangeMin;
+        const percentFromMin = (distanceFromMin / totalRange) * 100;
+        return percentFromMin - pointerAdjustment;
       }
+      if (typeof range[0] === 'string') {
+        const comparison = range[0].charAt(0);
+        const rangeValue = range[0].substring(1);
+        if (comparison === '>') {
+          return ((value - +rangeValue) / +rangeValue) * 100;
+        }
+      }
+    } else if (map != null) {
+      return map * 20 - pointerAdjustment; // Assume equally spaced maps
     }
     return 0;
   };
 
   const isInRange = (colorItem: ColorRangeItem) => {
-    if (
-      colorItem.range[0] !== null &&
-      colorItem.range[1] !== null &&
-      typeof colorItem.range[0] === 'number' &&
-      typeof colorItem.range[1] === 'number'
-    ) {
-      return value >= colorItem.range[0] && value <= colorItem.range[1];
-    }
-    if (typeof colorItem.range[0] === 'string') {
-      const comparison = colorItem.range[0].charAt(0);
-      const rangeValue = colorItem.range[0].substring(1);
-      if (comparison === '>') {
-        return value > +rangeValue;
+    if (colorItem.range) {
+      if (
+        colorItem.range[0] !== null &&
+        colorItem.range[1] !== null &&
+        typeof colorItem.range[0] === 'number' &&
+        typeof colorItem.range[1] === 'number'
+      ) {
+        return value >= colorItem.range[0] && value <= colorItem.range[1];
       }
-      if (comparison === '<') {
-        return value < +rangeValue;
+      if (typeof colorItem.range[0] === 'string') {
+        const comparison = colorItem.range[0].charAt(0);
+        const rangeValue = colorItem.range[0].substring(1);
+        if (comparison === '>') {
+          return value > +rangeValue;
+        }
+        if (comparison === '<') {
+          return value < +rangeValue;
+        }
       }
+    } else if (colorItem.map != null) {
+      return value === colorItem.map;
     }
   };
 
@@ -152,28 +165,32 @@ const ReportBlockScale = ({
   };
 
   const getTitle = (colorItem: ColorRangeItem): string => {
-    if (_.isNumber(colorItem.range[0]) && _.isNumber(colorItem.range[1])) {
-      return `${formatValue(colorItem.range[0], readingKey)} - ${formatValue(
-        colorItem.range[1],
-        readingKey,
-      )}`;
-    }
-    if (_.isString(colorItem.range[0]) && _.isNumber(colorItem.range[1])) {
-      return `${colorItem.range[0]} - ${formatValue(
-        colorItem.range[1],
-        readingKey,
-      )}`;
-    }
-    if (_.isNumber(colorItem.range[0]) && _.isString(colorItem.range[1])) {
-      return `${formatValue(colorItem.range[0], readingKey)} - ${
-        colorItem.range[1]
-      }`;
-    }
-    if (_.isString(colorItem.range[0]) && _.isString(colorItem.range[1])) {
-      return `${colorItem.range[0]} - ${colorItem.range[1]}`;
-    }
-    if (_.isString(colorItem.range[0])) {
-      return colorItem.range[0];
+    if (colorItem.range) {
+      if (_.isNumber(colorItem.range[0]) && _.isNumber(colorItem.range[1])) {
+        return `${formatValue(colorItem.range[0], readingKey)} - ${formatValue(
+          colorItem.range[1],
+          readingKey,
+        )}`;
+      }
+      if (_.isString(colorItem.range[0]) && _.isNumber(colorItem.range[1])) {
+        return `${colorItem.range[0]} - ${formatValue(
+          colorItem.range[1],
+          readingKey,
+        )}`;
+      }
+      if (_.isNumber(colorItem.range[0]) && _.isString(colorItem.range[1])) {
+        return `${formatValue(colorItem.range[0], readingKey)} - ${
+          colorItem.range[1]
+        }`;
+      }
+      if (_.isString(colorItem.range[0]) && _.isString(colorItem.range[1])) {
+        return `${colorItem.range[0]} - ${colorItem.range[1]}`;
+      }
+      if (_.isString(colorItem.range[0])) {
+        return colorItem.range[0];
+      }
+    } else if (colorItem.category) {
+      return colorItem.category;
     }
     return '';
   };
@@ -191,9 +208,8 @@ const ReportBlockScale = ({
           <View key={`${colorItem?.color}-${index}`} className="flex-1">
             <Tooltip title={getTitle(colorItem)} enterTouchDelay={10}>
               <>
-                {isInRange(colorItem) && (
+                {isInRange(colorItem) && colorItem.range && (
                   <View
-                    //@ts-ignore
                     style={{
                       marginLeft: calculateMargin(colorItem?.range) + '%',
                     }}
@@ -206,9 +222,10 @@ const ReportBlockScale = ({
                     <Icon name="marker" size={14} color={colorItem.color} />
                   </View>
                 )}
+
                 <View
                   style={{
-                    height: calculateBoxHeight(colorItem.range),
+                    height: calculateBoxHeight(colorItem.range, colorItem.map),
                     backgroundColor: colorItem.color,
                   }}
                 />

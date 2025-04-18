@@ -66,25 +66,27 @@ const VoiceScanReport = () => {
       };
 
       return (
-        <ReportCard
-          readingId={''}
-          scaleType={config?.scale_type ?? 1}
-          colorRange={config?.color_range ?? []}
-          // colorRange={[]}
-          healthMetricsTitle={config?.display}
-          healthMetricsValue={reportItem?.value || 0}
-          healthMetricsIndex={config?.unit ?? ''}
-          iconName={reportItem?.key}
-          description={config?.short_info ?? ''}
-          score={Number(reportItem?.value) || 0}
-          category={reportItem?.category ?? ''}
-          color_value={null}
-          scaleCriteria={scaleCriteria}
-          confidenceLevel={'High'}
-          subParameters={[]}
-          // onDetailsPress={handleDetailsPress}
-          onDetailsPress={() => {}}
-        />
+        <View className="p-4">
+          <ReportCard
+            readingId={''}
+            scaleType={config?.scale_type ?? 1}
+            colorRange={config?.color_range ?? []}
+            // colorRange={[]}
+            healthMetricsTitle={config?.display}
+            healthMetricsValue={reportItem?.value || 0}
+            healthMetricsIndex={config?.unit ?? ''}
+            iconName={reportItem?.key}
+            description={config?.short_info ?? ''}
+            score={Number(reportItem?.value) || 0}
+            category={reportItem?.category ?? ''}
+            color_value={null}
+            scaleCriteria={scaleCriteria}
+            confidenceLevel={'High'}
+            subParameters={[]}
+            // onDetailsPress={handleDetailsPress}
+            onDetailsPress={() => {}}
+          />
+        </View>
       );
     },
     [reportDetail],

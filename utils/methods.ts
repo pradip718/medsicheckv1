@@ -250,37 +250,53 @@ export function getColorForValue(
   value: number,
   colorRange: ColorRangeItem[],
 ): string {
-  console.log('colorRange', colorRange);
-  const colorObj = colorRange?.find(item => {
-    const [lower, upper] = item.range;
-    if (typeof lower === 'number' && typeof upper === 'number') {
-      return value >= lower && value <= upper;
+  if (!Array.isArray(colorRange) || colorRange.length === 0) {
+    return '';
+  }
+
+  const colorObj = colorRange.find(item => {
+    // First priority: check by 'range' if available
+    if (item.range && Array.isArray(item.range)) {
+      if (
+        item.range.length === 2 &&
+        typeof item.range[0] === 'number' &&
+        typeof item.range[1] === 'number'
+      ) {
+        const [lower, upper] = item.range;
+        return value >= lower && value <= upper;
+      }
+
+      if (item.range.length === 1 && typeof item.range[0] === 'string') {
+        const range = item.range[0];
+        let operator: string;
+        let rangeValue: number;
+
+        if (range.startsWith('<=') || range.startsWith('>=')) {
+          operator = range.substring(0, 2);
+          rangeValue = Number(range.substring(2));
+        } else {
+          operator = range.charAt(0);
+          rangeValue = Number(range.substring(1));
+        }
+
+        if (operator === '<=' || operator === '<') {
+          return value <= rangeValue;
+        }
+        if (operator === '>=' || operator === '>') {
+          return value >= rangeValue;
+        }
+      }
     }
 
-    if (item.range?.length === 1 && typeof item.range[0] === 'string') {
-      const range = item.range[0];
-      let operator: string;
-      let rangeValue: number;
-
-      if (range.startsWith('<=') || range.startsWith('>=')) {
-        operator = range.substring(0, 2);
-        rangeValue = Number(range.substring(2));
-      } else {
-        operator = range.charAt(0);
-        rangeValue = Number(range.substring(1));
-      }
-
-      if (operator === '<=' || operator === '<') {
-        return value <= rangeValue;
-      }
-      if (operator === '>=' || operator === '>') {
-        return value >= rangeValue;
-      }
+    // Second priority: check by 'map' if available
+    if (item.map !== undefined && typeof item.map === 'number') {
+      return item.map === value;
     }
+
     return false;
   });
 
-  return colorObj ? colorObj.color : '';
+  return colorObj?.color || '';
 }
 
 export const convertToStringForSingleSelect = (
