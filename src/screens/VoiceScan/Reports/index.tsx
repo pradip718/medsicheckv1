@@ -17,6 +17,11 @@ import Navbar from '../../../components/Navbar';
 import RenderReport from '../../../components/RenderReport';
 import CustomText from '../../../components/Text';
 
+import Icon from '../../../components/Icon';
+import customColor from '../../../theme/customColor';
+import VoiceScanReportConfidence from './components/ReportConfidence';
+import WellnessScore from './components/WellnessScore';
+
 const RenderDateAndTitle = ({date}: any) => {
   const {languages} = useLanguageStore();
   return (
@@ -126,8 +131,71 @@ const RenderDateAndTitle = ({date}: any) => {
 //   );
 // };
 
-const Reports = () => {
+const VoiceScanReport = () => {
   const {reportDetail} = useVoiceScanStore();
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
+
+  useEffect(() => {
+    setExpandedSections(Object.keys(reportDetail?.sub_categorization || {}));
+  }, [reportDetail]);
+
+  const toggleSection = useCallback((key: string) => {
+    setExpandedSections(prevState =>
+      prevState.includes(key)
+        ? prevState.filter(section => section !== key)
+        : [...prevState, key],
+    );
+  }, []);
+
+  const renderItem = useCallback(
+    ({item: [vitalKey, params]}: {item: [string, string[]]}) => {
+      console.log('item', vitalKey, params);
+      if (
+        isEmpty(params) ||
+        !params.some(param =>
+          reportDetail?.voice_scan_report?.some(
+            eachReport => eachReport?.key === param,
+          ),
+        )
+      ) {
+        return null;
+      }
+      const isExpanded = expandedSections.includes(vitalKey);
+      return (
+        <View>
+          <TouchableOpacity
+            className="border-b py-4 border-[#868686] px-2 flex-row justify-between items-center"
+            onPress={() => toggleSection(vitalKey)}>
+            <CustomText className="text-midnight text-base font-isidoraSemiBold">
+              {vitalKey}
+            </CustomText>
+
+            <Icon
+              name={isExpanded ? 'remove' : 'add'}
+              size={isExpanded ? 8 : 20}
+              color={customColor.black}
+              className="px-4 self-center"
+            />
+          </TouchableOpacity>
+          {isExpanded &&
+            params.map(param => (
+              <View key={param}>
+                {reading_data?.[param.vital_key] && (
+                  <RenderReport
+                    reading={latestReading}
+                    readingKey={param.vital_key}
+                    subParameters={param.subParameters}
+                    name={param.display}
+                  />
+                )}
+              </View>
+            ))}
+        </View>
+      );
+    },
+    // [expandedSections, toggleSection, renderCardItem, reading_data, reportData],
+    [],
+  );
 
   return (
     <BasicContainer className="bg-white">
@@ -138,16 +206,21 @@ const Reports = () => {
         <ScrollView
           contentContainerStyle={styles.scrollviewContentContainer}
           className="h-full">
+          <View>
+            <WellnessScore score={reportDetail?.wellness_score ?? 0} />
+          </View>
           <View className="bg-white mt-[-30px] rounded-t-3xl flex-1 pt-4">
             <RenderDateAndTitle date={reportDetail?.report_generation_time} />
 
             <View>
-              <FlatList
-                data={reportDetail?.voice_scan_report}
-                keyExtractor={item => item?.value?.toString()}
-                renderItem={renderItem}
-                scrollEnabled={false}
-              />
+              {isObject(reportDetail?.sub_categorization) && (
+                <FlatList
+                  data={entries(reportDetail?.sub_categorization)}
+                  keyExtractor={item => item[0]}
+                  renderItem={renderItem}
+                  scrollEnabled={false}
+                />
+              )}
             </View>
           </View>
         </ScrollView>
@@ -156,7 +229,7 @@ const Reports = () => {
   );
 };
 
-export default Reports;
+export default VoiceScanReport;
 
 const styles = StyleSheet.create({
   scrollviewContentContainer: {

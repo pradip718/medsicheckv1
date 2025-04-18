@@ -138,6 +138,7 @@ export type MainStackParamList = {
   VoiceScanGeneratingReport: {
     session_id: string;
   };
+  VoiceScanReport: undefined;
 };
 
 export type PreventixInformationParamList = {

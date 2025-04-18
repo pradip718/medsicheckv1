@@ -63,6 +63,7 @@ import MobileVerification from '../src/screens/Settings/MobileVerification';
 import TnC from '../src/screens/TnC';
 import ViewReport from '../src/screens/ViewReport';
 import VoiceScan from '../src/screens/VoiceScan';
+import VoiceScanReport from '../src/screens/VoiceScan/Reports';
 import VoiceScanGeneratingReport from '../src/screens/VoiceScan/VoiceScanGeneratingReport';
 import VoiceScanIntro from '../src/screens/VoiceScan/VoiceScanIntro';
 import ForgotPassword from '../src/screens/auth/ForgotPassword';
@@ -472,6 +473,7 @@ const RootNavigator = () => {
             name="VoiceScanGeneratingReport"
             component={VoiceScanGeneratingReport}
           />
+          <Stack.Screen name="VoiceScanReport" component={VoiceScanReport} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
