@@ -1,3 +1,4 @@
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {entries, isEmpty, isObject} from 'lodash';
 import moment from 'moment';
 import {View} from 'moti';
@@ -12,6 +13,7 @@ import {
 import useLanguageStore from '../../../../store/languageStore';
 import useVoiceScanStore from '../../../../store/voiceScanStore';
 import {VoiceScanReport as VoiceScanReportType} from '../../../../types/api_response';
+import {MainStackParamList} from '../../../../types/navigation';
 import BasicContainer from '../../../components/BasicContainer';
 import Icon from '../../../components/Icon';
 import Navbar from '../../../components/Navbar';
@@ -37,6 +39,7 @@ const RenderDateAndTitle = ({date}: any) => {
 };
 
 const VoiceScanReport = () => {
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {reportDetail} = useVoiceScanStore();
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
@@ -76,15 +79,18 @@ const VoiceScanReport = () => {
             healthMetricsValue={reportItem?.value || 0}
             healthMetricsIndex={config?.unit ?? ''}
             iconName={reportItem?.key}
-            description={config?.short_info ?? ''}
+            description={config?.short_intro ?? ''}
             score={Number(reportItem?.value) || 0}
             category={reportItem?.category ?? ''}
             color_value={null}
             scaleCriteria={scaleCriteria}
-            confidenceLevel={'High'}
+            confidenceLevel={null}
             subParameters={[]}
-            // onDetailsPress={handleDetailsPress}
-            onDetailsPress={() => {}}
+            onDetailsPress={() => {
+              navigation.navigate('VoiceScanReportDetail', {
+                vitalKey: reportItem?.key ?? '',
+              });
+            }}
           />
         </View>
       );
