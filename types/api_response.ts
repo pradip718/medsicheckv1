@@ -315,7 +315,7 @@ export type VoiceScanReportDetailSuccessResponse = {
   };
 };
 
-interface ReportItem {
+export interface VoiceScanReportItem {
   key: string;
   value: number;
   color?: string;
@@ -346,7 +346,7 @@ interface ScaleConfigItem {
 export interface VoiceScanReport {
   report_generation_time: string;
   wellness_score: number;
-  voice_scan_report: ReportItem[];
+  voice_scan_report: VoiceScanReportItem[];
   scale_config: {
     [key: string]: ScaleConfigItem;
   };

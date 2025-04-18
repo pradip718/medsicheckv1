@@ -112,14 +112,13 @@ const ReportCard = React.memo((props: ReportCardProps) => {
     [subParameterTitles, lastIndex],
   );
 
-  // const selectedColor = useMemo(
-  //   () =>
-  //     colorRange
-  //       ? getColorForValue(healthMetricsValue, colorRange || [])
-  //       : '#000',
-  //   [healthMetricsValue, colorRange],
-  // );
-  const selectedColor = '#000';
+  const selectedColor = useMemo(
+    () =>
+      colorRange
+        ? getColorForValue(healthMetricsValue, colorRange || [])
+        : '#000',
+    [healthMetricsValue, colorRange],
+  );
 
   const highlightedColor =
     selectedColor || color_value?.Default?.[iconName]?.[category] || 'gray';

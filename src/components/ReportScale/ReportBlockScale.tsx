@@ -199,6 +199,8 @@ const ReportBlockScale = ({
     return <></>;
   }
 
+  console.log('asdas', colorRange);
+
   return (
     <View
       className="flex-row items-end px-2 overflow-hidden"

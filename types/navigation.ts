@@ -139,6 +139,9 @@ export type MainStackParamList = {
     session_id: string;
   };
   VoiceScanReport: undefined;
+  VoiceScanReportDetail: {
+    vitalKey: string;
+  };
 };
 
 export type PreventixInformationParamList = {
