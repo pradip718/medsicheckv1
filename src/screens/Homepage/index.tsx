@@ -1,4 +1,3 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useIsFetching, useMutation} from '@tanstack/react-query';
 import {AnimatePresence} from 'moti';
 import React, {useEffect, useState} from 'react';
@@ -9,7 +8,6 @@ import useLanguageStore from '../../../store/languageStore';
 import useLoaderStore from '../../../store/loaderStore';
 import usePersistLocalStore from '../../../store/persistLocalStore';
 import useWalkthroughStore from '../../../store/walkthroughStore';
-import {MainStackParamList} from '../../../types/navigation';
 import BasicContainer from '../../components/BasicContainer';
 import FullScreenLoader from '../../components/FullScreenLoader';
 import Navbar from '../../components/Navbar';
@@ -167,7 +165,6 @@ const Homepage = () => {
         return <></>;
     }
   };
-  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   return (
     <BasicContainer className="relative  flex-1">
@@ -177,12 +174,6 @@ const Homepage = () => {
           <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
         }>
         <Navbar hasProfile={true} noBack hasDrawer />
-        <RoundedButton
-          text="Go to voice reort"
-          onPress={() => {
-            navigation.navigate('VoiceScanReport');
-          }}
-        />
 
         <WelcomeCard />
         {renderFaceScanDetails()}
