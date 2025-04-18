@@ -17,6 +17,7 @@ import CustomText from '../../components/Text';
 import {useGetQuestionnaireSection} from '../../hooks/api/useGetQuestions';
 import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
 import useGetUserReading from '../../hooks/api/useGetUserReading';
+import {useGetUserVoiceReportList} from '../../hooks/api/voiceScan';
 import useBackButton from '../../hooks/useBackButton';
 import customColor from '../../theme/customColor';
 import AddProfileDetails from './Modal/AddProfileDetails';
@@ -56,6 +57,14 @@ const Homepage = () => {
     isLoading: isUserReadingLoading,
     refetch: getUserReading,
   } = useGetUserReading();
+
+  const {
+    data: voiceReportList,
+    isLoading: isUserVoiceReportLoading,
+    refetch: getUserVoiceReportList,
+  } = useGetUserVoiceReportList();
+
+  console.log('voiceReportList', voiceReportList);
 
   const {data: userAttributes, refetch: getUserAttributes} =
     useGetUserAttributes();
