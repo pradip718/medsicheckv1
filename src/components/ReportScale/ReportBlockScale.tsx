@@ -21,22 +21,34 @@ interface ReportBlockScaleProps {
   readingKey?: string;
   colorRange: ColorRangeItem[];
   pointerAdjustment?: number;
-  readingId: string;
+  // readingId: string;
 }
 
 const ReportBlockScale = ({
   colorRange,
-  readingId,
+  // readingId,
   scaleCriteria,
   name,
   readingKey,
   pointerAdjustment = 14,
 }: ReportBlockScaleProps) => {
-  const {data: userReading} = useGetUserReadingDetail({
-    reading_id: readingId || '',
-    enabled: false,
-  });
-  const scaleValueMapping = userReading?.scale_value_mapping;
+  // const {data: userReading} = useGetUserReadingDetail({
+  //   reading_id: readingId || '',
+  //   enabled: false,
+  // });
+
+  const scaleValueMapping = {
+    Low: 1,
+    Baja: 1,
+    Bajo: 1,
+    Moderate: 2,
+    Moderado: 2,
+    Moderada: 2,
+    High: 3,
+    Alto: 3,
+    Alta: 3,
+  };
+  // const scaleValueMapping = userReading?.scale_value_mapping;
   let {measuredValue: value} = scaleCriteria;
   if (scaleValueMapping) {
     value = scaleValueMapping[value] || value;

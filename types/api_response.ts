@@ -317,13 +317,13 @@ export type VoiceScanReportDetailSuccessResponse = {
 
 interface ReportItem {
   key: string;
-  value: number | string;
+  value: number;
   color?: string;
   category?: string;
 }
 
 interface ColorRange {
-  range?: [number, number];
+  range?: [number, number] | [string];
   color: string;
   category: string;
   map?: number;

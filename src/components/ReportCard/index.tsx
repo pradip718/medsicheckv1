@@ -112,18 +112,19 @@ const ReportCard = React.memo((props: ReportCardProps) => {
     [subParameterTitles, lastIndex],
   );
 
-  const selectedColor = useMemo(
-    () => getColorForValue(healthMetricsValue, colorRange || []),
-    [healthMetricsValue, colorRange],
-  );
+  // const selectedColor = useMemo(
+  //   () =>
+  //     colorRange
+  //       ? getColorForValue(healthMetricsValue, colorRange || [])
+  //       : '#000',
+  //   [healthMetricsValue, colorRange],
+  // );
+  const selectedColor = '#000';
+
   const highlightedColor =
     selectedColor || color_value?.Default?.[iconName]?.[category] || 'gray';
 
   const toggleOpen = useCallback(() => setIsOpen(prev => !prev), []);
-
-  if (!readingId) {
-    return null;
-  }
 
   return (
     <Card
@@ -201,7 +202,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
             scaleCriteria={scaleCriteria}
             colorRange={colorRange}
             readingKey={iconName}
-            readingId={readingId}
+            // readingId={readingId}
           />
         ) : (
           <ReportScale
@@ -216,60 +217,62 @@ const ReportCard = React.memo((props: ReportCardProps) => {
 
       {!!confidenceLevel && <ConfidenceLevel level={confidenceLevel} />}
 
-      <View className="px-4">
-        <AnimatePresence exitBeforeEnter>
-          {isOpen && (
-            <View
-              key="open"
-              className="border rounded-3xl p-4 overflow-hidden mt-4"
-              style={{borderColor: highlightedColor}}
-              from={{translateY: 0, opacity: 0}}
-              animate={{translateY: -10, opacity: 1}}
-              exit={{opacity: 0, translateY: 0}}
-              transition={{type: 'timing', duration: 100} as any}>
-              <TouchableOpacity
-                className="mb-2 rounded flex-row space-x-2 self-center"
-                onPress={toggleOpen}>
-                <Icon name="chevron-up" size={16} color={highlightedColor} />
-                <CustomText style={{color: highlightedColor}}>
-                  {languages?.sub_parameters}
-                </CustomText>
-              </TouchableOpacity>
-              {subParameters?.map((param, idx) => (
-                <View key={`${param?.vital_key}-${idx}`} className="mt-2">
-                  <SubParameters parameter={param} readingId={readingId} />
-                </View>
-              ))}
-            </View>
-          )}
-          {!isOpen && subParameters.length > 0 && (
-            <View className="flex-row justify-between" key="not-open">
-              <Pressable
-                onPress={toggleOpen}
-                from={{opacity: 0}}
-                animate={{opacity: 1}}
-                exit={{opacity: 0}}
+      {!!readingId && (
+        <View className="px-4">
+          <AnimatePresence exitBeforeEnter>
+            {isOpen && (
+              <View
+                key="open"
+                className="border rounded-3xl p-4 overflow-hidden mt-4"
+                style={{borderColor: highlightedColor}}
+                from={{translateY: 0, opacity: 0}}
+                animate={{translateY: -10, opacity: 1}}
+                exit={{opacity: 0, translateY: 0}}
                 transition={{type: 'timing', duration: 100} as any}>
-                <View className="mb-2 border border-[#01A35F] p-2 rounded flex-row space-x-2">
-                  <Icon name="chevron-down" size={16} color={'#01A35F'} />
-                  <CustomText className="text-[#01A35F]">
+                <TouchableOpacity
+                  className="mb-2 rounded flex-row space-x-2 self-center"
+                  onPress={toggleOpen}>
+                  <Icon name="chevron-up" size={16} color={highlightedColor} />
+                  <CustomText style={{color: highlightedColor}}>
                     {languages?.sub_parameters}
                   </CustomText>
-                </View>
-              </Pressable>
-              <View className="w-6/12 flex-row justify-end flex-wrap">
-                {formattedTitles.map((title, idx) => (
-                  <CustomText
-                    key={idx}
-                    className="text-sm font-isidoraSemiBold text-midnightBlue">
-                    {title}
-                  </CustomText>
+                </TouchableOpacity>
+                {subParameters?.map((param, idx) => (
+                  <View key={`${param?.vital_key}-${idx}`} className="mt-2">
+                    <SubParameters parameter={param} readingId={readingId} />
+                  </View>
                 ))}
               </View>
-            </View>
-          )}
-        </AnimatePresence>
-      </View>
+            )}
+            {!isOpen && subParameters.length > 0 && (
+              <View className="flex-row justify-between" key="not-open">
+                <Pressable
+                  onPress={toggleOpen}
+                  from={{opacity: 0}}
+                  animate={{opacity: 1}}
+                  exit={{opacity: 0}}
+                  transition={{type: 'timing', duration: 100} as any}>
+                  <View className="mb-2 border border-[#01A35F] p-2 rounded flex-row space-x-2">
+                    <Icon name="chevron-down" size={16} color={'#01A35F'} />
+                    <CustomText className="text-[#01A35F]">
+                      {languages?.sub_parameters}
+                    </CustomText>
+                  </View>
+                </Pressable>
+                <View className="w-6/12 flex-row justify-end flex-wrap">
+                  {formattedTitles.map((title, idx) => (
+                    <CustomText
+                      key={idx}
+                      className="text-sm font-isidoraSemiBold text-midnightBlue">
+                      {title}
+                    </CustomText>
+                  ))}
+                </View>
+              </View>
+            )}
+          </AnimatePresence>
+        </View>
+      )}
     </Card>
   );
 });

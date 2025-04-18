@@ -250,6 +250,7 @@ export function getColorForValue(
   value: number,
   colorRange: ColorRangeItem[],
 ): string {
+  console.log('colorRange', colorRange);
   const colorObj = colorRange?.find(item => {
     const [lower, upper] = item.range;
     if (typeof lower === 'number' && typeof upper === 'number') {
