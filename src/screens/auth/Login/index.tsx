@@ -222,6 +222,7 @@ const Login = () => {
     setIsUserLoggingIn(true);
     try {
       const encryptedPassword = await encryptText(password);
+      console.log('encryptedPassword', encryptedPassword);
       const loginResponse = await login({
         username: email,
         password: encryptedPassword,

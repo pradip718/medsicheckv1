@@ -683,5 +683,10 @@
   "smart_reports": "Smart Reports",
   "face_scan_trend_title": "Face Scan Trend",
   "voice_scan_trend_title": "Voice Scan Trend",
-  "view_all": "View All"
+  "view_all": "View All",
+
+  "want_new_image_prompt": "Want a new image?",
+  "change_image_warning": "If you change the image, your current recording and transcript will be lost.",
+  "proceed_confirmation_prompt": "Would you like to proceed?",
+  "confirm_change_image": "Yes, change the image"
 }

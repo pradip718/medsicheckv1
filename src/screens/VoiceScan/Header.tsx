@@ -6,7 +6,10 @@ import useLanguageStore from '../../../store/languageStore';
 import useUserProfileStore from '../../../store/profileStore';
 import EtchedGlass from '../../components/EtchedGlass';
 import CustomText from '../../components/Text';
-import {Face_SCANNER_KEY} from '../../constants/AsyncStorageKeys';
+import {
+  Face_SCANNER_KEY,
+  VOICE_SCANNER_INTRO_STATUS,
+} from '../../constants/AsyncStorageKeys';
 
 type HeaderProps = {
   doNotShowChecked: boolean;
@@ -14,7 +17,7 @@ type HeaderProps = {
 };
 
 const Header = ({doNotShowChecked, onDoNotShowChecked}: HeaderProps) => {
-  const {setItem, getItem} = useAsyncStorage(Face_SCANNER_KEY);
+  const {setItem, getItem} = useAsyncStorage(VOICE_SCANNER_INTRO_STATUS);
   const {languages} = useLanguageStore();
   const {currentActiveProfileId} = useUserProfileStore();
 

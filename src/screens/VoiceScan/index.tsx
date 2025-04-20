@@ -116,10 +116,13 @@ const VoiceScan = () => {
   };
 
   const onImageChange = async () => {
-    console.log('hello', recordingRef?.current);
-
     try {
       showLoader();
+      if (recorderState === RecorderState.stopped) {
+        queryClient.invalidateQueries({queryKey: [GET_VOICE_SCAN_IMAGE]});
+        setChangeImage(false);
+        return;
+      }
       const recordings = await getRecordedAudios();
       await stopPlayersAndExtractors();
 

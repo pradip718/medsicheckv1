@@ -25,20 +25,21 @@ const ChangeRecorderImageBottomSheet = ({
     <Portal>
       <Dialog visible={open} onDismiss={onClose} style={styles.sheetContainer}>
         <View style={styles.container}>
-          <Text style={styles.title}>Want a new image?</Text>
+          <Text style={styles.title}>{languages?.want_new_image_prompt}</Text>
 
           <View>
             <Text style={styles.infoText}>
-              If you change the image, your current recording and transcript
-              will be lost.
+              {languages?.change_image_warning}
             </Text>
-            <Text style={styles.infoText}>Would you like to proceed?</Text>
+            <Text style={styles.infoText}>
+              {languages?.proceed_confirmation_prompt}
+            </Text>
           </View>
 
           <View style={styles.buttonContainer}>
             <RoundedButton onPress={onImageChange} className="space-x-2">
               <CustomText className="text-white font-isidoraMedium text-base">
-                Yes, change the image
+                {languages?.confirm_change_image}
               </CustomText>
               <Feather name="repeat" size={18} color="#fff" />
             </RoundedButton>

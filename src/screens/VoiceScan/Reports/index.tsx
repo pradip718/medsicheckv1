@@ -143,7 +143,7 @@ const VoiceScanReport = () => {
   }
 
   return (
-    <BasicContainer className="bg-white">
+    <BasicContainer className="bg-white pb-4">
       <SafeAreaView>
         <View className="p-4 bg-white">
           <Navbar hasClose />
