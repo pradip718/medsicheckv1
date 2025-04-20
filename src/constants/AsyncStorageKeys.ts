@@ -1,4 +1,5 @@
 export const Face_SCANNER_KEY = 'FaceScanner';
+export const VOICE_SCANNER_INTRO_STATUS = 'voice-scannner-intro-status';
 export const DEVICE_LOCALE = 'DeviceLocale';
 export const STORAGE_KEY = 'USER_PROFILE';
 export const HOMEPAGE_WALKTHROUGH = 'homepage_walkthrough';

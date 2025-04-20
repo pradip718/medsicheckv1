@@ -1,21 +1,24 @@
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {isArray} from 'lodash';
 import React, {useEffect} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Badge} from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {twMerge} from 'tailwind-merge';
 import {Medsi_Check_Navabar_img} from '../../../assets';
 import useLanguageStore from '../../../store/languageStore';
 import useLoaderStore from '../../../store/loaderStore';
 import {MainStackParamList} from '../../../types/navigation';
-import useGetRescanConfiguration from '../../hooks/api/useGetRescanConfiguration';
-import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
-// import useGetProfileImage from '../../hooks/useGetProfileImage';
-import {isArray} from 'lodash';
-import {Badge} from 'react-native-paper';
-import {shouldGoToFaceScan} from '../../../utils/navigation';
+import {
+  shouldGoToFaceScan,
+  shouldGoToVoiceScan,
+} from '../../../utils/navigation';
 import {FAMILY_INFO, MY_INFO} from '../../constants/enums';
 import {useGetHelpdeskDetails} from '../../hooks/api/helpdesk';
 import useGetFamilyMembers from '../../hooks/api/useGetFamilyMembers';
+import useGetRescanConfiguration from '../../hooks/api/useGetRescanConfiguration';
+import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
 import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import customColor from '../../theme/customColor';
 import Icon from '../Icon';
@@ -56,51 +59,49 @@ const Profile = ({
   const hasOtherMembers = familyMembers?.length > 1;
 
   return (
-    <>
-      <View className="bg-yankeesBlue min-h-[129px] py-4 px-8 rounded-3xl">
-        {!!name && (
-          <CustomText
-            className="font-isidoraSemiBold text-2xl text-white  overflow-hidden"
-            numberOfLines={2}
-            ellipsizeMode="tail">
-            {name}
-          </CustomText>
-        )}
-        {!!email && (
-          <CustomText
-            className="font-isidoraMedium text-sm text-white"
-            numberOfLines={2}
-            ellipsizeMode="tail">
-            {email}
-          </CustomText>
-        )}
+    <View className="bg-yankeesBlue min-h-[129px] py-4 px-8 rounded-3xl">
+      {!!name && (
+        <CustomText
+          className="font-isidoraSemiBold text-2xl text-white  overflow-hidden"
+          numberOfLines={2}
+          ellipsizeMode="tail">
+          {name}
+        </CustomText>
+      )}
+      {!!email && (
+        <CustomText
+          className="font-isidoraMedium text-sm text-white"
+          numberOfLines={2}
+          ellipsizeMode="tail">
+          {email}
+        </CustomText>
+      )}
 
-        <View>
-          <RoundedButton
-            resetStyle
-            className=" bg-ultramarineBlue mt-2 px-2 py-1"
-            activeOpacity={0.6}
-            onPress={onViewProfile}>
-            <CustomText className="text-white font-isidoraMedium text-sm">
-              {languages?.view_profile}
-            </CustomText>
-          </RoundedButton>
-          <RoundedButton
-            resetStyle
-            className=" bg-cornflowerBlue mt-2 px-2 py-1"
-            activeOpacity={0.6}
-            onPress={hasOtherMembers ? onSwitchProfile : onAddProfile}>
-            <CustomText
-              className="text-black font-isidoraMedium text-sm"
-              numberOfLines={2}>
-              {hasOtherMembers
-                ? languages?.switch_profile
-                : languages?.add_member}
-            </CustomText>
-          </RoundedButton>
-        </View>
+      <View>
+        <RoundedButton
+          resetStyle
+          className=" bg-ultramarineBlue mt-2 px-2 py-1"
+          activeOpacity={0.6}
+          onPress={onViewProfile}>
+          <CustomText className="text-white font-isidoraMedium text-sm">
+            {languages?.view_profile}
+          </CustomText>
+        </RoundedButton>
+        <RoundedButton
+          resetStyle
+          className=" bg-cornflowerBlue mt-2 px-2 py-1"
+          activeOpacity={0.6}
+          onPress={hasOtherMembers ? onSwitchProfile : onAddProfile}>
+          <CustomText
+            className="text-black font-isidoraMedium text-sm"
+            numberOfLines={2}>
+            {hasOtherMembers
+              ? languages?.switch_profile
+              : languages?.add_member}
+          </CustomText>
+        </RoundedButton>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -109,9 +110,11 @@ const MenuItem = ({
   icon,
   action,
   disabled,
+  iconType,
 }: {
   name: string;
   icon?: string;
+  iconType?: string;
   action: (() => void) | undefined;
   disabled: boolean;
 }) => {
@@ -126,13 +129,20 @@ const MenuItem = ({
       disabled={disabled}>
       <View className="flex-row items-center">
         <View className="w-8">
-          {icon && (
-            <Icon
-              name={icon}
-              size={20}
-              color={disabled ? customColor?.pichartGrey : customColor.black}
-            />
-          )}
+          {icon &&
+            (iconType === 'material_icon' ? (
+              <MaterialCommunityIcons
+                name={icon}
+                size={22}
+                color={disabled ? customColor?.pichartGrey : customColor.black}
+              />
+            ) : (
+              <Icon
+                name={icon}
+                size={20}
+                color={disabled ? customColor?.pichartGrey : customColor.black}
+              />
+            ))}
         </View>
         <CustomText
           className={twMerge(
@@ -169,6 +179,15 @@ const CustomDrawer = () =>
       }
     };
 
+    const handleVoiceScanButtonPress = async () => {
+      const shouldGoToFacescan = await shouldGoToVoiceScan();
+      if (shouldGoToFacescan) {
+        navigation.navigate('VoiceScanScreen');
+      } else {
+        navigation.navigate('VoiceScanIntroScreen');
+      }
+    };
+
     useEffect(() => {
       if (isArray(helpDeskDetails)) {
         setHasUnreadMessage(
@@ -185,6 +204,12 @@ const CustomDrawer = () =>
         icon: 'face_scan',
         action: handleScanButtonPress,
         disabled: !rescanConfigurations?.rescan_flag,
+      },
+      {
+        name: languages?.voice_scan,
+        icon: 'microphone-outline',
+        icon_type: 'material_icon',
+        action: handleVoiceScanButtonPress,
       },
       {
         name: languages?.menu_health_profile,
@@ -254,6 +279,7 @@ const CustomDrawer = () =>
                 name={eachMenu.name}
                 icon={eachMenu.icon}
                 action={eachMenu?.action}
+                iconType={eachMenu?.icon_type ?? ''}
                 disabled={eachMenu?.disabled || false}
               />
             </View>

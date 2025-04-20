@@ -9,7 +9,10 @@ import {
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../store/languageStore';
 import {isAndroid} from '../../../utils';
-import {shouldGoToFaceScan} from '../../../utils/navigation';
+import {
+  shouldGoToFaceScan,
+  shouldGoToVoiceScan,
+} from '../../../utils/navigation';
 import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import customColor from '../../theme/customColor';
 import ToolTipWalkthrough from '../CustomCopilot/ToolTipWalkthrough';
@@ -39,7 +42,12 @@ const CustomTabBar = ({
   };
 
   const handleVoiceScanButtonPress = async () => {
-    navigation.navigate('VoiceScanIntroScreen');
+    const shouldGoToVoicescan = await shouldGoToVoiceScan();
+    if (shouldGoToVoicescan) {
+      navigation.navigate('VoiceScanScreen');
+    } else {
+      navigation.navigate('VoiceScanIntroScreen');
+    }
   };
 
   return (
