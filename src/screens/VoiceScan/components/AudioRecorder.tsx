@@ -43,7 +43,8 @@ const AudioRecorder = ({
 }: AudioRecorderProps) => {
   const languages = useLanguageStore(store => store.languages);
 
-  const {checkHasAudioRecorderPermission} = useAudioPermission();
+  const {checkHasAudioRecorderPermission, getAudioRecorderPermission} =
+    useAudioPermission();
   const {stopPlayersAndExtractors} = useAudioPlayer();
   const {recordedTime, imageData, onSetSession} = useAudio();
 
@@ -81,15 +82,13 @@ const AudioRecorder = ({
         initiateSession({
           image_id: imageData?.image_id ?? '',
         });
-      }
-      // else if (hasPermission === PermissionStatus.undetermined) {
-      //   const permissionStatus = await getAudioRecorderPermission();
-      //   if (permissionStatus === PermissionStatus.granted) {
-      //     currentPlayingRef = recordingRef;
-      //     startRecording();
-      //   }
-      // }
-      else {
+      } else if (hasPermission === PermissionStatus.undetermined) {
+        const permissionStatus = await getAudioRecorderPermission();
+        if (permissionStatus === PermissionStatus.granted) {
+          currentPlayingRef = recordingRef;
+          startRecording();
+        }
+      } else {
         request(PERMISSIONS.ANDROID.RECORD_AUDIO).then(status => {
           if (status === 'blocked') {
             Alert.alert(
@@ -181,13 +180,18 @@ const AudioRecorder = ({
     <View style={styles.container}>
       <Waveform
         mode="live"
-        containerStyle={styles.waveFormContainer}
+        containerStyle={[
+          styles.waveFormContainer,
+          {
+            display: recorderState === RecorderState.stopped ? 'none' : 'flex',
+          },
+        ]}
         // @ts-expect-error correctly mapped
         ref={recordingRef}
         candleSpace={2}
         candleWidth={2}
         candleHeightScale={6}
-        waveColor="#fff"
+        waveColor={customColor.ultramarineBlue}
         onRecorderStateChange={setRecorderState}
       />
 
@@ -203,20 +207,15 @@ export default AudioRecorder;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     marginBottom: 24,
     borderRadius: 8,
-    alignItems: 'center',
     paddingHorizontal: 16,
     justifyContent: 'center',
   },
   waveFormContainer: {
-    flex: 1,
     borderRadius: 24,
     paddingHorizontal: 10,
-    height: 60,
-    backgroundColor: '#A855F7',
-    display: 'none',
+    height: 80,
   },
   recordAudioPressable: {
     height: 40,

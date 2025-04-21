@@ -73,13 +73,8 @@ export default function VoiceRecorderMic({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRecording]);
 
-  console.log('recordedTime', recordedTime);
-
   return (
     <View>
-      {waves.map((_, index) => (
-        <WaveCircle key={index} animation={waveAnimations[index]} />
-      ))}
       <RoundedButton
         onPress={isRecording && recordedTime > 40 ? onSave : onPress}
         disabled={isRecording && recordedTime < 40}
