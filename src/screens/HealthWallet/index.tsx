@@ -5,6 +5,8 @@ import {Image, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 import {Easing} from 'react-native-reanimated';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../store/languageStore';
+import useVoiceScanStore from '../../../store/voiceScanStore';
+import {isVoiceScanReport} from '../../../types/api_response';
 import {MainStackParamList} from '../../../types/navigation';
 import {shouldGoToVoiceScan} from '../../../utils/navigation';
 import Icon from '../../components/Icon';
@@ -20,6 +22,10 @@ import {
 } from '../../hooks/api/report';
 import useGetAIQuestionnaire from '../../hooks/api/useGetAIQuestionnaire';
 import useGetUserReading from '../../hooks/api/useGetUserReading';
+import {
+  useGetUserVoiceReportList,
+  useVoiceReportDetailMutation,
+} from '../../hooks/api/voiceScan';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import customColor from '../../theme/customColor';
@@ -29,12 +35,15 @@ import {HealthWalletCategory} from './type';
 const HealthWallet = () => {
   const {languages} = useLanguageStore();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-
   const {showLoader, hideLoader} = useFullPageLoader();
+  const {setReportDetail} = useVoiceScanStore();
+
   const {startScan} = usePrepareFacescan();
 
   const {data: reportData, isFetching: isUserReadingFetching} =
     useGetUserReading();
+  const {data: voiceScanReportData, isFetching: isUserVoiceReportFetching} =
+    useGetUserVoiceReportList();
   const {data: aiReportData, isFetching: isAiReportListFetching} =
     useGetAIReport();
   const {data: healthWalletReportList, isFetching: isHealthReportListFetching} =
@@ -55,7 +64,19 @@ const HealthWallet = () => {
     enabled: false,
   });
 
+  const {mutateAsync: getVoiceReportDetail} = useVoiceReportDetailMutation({
+    onMutate: showLoader,
+    onSettled: hideLoader,
+    onSuccess: reportDetail => {
+      if (isVoiceScanReport(reportDetail)) {
+        setReportDetail(reportDetail);
+        navigation.navigate('VoiceScanReport');
+      }
+    },
+  });
+
   const readingLength = reportData?.data?.count || 0;
+  const voiceScanReportLength = reportData?.data?.count || 0;
   const aiReportLength = aiReportData?.count || 0;
   const healthWalletReportLength = healthWalletReportList?.count || 0;
   const miscellaneousReportLength = miscellaneousFiles?.count || 0;
@@ -93,6 +114,18 @@ const HealthWallet = () => {
           }
           if (readingLength >= 2) {
             navigation.navigate('PreviousReports');
+          }
+        };
+      case 'voice_scan_report':
+        return () => {
+          if (voiceScanReportLength === 1) {
+            getVoiceReportDetail({
+              sessoin_id:
+                voiceScanReportData?.data?.reading_data?.[0]?.session_id ?? '',
+            });
+          }
+          if (voiceScanReportLength >= 2) {
+            navigation.navigate('VoiceScanReportList');
           }
         };
 
@@ -155,8 +188,10 @@ const HealthWallet = () => {
       case 'vital_scan_report':
         return isUserReadingFetching ? languages?.loading : readingLength;
       case 'voice_scan_report':
-        // return isUserReadingFetching ? languages?.loading : readingLength;
-        return 0;
+        return isUserVoiceReportFetching
+          ? languages?.loading
+          : voiceScanReportLength;
+
       case 'ai_health_report':
         return isAiReportListFetching ? languages?.loading : aiReportLength;
       case 'interpret_lab_report':

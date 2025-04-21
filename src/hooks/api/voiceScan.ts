@@ -1,15 +1,17 @@
 import {
   useInfiniteQuery,
   UseInfiniteQueryResult,
+  useMutation,
+  UseMutationOptions,
   useQuery,
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
+import {VoiceScanReportDetailPayload} from '../../../types/api_payload';
 import {
   VoiceScanReportDetailResponse,
   VoiceScanReportListResponse,
 } from '../../../types/api_response';
-import {ReportJsonPaginationResponse} from '../../../types/jsons';
 import {
   getVoiceReportList,
   getVoiceScanReportDetail,
@@ -66,4 +68,17 @@ export const useGetUserVoiceReportDetail = (
     queryFn: () =>
       getVoiceScanReportDetail({sessoin_id: props?.session_id ?? ''}),
   }) as UseQueryResult<VoiceScanReportDetailResponse>;
+};
+
+export const useVoiceReportDetailMutation = (
+  props?: Omit<
+    UseMutationOptions<any, Error, VoiceScanReportDetailPayload, unknown>,
+    'mutationFn'
+  >,
+) => {
+  return useMutation({
+    mutationKey: [GET_VOICE_SCAN_REPORT_DETAIL],
+    mutationFn: getVoiceScanReportDetail,
+    ...props,
+  });
 };

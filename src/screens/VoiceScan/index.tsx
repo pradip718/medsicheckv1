@@ -14,7 +14,6 @@ import {getVoiceScanImage, uploadVoiceRecording} from '../../api/voicescan';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
-import RoundedButton from '../../components/RoundedButton';
 import CustomText from '../../components/Text';
 import {
   GET_VOICE_SCAN_IMAGE,

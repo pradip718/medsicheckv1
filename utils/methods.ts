@@ -420,7 +420,9 @@ export const onShare = async (readingData: ReadingData) => {
   }
 };
 
-export const onShareVoiceScanReport = async (readingData: VoiceScanReport) => {
+export const onShareVoiceScanReport = async (
+  readingData: VoiceScanReport | undefined,
+) => {
   try {
     if (!readingData) {
       return;
