@@ -1,17 +1,12 @@
-import {useIsFetching, useMutation} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import {AnimatePresence} from 'moti';
 import React, {useEffect, useState} from 'react';
 import {Image, RefreshControl, StyleSheet, View} from 'react-native';
-import {Dialog, Portal} from 'react-native-paper';
-import useAppStore from '../../../store/appStore';
 import useLanguageStore from '../../../store/languageStore';
 import useLoaderStore from '../../../store/loaderStore';
-import usePersistLocalStore from '../../../store/persistLocalStore';
-import useWalkthroughStore from '../../../store/walkthroughStore';
 import BasicContainer from '../../components/BasicContainer';
 import FullScreenLoader from '../../components/FullScreenLoader';
 import Navbar from '../../components/Navbar';
-import RoundedButton from '../../components/RoundedButton';
 import SafeAreaScrollView from '../../components/SafeAreaScrollView';
 import CustomText from '../../components/Text';
 import {useGetQuestionnaireSection} from '../../hooks/api/useGetQuestions';
@@ -19,7 +14,6 @@ import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
 import useGetUserReading from '../../hooks/api/useGetUserReading';
 import {useGetUserVoiceReportList} from '../../hooks/api/voiceScan';
 import useBackButton from '../../hooks/useBackButton';
-import customColor from '../../theme/customColor';
 import AddProfileDetails from './Modal/AddProfileDetails';
 import UserWithMultipleReport from './UserWithMultipleReport';
 import ScanCard from './components/ScanCard';
@@ -37,9 +31,6 @@ const Homepage = () => {
   >(null);
 
   const {languages} = useLanguageStore();
-  const {screenName} = useAppStore();
-  const isFetching = useIsFetching();
-  const {userVisitedWalkthrough} = usePersistLocalStore();
 
   //Preload vital images used in reports
   useEffect(() => {
@@ -64,27 +55,20 @@ const Homepage = () => {
     refetch: getUserVoiceReportList,
   } = useGetUserVoiceReportList();
 
-  console.log('voiceReportList', voiceReportList);
-
-  const {data: userAttributes, refetch: getUserAttributes} =
-    useGetUserAttributes();
+  const {refetch: getUserAttributes} = useGetUserAttributes();
   const {data: questions} = useGetQuestionnaireSection({
     cacheTime: 0,
   });
 
   const {mutate: onRefresh, isPending: isRefreshing} = useMutation({
     mutationFn: async () => {
-      await Promise.all([getUserReading(), getUserAttributes()]);
+      await Promise.all([
+        getUserReading(),
+        getUserAttributes(),
+        getUserVoiceReportList(),
+      ]);
     },
   });
-
-  const {
-    startWalkthrough,
-    setIsWalkthroughVisible,
-    isWalkthroughVisible,
-    currentWalkthroughScreen,
-    isAnyWalkthroughVisible,
-  } = useWalkthroughStore();
 
   const showSignoutModal = () => {
     setSignoutModalVisibility(true);
@@ -105,43 +89,44 @@ const Homepage = () => {
   }, [questions]);
 
   const readingLength = reportData?.data?.reading_data?.length || 0;
+  const voiceReadingLength = voiceReportList?.data?.count ?? 0;
 
   const onLaterPress = () => {
     setIsQuestionnaireFilled(true);
   };
 
-  useEffect(() => {
-    const isAnyVisible = isAnyWalkthroughVisible();
-    const fetchWalkthroughDetail = async () => {
-      if (
-        !userAttributes?.user_id ||
-        isWalkthroughVisible ||
-        isFetching ||
-        screenName?.current !== 'Homepage'
-      ) {
-        return;
-      }
-      const hasUserVisited = userVisitedWalkthrough?.[
-        currentWalkthroughScreen
-      ]?.includes(userAttributes?.user_id);
+  // useEffect(() => {
+  //   const isAnyVisible = isAnyWalkthroughVisible();
+  //   const fetchWalkthroughDetail = async () => {
+  //     if (
+  //       !userAttributes?.user_id ||
+  //       isWalkthroughVisible ||
+  //       isFetching ||
+  //       screenName?.current !== 'Homepage'
+  //     ) {
+  //       return;
+  //     }
+  //     const hasUserVisited = userVisitedWalkthrough?.[
+  //       currentWalkthroughScreen
+  //     ]?.includes(userAttributes?.user_id);
 
-      if (hasUserVisited || isAnyVisible) {
-        setIsWalkthroughVisible(false);
-        return;
-      }
+  //     if (hasUserVisited || isAnyVisible) {
+  //       setIsWalkthroughVisible(false);
+  //       return;
+  //     }
 
-      if (!hasUserVisited) {
-        setIsWalkthroughVisible(true);
-      }
-    };
-    fetchWalkthroughDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userAttributes?.user_id, isFetching]);
+  //     if (!hasUserVisited) {
+  //       setIsWalkthroughVisible(true);
+  //     }
+  //   };
+  //   fetchWalkthroughDetail();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [userAttributes?.user_id, isFetching]);
 
-  const onStartWalkthrough = () => {
-    setIsWalkthroughVisible(false);
-    startWalkthrough('menu_button');
-  };
+  // const onStartWalkthrough = () => {
+  //   setIsWalkthroughVisible(false);
+  //   startWalkthrough('menu_button');
+  // };
 
   const renderFaceScanDetails = () => {
     switch (true) {
@@ -161,13 +146,13 @@ const Homepage = () => {
 
   const renderVoiceScanDetails = () => {
     switch (true) {
-      case readingLength === 0:
+      case voiceReadingLength === 0:
         return <VoiceScanCard />;
 
-      case readingLength === 1:
+      case voiceReadingLength === 1:
         return <VoiceScanSingleReportCard />;
 
-      case readingLength >= 2:
+      case voiceReadingLength >= 2:
         return <VoiceScanMultipleReportCard />;
 
       default:
@@ -207,10 +192,10 @@ const Homepage = () => {
           </View>
         )}
       </AnimatePresence>
-      {isUserReadingLoading && (
+      {(isUserReadingLoading || isUserVoiceReportLoading) && (
         <FullScreenLoader visible={isUserReadingLoading} />
       )}
-      <Portal>
+      {/* <Portal>
         <Dialog
           visible={isWalkthroughVisible}
           dismissable={false}
@@ -232,7 +217,7 @@ const Homepage = () => {
             </RoundedButton>
           </Dialog.Actions>
         </Dialog>
-      </Portal>
+      </Portal> */}
     </BasicContainer>
   );
 };

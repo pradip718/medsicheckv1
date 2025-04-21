@@ -13,26 +13,26 @@ type PreviousReportCardProps = {
   score: number;
   timeframe: string | undefined;
   id: string;
+  onReportPress?: () => void;
 };
 
 const PreviousReportCard = ({
   score,
   timeframe,
   id,
+  onReportPress,
 }: PreviousReportCardProps) => {
   const navigation = useNavigation<NavigationProp<HomepageParamList>>();
 
   const navigateToReportList = () => {
+    if (onReportPress) {
+      onReportPress();
+      return;
+    }
     navigation.navigate('ReportList', {
       reportId: id,
     });
   };
-
-  const renderCenterLabel = () => (
-    <CustomText className="text-white text-xl font-isidoraSemiBold">
-      {score}/100
-    </CustomText>
-  );
 
   return (
     <Pressable
@@ -42,12 +42,7 @@ const PreviousReportCard = ({
       <View
         className="h-full w-[108px] bg-yankeesBlue rounded-3xl"
         style={styles.donutChartContainer}>
-        <DonutChart
-          score={score}
-          innerRadius={30}
-          radius={40}
-          centerLabelComponent={renderCenterLabel}
-        />
+        <DonutChart score={score} />
       </View>
       {timeframe ? (
         <View>
@@ -57,9 +52,6 @@ const PreviousReportCard = ({
           <CustomText className="text-base font-isidoraSemiBold text-[#1E3180] text-center">
             {moment(timeframe).format('h:mm a')}
           </CustomText>
-          {/* <CustomText className="text-[#F65515] text-sm">
-          Total Critical Parameters: 1
-        </CustomText> */}
         </View>
       ) : (
         <></>

@@ -21,6 +21,7 @@ export type USER_ACTIVITY =
   | 'delete_account'
   | 'delete_profile'
   | 'delete_report'
+  | 'delete_voice_scan_report'
   | 'create_questionnaire'
   | 'update_questionnaire'
   | 'restart_questionnaire'

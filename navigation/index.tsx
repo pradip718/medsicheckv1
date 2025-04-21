@@ -65,6 +65,7 @@ import ViewReport from '../src/screens/ViewReport';
 import VoiceScan from '../src/screens/VoiceScan';
 import VoiceScanReport from '../src/screens/VoiceScan/Reports';
 import VoiceScanReportDetail from '../src/screens/VoiceScan/Reports/ReportDetails';
+import VoiceScanReportList from '../src/screens/VoiceScan/Reports/VoiceReportList';
 import VoiceScanGeneratingReport from '../src/screens/VoiceScan/VoiceScanGeneratingReport';
 import VoiceScanIntro from '../src/screens/VoiceScan/VoiceScanIntro';
 import ForgotPassword from '../src/screens/auth/ForgotPassword';
@@ -478,6 +479,10 @@ const RootNavigator = () => {
           <Stack.Screen
             name="VoiceScanReportDetail"
             component={VoiceScanReportDetail}
+          />
+          <Stack.Screen
+            name="VoiceScanReportList"
+            component={VoiceScanReportList}
           />
         </Stack.Group>
       </Stack.Navigator>

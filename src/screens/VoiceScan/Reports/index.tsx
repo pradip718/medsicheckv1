@@ -1,4 +1,8 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from '@react-navigation/native';
 import {entries, isEmpty, isObject} from 'lodash';
 import moment from 'moment';
 import {View} from 'moti';
@@ -10,18 +14,27 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../store/languageStore';
 import useVoiceScanStore from '../../../../store/voiceScanStore';
 import {VoiceScanReport as VoiceScanReportType} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
+import {onShareVoiceScanReport} from '../../../../utils/methods';
 import BasicContainer from '../../../components/BasicContainer';
 import Icon from '../../../components/Icon';
 import Navbar from '../../../components/Navbar';
-import RenderReport from '../../../components/RenderReport';
 import ReportCard from '../../../components/ReportCard';
 import CustomText from '../../../components/Text';
 import customColor from '../../../theme/customColor';
+import VitalSignCard from '../../Homepage/components/ReportVitalSignCard';
+import ReportWellnessScore from '../../Homepage/components/ReportWellnessScore';
 import WellnessScore from './components/WellnessScore';
+
+type ReportListRouteProp = RouteProp<MainStackParamList, 'VoiceScanReport'>;
+
+interface ReportListProps {
+  route: ReportListRouteProp;
+}
 
 const RenderDateAndTitle = ({date}: any) => {
   const {languages} = useLanguageStore();
@@ -38,8 +51,9 @@ const RenderDateAndTitle = ({date}: any) => {
   );
 };
 
-const VoiceScanReport = () => {
+const VoiceScanReport = ({route}: ReportListProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const {isNavigatingFromVoiceScan} = route?.params || {};
   const {reportDetail} = useVoiceScanStore();
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
@@ -60,7 +74,6 @@ const VoiceScanReport = () => {
   const renderReportItem = useCallback(
     (reportItem: VoiceScanReportType['voice_scan_report'][0]) => {
       const config = reportDetail?.scale_config?.[reportItem.key];
-      console.log('config', config);
       if (!config) return null;
 
       const scaleCriteria = {
@@ -143,31 +156,54 @@ const VoiceScanReport = () => {
     return null;
   }
 
+  const renderReportDetailHeader = () => {
+    if (!reportDetail) {
+      return;
+    }
+    return (
+      <>
+        <ReportWellnessScore score={reportDetail?.wellness_score ?? 0} />
+        <VitalSignCard timeframe={reportDetail?.report_generation_time ?? ''} />
+      </>
+    );
+  };
+
   return (
-    <BasicContainer className="bg-white pb-4">
+    <BasicContainer className="bg-white pb-8">
       <SafeAreaView>
         <View className="p-4 bg-white">
-          <Navbar hasClose />
+          <Navbar
+            hasClose={isNavigatingFromVoiceScan}
+            hasShare={!isNavigatingFromVoiceScan}
+            handleShare={() => onShareVoiceScanReport(reportDetail || {})}
+          />
         </View>
         <ScrollView
           contentContainerStyle={styles.scrollviewContentContainer}
           className="h-full">
-          <View>
+          {isNavigatingFromVoiceScan ? (
             <WellnessScore score={reportDetail.wellness_score} />
-          </View>
-          <View className="bg-white mt-[-30px] rounded-t-3xl flex-1 pt-4">
-            <RenderDateAndTitle date={reportDetail.report_generation_time} />
+          ) : (
+            renderReportDetailHeader()
+          )}
+          <View
+            className={twMerge(
+              'flex-1 pt-2',
+              isNavigatingFromVoiceScan &&
+                'bg-white mt-[-30px] rounded-t-3xl pt-4',
+            )}>
+            {isNavigatingFromVoiceScan && (
+              <RenderDateAndTitle date={reportDetail.report_generation_time} />
+            )}
 
-            <View>
-              {isObject(reportDetail.sub_categorization) && (
-                <FlatList
-                  data={entries(reportDetail.sub_categorization)}
-                  keyExtractor={item => item[0]}
-                  renderItem={renderItem}
-                  scrollEnabled={false}
-                />
-              )}
-            </View>
+            {isObject(reportDetail.sub_categorization) && (
+              <FlatList
+                data={entries(reportDetail.sub_categorization)}
+                keyExtractor={item => item[0]}
+                renderItem={renderItem}
+                scrollEnabled={false}
+              />
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>

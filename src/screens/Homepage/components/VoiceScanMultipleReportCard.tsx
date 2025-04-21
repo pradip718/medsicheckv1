@@ -10,28 +10,26 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {SingleReportBackground} from '../../../../assets';
 import useLanguageStore from '../../../../store/languageStore';
-import {HomepageParamList} from '../../../../types/navigation';
+import {MainStackParamList} from '../../../../types/navigation';
 import TrendGraph from '../../../components/Graphs/TrendGraph';
 import CustomText from '../../../components/Text';
-// import useGetUserAttributes from '../../../hooks/api/useGetUserAttributes';
-import useGetUserReading from '../../../hooks/api/useGetUserReading';
+import {useGetUserVoiceReportList} from '../../../hooks/api/voiceScan';
 
 const VoiceScanMultipleReportCard = () => {
-  const navigation = useNavigation<NavigationProp<HomepageParamList>>();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
-  const {data: reportData} = useGetUserReading();
-  // const {data: userAttributes} = useGetUserAttributes();
+  const {data: reportData} = useGetUserVoiceReportList();
 
   const trendData = reportData?.data?.reading_data?.map(eachReading => ({
-    value: eachReading?.WELLNESS_INDEX,
-    label: moment(eachReading.created_at).format('MMM DD'),
+    value: Math.round(eachReading?.wellness_score),
+    label: moment(eachReading.timestamp).format('MMM DD'),
   }));
 
   const getSubHeadingAndColor = () => {
     const currentWellnessIdx =
-      reportData?.data?.reading_data?.[0]?.WELLNESS_INDEX;
+      reportData?.data?.reading_data?.[0]?.wellness_score;
     const previousWellnessIdx =
-      reportData?.data?.reading_data?.[1]?.WELLNESS_INDEX;
+      reportData?.data?.reading_data?.[1]?.wellness_score;
     let subHeading = languages?.multiple_scorecard_tile_subheader_general;
     let subHeadingColor = 'text-pantoneGreen';
 
@@ -93,7 +91,7 @@ const VoiceScanMultipleReportCard = () => {
             className="p-2"
             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
             onPress={() => {
-              navigation.navigate('PreviousReports');
+              navigation.navigate('VoiceScanReportList');
             }}>
             <CustomText className="text-white text-sm font-isidoraMedium underline">
               {languages?.view_all}
