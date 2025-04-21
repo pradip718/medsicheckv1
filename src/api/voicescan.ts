@@ -194,10 +194,30 @@ async function getVoiceReportList(page?: number) {
     url: `v1/voice-report?${params}`,
   });
 
+  if (isValidJSON(response?.data)) {
+    return JSON.parse(response?.data);
+  }
+
   return response?.data;
 }
 
+async function deleteVoiceScanReport(payload: {session_id: string[]}) {
+  const profile_id = useUserProfileStore.getState().currentActiveProfileId;
+  const {deeplinkAuth} = useAuthStore.getState();
+  const activeAxiosInstance = deeplinkAuth?.session_id
+    ? axiosSessionInstance
+    : axiosInstance;
+
+  const response = await activeAxiosInstance({
+    method: 'DELETE',
+    url: `v1/voice-report?profile_id=${profile_id}`,
+    data: payload,
+  });
+  return response;
+}
+
 export {
+  deleteVoiceScanReport,
   getVoiceReportList,
   getVoiceScanImage,
   getVoiceScanReportDetail,

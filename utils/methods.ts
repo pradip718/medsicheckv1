@@ -46,6 +46,7 @@ import {successToast} from './toast';
 
 import 'react-native-get-random-values';
 import 'react-native-url-polyfill/auto';
+import {VoiceScanReport} from '../types/api_response';
 
 export const getImgBasedOnScore = (score: number) => {
   switch (true) {
@@ -409,6 +410,48 @@ export const onShare = async (readingData: ReadingData) => {
       }
     } else if (result.action === RNShare.dismissedAction) {
       // dismissed
+      notifyApi('share_report', {
+        profile_id: useUserProfileStore.getState().currentActiveProfileId,
+        action: 'Share Dismissed',
+      });
+    }
+  } catch (error: any) {
+    Alert.alert(error.message);
+  }
+};
+
+export const onShareVoiceScanReport = async (readingData: VoiceScanReport) => {
+  try {
+    if (!readingData) {
+      return;
+    }
+
+    let message = `Wellness Score: ${readingData.wellness_score}\n\n`;
+
+    readingData.voice_scan_report.forEach(item => {
+      message += `${item.key}: ${item.value}`;
+      if (item.category) {
+        message += ` (${item.category})`;
+      }
+      message += '\n';
+    });
+
+    const result = await RNShare.share({
+      message,
+    });
+
+    if (result.action === RNShare.sharedAction) {
+      const payload: Record<string, any> = {
+        profile_id: useUserProfileStore.getState().currentActiveProfileId,
+        action: result.activityType ? 'Shared Report' : result.action,
+      };
+
+      if (result.activityType) {
+        payload.activity = result.activityType;
+      }
+
+      notifyApi('share_report', payload);
+    } else if (result.action === RNShare.dismissedAction) {
       notifyApi('share_report', {
         profile_id: useUserProfileStore.getState().currentActiveProfileId,
         action: 'Share Dismissed',

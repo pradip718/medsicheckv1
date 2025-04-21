@@ -358,3 +358,44 @@ export interface VoiceScanReport {
 export type VoiceScanReportDetailResponse =
   | VoiceScanReport
   | VoiceScanReportDetailErrorResponse;
+
+export function isVoiceScanReport(
+  data: VoiceScanReportDetailResponse | undefined,
+): data is VoiceScanReport {
+  return (data as VoiceScanReport)?.voice_scan_report !== undefined;
+}
+
+export function isVoiceScanReportDetailError(
+  data: VoiceScanReportDetailResponse | undefined,
+): data is VoiceScanReportDetailErrorResponse {
+  return (data as VoiceScanReportDetailErrorResponse)?.error === true;
+}
+
+export interface VoiceReportPaginationData {
+  // reading_id: string;
+  // WELLNESS_INDEX: number;
+  // created_at: string;
+  // reading_source: string;
+
+  session_id: string;
+  wellness_score: number;
+  timestamp: string;
+}
+
+export type Stats = {
+  min: number;
+  max: number;
+  count: number;
+};
+
+export interface VoiceReportPagination {
+  reading_data: VoiceReportPaginationData[];
+  count: number;
+  stats: Stats;
+}
+
+export interface VoiceScanReportListResponse {
+  statusCode: number;
+  success: boolean;
+  data: VoiceReportPagination;
+}

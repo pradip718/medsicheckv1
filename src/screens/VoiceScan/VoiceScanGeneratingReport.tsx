@@ -12,9 +12,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import useLanguageStore from '../../../store/languageStore';
 import useVoiceScanStore from '../../../store/voiceScanStore';
 import {
-  VoiceScanReport,
-  VoiceScanReportDetailErrorResponse,
-  VoiceScanReportDetailResponse,
+  isVoiceScanReport,
+  isVoiceScanReportDetailError,
 } from '../../../types/api_response';
 import {MainStackParamList} from '../../../types/navigation';
 import {
@@ -37,19 +36,6 @@ type VoiceScanGeneratingRouteProp = RouteProp<
 type VoiceScanGeneratingProps = {
   route: VoiceScanGeneratingRouteProp;
 };
-
-function isVoiceScanReport(
-  data: VoiceScanReportDetailResponse | undefined,
-): data is VoiceScanReport {
-  console.log('isVoiceScanReport', typeof data);
-  return (data as VoiceScanReport)?.voice_scan_report !== undefined;
-}
-
-function isVoiceScanReportDetailError(
-  data: VoiceScanReportDetailResponse | undefined,
-): data is VoiceScanReportDetailErrorResponse {
-  return (data as VoiceScanReportDetailErrorResponse)?.error === true;
-}
 
 const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();

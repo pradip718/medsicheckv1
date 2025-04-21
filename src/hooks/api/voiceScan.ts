@@ -1,29 +1,30 @@
 import {
   useInfiniteQuery,
-  UseInfiniteQueryOptions,
   UseInfiniteQueryResult,
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
 } from '@tanstack/react-query';
 import {
-  ReportJsonPaginationResponse,
-  ReportJsonResponse,
-} from '../../../types/jsons';
-import {getReportReading} from '../../api/report';
-import {getVoiceReportList} from '../../api/voicescan';
-import {GET_VOICE_SCAN_REPORT_LIST} from '../../constants/hooks';
+  VoiceScanReportDetailResponse,
+  VoiceScanReportListResponse,
+} from '../../../types/api_response';
+import {ReportJsonPaginationResponse} from '../../../types/jsons';
+import {
+  getVoiceReportList,
+  getVoiceScanReportDetail,
+} from '../../api/voicescan';
+import {
+  GET_VOICE_SCAN_REPORT_DETAIL,
+  GET_VOICE_SCAN_REPORT_LIST,
+} from '../../constants/hooks';
 
-interface GetUserReadingsProps extends UseInfiniteQueryOptions {
-  reading_id?: string;
+interface GetVoiceScanReportDetailProps extends UseQueryOptions {
+  session_id: string;
 }
 
-type QueryResponseType<T> = T extends {reading_id: any}
-  ? ReportJsonResponse
-  : ReportJsonPaginationResponse;
-
 export const useGetUserVoiceReportList = <
-  T extends Omit<
-    GetUserReadingsProps,
-    'queryKey' | 'initialPageParam' | 'getNextPageParam'
-  >,
+  T extends Omit<{}, 'queryKey' | 'initialPageParam' | 'getNextPageParam'>,
 >(
   props?: T,
 ) => {
@@ -45,10 +46,6 @@ export const useGetUserVoiceReportList = <
       }
     },
     select: data => {
-      if (props?.reading_id) {
-        return data.pages[0];
-      }
-
       return {
         data: {
           reading_data: data?.pages.flatMap(eachPage => eachPage?.reading_data),
@@ -58,5 +55,15 @@ export const useGetUserVoiceReportList = <
       };
     },
     ...props,
-  }) as UseInfiniteQueryResult<QueryResponseType<T>>;
+  }) as UseInfiniteQueryResult<VoiceScanReportListResponse>;
+};
+
+export const useGetUserVoiceReportDetail = (
+  props?: Omit<GetVoiceScanReportDetailProps, 'queryKey'>,
+) => {
+  return useQuery({
+    queryKey: [GET_VOICE_SCAN_REPORT_DETAIL],
+    queryFn: () =>
+      getVoiceScanReportDetail({sessoin_id: props?.session_id ?? ''}),
+  }) as UseQueryResult<VoiceScanReportDetailResponse>;
 };
