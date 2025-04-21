@@ -11,6 +11,14 @@ export const HEALTH_WALLET_CATEGORY_LIST: HealthWalletCategory[] = [
     image: require('../../../assets/images/vital_scan.png'),
   },
   {
+    name: useLanguageStore.getState().languages.voice_scan_reports_title,
+    identifier: 'voice_scan_report',
+    count_title: useLanguageStore.getState().languages.total_scans,
+    count: 32,
+    button_title: useLanguageStore.getState().languages.new_voice_scan,
+    image: require('../../../assets/images/health_wallet_voice_scan.png'),
+  },
+  {
     name: useLanguageStore.getState().languages.ai_health_reports_title,
     identifier: 'ai_health_report',
     count_title: useLanguageStore.getState().languages.total_scans,

@@ -688,5 +688,7 @@
   "want_new_image_prompt": "Want a new image?",
   "change_image_warning": "If you change the image, your current recording and transcript will be lost.",
   "proceed_confirmation_prompt": "Would you like to proceed?",
-  "confirm_change_image": "Yes, change the image"
+  "confirm_change_image": "Yes, change the image",
+  "voice_scan_reports_title": "Voice Scan Reports",
+  "new_voice_scan": "New Voice Scan"
 }

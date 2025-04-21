@@ -4,6 +4,7 @@ export type HealthWalletCategory = {
   name: string;
   identifier:
     | 'vital_scan_report'
+    | 'voice_scan_report'
     | 'ai_health_report'
     | 'interpret_lab_report'
     | 'miscellaneous_files';

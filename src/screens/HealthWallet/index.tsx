@@ -6,6 +6,7 @@ import {Easing} from 'react-native-reanimated';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
+import {shouldGoToVoiceScan} from '../../../utils/navigation';
 import Icon from '../../components/Icon';
 import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
@@ -123,12 +124,23 @@ const HealthWallet = () => {
     }
   };
 
+  const startVoiceScan = async () => {
+    const shouldGoToVoicescan = await shouldGoToVoiceScan();
+    if (shouldGoToVoicescan) {
+      navigation.navigate('VoiceScanScreen');
+    } else {
+      navigation.navigate('VoiceScanIntroScreen');
+    }
+  };
+
   const handleRowButtonPress = (
     row_name: HealthWalletCategory['identifier'],
   ): (() => void) => {
     switch (row_name) {
       case 'vital_scan_report':
         return startScan;
+      case 'voice_scan_report':
+        return startVoiceScan;
       case 'ai_health_report':
         return generateAIReport;
       case 'interpret_lab_report':
@@ -142,6 +154,9 @@ const HealthWallet = () => {
     switch (category.identifier) {
       case 'vital_scan_report':
         return isUserReadingFetching ? languages?.loading : readingLength;
+      case 'voice_scan_report':
+        // return isUserReadingFetching ? languages?.loading : readingLength;
+        return 0;
       case 'ai_health_report':
         return isAiReportListFetching ? languages?.loading : aiReportLength;
       case 'interpret_lab_report':
