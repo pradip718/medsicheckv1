@@ -30,6 +30,7 @@ type ReportCardProps = {
   scaleCriteria: any;
   category: string;
   color_value: ColVal | null;
+  color?: string;
   scaleType: number;
   colorRange: ColorRangeItem[];
   subParameters: SubParameter[];
@@ -80,6 +81,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
     subParameters,
     readingId,
     confidenceLevel,
+    color,
   } = props;
 
   const imageUrl =
@@ -112,13 +114,17 @@ const ReportCard = React.memo((props: ReportCardProps) => {
     [subParameterTitles, lastIndex],
   );
 
-  const selectedColor = useMemo(
+  let selectedColor = useMemo(
     () =>
       colorRange
         ? getColorForValue(healthMetricsValue, colorRange || [])
         : '#000',
     [healthMetricsValue, colorRange],
   );
+
+  if (color) {
+    selectedColor = color;
+  }
 
   const highlightedColor =
     selectedColor || color_value?.Default?.[iconName]?.[category] || 'gray';
@@ -166,13 +172,15 @@ const ReportCard = React.memo((props: ReportCardProps) => {
           </View>
 
           <View>
-            <View
-              className="py-2 px-2 rounded-xl items-center"
-              style={{backgroundColor: highlightedColor}}>
-              <CustomText className="rounded-2xl text-white text-sm font-isidoraBold">
-                {category}
-              </CustomText>
-            </View>
+            {!!category && (
+              <View
+                className="py-2 px-2 rounded-xl items-center"
+                style={{backgroundColor: highlightedColor}}>
+                <CustomText className="rounded-2xl text-white text-sm font-isidoraBold">
+                  {category}
+                </CustomText>
+              </View>
+            )}
             {!!onDetailsPress && (
               <TouchableOpacity
                 className="mt-2 items-end"
