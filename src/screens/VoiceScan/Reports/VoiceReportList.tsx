@@ -68,7 +68,7 @@ const VoiceScanReportList = () => {
     onSettled: hideLoader,
     mutationKey: [GET_VOICE_SCAN_REPORT_DETAIL],
     mutationFn: getVoiceScanReportDetail,
-    onSuccess: async reportDetail => {
+    onSuccess: reportDetail => {
       if (isVoiceScanReport(reportDetail)) {
         setReportDetail(reportDetail);
         navigation.navigate('VoiceScanReport');

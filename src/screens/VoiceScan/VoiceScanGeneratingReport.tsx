@@ -71,7 +71,9 @@ const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
   useEffect(() => {
     if (isVoiceScanReport(voiceScanData)) {
       setReportDetail(voiceScanData);
-      navigation.navigate('VoiceScanReport');
+      navigation.navigate('VoiceScanReport', {
+        isNavigatingFromVoiceScan: true,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [voiceScanData]);

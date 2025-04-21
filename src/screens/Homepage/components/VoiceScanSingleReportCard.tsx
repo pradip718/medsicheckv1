@@ -1,60 +1,43 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Alert, Share, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import useLanguageStore from '../../../../store/languageStore';
+import useVoiceScanStore from '../../../../store/voiceScanStore';
+import {isVoiceScanReport} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
+import {onShareVoiceScanReport} from '../../../../utils/methods';
 import DonutChart from '../../../components/Graphs/DonutChart';
 import Icon from '../../../components/Icon';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
-import {useGetUserReadingDetail} from '../../../hooks/api/readings';
-import useGetUserReading from '../../../hooks/api/useGetUserReading';
+import {
+  useGetUserVoiceReportList,
+  useVoiceReportDetailMutation,
+} from '../../../hooks/api/voiceScan';
+import useFullPageLoader from '../../../hooks/useFullPageLoader';
 import customColor from '../../../theme/customColor';
 
 const VoiceScanSingleReportCard = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
-  const {data: reportData} = useGetUserReading();
-  const readingId = reportData?.data?.reading_data?.[0]?.reading_id;
-  const {data: reportDetails} = useGetUserReadingDetail({
-    reading_id: readingId ?? '',
-    enabled: !!readingId,
-  });
+  const {setReportDetail} = useVoiceScanStore();
+  const {showLoader, hideLoader} = useFullPageLoader();
 
-  const onShare = async () => {
-    try {
-      if (!reportDetails) {
-        return;
+  const {data: reportData} = useGetUserVoiceReportList();
+  const sessionId = reportData?.data?.reading_data?.[0]?.session_id;
+
+  const {mutateAsync: getVoiceReportDetail} = useVoiceReportDetailMutation({
+    onMutate: showLoader,
+    onSettled: hideLoader,
+    onSuccess: reportDetail => {
+      if (isVoiceScanReport(reportDetail)) {
+        setReportDetail(reportDetail);
+        navigation.navigate('VoiceScanReport');
       }
-      const readingData = reportDetails?.readings?.reading_data;
-      let message = '';
-      Object.entries(readingData).forEach(([key, value]) => {
-        if (
-          typeof value === 'object' &&
-          'value' in value &&
-          'category' in value
-        ) {
-          message += `${key}: ${value.value} (${value.category})\n`;
-        }
-      });
-      const result = await Share.share({
-        message,
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error: any) {
-      Alert.alert(error.message);
-    }
-  };
+    },
+  });
 
   return (
     <>
@@ -75,7 +58,15 @@ const VoiceScanSingleReportCard = () => {
               {languages?.voice_scan_snapshot_title}
             </CustomText>
             <TouchableOpacity
-              onPress={onShare}
+              onPress={async () => {
+                const reportDetail = await getVoiceReportDetail({
+                  sessoin_id: sessionId ?? '',
+                });
+
+                if (isVoiceScanReport(reportDetail)) {
+                  onShareVoiceScanReport(reportDetail);
+                }
+              }}
               className="p-2"
               hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}>
               <Icon name="share" size={20} color={customColor.white} />
@@ -92,15 +83,9 @@ const VoiceScanSingleReportCard = () => {
                 <RoundedButton
                   className="px-5 py-2 border border-white"
                   resetStyle
-                  onPress={() => {
-                    navigation.navigate('ReportStackScreens', {
-                      screen: 'Report',
-                      params: {
-                        reading_id:
-                          reportData?.data?.reading_data?.[0]?.reading_id || '',
-                      },
-                    });
-                  }}>
+                  onPress={() =>
+                    getVoiceReportDetail({sessoin_id: sessionId ?? ''})
+                  }>
                   <CustomText className="text-white font-isidoraBold text-base">
                     {languages?.see_detailed_report_btn_txt}
                   </CustomText>
@@ -109,7 +94,7 @@ const VoiceScanSingleReportCard = () => {
             </View>
             <View className="w-[40%] items-center justify-center h-28">
               <DonutChart
-                score={reportData?.data?.reading_data?.[0]?.WELLNESS_INDEX || 0}
+                score={reportData?.data?.reading_data?.[0]?.wellness_score || 0}
                 textClassName="text-4xl"
               />
               <CustomText className="text-white text-sm font-isidoraSemiBold absolute -bottom-6">

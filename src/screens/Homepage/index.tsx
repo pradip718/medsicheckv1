@@ -1,9 +1,13 @@
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useMutation} from '@tanstack/react-query';
 import {AnimatePresence} from 'moti';
 import React, {useEffect, useState} from 'react';
 import {Image, RefreshControl, StyleSheet, View} from 'react-native';
 import useLanguageStore from '../../../store/languageStore';
 import useLoaderStore from '../../../store/loaderStore';
+import useVoiceScanStore from '../../../store/voiceScanStore';
+import {isVoiceScanReport} from '../../../types/api_response';
+import {MainStackParamList} from '../../../types/navigation';
 import BasicContainer from '../../components/BasicContainer';
 import FullScreenLoader from '../../components/FullScreenLoader';
 import Navbar from '../../components/Navbar';
@@ -12,8 +16,12 @@ import CustomText from '../../components/Text';
 import {useGetQuestionnaireSection} from '../../hooks/api/useGetQuestions';
 import useGetUserAttributes from '../../hooks/api/useGetUserAttributes';
 import useGetUserReading from '../../hooks/api/useGetUserReading';
-import {useGetUserVoiceReportList} from '../../hooks/api/voiceScan';
+import {
+  useGetUserVoiceReportList,
+  useVoiceReportDetailMutation,
+} from '../../hooks/api/voiceScan';
 import useBackButton from '../../hooks/useBackButton';
+import useFullPageLoader from '../../hooks/useFullPageLoader';
 import AddProfileDetails from './Modal/AddProfileDetails';
 import UserWithMultipleReport from './UserWithMultipleReport';
 import ScanCard from './components/ScanCard';
@@ -31,6 +39,9 @@ const Homepage = () => {
   >(null);
 
   const {languages} = useLanguageStore();
+  const {showLoader, hideLoader} = useFullPageLoader();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const {setReportDetail} = useVoiceScanStore();
 
   //Preload vital images used in reports
   useEffect(() => {
@@ -58,6 +69,17 @@ const Homepage = () => {
   const {refetch: getUserAttributes} = useGetUserAttributes();
   const {data: questions} = useGetQuestionnaireSection({
     cacheTime: 0,
+  });
+
+  const {mutateAsync: getVoiceReportDetail} = useVoiceReportDetailMutation({
+    onMutate: showLoader,
+    onSettled: hideLoader,
+    onSuccess: reportDetail => {
+      if (isVoiceScanReport(reportDetail)) {
+        setReportDetail(reportDetail);
+        navigation.navigate('VoiceScanReport');
+      }
+    },
   });
 
   const {mutate: onRefresh, isPending: isRefreshing} = useMutation({

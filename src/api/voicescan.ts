@@ -157,8 +157,8 @@ async function getVoiceScanReportDetail({
   });
 
   if (sessoin_id) {
-    // params.append('sessoin_id', sessoin_id);
-    params.append('sessoin_id', 'a6bf1536-e1d2-460e-8a30-3401f69a2b37');
+    params.append('sessoin_id', sessoin_id);
+    // params.append('sessoin_id', 'a6bf1536-e1d2-460e-8a30-3401f69a2b37');
   }
 
   const response = await activeAxiosInstance({
