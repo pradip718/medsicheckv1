@@ -83,6 +83,7 @@ const VoiceScanReport = () => {
             score={Number(reportItem?.value) || 0}
             category={reportItem?.category ?? ''}
             color_value={null}
+            color={reportItem?.color ?? 'gray'}
             scaleCriteria={scaleCriteria}
             confidenceLevel={null}
             subParameters={[]}
