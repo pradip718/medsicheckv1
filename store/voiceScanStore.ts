@@ -4,6 +4,7 @@ import {VoiceScanReport} from '../types/api_response';
 interface VoiceScabState {
   reportDetail: VoiceScanReport | null;
   setReportDetail: (report: VoiceScanReport | null) => void;
+  resetReportDetail: () => void;
 }
 
 const useVoiceScanStore = create<VoiceScabState>(set => ({

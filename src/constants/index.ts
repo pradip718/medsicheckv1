@@ -16,5 +16,7 @@ export const DEEPLINK_CONFIG: Record<string, keyof MainStackParamList> = {
   ai_report: 'AIHealthReportDetail',
   scan_report: 'ReportStackScreens',
   health_risks: 'HealthRisks',
+  voice_scan: 'VoiceScanScreen',
+  voice_scan_report_detail: 'VoiceScanReport',
   // Add more paths as needed
 };

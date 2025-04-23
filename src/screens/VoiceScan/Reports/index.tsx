@@ -17,7 +17,10 @@ import {
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../store/languageStore';
 import useVoiceScanStore from '../../../../store/voiceScanStore';
-import {VoiceScanReport as VoiceScanReportType} from '../../../../types/api_response';
+import {
+  isVoiceScanReport,
+  VoiceScanReport as VoiceScanReportType,
+} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
 import {onShareVoiceScanReport} from '../../../../utils/methods';
 import {notifyApi} from '../../../api/user';
@@ -26,6 +29,8 @@ import Icon from '../../../components/Icon';
 import Navbar from '../../../components/Navbar';
 import ReportCard from '../../../components/ReportCard';
 import CustomText from '../../../components/Text';
+import {useVoiceReportDetailMutation} from '../../../hooks/api/voiceScan';
+import useFullPageLoader from '../../../hooks/useFullPageLoader';
 import customColor from '../../../theme/customColor';
 import VitalSignCard from '../../Homepage/components/ReportVitalSignCard';
 import ReportWellnessScore from '../../Homepage/components/ReportWellnessScore';
@@ -54,9 +59,36 @@ const RenderDateAndTitle = ({date}: any) => {
 
 const VoiceScanReport = ({route}: ReportListProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const {showLoader, hideLoader} = useFullPageLoader();
   const {isNavigatingFromVoiceScan, session_id} = route?.params || {};
-  const {reportDetail} = useVoiceScanStore();
+  const {reportDetail, setReportDetail, resetReportDetail} =
+    useVoiceScanStore();
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+
+  const {mutateAsync: getVoiceReportDetail} = useVoiceReportDetailMutation({
+    onMutate: showLoader,
+    onSettled: hideLoader,
+    onSuccess: data => {
+      if (isVoiceScanReport(data)) {
+        setReportDetail(data);
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (session_id && !reportDetail) {
+      getVoiceReportDetail({sessoin_id: session_id});
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session_id]);
+
+  useEffect(() => {
+    return () => {
+      resetReportDetail();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     notifyApi('voice_scan_report_view', {

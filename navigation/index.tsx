@@ -224,6 +224,8 @@ const RootNavigator = () => {
         LabReportDetail: 'lab_report',
         AIHealthReportDetail: 'ai_report',
         HealthRisks: 'health_risks',
+        VoiceScanScreen: 'voice_scan',
+        VoiceScanReport: 'voice_scan_report_detail',
         ReportStackScreens: {
           screens: {
             Report: 'scan_report',

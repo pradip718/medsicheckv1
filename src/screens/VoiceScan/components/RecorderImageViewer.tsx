@@ -3,6 +3,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {RecorderState} from '@simform_solutions/react-native-audio-waveform';
+import useLanguageStore from '../../../../store/languageStore';
 import {useAudio} from '../AudioRecordingContext';
 
 interface RecorderImageViewerProps {
@@ -17,6 +18,7 @@ const RecorderImageViewer = ({
   recorderState,
 }: RecorderImageViewerProps) => {
   const [fullView, setFullView] = useState<boolean>(false);
+  const {languages} = useLanguageStore();
 
   const {imageData} = useAudio();
 
@@ -26,9 +28,11 @@ const RecorderImageViewer = ({
         {!fullView && (
           <View>
             <Text style={styles.title}>
-              Describe what you see in this image and how it makes you feel.
+              {languages?.image_description_prompt}
             </Text>
-            <Text style={styles.infoText}>You have to speak for a minute.</Text>
+            <Text style={styles.infoText}>
+              {languages?.voice_recording_duration_prompt}
+            </Text>
           </View>
         )}
 
@@ -69,7 +73,9 @@ const RecorderImageViewer = ({
             {recorderState === RecorderState.stopped && (
               <View style={styles.changeImageContainer}>
                 <Pressable style={styles.actionButton} onPress={onChangeImage}>
-                  <Text style={styles.changeImageText}>Change Image</Text>
+                  <Text style={styles.changeImageText}>
+                    {languages?.change_image_prompt}
+                  </Text>
                   <Feather name="repeat" size={14} color="#fff" />
                 </Pressable>
               </View>
@@ -83,7 +89,9 @@ const RecorderImageViewer = ({
           <Text style={styles.timerText}>
             {recordedTime < 40
               ? ''
-              : `Automatically stopping in another ${60 - recordedTime} secs`}
+              : `${languages?.automatic_stop_message} ${60 - recordedTime} ${
+                  languages?.seconds
+                }`}
           </Text>
         </View>
       ) : null}
