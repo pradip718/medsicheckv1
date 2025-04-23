@@ -20,6 +20,7 @@ import useVoiceScanStore from '../../../../store/voiceScanStore';
 import {VoiceScanReport as VoiceScanReportType} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
 import {onShareVoiceScanReport} from '../../../../utils/methods';
+import {notifyApi} from '../../../api/user';
 import BasicContainer from '../../../components/BasicContainer';
 import Icon from '../../../components/Icon';
 import Navbar from '../../../components/Navbar';
@@ -53,9 +54,15 @@ const RenderDateAndTitle = ({date}: any) => {
 
 const VoiceScanReport = ({route}: ReportListProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-  const {isNavigatingFromVoiceScan} = route?.params || {};
+  const {isNavigatingFromVoiceScan, session_id} = route?.params || {};
   const {reportDetail} = useVoiceScanStore();
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+
+  useEffect(() => {
+    notifyApi('voice_scan_report_view', {
+      session_id: session_id,
+    });
+  }, [session_id]);
 
   useEffect(() => {
     if (reportDetail?.sub_categorization) {
@@ -86,6 +93,7 @@ const VoiceScanReport = ({route}: ReportListProps) => {
           <ReportCard
             readingId={''}
             scaleType={config?.scale_type ?? 1}
+            //@ts-ignore
             colorRange={config?.color_range ?? []}
             // colorRange={[]}
             healthMetricsTitle={config?.display}
@@ -109,6 +117,7 @@ const VoiceScanReport = ({route}: ReportListProps) => {
         </View>
       );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [reportDetail],
   );
 

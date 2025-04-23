@@ -690,5 +690,7 @@
   "proceed_confirmation_prompt": "Would you like to proceed?",
   "confirm_change_image": "Yes, change the image",
   "voice_scan_reports_title": "Voice Scan Reports",
-  "new_voice_scan": "New Voice Scan"
+  "new_voice_scan": "New Voice Scan",
+  "voice_report_error_message": "There was an error generating the report. Please try again later.",
+  "voice_report_error_description": "We are unable to generate your report at this time. Please try again later."
 }

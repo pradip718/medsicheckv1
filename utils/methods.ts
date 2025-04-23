@@ -428,6 +428,8 @@ export const onShareVoiceScanReport = async (
       return;
     }
 
+    notifyApi('voice_scan_report_share');
+
     let message = `Wellness Score: ${readingData.wellness_score}\n\n`;
 
     readingData.voice_scan_report.forEach(item => {

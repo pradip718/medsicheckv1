@@ -10,6 +10,7 @@ import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
+import {notifyApi} from '../../api/user';
 import {getVoiceScanImage, uploadVoiceRecording} from '../../api/voicescan';
 import BackgroundImage from '../../components/BackgroundImage';
 import EtchedGlass from '../../components/EtchedGlass';
@@ -54,13 +55,21 @@ const VoiceScan = () => {
   const {mutateAsync: uploadRecording} = useMutation({
     mutationKey: [UPLOAD_VOICE_RECORDING],
     mutationFn: uploadVoiceRecording,
-    onMutate: showLoader,
+    onMutate: () => {
+      showLoader();
+      notifyApi('voice_scan_upload_start', {session_id: session ?? ''});
+    },
     onSettled: hideLoader,
     onSuccess: data => {
       console.log('data', data);
+      notifyApi('voice_scan_upload_complete', {session_id: session ?? ''});
     },
     onError: error => {
       console.log('error', error);
+      notifyApi('voice_scan_upload_error', {
+        error: error?.message || 'Unknown error',
+        session_id: session ?? '',
+      });
     },
   });
 
@@ -91,17 +100,30 @@ const VoiceScan = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recordedTime]);
 
-  const onSave = () => {
-    recordingRef.current?.stopRecord().then(async path => {
-      setAudioPath(path);
-      await uploadRecording({
-        audio_file: path,
-        session_id: session ?? '',
-        duration: 60,
-        format: 'm4a',
-      });
-    });
-    currentPlayingRef = undefined;
+  useEffect(() => {
+    notifyApi('voice_scan_start');
+  }, []);
+
+  const onSave = async () => {
+    try {
+      notifyApi('voice_scan_recording_stop', {session_id: session ?? ''});
+      const audioPath = await recordingRef.current?.stopRecord();
+      if (audioPath) {
+        setAudioPath(audioPath);
+        const audioData = await getRecordedAudios();
+        if (audioData && audioData.length > 0) {
+          const lastAudio = audioData[audioData.length - 1];
+          await uploadRecording({
+            audio_file: lastAudio,
+            session_id: session ?? '',
+            duration: recordedTime,
+            format: 'm4a',
+          });
+        }
+      }
+    } catch (error: any) {
+      console.log('error', error);
+    }
   };
 
   const onOpenImageSheet = async () => {
