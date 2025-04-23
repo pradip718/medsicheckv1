@@ -137,8 +137,8 @@ const ReportCard = React.memo((props: ReportCardProps) => {
       elevation={5}
       style={styles({color: highlightedColor}).card}>
       <View className="px-4">
-        <View className="flex-row items-center justify-between">
-          <View className="flex-row gap-x-4 items-center w-[60%]">
+        <View className="flex-row items-center">
+          <View className="flex-row gap-x-4 items-center flex-1">
             <View
               className="rounded-2xl w-[50px] h-[50px] justify-center items-center"
               style={{backgroundColor: highlightedColor}}>
@@ -158,7 +158,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
                 <Icon name={iconName} size={30} color={customColor.white} />
               )}
             </View>
-            <View>
+            <View className="flex-1">
               <CustomText className="text-sm font-isidoraSemiBold ">
                 {healthMetricsTitle}
               </CustomText>

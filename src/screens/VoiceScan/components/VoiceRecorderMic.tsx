@@ -1,19 +1,19 @@
+import {useIsFetching} from '@tanstack/react-query';
 import {useEffect} from 'react';
-import React, {Pressable, StyleSheet, View} from 'react-native';
-import Animated, {
+import React, {StyleSheet, View} from 'react-native';
+import {
   Easing,
-  useAnimatedStyle,
   useSharedValue,
   withDelay,
   withRepeat,
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../store/languageStore';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
+import {GET_VOICE_SCAN_IMAGE} from '../../../constants/hooks';
 import customColor from '../../../theme/customColor';
 import {useAudio} from '../AudioRecordingContext';
 
@@ -33,6 +33,8 @@ export default function VoiceRecorderMic({
   const {languages} = useLanguageStore();
   const {recordedTime, onSave} = useAudio();
   const waves = Array(WAVE_COUNT).fill(0);
+
+  const isFetchingImage = useIsFetching({queryKey: [GET_VOICE_SCAN_IMAGE]}) > 0;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const waveAnimations = waves.map(() => useSharedValue(0));
@@ -77,7 +79,7 @@ export default function VoiceRecorderMic({
     <View>
       <RoundedButton
         onPress={isRecording && recordedTime > 40 ? onSave : onPress}
-        disabled={isRecording && recordedTime < 40}
+        disabled={(isRecording && recordedTime < 40) || isFetchingImage}
         hasDisabledStyle={false}
         style={isRecording && recordedTime < 40 ? styles.button : {}}>
         {isRecording ? (
@@ -98,17 +100,6 @@ export default function VoiceRecorderMic({
       </RoundedButton>
     </View>
   );
-}
-
-function WaveCircle({animation}: {animation: Animated.SharedValue<number>}) {
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{scale: 1 + animation.value}],
-      opacity: 0.5 - animation.value * 0.5,
-    };
-  });
-
-  return <Animated.View style={[styles.wave, animatedStyle]} />;
 }
 
 const styles = StyleSheet.create({

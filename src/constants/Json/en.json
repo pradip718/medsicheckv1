@@ -692,5 +692,7 @@
   "voice_scan_reports_title": "Voice Scan Reports",
   "new_voice_scan": "New Voice Scan",
   "voice_report_error_message": "There was an error generating the report. Please try again later.",
-  "voice_report_error_description": "We are unable to generate your report at this time. Please try again later."
+  "voice_report_error_description": "We are unable to generate your report at this time. Please try again later.",
+  "recording_complete_title": "Recording Complete",
+  "recording_submit_instruction": "You can listen to your recording and submit it for voice analysis."
 }

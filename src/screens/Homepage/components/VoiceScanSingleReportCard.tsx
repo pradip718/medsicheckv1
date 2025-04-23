@@ -31,14 +31,6 @@ const VoiceScanSingleReportCard = () => {
   const {mutateAsync: getVoiceReportDetail} = useVoiceReportDetailMutation({
     onMutate: showLoader,
     onSettled: hideLoader,
-    onSuccess: reportDetail => {
-      if (isVoiceScanReport(reportDetail)) {
-        setReportDetail(reportDetail);
-        navigation.navigate('VoiceScanReport', {
-          session_id: reportData?.data?.reading_data?.[0]?.session_id ?? '',
-        });
-      }
-    },
   });
 
   return (
@@ -85,9 +77,18 @@ const VoiceScanSingleReportCard = () => {
                 <RoundedButton
                   className="px-5 py-2 border border-white"
                   resetStyle
-                  onPress={() =>
-                    getVoiceReportDetail({sessoin_id: sessionId ?? ''})
-                  }>
+                  onPress={async () => {
+                    const data = await getVoiceReportDetail({
+                      sessoin_id: sessionId ?? '',
+                    });
+                    if (isVoiceScanReport(data)) {
+                      setReportDetail(data);
+                      navigation.navigate('VoiceScanReport', {
+                        session_id:
+                          reportData?.data?.reading_data?.[0]?.session_id ?? '',
+                      });
+                    }
+                  }}>
                   <CustomText className="text-white font-isidoraBold text-base">
                     {languages?.see_detailed_report_btn_txt}
                   </CustomText>
