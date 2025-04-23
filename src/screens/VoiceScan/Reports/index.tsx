@@ -128,9 +128,13 @@ const VoiceScanReport = ({route}: ReportListProps) => {
       }
 
       const isExpanded = expandedSections.includes(category);
-      const categoryReports = reportDetail.voice_scan_report.filter(report =>
-        keys.includes(report.key),
-      );
+      const categoryReports = reportDetail.voice_scan_report
+        .filter(report => keys.includes(report.key))
+        .sort((a, b) => {
+          const indexA = keys.indexOf(a.key);
+          const indexB = keys.indexOf(b.key);
+          return indexA - indexB;
+        });
 
       if (categoryReports.length === 0) return null;
 

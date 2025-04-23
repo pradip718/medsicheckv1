@@ -60,6 +60,8 @@ const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
     queryKey: [GET_VOICE_SCAN_REPORT_DETAIL],
     queryFn: () => getVoiceScanReportDetail({sessoin_id: session_id}),
     enabled: isProcessSuccess,
+    gcTime: 0,
+    staleTime: 0,
     refetchInterval: ({state}) => {
       if (!state?.data) {
         return 5000;

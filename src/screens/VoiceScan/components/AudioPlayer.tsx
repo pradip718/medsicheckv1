@@ -5,16 +5,12 @@ import {
   RecorderState,
   Waveform,
 } from '@simform_solutions/react-native-audio-waveform';
-import React, {memo, useRef, useState} from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, {memo, useEffect, useRef, useState} from 'react';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
+import useLanguageStore from '../../../../store/languageStore';
+import Pressable from '../../../components/Pressable';
 import customColor from '../../../theme/customColor';
 
 function formatMilliseconds(ms: number) {
@@ -31,15 +27,26 @@ interface AudioPlayerProps {
 }
 
 const AudioPlayer = memo(({audioPath, currentPlayingRef}: AudioPlayerProps) => {
+  const {languages} = useLanguageStore();
   const ref = useRef<IWaveformRef>(null);
   const [playerState, setPlayerState] = useState(PlayerState.stopped);
   const [isLoading, setIsLoading] = useState(true);
   const [duration, setDuration] = useState(0);
   const [currentDuration, setCurrentDuration] = useState(0);
 
+  useEffect(() => {
+    const localRef = ref.current;
+
+    return () => {
+      if (localRef?.currentState === PlayerState.playing) {
+        localRef?.stopPlayer();
+      }
+    };
+  }, [ref]);
+
   const handlePlayPauseAction = async () => {
     // If we are recording do nothing
-    if (currentPlayingRef?.current?.currentState === RecorderState.recording) {
+    if (ref?.current?.currentState === RecorderState.recording) {
       return;
     }
 
@@ -53,7 +60,7 @@ const AudioPlayer = memo(({audioPath, currentPlayingRef}: AudioPlayerProps) => {
         });
 
         // If the player took too much time to initialize and another player started instead we pause the former one!
-        if (currentPlayingRef?.current?.playerKey !== ref?.current?.playerKey) {
+        if (ref?.current?.playerKey !== ref?.current?.playerKey) {
           await ref?.current?.pausePlayer();
         }
       }
@@ -61,20 +68,20 @@ const AudioPlayer = memo(({audioPath, currentPlayingRef}: AudioPlayerProps) => {
 
     // If no player or if current player is stopped just start the new player!
     if (
-      currentPlayingRef == null ||
+      ref == null ||
       [PlayerState.stopped, PlayerState.paused].includes(
-        currentPlayingRef?.current?.currentState as PlayerState,
+        ref?.current?.currentState as PlayerState,
       )
     ) {
       await startNewPlayer();
     } else {
       // Pause current player if it was playing
-      if (currentPlayingRef?.current?.currentState === PlayerState.playing) {
-        await currentPlayingRef?.current?.pausePlayer();
+      if (ref?.current?.currentState === PlayerState.playing) {
+        await ref?.current?.pausePlayer();
       }
 
       // Start player when it is a different one!
-      if (currentPlayingRef?.current?.playerKey !== ref?.current?.playerKey) {
+      if (ref?.current?.playerKey !== ref?.current?.playerKey) {
         await startNewPlayer();
       }
     }
@@ -83,9 +90,9 @@ const AudioPlayer = memo(({audioPath, currentPlayingRef}: AudioPlayerProps) => {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.title}>Recording Complete</Text>
+        <Text style={styles.title}>{languages?.recording_complete_title}</Text>
         <Text style={styles.infoText}>
-          You can listen to your recording and submit it for voice analysis.
+          {languages?.recording_submit_instruction}
         </Text>
       </View>
 
