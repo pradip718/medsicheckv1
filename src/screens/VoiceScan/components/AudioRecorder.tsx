@@ -8,12 +8,12 @@ import {
   useAudioPlayer,
   Waveform,
 } from '@simform_solutions/react-native-audio-waveform';
+import {useMutation} from '@tanstack/react-query';
 import React, {Alert, Linking, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import {PERMISSIONS, request} from 'react-native-permissions';
-
-import {useMutation} from '@tanstack/react-query';
 import useLanguageStore from '../../../../store/languageStore';
+import {notifyApi} from '../../../api/user';
 import {initiateVoiceScanSession} from '../../../api/voicescan';
 import RoundedButton from '../../../components/RoundedButton';
 import {INITIATE_VOICE_SCAN} from '../../../constants/hooks';
@@ -52,20 +52,28 @@ const AudioRecorder = ({
     mutationKey: [INITIATE_VOICE_SCAN],
     mutationFn: initiateVoiceScanSession,
     onSuccess: sessionDetail => {
-      startRecording();
+      startRecording(sessionDetail?.session_id);
       onSetSession(sessionDetail?.session_id);
     },
   });
 
-  const startRecording = () => {
+  const startRecording = (session_id: string) => {
     recordingRef.current
       ?.startRecord({
         updateFrequency: UpdateFrequency.high,
       })
       .then(() => {
         setRecorderState(RecorderState.recording);
+        notifyApi('voice_scan_recording_start', {
+          session_id,
+        });
       })
-      .catch(() => {});
+      .catch((error: Error) => {
+        notifyApi('voice_scan_recording_error', {
+          error: error?.message || 'Unknown error',
+          session_id,
+        });
+      });
   };
 
   const onRecord = async () => {
@@ -86,7 +94,9 @@ const AudioRecorder = ({
         const permissionStatus = await getAudioRecorderPermission();
         if (permissionStatus === PermissionStatus.granted) {
           currentPlayingRef = recordingRef;
-          startRecording();
+          initiateSession({
+            image_id: imageData?.image_id ?? '',
+          });
         }
       } else {
         request(PERMISSIONS.ANDROID.RECORD_AUDIO).then(status => {

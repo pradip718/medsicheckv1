@@ -68,10 +68,13 @@ const VoiceScanReportList = () => {
     onSettled: hideLoader,
     mutationKey: [GET_VOICE_SCAN_REPORT_DETAIL],
     mutationFn: getVoiceScanReportDetail,
-    onSuccess: reportDetail => {
+    onSuccess: (reportDetail, variable) => {
+      const {sessoin_id} = variable;
       if (isVoiceScanReport(reportDetail)) {
         setReportDetail(reportDetail);
-        navigation.navigate('VoiceScanReport');
+        navigation.navigate('VoiceScanReport', {
+          session_id: sessoin_id,
+        });
       }
     },
   });
@@ -173,7 +176,9 @@ const VoiceScanReportList = () => {
       return errorToast(languages?.deleteReportMessage);
     }
     await deletePreviousReports({session_id: selectedReportIds});
-    await notifyApi('delete_voice_scan_report');
+    await notifyApi('delete_voice_scan_report', {
+      session_ids: selectedReportIds,
+    });
   };
 
   const renderFilterReports = () => {

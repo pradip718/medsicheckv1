@@ -6,10 +6,7 @@ import useLanguageStore from '../../../store/languageStore';
 import useUserProfileStore from '../../../store/profileStore';
 import EtchedGlass from '../../components/EtchedGlass';
 import CustomText from '../../components/Text';
-import {
-  Face_SCANNER_KEY,
-  VOICE_SCANNER_INTRO_STATUS,
-} from '../../constants/AsyncStorageKeys';
+import {VOICE_SCANNER_INTRO_STATUS} from '../../constants/AsyncStorageKeys';
 
 type HeaderProps = {
   doNotShowChecked: boolean;

@@ -34,7 +34,9 @@ const VoiceScanSingleReportCard = () => {
     onSuccess: reportDetail => {
       if (isVoiceScanReport(reportDetail)) {
         setReportDetail(reportDetail);
-        navigation.navigate('VoiceScanReport');
+        navigation.navigate('VoiceScanReport', {
+          session_id: reportData?.data?.reading_data?.[0]?.session_id ?? '',
+        });
       }
     },
   });

@@ -300,13 +300,13 @@ export type ProcessVoiceRecordResponse = {
   assessment_id: string;
 };
 
-export type VoiceScanReportDetailErrorResponse = {
+export interface VoiceScanReportDetailErrorResponse {
   error: boolean;
   message: {
     header: string;
     description: string;
   };
-};
+}
 
 export type VoiceScanReportDetailSuccessResponse = {
   error: false;
@@ -355,9 +355,15 @@ export interface VoiceScanReport {
   };
 }
 
+export interface VoiceScanReportDetailPendingResponse
+  extends VoiceScanReportDetailErrorResponse {
+  error: false;
+}
+
 export type VoiceScanReportDetailResponse =
-  | VoiceScanReport
-  | VoiceScanReportDetailErrorResponse;
+  | VoiceScanReportDetailPendingResponse
+  | VoiceScanReportDetailErrorResponse
+  | VoiceScanReport;
 
 export function isVoiceScanReport(
   data: VoiceScanReportDetailResponse | undefined,
@@ -369,6 +375,12 @@ export function isVoiceScanReportDetailError(
   data: VoiceScanReportDetailResponse | undefined,
 ): data is VoiceScanReportDetailErrorResponse {
   return (data as VoiceScanReportDetailErrorResponse)?.error === true;
+}
+
+export function isVoiceScanReportPending(
+  data: VoiceScanReportDetailResponse,
+): data is VoiceScanReportDetailPendingResponse {
+  return (data as VoiceScanReportDetailErrorResponse).error === false;
 }
 
 export interface VoiceReportPaginationData {

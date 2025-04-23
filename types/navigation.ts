@@ -139,7 +139,8 @@ export type MainStackParamList = {
     session_id: string;
   };
   VoiceScanReport?: {
-    isNavigatingFromVoiceScan: boolean;
+    isNavigatingFromVoiceScan?: boolean;
+    session_id?: string;
   };
   VoiceScanReportDetail: {
     vitalKey: string;
