@@ -19,9 +19,6 @@ import {
 import {isValidJSON} from '../../utils/methods';
 import axiosSessionInstance from './sessionConfiguration';
 
-const TEMPORARY_BASE_URL =
-  'https://nb9c8cq7nk.execute-api.us-west-2.amazonaws.com/dev/';
-
 async function getVoiceScanImage(): Promise<VoiceScanImageDataResponse> {
   const profile_id = useUserProfileStore.getState().currentActiveProfileId;
   const {deeplinkAuth} = useAuthStore.getState();
@@ -36,7 +33,7 @@ async function getVoiceScanImage(): Promise<VoiceScanImageDataResponse> {
 
   const response = await activeAxiosInstance({
     method: 'POST',
-    url: `${TEMPORARY_BASE_URL}v1/voice-scan?${params.toString()}`,
+    url: `v1/voice-process?${params.toString()}`,
   });
 
   return response?.data;
@@ -58,7 +55,7 @@ async function initiateVoiceScanSession({
 
   const response = await activeAxiosInstance({
     method: 'POST',
-    url: `${TEMPORARY_BASE_URL}v1/voice-scan?${params.toString()}`,
+    url: `v1/voice-process?${params.toString()}`,
     data: {
       image_id,
     },
@@ -89,7 +86,7 @@ async function uploadVoiceRecording(
   });
 
   const response = await activeAxiosInstance.post(
-    `${TEMPORARY_BASE_URL}v1/voice-scan?${params.toString()}`,
+    `v1/voice-process?${params.toString()}`,
     audioData,
     {
       headers: {
@@ -117,7 +114,7 @@ async function processVoiceRecording(
   });
 
   const response = await activeAxiosInstance.post(
-    `${TEMPORARY_BASE_URL}v1/voice-scan?${params.toString()}`,
+    `v1/voice-process?${params.toString()}`,
     payload,
   );
 

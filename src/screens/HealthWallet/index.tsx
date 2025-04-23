@@ -76,7 +76,7 @@ const HealthWallet = () => {
   });
 
   const readingLength = reportData?.data?.count || 0;
-  const voiceScanReportLength = reportData?.data?.count || 0;
+  const voiceScanReportLength = voiceScanReportData?.data?.count || 0;
   const aiReportLength = aiReportData?.count || 0;
   const healthWalletReportLength = healthWalletReportList?.count || 0;
   const miscellaneousReportLength = miscellaneousFiles?.count || 0;

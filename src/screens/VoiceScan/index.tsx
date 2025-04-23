@@ -29,7 +29,6 @@ import RecorderImageViewer from './components/RecorderImageViewer';
 import {getRecordedAudios} from './components/audio';
 
 let currentPlayingRef: React.RefObject<IWaveformRef | null> | undefined;
-const IMAGE_LENGTH = 3;
 
 const VoiceScan = () => {
   const queryClient = useQueryClient();
@@ -39,7 +38,6 @@ const VoiceScan = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const [audioPath, setAudioPath] = useState('');
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [recorderState, setRecorderState] = useState(RecorderState.stopped);
   const [changeImage, setChangeImage] = useState<boolean>(false);
   const [session, setSession] = useState<string>();
@@ -56,6 +54,8 @@ const VoiceScan = () => {
   const {mutateAsync: uploadRecording} = useMutation({
     mutationKey: [UPLOAD_VOICE_RECORDING],
     mutationFn: uploadVoiceRecording,
+    onMutate: showLoader,
+    onSettled: hideLoader,
     onSuccess: data => {
       console.log('data', data);
     },
@@ -88,6 +88,7 @@ const VoiceScan = () => {
     if (recordedTime >= 60) {
       onSave();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recordedTime]);
 
   const onSave = () => {
@@ -188,7 +189,6 @@ const VoiceScan = () => {
             ) : (
               <RecorderImageViewer
                 onChangeImage={onOpenImageSheet}
-                currentImageIndex={currentImageIndex}
                 recordedTime={recordedTime}
                 recorderState={recorderState}
               />

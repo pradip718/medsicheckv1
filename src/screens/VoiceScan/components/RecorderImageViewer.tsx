@@ -7,26 +7,17 @@ import {useAudio} from '../AudioRecordingContext';
 
 interface RecorderImageViewerProps {
   onChangeImage: () => void;
-  currentImageIndex: number;
   recordedTime: number;
   recorderState: RecorderState;
 }
 
-const images = [
-  require('../../../../assets/images/VoiceScan/voice-analyser-1.png'),
-  require('../../../../assets/images/VoiceScan/voice-analyser-2.png'),
-  require('../../../../assets/images/VoiceScan/voice-analyser-3.png'),
-];
-
 const RecorderImageViewer = ({
   onChangeImage,
-  currentImageIndex,
   recordedTime,
   recorderState,
 }: RecorderImageViewerProps) => {
   const [fullView, setFullView] = useState<boolean>(false);
 
-  const imageSource = images[currentImageIndex];
   const {imageData} = useAudio();
 
   return (
@@ -75,12 +66,14 @@ const RecorderImageViewer = ({
                 )}
               </Pressable>
             </View>
-            <View style={styles.changeImageContainer}>
-              <Pressable style={styles.actionButton} onPress={onChangeImage}>
-                <Text style={styles.changeImageText}>Change Image</Text>
-                <Feather name="repeat" size={14} color="#fff" />
-              </Pressable>
-            </View>
+            {recorderState === RecorderState.stopped && (
+              <View style={styles.changeImageContainer}>
+                <Pressable style={styles.actionButton} onPress={onChangeImage}>
+                  <Text style={styles.changeImageText}>Change Image</Text>
+                  <Feather name="repeat" size={14} color="#fff" />
+                </Pressable>
+              </View>
+            )}
           </View>
         </View>
       </View>

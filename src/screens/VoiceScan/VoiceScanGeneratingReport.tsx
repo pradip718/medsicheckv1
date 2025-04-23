@@ -4,7 +4,7 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {Image, View} from 'moti';
 import React, {useEffect} from 'react';
 import {Easing} from 'react-native-reanimated';
@@ -24,6 +24,7 @@ import RoundedButton from '../../components/RoundedButton';
 import CustomText from '../../components/Text';
 import {
   GET_VOICE_SCAN_REPORT_DETAIL,
+  GET_VOICE_SCAN_REPORT_LIST,
   PROCESS_VOICE_RECORDING,
 } from '../../constants/hooks';
 import customColor from '../../theme/customColor';
@@ -39,6 +40,7 @@ type VoiceScanGeneratingProps = {
 
 const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const queryClient = useQueryClient();
   const {session_id} = route?.params ?? {};
   const {languages} = useLanguageStore();
   const {setReportDetail} = useVoiceScanStore();
@@ -70,6 +72,7 @@ const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
 
   useEffect(() => {
     if (isVoiceScanReport(voiceScanData)) {
+      queryClient.invalidateQueries({queryKey: [GET_VOICE_SCAN_REPORT_LIST]});
       setReportDetail(voiceScanData);
       navigation.navigate('VoiceScanReport', {
         isNavigatingFromVoiceScan: true,
