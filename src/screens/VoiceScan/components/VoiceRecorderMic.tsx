@@ -31,7 +31,7 @@ export default function VoiceRecorderMic({
   onPress,
 }: VoiceRecorderMicProps) {
   const {languages} = useLanguageStore();
-  const {recordedTime, onSave} = useAudio();
+  const {recordedTime, onSave, imageData} = useAudio();
   const waves = Array(WAVE_COUNT).fill(0);
 
   const isFetchingImage = useIsFetching({queryKey: [GET_VOICE_SCAN_IMAGE]}) > 0;
@@ -79,7 +79,11 @@ export default function VoiceRecorderMic({
     <View>
       <RoundedButton
         onPress={isRecording && recordedTime > 40 ? onSave : onPress}
-        disabled={(isRecording && recordedTime < 40) || isFetchingImage}
+        disabled={
+          (isRecording && recordedTime < 40) ||
+          isFetchingImage ||
+          !imageData?.image_id
+        }
         hasDisabledStyle={false}
         style={isRecording && recordedTime < 40 ? styles.button : {}}>
         {isRecording ? (
