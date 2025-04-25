@@ -9,3 +9,4 @@
 NSLocationWhenInUseUsageDescription = "STAGING：我们需要您的位置来测试功能。";
 NSLocationAlwaysUsageDescription = "DEV: Always location access helps test persistent location services.";
 NSLocationAlwaysAndWhenInUseUsageDescription = "DEV: This app needs both modes for testing.";
+NSMicrophoneUsageDescription = "This app requires microphone access to enable voice-based features such as voice commands or recording.";

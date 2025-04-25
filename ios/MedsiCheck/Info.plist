@@ -57,7 +57,7 @@
 	<string>$(NSLocationAlwaysAndWhenInUseUsageDescription)</string>
 
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app requires microphone access to enable voice-based features such as voice commands or recording.</string>
+	<string>$(NSMicrophoneUsageDescription)</string>
 
 	<key>UIAppFonts</key>
 	<array>

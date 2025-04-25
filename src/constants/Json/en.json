@@ -699,5 +699,7 @@
   "image_description_prompt": "Describe what you see in this image and how it makes you feel.",
   "voice_recording_duration_prompt": "You have to speak for a minute.",
   "change_image_prompt": "Change Image",
-  "automatic_stop_message": "Automatically stopping in another"
+  "automatic_stop_message": "Automatically stopping in another",
+  "remaining": "remaining",
+  "time_left_note": "{{duration}} seconds remaining"
 }

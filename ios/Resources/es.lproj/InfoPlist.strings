@@ -10,3 +10,4 @@ NSLocationAlwaysUsageDescription = "El acceso a la ubicación ayuda a la aplicac
 NSLocationAlwaysAndWhenInUseUsageDescription = "El acceso a la ubicación ayuda a la aplicación a proporcionar contenido y servicios relevantes.";
 NSCameraUsageDescription = "La aplicación MedsiCheck necesita acceso a tu cámara frontal para medir tu salud. La aplicación no captura ninguna foto o características faciales.";
 NSPhotoLibraryUsageDescription = "Necesitamos acceder a tu biblioteca de fotos para que puedas seleccionar fotos para subir.";
+NSMicrophoneUsageDescription = "Esta aplicación requiere acceso al micrófono para habilitar funciones basadas en voz, como comandos de voz o grabación.";

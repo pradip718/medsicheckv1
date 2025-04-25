@@ -93,7 +93,9 @@ export default function VoiceRecorderMic({
               recordedTime < 40 && 'text-ultramarineBlue',
             )}>
             {recordedTime < 40
-              ? `${40 - recordedTime} secs remaining`
+              ? `${40 - recordedTime} ${languages?.seconds} ${
+                  languages?.remaining
+                }`
               : languages?.stop_recording}
           </CustomText>
         ) : (
