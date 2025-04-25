@@ -89,9 +89,10 @@ const RecorderImageViewer = ({
           <Text style={styles.timerText}>
             {recordedTime < 40
               ? ''
-              : `${languages?.automatic_stop_message} ${60 - recordedTime} ${
-                  languages?.seconds
-                }`}
+              : languages?.time_left_note?.replace(
+                  '{{duration}}',
+                  `${60 - recordedTime}`,
+                )}
           </Text>
         </View>
       ) : null}

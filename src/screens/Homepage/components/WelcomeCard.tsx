@@ -1,3 +1,4 @@
+import {entries} from 'lodash';
 import React from 'react';
 import {ImageBackground, View} from 'react-native';
 import useLanguageStore from '../../../../store/languageStore';
@@ -8,6 +9,13 @@ const WelcomeCard = () => {
   const {data: userAttributes} = useGetUserAttributes();
   const {languages} = useLanguageStore();
 
+  console.log(
+    'welcome',
+    entries(languages)?.filter(
+      ([key, value]) => key === 'welcome_female' || key === 'welcome',
+    ),
+  );
+
   return (
     <View className="bg-[#162244]  mt-10 rounded-3xl">
       <ImageBackground
@@ -15,11 +23,13 @@ const WelcomeCard = () => {
         className="px-4 py-10"
         resizeMode="contain">
         <CustomText className="text-white text-2xl font-isidoraBold">
-          {userAttributes?.gender === 'female'
+          {userAttributes?.gender === 'female' ||
+          userAttributes?.gender === 'femenino'
             ? languages?.welcome_female
             : languages?.welcome}{' '}
           {userAttributes?.given_name ??
-            (userAttributes?.gender === 'female'
+            (userAttributes?.gender === 'female' ||
+            userAttributes?.gender === 'femenino'
               ? languages?.user_txt_female
               : languages?.user_txt)}
         </CustomText>

@@ -10,4 +10,4 @@ NSLocationAlwaysUsageDescription = "Location access helps the app provide releva
 NSLocationAlwaysAndWhenInUseUsageDescription = "Location access helps the app provide relevant content and services.";
 NSCameraUsageDescription = "App needs access to your front-facing camera in order to measure your health. No photo or facial characteristics are captured by the app.";
 NSPhotoLibraryUsageDescription = "We need access to your photo library to allow you to select photos for uploading.";
-
+NSMicrophoneUsageDescription = "This app requires microphone access to enable voice-based features such as voice commands or recording.";
