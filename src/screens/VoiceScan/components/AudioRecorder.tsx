@@ -13,6 +13,7 @@ import React, {Alert, Linking, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import {PERMISSIONS, request} from 'react-native-permissions';
 import useLanguageStore from '../../../../store/languageStore';
+import {errorToast} from '../../../../utils/toast';
 import {notifyApi} from '../../../api/user';
 import {initiateVoiceScanSession} from '../../../api/voicescan';
 import RoundedButton from '../../../components/RoundedButton';
@@ -54,6 +55,9 @@ const AudioRecorder = ({
     onSuccess: sessionDetail => {
       startRecording(sessionDetail?.session_id);
       onSetSession(sessionDetail?.session_id);
+    },
+    onError: () => {
+      errorToast(languages?.initiate_voice_scan_error);
     },
   });
 

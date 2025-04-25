@@ -108,9 +108,11 @@ const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
     );
   };
 
+  const isError = isVoiceScanReportDetailError(voiceScanData) || processError;
+
   return (
     <View className="justify-center flex-1 bg-white">
-      {!isVoiceScanReportDetailError(voiceScanData) && (
+      {!isError && (
         <View
           from={{scale: 0}}
           animate={{scale: 1}}
@@ -151,17 +153,17 @@ const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
         animate={{translateY: 0}}
         transition={{duration: 1000, type: 'spring'} as any}>
         <CustomText className="font-isidoraBold text-base text-yankeesBlue">
-          {isVoiceScanReportDetailError(voiceScanData)
+          {isError
             ? languages?.voice_report_error_message
             : languages?.please_wait_processing_message}
         </CustomText>
         <CustomText className="font-isidoraMedium text-sm text-yankeesBlue mt-2">
-          {isVoiceScanReportDetailError(voiceScanData)
+          {isError
             ? languages?.voice_report_error_description
             : languages?.report_processing_message}
         </CustomText>
       </View>
-      {isVoiceScanReportDetailError(voiceScanData) && (
+      {isError && (
         <View className="my-10 px-5">
           <RoundedButton
             resetStyle

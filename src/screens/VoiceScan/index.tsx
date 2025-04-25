@@ -10,6 +10,7 @@ import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
+import {errorToast} from '../../../utils/toast';
 import {notifyApi} from '../../api/user';
 import {getVoiceScanImage, uploadVoiceRecording} from '../../api/voicescan';
 import BackgroundImage from '../../components/BackgroundImage';
@@ -47,7 +48,7 @@ const VoiceScan = () => {
 
   const recordingRef = useRef<IWaveformRef>(null);
 
-  const {data: voiceScanImageData} = useQuery({
+  const {data: voiceScanImageData, isError} = useQuery({
     queryKey: [GET_VOICE_SCAN_IMAGE],
     queryFn: getVoiceScanImage,
   });
@@ -73,8 +74,6 @@ const VoiceScan = () => {
     },
   });
 
-  console.log('voiceScanImageData', voiceScanImageData);
-
   useEffect(() => {
     if (recorderState === RecorderState.recording) {
       startTimer();
@@ -99,6 +98,13 @@ const VoiceScan = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recordedTime]);
+
+  useEffect(() => {
+    if (isError) {
+      errorToast(languages?.voice_image_error_message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
 
   useEffect(() => {
     notifyApi('voice_scan_start');
