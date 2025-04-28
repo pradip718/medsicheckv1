@@ -703,5 +703,6 @@
   "remaining": "remaining",
   "time_left_note": "{{duration}} seconds remaining",
   "voice_image_error_message": "There was an error fetching the image. Please try again later.",
-  "initiate_voice_scan_error": "There was an error initiating the voice scan. Please try again later."
+  "initiate_voice_scan_error": "There was an error initiating the voice scan. Please try again later.",
+  "no_report_available": "No report available"
 }
