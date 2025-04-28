@@ -6,6 +6,7 @@ import {ErrorToast, SuccessToast} from 'react-native-toast-message';
 import {navigationRef} from '../RootNavigation';
 import {getSessionToken} from '../src/api/auth';
 import {syncScanSession} from '../src/api/report';
+import {sendDeepLinkClickEvent} from '../src/api/settings';
 import CustomText from '../src/components/Text';
 import {DEEPLINK_CONFIG} from '../src/constants';
 import useAppStore from '../store/appStore';
@@ -102,8 +103,13 @@ export const ParseAndRenderText = (text: string) => {
 
 export const redirectFromDeeplink = async (url: string) => {
   if (url) {
-    const {session_id, profile_id, ...restParams} = extractQueryParams(url);
+    const {session_id, profile_id, comm_id, ...restParams} =
+      extractQueryParams(url);
     const path = url?.split('?')[0]?.split('/').pop();
+
+    if (comm_id) {
+      sendDeepLinkClickEvent(comm_id);
+    }
 
     if (session_id && profile_id) {
       const {token} = await getSessionToken({session_id, profile_id});

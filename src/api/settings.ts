@@ -10,6 +10,21 @@ import {
 import {getDeviceLocaleInformation} from '../../utils/methods';
 import axiosSessionInstance from './sessionConfiguration';
 
+async function sendDeepLinkClickEvent(comm_id: string): Promise<any> {
+  const locale = getDeviceLocaleInformation();
+
+  const params = new URLSearchParams({
+    comm_id,
+    locale,
+  });
+
+  const response = await axiosInstance({
+    method: 'POST',
+    url: `v1/click_event?${params}`,
+  });
+  return response?.data;
+}
+
 async function getUserPreference(): Promise<GetUserPreferenceResponse> {
   const locale = getDeviceLocaleInformation();
   const profile_id = useUserProfileStore.getState().currentActiveProfileId;
@@ -94,6 +109,7 @@ async function validateOTPForWhatsapp(
 
 export {
   getUserPreference,
+  sendDeepLinkClickEvent,
   sendOTPInWhatsapp,
   submitUserPreferences,
   validateOTPForWhatsapp,
