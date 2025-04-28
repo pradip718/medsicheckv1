@@ -59,6 +59,7 @@ const RenderDateAndTitle = ({date}: any) => {
 
 const VoiceScanReport = ({route}: ReportListProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const {languages} = useLanguageStore();
   const {showLoader, hideLoader} = useFullPageLoader();
   const {isNavigatingFromVoiceScan, session_id} = route?.params || {};
   const {reportDetail, setReportDetail, resetReportDetail} =
@@ -198,7 +199,16 @@ const VoiceScanReport = ({route}: ReportListProps) => {
   );
 
   if (!reportDetail) {
-    return null;
+    return (
+      <View className="flex-1 bg-white p-4">
+        <Navbar hasClose />
+        <View className="flex-1 items-center justify-center">
+          <CustomText className="text-center text-lg font-isidoraSemiBold">
+            {languages?.no_report_available}
+          </CustomText>
+        </View>
+      </View>
+    );
   }
 
   const renderReportDetailHeader = () => {

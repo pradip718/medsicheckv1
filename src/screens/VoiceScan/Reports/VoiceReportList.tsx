@@ -1,6 +1,7 @@
 import CheckBox from '@react-native-community/checkbox';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {isEmpty} from 'lodash';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -46,6 +47,7 @@ const VoiceScanReportList = () => {
     fetchNextPage,
     hasNextPage,
     isFetching,
+    isFetched,
   } = useGetUserVoiceReportList();
   const {languages} = useLanguageStore();
   const {setReportDetail} = useVoiceScanStore();
@@ -80,7 +82,7 @@ const VoiceScanReportList = () => {
   });
 
   useEffect(() => {
-    if (reportData?.data?.reading_data) {
+    if (reportData?.data?.reading_data && isFetched) {
       setReadings(reportData?.data?.reading_data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -272,6 +274,19 @@ const VoiceScanReportList = () => {
       </View>
     </View>
   );
+
+  if (isEmpty(reportData?.data?.reading_data)) {
+    return (
+      <View className="flex-1 bg-white p-4">
+        <Navbar hasClose />
+        <View className="flex-1 items-center justify-center">
+          <CustomText className="text-center text-lg font-isidoraSemiBold">
+            {languages?.no_report_available}
+          </CustomText>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <>

@@ -48,6 +48,9 @@ export const useGetUserVoiceReportList = <
       }
     },
     select: data => {
+      if (!data || data?.pages?.[0]?.message === 'No Voice Report Available') {
+        return data;
+      }
       return {
         data: {
           reading_data: data?.pages.flatMap(eachPage => eachPage?.reading_data),
