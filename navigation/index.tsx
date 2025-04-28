@@ -13,6 +13,7 @@ import {navigationRef} from '../RootNavigation';
 import {DEEPLINKS} from '../src/api/DeepLinks';
 import {getSessionToken} from '../src/api/auth';
 import {syncScanSession} from '../src/api/report';
+import {sendDeepLinkClickEvent} from '../src/api/settings';
 import {DEEPLINK_CONFIG} from '../src/constants';
 import {
   GET_LAB_REPORT_QUESTIONNAIRE,
@@ -244,6 +245,10 @@ const RootNavigator = () => {
       const state = getStateFromPath(path, options);
       if (!state || !state.routes) {
         return {routes: []};
+      }
+
+      if (queryParams?.comm_id) {
+        sendDeepLinkClickEvent(queryParams?.comm_id);
       }
 
       return {

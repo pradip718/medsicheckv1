@@ -15,6 +15,7 @@ const NO_AUTH_CHECK_URLS = [
   'v1/sign-up',
   'v1/login',
   'v1/app_config',
+  'v1/click_event',
 ];
 
 const axiosInstance = axios.create({
