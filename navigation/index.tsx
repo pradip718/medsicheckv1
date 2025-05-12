@@ -134,7 +134,7 @@ const RootNavigator = () => {
 
   const redirectFromDeeplink = async (url: string) => {
     if (url) {
-      const path = url?.split('?')[0]?.split('/').pop();
+      const path = url?.split('?')[0]?.replace(/\/$/, '')?.split('/').pop();
       const {session_id, profile_id} = extractQueryParams(url);
       if (session_id && profile_id) {
         setIsOpenedFromDeepLink(true);
@@ -171,7 +171,7 @@ const RootNavigator = () => {
       if (!url) {
         return '';
       }
-      const path = url.split('?')[0].split('/').pop();
+      const path = url?.split('?')[0]?.replace(/\/$/, '')?.split('/').pop();
       if (!path || !(path in DEEPLINK_CONFIG)) {
         console.warn(`Deep link path not found in config: ${path}`);
         return '';

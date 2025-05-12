@@ -140,7 +140,7 @@ const QRScanner = () => {
           startAnuraScan();
         }
 
-        const path = url.split('?')[0].split('/').pop();
+        const path = url?.split('?')[0]?.replace(/\/$/, '')?.split('/').pop();
         if (path === 'face_scan') {
           setIsFaceScanDeeplink(true);
           setDeeplinkAuth({

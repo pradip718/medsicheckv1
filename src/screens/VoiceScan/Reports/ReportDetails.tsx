@@ -43,11 +43,10 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
   }
 
   const category = readingData?.category ?? '';
+  const color = readingData?.color ?? '';
 
-  const selectedColor = getColorForValue(
-    readingData?.value,
-    config?.color_range ?? [],
-  );
+  const selectedColor =
+    color || getColorForValue(readingData?.value, config?.color_range ?? []);
 
   const parseAndRenderLinks = (text: string) => {
     const parts = [];
@@ -129,7 +128,7 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
       </View>
 
       <LinearGradient
-        className="px-6 py-4 flex-row justify-between items-center"
+        className="px-6 py-4 flex-row justify-between space-x-4 flex-1"
         colors={
           color_value
             ? [
@@ -143,7 +142,7 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
               ]
             : ['gray', 'gray']
         }>
-        <View className="flex-row items-center gap-x-4">
+        <View className="flex-row items-center gap-x-4 flex-1">
           {imageUrl ? (
             <Image source={{uri: imageUrl}} className="h-8 w-8" />
           ) : (
@@ -161,14 +160,16 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
             </CustomText>
           </View>
         </View>
-        <View>
-          <CustomText className="text-xs font-isidoraSemiBold">
-            {languages?.parameter_status}
-          </CustomText>
-          <CustomText className="text-base font-isidoraSemiBold text-right">
-            {category}
-          </CustomText>
-        </View>
+        {!!category && (
+          <View>
+            <CustomText className="text-xs font-isidoraSemiBold">
+              {languages?.parameter_status}
+            </CustomText>
+            <CustomText className="text-base font-isidoraSemiBold text-right">
+              {category}
+            </CustomText>
+          </View>
+        )}
       </LinearGradient>
 
       <View className="p-4">
