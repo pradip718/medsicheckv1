@@ -173,8 +173,8 @@ const PreviousReports = () => {
         {languages?.previous_report_title}
       </CustomText>
 
-      <View className="mt-4 items-center flex-row justify-between">
-        <CustomText className="text-base text-cardBlueBackground font-semibold">
+      <View className="mt-4 items-center flex-row space-x-2">
+        <CustomText className="text-base text-cardBlueBackground font-semibold flex-1">
           {languages?.previous_report_scores_title}
         </CustomText>
 

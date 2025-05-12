@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../store/languageStore';
 import {isAndroid} from '../../../utils';
@@ -29,6 +30,7 @@ const CustomTabBar = ({
   navigation,
 }: CustomTabBarProps) => {
   const {languages} = useLanguageStore();
+  const {bottom} = useSafeAreaInsets();
 
   const {startScan} = usePrepareFacescan();
 
@@ -51,7 +53,8 @@ const CustomTabBar = ({
   };
 
   return (
-    <View style={[styles.tabBar]}>
+    <View
+      style={[styles.tabBar, {paddingBottom: !isAndroid ? bottom - 20 : 0}]}>
       <ImageBackground
         source={require('../../../assets/images/tabbar.png')}
         className="relative"

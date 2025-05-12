@@ -8,6 +8,7 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import React, {useEffect, useRef, useState} from 'react';
 import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
+import KeepAwake from 'react-native-keep-awake';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {errorToast} from '../../../utils/toast';
@@ -85,6 +86,20 @@ const VoiceScan = () => {
       pauseTimer();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recorderState]);
+
+  useEffect(() => {
+    if (
+      recorderState === RecorderState.recording ||
+      recorderState === RecorderState.paused
+    ) {
+      KeepAwake.activate();
+    } else {
+      KeepAwake.deactivate();
+    }
+    return () => {
+      KeepAwake.deactivate();
+    };
   }, [recorderState]);
 
   useEffect(() => {

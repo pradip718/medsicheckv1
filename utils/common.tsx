@@ -105,7 +105,7 @@ export const redirectFromDeeplink = async (url: string) => {
   if (url) {
     const {session_id, profile_id, comm_id, ...restParams} =
       extractQueryParams(url);
-    const path = url?.split('?')[0]?.split('/').pop();
+    const path = url?.split('?')[0]?.replace(/\/$/, '')?.split('/').pop();
 
     if (comm_id) {
       sendDeepLinkClickEvent(comm_id);
