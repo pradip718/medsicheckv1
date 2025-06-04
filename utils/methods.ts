@@ -46,7 +46,10 @@ import {successToast} from './toast';
 
 import 'react-native-get-random-values';
 import 'react-native-url-polyfill/auto';
+
 import {VoiceScanReport} from '../types/api_response';
+
+import {ReadableStream as PolyfillReadableStream} from 'web-streams-polyfill';
 
 export const getImgBasedOnScore = (score: number) => {
   switch (true) {
@@ -776,10 +779,41 @@ export const extractQueryParams = (url: string): Record<string, string> => {
   return params;
 };
 
-export async function encryptText(text: string) {
-  let credentials = await getAWSSecretKeys();
+export function ensureReadableStreamPolyfill() {
+  try {
+    if (typeof globalThis.ReadableStream === 'undefined') {
+      Object.defineProperty(globalThis, 'ReadableStream', {
+        value: PolyfillReadableStream,
+        configurable: true,
+        writable: true,
+      });
+      console.log('✅ ReadableStream polyfilled (normal path)');
+    } else {
+      console.log('ℹ️ ReadableStream exists');
+    }
+  } catch (e) {
+    console.warn('⚠️ Could not access ReadableStream, patching manually:', e);
 
-  console.log('credentials', credentials);
+    try {
+      Object.defineProperty(globalThis, 'ReadableStream', {
+        value: PolyfillReadableStream,
+        configurable: true,
+        writable: true,
+      });
+      console.log('✅ ReadableStream polyfilled (catch path)');
+    } catch (defineError) {
+      console.error(
+        '❌ Failed to define ReadableStream even in catch:',
+        defineError,
+      );
+    }
+  }
+}
+
+export async function encryptText(text: string) {
+  ensureReadableStreamPolyfill();
+
+  let credentials = await getAWSSecretKeys();
 
   const params: EncryptCommandInput = {
     KeyId: credentials?.kms_arn,

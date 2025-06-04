@@ -1,0 +1,1111 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="mx.medsi.medsicheck.dev"
+4    android:versionCode="65"
+5    android:versionName="4.3.3" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="27"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:3:5-67
+11-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:3:22-64
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:4:5-79
+12-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:4:22-76
+13    <uses-permission android:name="android.permission.CAMERA" />
+13-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:6:5-65
+13-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:6:22-62
+14    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+14-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:7:5-81
+14-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:7:22-78
+15    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+15-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:8:5-80
+15-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:8:22-77
+16    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+16-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:10:5-81
+16-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:10:22-78
+17    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+17-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:11:5-79
+17-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:11:22-76
+18    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+18-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:12:5-70
+18-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:12:22-68
+19
+20    <uses-feature
+20-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:15:5-17:35
+21        android:name="android.hardware.camera"
+21-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:16:9-47
+22        android:required="true" />
+22-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:17:9-32
+23    <uses-feature
+23-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:18:5-20:35
+24        android:name="android.hardware.camera.front"
+24-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:19:9-53
+25        android:required="true" />
+25-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:20:9-32
+26
+27    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+27-->[:react-native-community_netinfo] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-community/netinfo/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:5-76
+27-->[:react-native-community_netinfo] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-community/netinfo/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:22-73
+28    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required to to download files without a notification -->
+28-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:5-68
+28-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:22-65
+29    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+29-->[:react-native-blob-util] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-blob-util/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:32:5-88
+29-->[:react-native-blob-util] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-blob-util/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:32:22-85
+30
+31    <uses-feature
+31-->[:react-native-camera] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-camera/android/build/intermediates/merged_manifest/generalDebug/processGeneralDebugManifest/AndroidManifest.xml:12:5-14:36
+32        android:name="android.hardware.camera.autofocus"
+32-->[:react-native-camera] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-camera/android/build/intermediates/merged_manifest/generalDebug/processGeneralDebugManifest/AndroidManifest.xml:13:9-57
+33        android:required="false" />
+33-->[:react-native-camera] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-camera/android/build/intermediates/merged_manifest/generalDebug/processGeneralDebugManifest/AndroidManifest.xml:14:9-33
+34    <!--
+35    This manifest file is used only by Gradle to configure debug-only capabilities
+36    for React Native Apps.
+37    -->
+38    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+38-->[com.facebook.react:react-android:0.76.6] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/05138ce38b327ac130dad828e819df3f/transformed/react-android-0.76.6-debug/AndroidManifest.xml:16:5-78
+38-->[com.facebook.react:react-android:0.76.6] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/05138ce38b327ac130dad828e819df3f/transformed/react-android-0.76.6-debug/AndroidManifest.xml:16:22-75
+39    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+39-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:23:5-77
+39-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:23:22-74
+40    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+40-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:26:5-82
+40-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:26:22-79
+41    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+41-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:25:5-79
+41-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:25:22-76
+42    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
+42-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:26:5-88
+42-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:26:22-85
+43    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
+43-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:27:5-82
+43-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:27:22-79
+44    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+44-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:26:5-110
+44-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:26:22-107
+45    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+45-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:25:5-81
+45-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:25:22-78
+46    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+46-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:26:5-77
+46-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:26:22-74
+47
+48    <permission
+48-->[androidx.core:core:1.9.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cb4b6dfd3b4e8e2f886e59dd1f015cfc/transformed/core-1.9.0/AndroidManifest.xml:22:5-24:47
+49        android:name="mx.medsi.medsicheck.dev.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+49-->[androidx.core:core:1.9.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cb4b6dfd3b4e8e2f886e59dd1f015cfc/transformed/core-1.9.0/AndroidManifest.xml:23:9-81
+50        android:protectionLevel="signature" />
+50-->[androidx.core:core:1.9.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cb4b6dfd3b4e8e2f886e59dd1f015cfc/transformed/core-1.9.0/AndroidManifest.xml:24:9-44
+51
+52    <uses-permission android:name="mx.medsi.medsicheck.dev.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+52-->[androidx.core:core:1.9.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cb4b6dfd3b4e8e2f886e59dd1f015cfc/transformed/core-1.9.0/AndroidManifest.xml:26:5-97
+52-->[androidx.core:core:1.9.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cb4b6dfd3b4e8e2f886e59dd1f015cfc/transformed/core-1.9.0/AndroidManifest.xml:26:22-94
+53    <uses-permission android:name="android.permission.VIBRATE" />
+53-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:13:5-66
+53-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:13:22-63
+54    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+54-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:16:5-81
+54-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:16:22-78
+55    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+55-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:17:5-79
+55-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:17:22-76
+56    <uses-permission
+56-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:18:5-20:38
+57        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
+57-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:19:9-73
+58        android:maxSdkVersion="30" /> <!-- For Xiaomi devices to enable heads-up notifications as default (https://github.com/invertase/notifee/issues/296) -->
+58-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:20:9-35
+59    <uses-permission
+59-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:22:5-24:38
+60        android:name="android.permission.ACCESS_NOTIFICATION_POLICY"
+60-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:23:9-69
+61        android:minSdkVersion="23" />
+61-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:24:9-35
+62    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+62-->[:biosensesignal-react-native-sdk:biosensesignal-sdk] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6df592583e44ba925131eaed576d88d2/transformed/biosensesignalsdk/AndroidManifest.xml:10:5-75
+62-->[:biosensesignal-react-native-sdk:biosensesignal-sdk] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6df592583e44ba925131eaed576d88d2/transformed/biosensesignalsdk/AndroidManifest.xml:10:22-72
+63
+64    <uses-feature
+64-->[:biosensesignal-react-native-sdk:biosensesignal-sdk] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6df592583e44ba925131eaed576d88d2/transformed/biosensesignalsdk/AndroidManifest.xml:21:5-23:36
+65        android:name="android.hardware.camera.front.autofocus"
+65-->[:biosensesignal-react-native-sdk:biosensesignal-sdk] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6df592583e44ba925131eaed576d88d2/transformed/biosensesignalsdk/AndroidManifest.xml:22:9-63
+66        android:required="false" />
+66-->[:biosensesignal-react-native-sdk:biosensesignal-sdk] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6df592583e44ba925131eaed576d88d2/transformed/biosensesignalsdk/AndroidManifest.xml:23:9-33
+67
+68    <application
+68-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:22:5-59:19
+69        android:name="mx.medsi.medsicheck.MainApplication"
+69-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:23:9-40
+70        android:allowBackup="false"
+70-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:27:9-36
+71        android:alwaysRetainTaskState="true"
+71-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:30:9-45
+72        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+72-->[androidx.core:core:1.9.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cb4b6dfd3b4e8e2f886e59dd1f015cfc/transformed/core-1.9.0/AndroidManifest.xml:28:18-86
+73        android:debuggable="true"
+74        android:extractNativeLibs="true"
+75        android:icon="@mipmap/ic_launcher"
+75-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:25:9-43
+76        android:label="@string/app_name"
+76-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:24:9-41
+77        android:roundIcon="@mipmap/ic_launcher_round"
+77-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:26:9-54
+78        android:theme="@style/AppTheme"
+78-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:28:9-40
+79        android:usesCleartextTraffic="true" >
+79-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:29:9-44
+80        <activity
+80-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:31:9-34:52
+81            android:name="mx.medsi.medsicheck.ui.AnuraExampleMeasurementActivity"
+81-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:32:13-63
+82            android:launchMode="singleInstance"
+82-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:33:13-48
+83            android:screenOrientation="portrait" />
+83-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:34:13-49
+84        <activity
+84-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:35:9-58:20
+85            android:name="mx.medsi.medsicheck.ui.MainActivity"
+85-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:36:13-44
+86            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+86-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:38:13-122
+87            android:exported="true"
+87-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:41:13-36
+88            android:label="@string/app_name"
+88-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:37:13-45
+89            android:launchMode="singleTask"
+89-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:39:13-44
+90            android:screenOrientation="portrait"
+90-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:42:13-49
+91            android:theme="@style/BootTheme"
+91-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:43:13-45
+92            android:windowSoftInputMode="adjustResize" >
+92-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:40:13-55
+93            <intent-filter>
+93-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:45:13-48:29
+94                <action android:name="android.intent.action.MAIN" />
+94-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:46:17-69
+94-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:46:25-66
+95
+96                <category android:name="android.intent.category.LAUNCHER" />
+96-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:47:17-77
+96-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:47:27-74
+97            </intent-filter>
+98            <intent-filter android:autoVerify="true" >
+98-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:49:13-57:29
+98-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:49:28-53
+99                <action android:name="android.intent.action.VIEW" />
+99-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:50:17-69
+99-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:50:25-66
+100
+101                <category android:name="android.intent.category.DEFAULT" />
+101-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:52:17-76
+101-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:52:27-73
+102                <category android:name="android.intent.category.BROWSABLE" />
+102-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:53:17-78
+102-->/Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/android/app/src/main/AndroidManifest.xml:53:27-75
+103
+104                <data android:scheme="https" />
+105                <data
+106                    android:host="redirect.medsicheck.medsi.ai"
+107                    android:pathPrefix="/dev" />
+108            </intent-filter>
+109        </activity>
+110
+111        <provider
+111-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-16:20
+112            android:name="com.reactnativecommunity.webview.RNCWebViewFileProvider"
+112-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-83
+113            android:authorities="mx.medsi.medsicheck.dev.fileprovider"
+113-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-64
+114            android:exported="false"
+114-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-37
+115            android:grantUriPermissions="true" >
+115-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-47
+116            <meta-data
+116-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-15:63
+117                android:name="android.support.FILE_PROVIDER_PATHS"
+117-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:17-67
+118                android:resource="@xml/file_provider_paths" />
+118-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:17-60
+119        </provider>
+120        <provider
+120-->[:notifee_react-native] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@notifee/react-native/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:40
+121            android:name="io.invertase.notifee.NotifeeInitProvider"
+121-->[:notifee_react-native] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@notifee/react-native/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-68
+122            android:authorities="mx.medsi.medsicheck.dev.notifee-init-provider"
+122-->[:notifee_react-native] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@notifee/react-native/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-73
+123            android:exported="false"
+123-->[:notifee_react-native] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@notifee/react-native/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-37
+124            android:initOrder="-100" />
+124-->[:notifee_react-native] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@notifee/react-native/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-37
+125
+126        <service
+126-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:9-14:40
+127            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingHeadlessService"
+127-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-103
+128            android:exported="false" />
+128-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:13-37
+129        <service
+129-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:9-21:19
+130            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingService"
+130-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:16:13-95
+131            android:exported="false" >
+131-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:17:13-37
+132            <intent-filter>
+132-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:18:13-20:29
+133                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+133-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:19:17-78
+133-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:19:25-75
+134            </intent-filter>
+135        </service>
+136
+137        <receiver
+137-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:23:9-30:20
+138            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingReceiver"
+138-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:24:13-96
+139            android:exported="true"
+139-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:25:13-36
+140            android:permission="com.google.android.c2dm.permission.SEND" >
+140-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:26:13-73
+141            <intent-filter>
+141-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:27:13-29:29
+142                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+142-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:28:17-81
+142-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:28:25-78
+143            </intent-filter>
+144        </receiver>
+145
+146        <meta-data
+146-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:32:9-34:36
+147            android:name="firebase_messaging_auto_init_enabled"
+147-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:33:13-64
+148            android:value="true" />
+148-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:34:13-33
+149        <meta-data
+149-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:35:9-37:32
+150            android:name="com.google.firebase.messaging.default_notification_channel_id"
+150-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:36:13-89
+151            android:value="" />
+151-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:37:13-29
+152        <meta-data
+152-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:38:9-40:47
+153            android:name="com.google.firebase.messaging.default_notification_color"
+153-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:39:13-84
+154            android:resource="@color/white" />
+154-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:40:13-44
+155        <meta-data
+155-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:9-11:36
+156            android:name="app_data_collection_default_enabled"
+156-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-63
+157            android:value="true" />
+157-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-33
+158
+159        <service
+159-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:9-21:19
+160            android:name="com.google.firebase.components.ComponentDiscoveryService"
+160-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:13-84
+161            android:directBootAware="true"
+161-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:13-43
+162            android:exported="false" >
+162-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:16:13-37
+163            <meta-data
+163-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:18:13-20:85
+164                android:name="com.google.firebase.components:io.invertase.firebase.app.ReactNativeFirebaseAppRegistrar"
+164-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:19:17-120
+165                android:value="com.google.firebase.components.ComponentRegistrar" />
+165-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:20:17-82
+166            <meta-data
+166-->[com.google.firebase:firebase-perf-ktx:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a82b3ddbd52b9ebf235351589cdbe2d6/transformed/firebase-perf-ktx-21.0.1/AndroidManifest.xml:12:13-14:85
+167                android:name="com.google.firebase.components:com.google.firebase.perf.ktx.FirebasePerfLegacyRegistrar"
+167-->[com.google.firebase:firebase-perf-ktx:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a82b3ddbd52b9ebf235351589cdbe2d6/transformed/firebase-perf-ktx-21.0.1/AndroidManifest.xml:13:17-119
+168                android:value="com.google.firebase.components.ComponentRegistrar" />
+168-->[com.google.firebase:firebase-perf-ktx:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a82b3ddbd52b9ebf235351589cdbe2d6/transformed/firebase-perf-ktx-21.0.1/AndroidManifest.xml:14:17-82
+169            <meta-data
+169-->[com.google.firebase:firebase-perf:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cea8c213f238673223cf2dfaa66afe3f/transformed/firebase-perf-21.0.1/AndroidManifest.xml:14:13-16:85
+170                android:name="com.google.firebase.components:com.google.firebase.perf.FirebasePerfKtxRegistrar"
+170-->[com.google.firebase:firebase-perf:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cea8c213f238673223cf2dfaa66afe3f/transformed/firebase-perf-21.0.1/AndroidManifest.xml:15:17-112
+171                android:value="com.google.firebase.components.ComponentRegistrar" />
+171-->[com.google.firebase:firebase-perf:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cea8c213f238673223cf2dfaa66afe3f/transformed/firebase-perf-21.0.1/AndroidManifest.xml:16:17-82
+172            <meta-data
+172-->[com.google.firebase:firebase-perf:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cea8c213f238673223cf2dfaa66afe3f/transformed/firebase-perf-21.0.1/AndroidManifest.xml:17:13-19:85
+173                android:name="com.google.firebase.components:com.google.firebase.perf.FirebasePerfRegistrar"
+173-->[com.google.firebase:firebase-perf:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cea8c213f238673223cf2dfaa66afe3f/transformed/firebase-perf-21.0.1/AndroidManifest.xml:18:17-109
+174                android:value="com.google.firebase.components.ComponentRegistrar" />
+174-->[com.google.firebase:firebase-perf:21.0.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/cea8c213f238673223cf2dfaa66afe3f/transformed/firebase-perf-21.0.1/AndroidManifest.xml:19:17-82
+175            <meta-data
+175-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:57:13-59:85
+176                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar"
+176-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:58:17-122
+177                android:value="com.google.firebase.components.ComponentRegistrar" />
+177-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:59:17-82
+178            <meta-data
+178-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:60:13-62:85
+179                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+179-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:61:17-119
+180                android:value="com.google.firebase.components.ComponentRegistrar" />
+180-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:62:17-82
+181            <meta-data
+181-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:37:13-39:85
+182                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+182-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:38:17-139
+183                android:value="com.google.firebase.components.ComponentRegistrar" />
+183-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:39:17-82
+184            <meta-data
+184-->[com.google.firebase:firebase-sessions:2.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9307011dd9f294db296c0d11be602f94/transformed/firebase-sessions-2.0.0/AndroidManifest.xml:29:13-31:85
+185                android:name="com.google.firebase.components:com.google.firebase.sessions.FirebaseSessionsRegistrar"
+185-->[com.google.firebase:firebase-sessions:2.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9307011dd9f294db296c0d11be602f94/transformed/firebase-sessions-2.0.0/AndroidManifest.xml:30:17-117
+186                android:value="com.google.firebase.components.ComponentRegistrar" />
+186-->[com.google.firebase:firebase-sessions:2.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9307011dd9f294db296c0d11be602f94/transformed/firebase-sessions-2.0.0/AndroidManifest.xml:31:17-82
+187            <meta-data
+187-->[com.google.firebase:firebase-config:22.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b997adf7bd96ed1650dd295b6b6ebd13/transformed/firebase-config-22.0.0/AndroidManifest.xml:29:13-31:85
+188                android:name="com.google.firebase.components:com.google.firebase.remoteconfig.FirebaseRemoteConfigKtxRegistrar"
+188-->[com.google.firebase:firebase-config:22.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b997adf7bd96ed1650dd295b6b6ebd13/transformed/firebase-config-22.0.0/AndroidManifest.xml:30:17-128
+189                android:value="com.google.firebase.components.ComponentRegistrar" />
+189-->[com.google.firebase:firebase-config:22.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b997adf7bd96ed1650dd295b6b6ebd13/transformed/firebase-config-22.0.0/AndroidManifest.xml:31:17-82
+190            <meta-data
+190-->[com.google.firebase:firebase-config:22.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b997adf7bd96ed1650dd295b6b6ebd13/transformed/firebase-config-22.0.0/AndroidManifest.xml:32:13-34:85
+191                android:name="com.google.firebase.components:com.google.firebase.remoteconfig.RemoteConfigRegistrar"
+191-->[com.google.firebase:firebase-config:22.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b997adf7bd96ed1650dd295b6b6ebd13/transformed/firebase-config-22.0.0/AndroidManifest.xml:33:17-117
+192                android:value="com.google.firebase.components.ComponentRegistrar" />
+192-->[com.google.firebase:firebase-config:22.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b997adf7bd96ed1650dd295b6b6ebd13/transformed/firebase-config-22.0.0/AndroidManifest.xml:34:17-82
+193            <meta-data
+193-->[com.google.firebase:firebase-installations:18.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/381a668a76466b81a4b78eb202054f7c/transformed/firebase-installations-18.0.0/AndroidManifest.xml:15:13-17:85
+194                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+194-->[com.google.firebase:firebase-installations:18.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/381a668a76466b81a4b78eb202054f7c/transformed/firebase-installations-18.0.0/AndroidManifest.xml:16:17-130
+195                android:value="com.google.firebase.components.ComponentRegistrar" />
+195-->[com.google.firebase:firebase-installations:18.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/381a668a76466b81a4b78eb202054f7c/transformed/firebase-installations-18.0.0/AndroidManifest.xml:17:17-82
+196            <meta-data
+196-->[com.google.firebase:firebase-installations:18.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/381a668a76466b81a4b78eb202054f7c/transformed/firebase-installations-18.0.0/AndroidManifest.xml:18:13-20:85
+197                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+197-->[com.google.firebase:firebase-installations:18.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/381a668a76466b81a4b78eb202054f7c/transformed/firebase-installations-18.0.0/AndroidManifest.xml:19:17-127
+198                android:value="com.google.firebase.components.ComponentRegistrar" />
+198-->[com.google.firebase:firebase-installations:18.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/381a668a76466b81a4b78eb202054f7c/transformed/firebase-installations-18.0.0/AndroidManifest.xml:20:17-82
+199            <meta-data
+199-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b092eb3bb57d584bf1d7a6eefa952add/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
+200                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+200-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b092eb3bb57d584bf1d7a6eefa952add/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:13:17-116
+201                android:value="com.google.firebase.components.ComponentRegistrar" />
+201-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/b092eb3bb57d584bf1d7a6eefa952add/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:14:17-82
+202            <meta-data
+202-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:35:13-37:85
+203                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+203-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:36:17-109
+204                android:value="com.google.firebase.components.ComponentRegistrar" />
+204-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:37:17-82
+205            <meta-data
+205-->[com.google.firebase:firebase-abt:21.1.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/2237a77d948cf7baa62658ee5a7226c2/transformed/firebase-abt-21.1.1/AndroidManifest.xml:12:13-14:85
+206                android:name="com.google.firebase.components:com.google.firebase.abt.component.AbtRegistrar"
+206-->[com.google.firebase:firebase-abt:21.1.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/2237a77d948cf7baa62658ee5a7226c2/transformed/firebase-abt-21.1.1/AndroidManifest.xml:13:17-109
+207                android:value="com.google.firebase.components.ComponentRegistrar" />
+207-->[com.google.firebase:firebase-abt:21.1.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/2237a77d948cf7baa62658ee5a7226c2/transformed/firebase-abt-21.1.1/AndroidManifest.xml:14:17-82
+208            <meta-data
+208-->[com.google.firebase:firebase-datatransport:18.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c1bfcda6281321ab900e800b2d2c1e1/transformed/firebase-datatransport-18.2.0/AndroidManifest.xml:25:13-27:85
+209                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+209-->[com.google.firebase:firebase-datatransport:18.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c1bfcda6281321ab900e800b2d2c1e1/transformed/firebase-datatransport-18.2.0/AndroidManifest.xml:26:17-115
+210                android:value="com.google.firebase.components.ComponentRegistrar" />
+210-->[com.google.firebase:firebase-datatransport:18.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c1bfcda6281321ab900e800b2d2c1e1/transformed/firebase-datatransport-18.2.0/AndroidManifest.xml:27:17-82
+211        </service>
+212
+213        <provider
+213-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:23:9-27:38
+214            android:name="io.invertase.firebase.app.ReactNativeFirebaseAppInitProvider"
+214-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:24:13-88
+215            android:authorities="mx.medsi.medsicheck.dev.reactnativefirebaseappinitprovider"
+215-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:25:13-86
+216            android:exported="false"
+216-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:26:13-37
+217            android:initOrder="99" />
+217-->[:react-native-firebase_app] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:27:13-35
+218
+219        <meta-data
+219-->[:sentry_react-native] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@sentry/react-native/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:9-13:37
+220            android:name="io.sentry.auto-init"
+220-->[:sentry_react-native] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@sentry/react-native/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-47
+221            android:value="false" />
+221-->[:sentry_react-native] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@sentry/react-native/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-34
+222
+223        <provider
+223-->[:react-native-blob-util] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-blob-util/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:35:9-43:20
+224            android:name="com.ReactNativeBlobUtil.Utils.FileProvider"
+224-->[:react-native-blob-util] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-blob-util/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:36:13-70
+225            android:authorities="mx.medsi.medsicheck.dev.provider"
+225-->[:react-native-blob-util] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-blob-util/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:37:13-60
+226            android:exported="false"
+226-->[:react-native-blob-util] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-blob-util/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:38:13-37
+227            android:grantUriPermissions="true" >
+227-->[:react-native-blob-util] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-blob-util/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:39:13-47
+228            <meta-data
+228-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-15:63
+229                android:name="android.support.FILE_PROVIDER_PATHS"
+229-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:17-67
+230                android:resource="@xml/provider_paths" />
+230-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:17-60
+231        </provider>
+232        <provider
+232-->[:react-native-image-picker] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-16:20
+233            android:name="com.imagepicker.ImagePickerProvider"
+233-->[:react-native-image-picker] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-63
+234            android:authorities="mx.medsi.medsicheck.dev.imagepickerprovider"
+234-->[:react-native-image-picker] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-71
+235            android:exported="false"
+235-->[:react-native-image-picker] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-37
+236            android:grantUriPermissions="true" >
+236-->[:react-native-image-picker] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-47
+237            <meta-data
+237-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-15:63
+238                android:name="android.support.FILE_PROVIDER_PATHS"
+238-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:17-67
+239                android:resource="@xml/imagepicker_provider_paths" />
+239-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:17-60
+240        </provider>
+241        <provider
+241-->[:react-native-share] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-share/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-16:20
+242            android:name="cl.json.RNShareFileProvider"
+242-->[:react-native-share] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-share/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-55
+243            android:authorities="mx.medsi.medsicheck.dev.rnshare.fileprovider"
+243-->[:react-native-share] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-share/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-72
+244            android:exported="false"
+244-->[:react-native-share] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-share/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-37
+245            android:grantUriPermissions="true" >
+245-->[:react-native-share] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-share/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-47
+246            <meta-data
+246-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-15:63
+247                android:name="android.support.FILE_PROVIDER_PATHS"
+247-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:17-67
+248                android:resource="@xml/share_download_paths" />
+248-->[:react-native-webview] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/react-native-webview/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:17-60
+249        </provider>
+250
+251        <activity
+251-->[com.facebook.react:react-android:0.76.6] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/05138ce38b327ac130dad828e819df3f/transformed/react-android-0.76.6-debug/AndroidManifest.xml:19:9-21:40
+252            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+252-->[com.facebook.react:react-android:0.76.6] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/05138ce38b327ac130dad828e819df3f/transformed/react-android-0.76.6-debug/AndroidManifest.xml:20:13-77
+253            android:exported="false" />
+253-->[com.facebook.react:react-android:0.76.6] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/05138ce38b327ac130dad828e819df3f/transformed/react-android-0.76.6-debug/AndroidManifest.xml:21:13-37
+254        <activity
+254-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:23:9-27:75
+255            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+255-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:24:13-93
+256            android:excludeFromRecents="true"
+256-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:25:13-46
+257            android:exported="false"
+257-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:26:13-37
+258            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+258-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:27:13-72
+259        <!--
+260            Service handling Google Sign-In user revocation. For apps that do not integrate with
+261            Google Sign-In, this service will never be started.
+262        -->
+263        <service
+263-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:33:9-37:51
+264            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+264-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:34:13-89
+265            android:exported="true"
+265-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:35:13-36
+266            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+266-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:36:13-107
+267            android:visibleToInstantApps="true" />
+267-->[com.google.android.gms:play-services-auth:21.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/5a85f338f15fce82b148533df910a98f/transformed/play-services-auth-21.2.0/AndroidManifest.xml:37:13-48
+268
+269        <receiver
+269-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:29:9-40:20
+270            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+270-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:30:13-78
+271            android:exported="true"
+271-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:31:13-36
+272            android:permission="com.google.android.c2dm.permission.SEND" >
+272-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:32:13-73
+273            <intent-filter>
+273-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:27:13-29:29
+274                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+274-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:28:17-81
+274-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:28:25-78
+275            </intent-filter>
+276
+277            <meta-data
+277-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:37:13-39:40
+278                android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED"
+278-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:38:17-92
+279                android:value="true" />
+279-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:39:17-37
+280        </receiver>
+281        <!--
+282             FirebaseMessagingService performs security checks at runtime,
+283             but set to not exported to explicitly avoid allowing another app to call it.
+284        -->
+285        <service
+285-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:46:9-53:19
+286            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+286-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:47:13-82
+287            android:directBootAware="true"
+287-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:48:13-43
+288            android:exported="false" >
+288-->[com.google.firebase:firebase-messaging:24.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/68729e494a19ddf8c9223da263d8ec20/transformed/firebase-messaging-24.0.0/AndroidManifest.xml:49:13-37
+289            <intent-filter android:priority="-500" >
+289-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:18:13-20:29
+290                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+290-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:19:17-78
+290-->[:react-native-firebase_messaging] /Users/pradipshrestha/Organization/OpenFabric/MedsiOldApp/MedsiCheck/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:19:25-75
+291            </intent-filter>
+292        </service>
+293        <service
+293-->[com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9ca9a7cb4f3fefca99a70e4920f711dc/transformed/play-services-mlkit-barcode-scanning-16.2.0/AndroidManifest.xml:9:9-15:19
+294            android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService"
+294-->[com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9ca9a7cb4f3fefca99a70e4920f711dc/transformed/play-services-mlkit-barcode-scanning-16.2.0/AndroidManifest.xml:10:13-91
+295            android:directBootAware="true"
+295-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:17:13-43
+296            android:exported="false" >
+296-->[com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9ca9a7cb4f3fefca99a70e4920f711dc/transformed/play-services-mlkit-barcode-scanning-16.2.0/AndroidManifest.xml:11:13-37
+297            <meta-data
+297-->[com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9ca9a7cb4f3fefca99a70e4920f711dc/transformed/play-services-mlkit-barcode-scanning-16.2.0/AndroidManifest.xml:12:13-14:85
+298                android:name="com.google.firebase.components:com.google.mlkit.vision.barcode.internal.BarcodeRegistrar"
+298-->[com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9ca9a7cb4f3fefca99a70e4920f711dc/transformed/play-services-mlkit-barcode-scanning-16.2.0/AndroidManifest.xml:13:17-120
+299                android:value="com.google.firebase.components.ComponentRegistrar" />
+299-->[com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9ca9a7cb4f3fefca99a70e4920f711dc/transformed/play-services-mlkit-barcode-scanning-16.2.0/AndroidManifest.xml:14:17-82
+300            <meta-data
+300-->[com.google.android.gms:play-services-mlkit-face-detection:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/19e54f9d383451a5fb729641bb8a59b2/transformed/play-services-mlkit-face-detection-16.2.0/AndroidManifest.xml:12:13-14:85
+301                android:name="com.google.firebase.components:com.google.mlkit.vision.face.internal.FaceRegistrar"
+301-->[com.google.android.gms:play-services-mlkit-face-detection:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/19e54f9d383451a5fb729641bb8a59b2/transformed/play-services-mlkit-face-detection-16.2.0/AndroidManifest.xml:13:17-114
+302                android:value="com.google.firebase.components.ComponentRegistrar" />
+302-->[com.google.android.gms:play-services-mlkit-face-detection:16.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/19e54f9d383451a5fb729641bb8a59b2/transformed/play-services-mlkit-face-detection-16.2.0/AndroidManifest.xml:14:17-82
+303            <meta-data
+303-->[com.google.android.gms:play-services-mlkit-text-recognition:16.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/03e95a219915aaa8491f4f8787b84413/transformed/play-services-mlkit-text-recognition-16.3.0/AndroidManifest.xml:12:13-14:85
+304                android:name="com.google.firebase.components:com.google.mlkit.vision.text.internal.TextRegistrar"
+304-->[com.google.android.gms:play-services-mlkit-text-recognition:16.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/03e95a219915aaa8491f4f8787b84413/transformed/play-services-mlkit-text-recognition-16.3.0/AndroidManifest.xml:13:17-114
+305                android:value="com.google.firebase.components.ComponentRegistrar" />
+305-->[com.google.android.gms:play-services-mlkit-text-recognition:16.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/03e95a219915aaa8491f4f8787b84413/transformed/play-services-mlkit-text-recognition-16.3.0/AndroidManifest.xml:14:17-82
+306            <meta-data
+306-->[com.google.mlkit:vision-common:16.5.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/f3892533d87eae65850dfec740e4c86f/transformed/vision-common-16.5.0/AndroidManifest.xml:12:13-14:85
+307                android:name="com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar"
+307-->[com.google.mlkit:vision-common:16.5.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/f3892533d87eae65850dfec740e4c86f/transformed/vision-common-16.5.0/AndroidManifest.xml:13:17-124
+308                android:value="com.google.firebase.components.ComponentRegistrar" />
+308-->[com.google.mlkit:vision-common:16.5.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/f3892533d87eae65850dfec740e4c86f/transformed/vision-common-16.5.0/AndroidManifest.xml:14:17-82
+309            <meta-data
+309-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:20:13-22:85
+310                android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar"
+310-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:21:17-120
+311                android:value="com.google.firebase.components.ComponentRegistrar" />
+311-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:22:17-82
+312        </service>
+313
+314        <provider
+314-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:9:9-13:38
+315            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
+315-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:10:13-78
+316            android:authorities="mx.medsi.medsicheck.dev.mlkitinitprovider"
+316-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:11:13-69
+317            android:exported="false"
+317-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:12:13-37
+318            android:initOrder="99" />
+318-->[com.google.mlkit:common:17.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/a6a47616283b92640176cfabb9bbffca/transformed/common-17.2.0/AndroidManifest.xml:13:13-35
+319
+320        <activity
+320-->[com.google.android.gms:play-services-base:18.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/44c2da06d87f2cb1f1beaf14aebf97f5/transformed/play-services-base-18.3.0/AndroidManifest.xml:20:9-22:45
+321            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+321-->[com.google.android.gms:play-services-base:18.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/44c2da06d87f2cb1f1beaf14aebf97f5/transformed/play-services-base-18.3.0/AndroidManifest.xml:20:19-85
+322            android:exported="false"
+322-->[com.google.android.gms:play-services-base:18.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/44c2da06d87f2cb1f1beaf14aebf97f5/transformed/play-services-base-18.3.0/AndroidManifest.xml:22:19-43
+323            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+323-->[com.google.android.gms:play-services-base:18.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/44c2da06d87f2cb1f1beaf14aebf97f5/transformed/play-services-base-18.3.0/AndroidManifest.xml:21:19-78
+324
+325        <property
+325-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:30:9-32:61
+326            android:name="android.adservices.AD_SERVICES_CONFIG"
+326-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:31:13-65
+327            android:resource="@xml/ga_ad_services_config" />
+327-->[com.google.android.gms:play-services-measurement-api:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/87d5915577ac4395cddb5bbc2e79a6c6/transformed/play-services-measurement-api-22.0.2/AndroidManifest.xml:32:13-58
+328
+329        <service
+329-->[com.google.firebase:firebase-sessions:2.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9307011dd9f294db296c0d11be602f94/transformed/firebase-sessions-2.0.0/AndroidManifest.xml:22:9-25:40
+330            android:name="com.google.firebase.sessions.SessionLifecycleService"
+330-->[com.google.firebase:firebase-sessions:2.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9307011dd9f294db296c0d11be602f94/transformed/firebase-sessions-2.0.0/AndroidManifest.xml:23:13-80
+331            android:enabled="true"
+331-->[com.google.firebase:firebase-sessions:2.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9307011dd9f294db296c0d11be602f94/transformed/firebase-sessions-2.0.0/AndroidManifest.xml:24:13-35
+332            android:exported="false" />
+332-->[com.google.firebase:firebase-sessions:2.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/9307011dd9f294db296c0d11be602f94/transformed/firebase-sessions-2.0.0/AndroidManifest.xml:25:13-37
+333
+334        <provider
+334-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:23:9-28:39
+335            android:name="com.google.firebase.provider.FirebaseInitProvider"
+335-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:24:13-77
+336            android:authorities="mx.medsi.medsicheck.dev.firebaseinitprovider"
+336-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:25:13-72
+337            android:directBootAware="true"
+337-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:26:13-43
+338            android:exported="false"
+338-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:27:13-37
+339            android:initOrder="100" />
+339-->[com.google.firebase:firebase-common:21.0.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/e1cb98831ae3ea34687048f55c45450b/transformed/firebase-common-21.0.0/AndroidManifest.xml:28:13-36
+340
+341        <receiver
+341-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:29:9-33:20
+342            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+342-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:30:13-85
+343            android:enabled="true"
+343-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:31:13-35
+344            android:exported="false" >
+344-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:32:13-37
+345        </receiver>
+346
+347        <service
+347-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:35:9-38:40
+348            android:name="com.google.android.gms.measurement.AppMeasurementService"
+348-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:36:13-84
+349            android:enabled="true"
+349-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:37:13-35
+350            android:exported="false" />
+350-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:38:13-37
+351        <service
+351-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:39:9-43:72
+352            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+352-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:40:13-87
+353            android:enabled="true"
+353-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:41:13-35
+354            android:exported="false"
+354-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:42:13-37
+355            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- 'android:authorities' must be unique in the device, across all apps -->
+355-->[com.google.android.gms:play-services-measurement:22.0.2] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/0f2569ed274c03a7d2f92256cbd02293/transformed/play-services-measurement-22.0.2/AndroidManifest.xml:43:13-69
+356        <provider
+356-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:12:9-15:40
+357            android:name="io.sentry.android.core.SentryInitProvider"
+357-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:13:13-69
+358            android:authorities="mx.medsi.medsicheck.dev.SentryInitProvider"
+358-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:14:13-70
+359            android:exported="false" />
+359-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:15:13-37
+360        <provider
+360-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:16:9-20:39
+361            android:name="io.sentry.android.core.SentryPerformanceProvider"
+361-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:17:13-76
+362            android:authorities="mx.medsi.medsicheck.dev.SentryPerformanceProvider"
+362-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:18:13-77
+363            android:exported="false"
+363-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:19:13-37
+364            android:initOrder="200" />
+364-->[io.sentry:sentry-android-core:7.20.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c738b27fd205919ce39f00411825045/transformed/sentry-android-core-7.20.0/AndroidManifest.xml:20:13-36
+365        <provider
+365-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:29:9-37:20
+366            android:name="androidx.startup.InitializationProvider"
+366-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:30:13-67
+367            android:authorities="mx.medsi.medsicheck.dev.androidx-startup"
+367-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:31:13-68
+368            android:exported="false" >
+368-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:32:13-37
+369            <meta-data
+369-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:34:13-36:52
+370                android:name="androidx.work.WorkManagerInitializer"
+370-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:35:17-68
+371                android:value="androidx.startup" />
+371-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:36:17-49
+372            <meta-data
+372-->[androidx.emoji2:emoji2:1.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/88bf7357d6b759ad1bcd639c8e094710/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+373                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+373-->[androidx.emoji2:emoji2:1.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/88bf7357d6b759ad1bcd639c8e094710/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+374                android:value="androidx.startup" />
+374-->[androidx.emoji2:emoji2:1.2.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/88bf7357d6b759ad1bcd639c8e094710/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+375            <meta-data
+375-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/991a4b21e27f22c401fb570f9dc09792/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:29:13-31:52
+376                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+376-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/991a4b21e27f22c401fb570f9dc09792/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:30:17-78
+377                android:value="androidx.startup" />
+377-->[androidx.lifecycle:lifecycle-process:2.6.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/991a4b21e27f22c401fb570f9dc09792/transformed/lifecycle-process-2.6.1/AndroidManifest.xml:31:17-49
+378            <meta-data
+378-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
+379                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+379-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
+380                android:value="androidx.startup" />
+380-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
+381        </provider>
+382
+383        <service
+383-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:39:9-45:35
+384            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+384-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:40:13-88
+385            android:directBootAware="false"
+385-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:41:13-44
+386            android:enabled="@bool/enable_system_alarm_service_default"
+386-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:42:13-72
+387            android:exported="false" />
+387-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:43:13-37
+388        <service
+388-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:46:9-52:35
+389            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+389-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:47:13-84
+390            android:directBootAware="false"
+390-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:48:13-44
+391            android:enabled="@bool/enable_system_job_service_default"
+391-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:49:13-70
+392            android:exported="true"
+392-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:50:13-36
+393            android:permission="android.permission.BIND_JOB_SERVICE" />
+393-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:51:13-69
+394        <service
+394-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:53:9-59:35
+395            android:name="androidx.work.impl.foreground.SystemForegroundService"
+395-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:54:13-81
+396            android:directBootAware="false"
+396-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:55:13-44
+397            android:enabled="@bool/enable_system_foreground_service_default"
+397-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:56:13-77
+398            android:exported="false" />
+398-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:57:13-37
+399
+400        <receiver
+400-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:61:9-66:35
+401            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+401-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:62:13-88
+402            android:directBootAware="false"
+402-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:63:13-44
+403            android:enabled="true"
+403-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:64:13-35
+404            android:exported="false" />
+404-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:65:13-37
+405        <receiver
+405-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:67:9-77:20
+406            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+406-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:68:13-106
+407            android:directBootAware="false"
+407-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:69:13-44
+408            android:enabled="false"
+408-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:70:13-36
+409            android:exported="false" >
+409-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:71:13-37
+410            <intent-filter>
+410-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:73:13-76:29
+411                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+411-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:74:17-87
+411-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:74:25-84
+412                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+412-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:75:17-90
+412-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:75:25-87
+413            </intent-filter>
+414        </receiver>
+415        <receiver
+415-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:78:9-88:20
+416            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+416-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:79:13-104
+417            android:directBootAware="false"
+417-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:80:13-44
+418            android:enabled="false"
+418-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:81:13-36
+419            android:exported="false" >
+419-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:82:13-37
+420            <intent-filter>
+420-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:84:13-87:29
+421                <action android:name="android.intent.action.BATTERY_OKAY" />
+421-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:85:17-77
+421-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:85:25-74
+422                <action android:name="android.intent.action.BATTERY_LOW" />
+422-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:86:17-76
+422-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:86:25-73
+423            </intent-filter>
+424        </receiver>
+425        <receiver
+425-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:89:9-99:20
+426            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+426-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:90:13-104
+427            android:directBootAware="false"
+427-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:91:13-44
+428            android:enabled="false"
+428-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:92:13-36
+429            android:exported="false" >
+429-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:93:13-37
+430            <intent-filter>
+430-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:95:13-98:29
+431                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+431-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:96:17-83
+431-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:96:25-80
+432                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+432-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:97:17-82
+432-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:97:25-79
+433            </intent-filter>
+434        </receiver>
+435        <receiver
+435-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:100:9-109:20
+436            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+436-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:101:13-103
+437            android:directBootAware="false"
+437-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:102:13-44
+438            android:enabled="false"
+438-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:103:13-36
+439            android:exported="false" >
+439-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:104:13-37
+440            <intent-filter>
+440-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:106:13-108:29
+441                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+441-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:107:17-79
+441-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:107:25-76
+442            </intent-filter>
+443        </receiver>
+444        <receiver
+444-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:110:9-121:20
+445            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+445-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:111:13-88
+446            android:directBootAware="false"
+446-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:112:13-44
+447            android:enabled="false"
+447-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:113:13-36
+448            android:exported="false" >
+448-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:114:13-37
+449            <intent-filter>
+449-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:116:13-120:29
+450                <action android:name="android.intent.action.BOOT_COMPLETED" />
+450-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:117:17-79
+450-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:117:25-76
+451                <action android:name="android.intent.action.TIME_SET" />
+451-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:118:17-73
+451-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:118:25-70
+452                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+452-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:119:17-81
+452-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:119:25-78
+453            </intent-filter>
+454        </receiver>
+455        <receiver
+455-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:122:9-131:20
+456            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+456-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:123:13-99
+457            android:directBootAware="false"
+457-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:124:13-44
+458            android:enabled="@bool/enable_system_alarm_service_default"
+458-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:125:13-72
+459            android:exported="false" >
+459-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:126:13-37
+460            <intent-filter>
+460-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:128:13-130:29
+461                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+461-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:129:17-98
+461-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:129:25-95
+462            </intent-filter>
+463        </receiver>
+464        <receiver
+464-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:132:9-142:20
+465            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+465-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:133:13-78
+466            android:directBootAware="false"
+466-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:134:13-44
+467            android:enabled="true"
+467-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:135:13-35
+468            android:exported="true"
+468-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:136:13-36
+469            android:permission="android.permission.DUMP" >
+469-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:137:13-57
+470            <intent-filter>
+470-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:139:13-141:29
+471                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+471-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:140:17-88
+471-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:140:25-85
+472            </intent-filter>
+473        </receiver>
+474
+475        <uses-library
+475-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c425b7e029e471fb7f744bb1994cc16/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:23:9-25:40
+476            android:name="android.ext.adservices"
+476-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c425b7e029e471fb7f744bb1994cc16/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:24:13-50
+477            android:required="false" />
+477-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/6c425b7e029e471fb7f744bb1994cc16/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:25:13-37
+478
+479        <meta-data
+479-->[com.google.android.gms:play-services-basement:18.4.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1ee250b2f9b59326d4dd19324e484c4f/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
+480            android:name="com.google.android.gms.version"
+480-->[com.google.android.gms:play-services-basement:18.4.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1ee250b2f9b59326d4dd19324e484c4f/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
+481            android:value="@integer/google_play_services_version" />
+481-->[com.google.android.gms:play-services-basement:18.4.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1ee250b2f9b59326d4dd19324e484c4f/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
+482
+483        <service
+483-->[androidx.room:room-runtime:2.5.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/161f5bd52c14244fa0038e7957d0ea1f/transformed/room-runtime-2.5.0/AndroidManifest.xml:24:9-28:63
+484            android:name="androidx.room.MultiInstanceInvalidationService"
+484-->[androidx.room:room-runtime:2.5.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/161f5bd52c14244fa0038e7957d0ea1f/transformed/room-runtime-2.5.0/AndroidManifest.xml:25:13-74
+485            android:directBootAware="true"
+485-->[androidx.room:room-runtime:2.5.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/161f5bd52c14244fa0038e7957d0ea1f/transformed/room-runtime-2.5.0/AndroidManifest.xml:26:13-43
+486            android:exported="false" />
+486-->[androidx.room:room-runtime:2.5.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/161f5bd52c14244fa0038e7957d0ea1f/transformed/room-runtime-2.5.0/AndroidManifest.xml:27:13-37
+487        <service
+487-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1a6e36f99957978e2db0480314561c5c/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:28:9-34:19
+488            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+488-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1a6e36f99957978e2db0480314561c5c/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:29:13-103
+489            android:exported="false" >
+489-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1a6e36f99957978e2db0480314561c5c/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:30:13-37
+490            <meta-data
+490-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1a6e36f99957978e2db0480314561c5c/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:31:13-33:39
+491                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+491-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1a6e36f99957978e2db0480314561c5c/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:32:17-94
+492                android:value="cct" />
+492-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/1a6e36f99957978e2db0480314561c5c/transformed/transport-backend-cct-3.1.9/AndroidManifest.xml:33:17-36
+493        </service>
+494
+495        <receiver
+495-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
+496            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+496-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
+497            android:directBootAware="false"
+497-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
+498            android:enabled="true"
+498-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
+499            android:exported="true"
+499-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
+500            android:permission="android.permission.DUMP" >
+500-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
+501            <intent-filter>
+501-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
+502                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+502-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
+502-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
+503            </intent-filter>
+504            <intent-filter>
+504-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
+505                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+505-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
+505-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
+506            </intent-filter>
+507            <intent-filter>
+507-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
+508                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+508-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
+508-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
+509            </intent-filter>
+510            <intent-filter>
+510-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
+511                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+511-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
+511-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/63b459b73cfaa8d3f7e4f0b6c2424ae7/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:25-92
+512            </intent-filter>
+513        </receiver>
+514
+515        <service
+515-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3aeed88474b25e21aa62a98d951489f6/transformed/transport-runtime-3.1.9/AndroidManifest.xml:26:9-30:19
+516            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+516-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3aeed88474b25e21aa62a98d951489f6/transformed/transport-runtime-3.1.9/AndroidManifest.xml:27:13-117
+517            android:exported="false"
+517-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3aeed88474b25e21aa62a98d951489f6/transformed/transport-runtime-3.1.9/AndroidManifest.xml:28:13-37
+518            android:permission="android.permission.BIND_JOB_SERVICE" >
+518-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3aeed88474b25e21aa62a98d951489f6/transformed/transport-runtime-3.1.9/AndroidManifest.xml:29:13-69
+519        </service>
+520
+521        <receiver
+521-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3aeed88474b25e21aa62a98d951489f6/transformed/transport-runtime-3.1.9/AndroidManifest.xml:32:9-34:40
+522            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+522-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3aeed88474b25e21aa62a98d951489f6/transformed/transport-runtime-3.1.9/AndroidManifest.xml:33:13-132
+523            android:exported="false" /> <!-- Receiver Service -->
+523-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3aeed88474b25e21aa62a98d951489f6/transformed/transport-runtime-3.1.9/AndroidManifest.xml:34:13-37
+524        <service
+524-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:29:9-31:40
+525            android:name="app.notifee.core.ReceiverService"
+525-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:30:13-60
+526            android:exported="false" />
+526-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:31:13-37
+527
+528        <activity
+528-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:33:9-39:75
+529            android:name="app.notifee.core.NotificationReceiverActivity"
+529-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:34:13-73
+530            android:excludeFromRecents="true"
+530-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:35:13-46
+531            android:exported="true"
+531-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:36:13-36
+532            android:noHistory="true"
+532-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:37:13-37
+533            android:taskAffinity=""
+533-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:38:13-36
+534            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- Foreground Service -->
+534-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:39:13-72
+535        <service
+535-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:42:9-44:40
+536            android:name="app.notifee.core.ForegroundService"
+536-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:43:13-62
+537            android:exported="false" />
+537-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:44:13-37
+538
+539        <receiver
+539-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:46:9-54:20
+540            android:name="app.notifee.core.RebootBroadcastReceiver"
+540-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:47:13-68
+541            android:exported="false" >
+541-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:48:13-37
+542            <intent-filter>
+542-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:49:13-53:29
+543                <action android:name="android.intent.action.BOOT_COMPLETED" />
+543-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:117:17-79
+543-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:117:25-76
+544                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+544-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:51:17-82
+544-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:51:25-79
+545                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+545-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:52:17-82
+545-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:52:25-79
+546            </intent-filter>
+547        </receiver>
+548        <receiver
+548-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:55:9-61:20
+549            android:name="app.notifee.core.AlarmPermissionBroadcastReceiver"
+549-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:56:13-77
+550            android:exported="true" >
+550-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:57:13-36
+551            <intent-filter>
+551-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:58:13-60:29
+552                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
+552-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:59:17-107
+552-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:59:25-104
+553            </intent-filter>
+554        </receiver>
+555        <receiver
+555-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:62:9-70:20
+556            android:name="app.notifee.core.NotificationAlarmReceiver"
+556-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:63:13-70
+557            android:exported="false" >
+557-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:64:13-37
+558            <intent-filter>
+558-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:49:13-53:29
+559                <action android:name="android.intent.action.BOOT_COMPLETED" />
+559-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:117:17-79
+559-->[androidx.work:work-runtime:2.8.0] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/3ec12712cafd9c34901b91c85b34bec3/transformed/work-runtime-2.8.0/AndroidManifest.xml:117:25-76
+560                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+560-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:51:17-82
+560-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:51:25-79
+561                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+561-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:52:17-82
+561-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:52:25-79
+562            </intent-filter>
+563        </receiver> <!-- Broadcast Receiver -->
+564        <receiver
+564-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:73:9-81:20
+565            android:name="app.notifee.core.BlockStateBroadcastReceiver"
+565-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:74:13-72
+566            android:exported="false" >
+566-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:75:13-37
+567            <intent-filter>
+567-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:76:13-80:29
+568                <action android:name="android.app.action.APP_BLOCK_STATE_CHANGED" />
+568-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:77:17-85
+568-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:77:25-82
+569                <action android:name="android.app.action.NOTIFICATION_CHANNEL_BLOCK_STATE_CHANGED" />
+569-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:78:17-102
+569-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:78:25-99
+570                <action android:name="android.app.action.NOTIFICATION_CHANNEL_GROUP_BLOCK_STATE_CHANGED" />
+570-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:79:17-108
+570-->[app.notifee:core:202108261754] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/baaa2410ec51acc6175a8c9a7731fb46/transformed/core-202108261754/AndroidManifest.xml:79:25-105
+571            </intent-filter>
+572        </receiver>
+573
+574        <meta-data
+574-->[com.facebook.soloader:soloader:0.12.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/99d20b2c3010f80a2be6dc566b87005d/transformed/soloader-0.12.1/AndroidManifest.xml:12:9-14:37
+575            android:name="com.facebook.soloader.enabled"
+575-->[com.facebook.soloader:soloader:0.12.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/99d20b2c3010f80a2be6dc566b87005d/transformed/soloader-0.12.1/AndroidManifest.xml:13:13-57
+576            android:value="false" /> <!-- The activities will be merged into the manifest of the hosting app. -->
+576-->[com.facebook.soloader:soloader:0.12.1] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/99d20b2c3010f80a2be6dc566b87005d/transformed/soloader-0.12.1/AndroidManifest.xml:14:13-34
+577        <activity
+577-->[com.google.android.play:core-common:2.0.3] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/902b13c317f849ece33cf17b3756aa16/transformed/core-common-2.0.3/AndroidManifest.xml:14:9-18:65
+578            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+578-->[com.google.android.play:core-common:2.0.3] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/902b13c317f849ece33cf17b3756aa16/transformed/core-common-2.0.3/AndroidManifest.xml:15:13-93
+579            android:exported="false"
+579-->[com.google.android.play:core-common:2.0.3] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/902b13c317f849ece33cf17b3756aa16/transformed/core-common-2.0.3/AndroidManifest.xml:16:13-37
+580            android:stateNotNeeded="true"
+580-->[com.google.android.play:core-common:2.0.3] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/902b13c317f849ece33cf17b3756aa16/transformed/core-common-2.0.3/AndroidManifest.xml:17:13-42
+581            android:theme="@style/Theme.PlayCore.Transparent" />
+581-->[com.google.android.play:core-common:2.0.3] /Users/pradipshrestha/.gradle/caches/8.10.2/transforms/902b13c317f849ece33cf17b3756aa16/transformed/core-common-2.0.3/AndroidManifest.xml:18:13-62
+582    </application>
+583
+584</manifest>
