@@ -305,13 +305,10 @@ async function getSessionToken({
 
 async function getAWSSecretKeys(): Promise<AWSSecretKeysResponse | null> {
   try {
-    console.log('dfsdfsdf');
-
     const tokenResponse = await axiosInstance({
       method: 'GET',
       url: `v1/generate-token?env=${Config.Environment}`,
     });
-    console.log('tokenResponse', tokenResponse);
 
     const tokenData: AWSTokenResponse = tokenResponse?.data;
 

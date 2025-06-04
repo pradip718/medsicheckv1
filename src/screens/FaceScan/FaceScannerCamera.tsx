@@ -138,6 +138,7 @@ const FaceScannerCamera = () => {
     syncWebScan(type as SCAN_SESSION_STATUS, reading_id, {
       scan_error: imageValidityJSON,
     });
+    syncWebScan('end_scan', reading_id || '');
     notifyApi(type, true, {
       message: isString(msg) ? msg : JSON.stringify(msg),
       reading_id: readingId || reading_id,
