@@ -1,4 +1,4 @@
-import _ from 'lodash';
+// import _ from 'lodash';
 import {AnimatePresence, View} from 'moti';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
@@ -97,22 +97,22 @@ const ReportCard = React.memo((props: ReportCardProps) => {
     }
   }, [imageUrl]);
 
-  const subParameterTitles = useMemo(
-    () => _.map(subParameters, 'vital_key'),
-    [subParameters],
-  );
-  const lastIndex = subParameterTitles.length - 1;
+  // const subParameterTitles = useMemo(
+  //   () => _.map(subParameters, 'vital_key'),
+  //   [subParameters],
+  // );
+  // const lastIndex = subParameterTitles.length - 1;
 
-  const formattedTitles = useMemo(
-    () =>
-      subParameterTitles.map((title, idx) => {
-        if (!title) return '';
-        if (idx === lastIndex - 1) return `${title} and `;
-        else if (idx !== lastIndex) return `${title}, `;
-        return title;
-      }),
-    [subParameterTitles, lastIndex],
-  );
+  // const formattedTitles = useMemo(
+  //   () =>
+  //     subParameterTitles.map((title, idx) => {
+  //       if (!title) return '';
+  //       if (idx === lastIndex - 1) return `${title} and `;
+  //       else if (idx !== lastIndex) return `${title}, `;
+  //       return title;
+  //     }),
+  //   [subParameterTitles, lastIndex],
+  // );
 
   let selectedColor = useMemo(
     () =>
@@ -254,6 +254,7 @@ const ReportCard = React.memo((props: ReportCardProps) => {
             {!isOpen && subParameters.length > 0 && (
               <View className="flex-row justify-between" key="not-open">
                 <Pressable
+                  className=""
                   onPress={toggleOpen}
                   from={{opacity: 0}}
                   animate={{opacity: 1}}
@@ -266,15 +267,15 @@ const ReportCard = React.memo((props: ReportCardProps) => {
                     </CustomText>
                   </View>
                 </Pressable>
-                <View className="w-6/12 flex-row justify-end flex-wrap">
+                {/* <View className="flex-1  flex-row justify-end flex-wrap">
                   {formattedTitles.map((title, idx) => (
                     <CustomText
                       key={idx}
-                      className="text-sm font-isidoraSemiBold text-midnightBlue">
+                      className="text-sm font-isidoraSemiBold text-midnightBlue text-right">
                       {title}
                     </CustomText>
                   ))}
-                </View>
+                </View> */}
               </View>
             )}
           </AnimatePresence>
