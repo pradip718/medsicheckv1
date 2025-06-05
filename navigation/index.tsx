@@ -14,7 +14,7 @@ import {DEEPLINKS} from '../src/api/DeepLinks';
 import {getSessionToken} from '../src/api/auth';
 import {syncScanSession} from '../src/api/report';
 import {sendDeepLinkClickEvent} from '../src/api/settings';
-import {DEEPLINK_CONFIG} from '../src/constants';
+import {DEEPLINK_CONFIG, PUBLIC_DEEPLINK_PATH} from '../src/constants';
 import {
   GET_LAB_REPORT_QUESTIONNAIRE,
   GET_PREVENTIX_PERSONALISED_AI,
@@ -178,11 +178,14 @@ const RootNavigator = () => {
       }
 
       setIsOpenedFromDeepLink(true);
-      const {isAuthenticated} = await initializeAppParameters();
 
-      if (!isAuthenticated) {
-        await BootSplash.hide({fade: true});
-        return '';
+      if (!PUBLIC_DEEPLINK_PATH.includes(path)) {
+        const {isAuthenticated} = await initializeAppParameters();
+
+        if (!isAuthenticated) {
+          await BootSplash.hide({fade: true});
+          return '';
+        }
       }
 
       try {
@@ -303,11 +306,8 @@ const RootNavigator = () => {
       onStateChange={handleNavigationStateChange}
       onReady={async () => {
         if (!isOpenedFromDeepLink) {
-          console.log('onReady');
           await new Promise(resolve => setTimeout(resolve, 200)); // Small delay to ensure linking is processed
-          console.log('check');
           const {isAuthenticated} = await initializeAppParameters();
-          console.log('isAuthenticated', isAuthenticated);
           if (isAuthenticated) {
             return navigateIfExistingUser();
           }
