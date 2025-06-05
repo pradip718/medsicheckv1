@@ -1,4 +1,8 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {
   HealthMonitorException,
@@ -309,7 +313,13 @@ const QRFaceScan = () => {
         contentContainerStyle={styles.contentContainer}
         className="h-full">
         <View className="px-6 py-4">
-          <Navbar />
+          <Navbar
+            noBack
+            hasClose
+            handleClose={() =>
+              navigation.dispatch(StackActions.replace('Login'))
+            }
+          />
         </View>
         <View className="relative px-2 items-center smallPhone:h-2/5 mediumPhone:h-1/2">
           <RenderCamera

@@ -20,3 +20,11 @@ export const DEEPLINK_CONFIG: Record<string, keyof MainStackParamList> = {
   voice_scan_report_detail: 'VoiceScanReport',
   // Add more paths as needed
 };
+
+export const PUBLIC_DEEPLINK_PATH = [
+  'face-scan',
+  'face_scan',
+  'login',
+  'register',
+  'about-app',
+];
