@@ -52,12 +52,9 @@ export const useSetupUserProfile = (
     mutationFn: async (): Promise<{isAuthenticated: boolean}> => {
       if (stayLoggedIn) {
         const session = await EncryptedStorage.getItem(REMEMBERED_USER_SESSION);
-        console.log('session', session);
         if (session) {
           const userSession = JSON.parse(session);
-          console.log('userSession', userSession);
           const encryptPassword = await encryptText(userSession?.password);
-          console.log('encryptPassword', encryptPassword);
           if (!encryptPassword) {
             return {isAuthenticated: false};
           }
