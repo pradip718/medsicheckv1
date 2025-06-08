@@ -1,0 +1,6 @@
+module Pods_MedsiCheckCommonPods_MedsiCheck {
+  umbrella header "Pods-MedsiCheckCommonPods-MedsiCheck-umbrella.h"
+
+  export *
+  module * { export * }
+}
