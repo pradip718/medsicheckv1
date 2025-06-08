@@ -1,0 +1,1 @@
+../../../Target Support Files/biosensesignal-react-native-sdk/biosensesignal-react-native-sdk-umbrella.h
