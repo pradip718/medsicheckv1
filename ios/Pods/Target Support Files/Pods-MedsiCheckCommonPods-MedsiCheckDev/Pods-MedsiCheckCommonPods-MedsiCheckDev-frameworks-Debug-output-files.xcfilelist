@@ -1,0 +1,2 @@
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BiosenseSignal.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework

@@ -1,0 +1,1 @@
+../../../../../node_modules/@simform_solutions/react-native-audio-waveform/ios/AudioWaveform-Bridging-Header.h
