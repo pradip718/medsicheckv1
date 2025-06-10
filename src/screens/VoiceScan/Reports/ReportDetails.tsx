@@ -116,8 +116,8 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
       <View className="px-4 pt-4">
         <Navbar />
       </View>
-      <View className="mt-6 flex-row py-4 px-4 bg-darkCornflowerBlue justify-between items-center">
-        <CustomText className="text-white font-isidoraSemiBold">
+      <View className="mt-6 flex-row py-4 px-4 bg-darkCornflowerBlue justify-between space-x-2">
+        <CustomText className="text-white font-isidoraSemiBold flex-1">
           {languages?.my_vital_signs}
         </CustomText>
         <CustomText className="text-white text-sm font-isidoraMedium">
@@ -142,14 +142,14 @@ const ReportDetails = ({route}: ReportDetailsProps) => {
               ]
             : ['gray', 'gray']
         }>
-        <View className="flex-row items-center gap-x-4 flex-1">
+        <View className="flex-row items-center space-x-2 flex-1">
           {imageUrl ? (
             <Image source={{uri: imageUrl}} className="h-8 w-8" />
           ) : (
             <Icon name={vitalKey} size={30} color={customColor.white} />
           )}
-          <View>
-            <CustomText className="text-sm font-isidoraSemiBold">
+          <View className="flex-1">
+            <CustomText className="text-sm font-isidoraSemiBold flex-1">
               {config?.display ?? ''}
             </CustomText>
             <CustomText className="text-2xl font-isidoraSemiBold">
