@@ -42,7 +42,7 @@ const VoiceScanSingleReportCard = () => {
         className="px-5 pt-5 mt-2 rounded-3xl flex-row flex-1 overflow-hidden space-x-2">
         <View className="flex-1 pb-5">
           <View className="flex-row justify-between items-center w-full">
-            <CustomText className="text-white text-lg font-isidoraSemiBold">
+            <CustomText className="text-white text-lg font-isidoraSemiBold flex-1">
               <FontAwesome
                 name="microphone"
                 size={20}
