@@ -9,13 +9,14 @@ import {Buffer} from 'buffer';
 import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
 import moment from 'moment';
-import {Alert, NativeModules, Platform, Share as RNShare} from 'react-native';
+import {Alert, Platform, Share as RNShare} from 'react-native';
 import RNFetchBlob from 'react-native-blob-util';
 import {CountryCode, CountryCodeList} from 'react-native-country-picker-modal';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import RNFS from 'react-native-fs';
 import {Asset} from 'react-native-image-picker';
+import * as RNLocalize from 'react-native-localize';
 import Share from 'react-native-share';
 import {isAndroid} from '.';
 import {getAWSSecretKeys} from '../src/api/auth';
@@ -162,15 +163,18 @@ export const getScoreKey = (score: number): WellnessScoreKey | null => {
 };
 
 export const getDeviceLocaleInformation = () => {
-  const locale =
-    Platform.OS === 'ios'
-      ? NativeModules.SettingsManager.settings.AppleLocale ??
-        NativeModules.SettingsManager.settings.AppleLanguages[0] //iOS 13
-      : NativeModules?.I18nManager?.localeIdentifier;
+  try {
+    const locales = RNLocalize.getLocales();
 
-  console.log('locale', locale);
+    if (locales.length > 0) {
+      return locales[0].languageTag.toLowerCase();
+    }
 
-  return locale?.toLowerCase().replace('_', '-');
+    return 'en-us';
+  } catch (error) {
+    console.error('Error getting device locale:', error);
+    return 'en-us';
+  }
 };
 
 export const isSpanishLocale = () => {

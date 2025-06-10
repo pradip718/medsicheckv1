@@ -70,7 +70,7 @@
     "react-native-keep-awake": "^4.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
-    "react-native-localize": "^3.1.0",
+    "react-native-localize": "^3.4.1",
     "react-native-pager-view": "^6.3.1",
     "react-native-paper": "^5.11.1",
     "react-native-permissions": "^4.1.2",
