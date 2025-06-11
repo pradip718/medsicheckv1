@@ -399,8 +399,8 @@
 
   "refresh_token_expiry": "Your session has expired. Please login again.",
   "terms_and_conditions": "Terms & Conditions",
-  "tnc_link": "https://medsi.ai/t%C3%A9rminos-y-privacidad",
-  "pp_link": "https://medsi.ai/t%C3%A9rminos-y-privacidad",
+  "tnc_link": "https://www.medsi.ai/terminos-y-condiciones/",
+  "pp_link": "https://www.medsi.ai/terminos-y-condiciones/",
   "email_required": "Email is Required",
   "phone_required": "Phone Number is Required",
   "email_validation": "Please enter a valid email address",
