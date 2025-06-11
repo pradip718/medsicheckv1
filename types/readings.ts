@@ -66,7 +66,8 @@ export type USER_ACTIVITY =
   | 'pr_report_download'
   | 'pr_report_share'
   | 'pr_report_view_error'
-  | 'pr_report_deletion';
+  | 'pr_report_deletion'
+  | 'app_state';
 
 export type SCAN_SESSION_STATUS =
   | 'start_scan'
