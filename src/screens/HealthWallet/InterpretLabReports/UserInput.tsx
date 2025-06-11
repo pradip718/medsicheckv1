@@ -79,7 +79,13 @@ const UserInput = () => {
             <TouchableOpacity
               className="p-4 items-center justify-center"
               disabled={!isValidUrl}
-              onPress={() => downloadFile(fileLink, 'Miscellaneous Files')}>
+              onPress={() =>
+                downloadFile(
+                  fileLink,
+                  'Miscellaneous Files',
+                  'lr_report_download',
+                )
+              }>
               <Icon
                 name="download"
                 size={18}
@@ -93,7 +99,9 @@ const UserInput = () => {
             <TouchableOpacity
               className="p-4 items-center justify-center"
               disabled={!isValidUrl}
-              onPress={() => onShareFile(fileLink, 'lab_report')}>
+              onPress={() =>
+                onShareFile(fileLink, 'lab_report', 'lr_report_share')
+              }>
               <Icon
                 name="share"
                 size={16}
