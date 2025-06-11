@@ -88,6 +88,9 @@ const LabReportDetail = ({route}: LabReportDetailProps) => {
     const fetchReportDetails = async () => {
       if (token) {
         getAIReportDetails();
+        notifyApi('lr_report_view', {
+          token,
+        });
       }
     };
     fetchReportDetails();
