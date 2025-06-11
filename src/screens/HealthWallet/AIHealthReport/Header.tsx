@@ -38,7 +38,11 @@ const Header = ({created_at, aiReportDetails}: HeaderProps) => {
             className="border border-white px-4 py-2 space-x-2 items-center justify-center"
             onPress={() =>
               details?.report_link
-                ? downloadFile(details?.report_link, 'Medsi AI Report')
+                ? downloadFile(
+                    details?.report_link,
+                    'Medsi AI Report',
+                    'pr_report_download',
+                  )
                 : ''
             }>
             <Icon name="download" color={customColor.white} />
@@ -49,7 +53,9 @@ const Header = ({created_at, aiReportDetails}: HeaderProps) => {
           <RoundedButton
             resetStyle
             className="border border-white px-4 py-2 space-x-2 items-center justify-center"
-            onPress={() => onShareFile(details?.report_link, 'ai_report')}>
+            onPress={() =>
+              onShareFile(details?.report_link, 'ai_report', 'pr_report_share')
+            }>
             <Icon name="share" color={customColor.white} />
             <CustomText className="text-white text-sm font-isidoraSemiBold">
               {languages?.share}
