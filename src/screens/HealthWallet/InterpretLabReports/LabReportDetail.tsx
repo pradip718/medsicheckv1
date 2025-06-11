@@ -12,6 +12,7 @@ import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../store/languageStore';
 import {MainStackParamList} from '../../../../types/navigation';
 import {errorToast} from '../../../../utils/toast';
+import {notifyApi} from '../../../api/user';
 import Navbar from '../../../components/Navbar';
 import CustomText from '../../../components/Text';
 import {
@@ -121,7 +122,12 @@ const LabReportDetail = ({route}: LabReportDetailProps) => {
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}
-        onIndexChange={setIndex}
+        onIndexChange={idx => {
+          if (idx === 1) {
+            notifyApi('lr_view_input_file');
+          }
+          setIndex(idx);
+        }}
         initialLayout={{width: layout.width}}
         renderTabBar={props => (
           <TabBar

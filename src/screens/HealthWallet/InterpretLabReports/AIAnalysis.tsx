@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
 import WebView from 'react-native-webview';
 import useLanguageStore from '../../../../store/languageStore';
+import {notifyApi} from '../../../api/user';
 import EmptyScreen from '../../../components/EmptyScreen';
 import FallbackScreen from '../../../components/FallbackScreen';
 import {useGetLabReportDetails} from '../../../hooks/api/report';
@@ -32,6 +33,7 @@ const AIAnalysis = () => {
   }
 
   if (!analysis || !_.isString(analysis)) {
+    notifyApi('lr_report_view_error');
     return <FallbackScreen hideNavbar />;
   }
 

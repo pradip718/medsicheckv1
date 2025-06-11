@@ -51,6 +51,7 @@ import 'react-native-url-polyfill/auto';
 import {VoiceScanReport} from '../types/api_response';
 
 import {ReadableStream as PolyfillReadableStream} from 'web-streams-polyfill';
+import {USER_ACTIVITY} from '../types/readings';
 
 export const getImgBasedOnScore = (score: number) => {
   switch (true) {
@@ -574,7 +575,11 @@ const extractFilenameFromURL = (url: string): string => {
   }
 };
 
-export const downloadFile = async (report_link: string, name?: string) => {
+export const downloadFile = async (
+  report_link: string,
+  name?: string,
+  activityName?: USER_ACTIVITY,
+) => {
   useLoaderStore.getState().setVisibility(true);
   const fileName = extractFilenameFromURL(report_link);
   const encodedUrl = encodeURI(report_link);
@@ -608,6 +613,9 @@ export const downloadFile = async (report_link: string, name?: string) => {
             useLoaderStore.getState().setVisibility(false);
           })
           .catch(_ => useLoaderStore.getState().setVisibility(false));
+      }
+      if (activityName) {
+        notifyApi(activityName);
       }
       useLoaderStore.getState().setVisibility(false);
     })
@@ -669,7 +677,11 @@ async function sharePDFWithIOS(fileUrl: string, type: string) {
     });
 }
 
-export const onShareFile = async (fileUrl: string, name?: string) => {
+export const onShareFile = async (
+  fileUrl: string,
+  name?: string,
+  activityName?: USER_ACTIVITY,
+) => {
   try {
     if (isAndroid) {
       sharePDFWithAndroid(fileUrl, 'application/pdf');
@@ -677,7 +689,7 @@ export const onShareFile = async (fileUrl: string, name?: string) => {
       sharePDFWithIOS(fileUrl, 'application/pdf');
     }
 
-    notifyApi('share_report', {
+    notifyApi(activityName || 'share_report', {
       profile_id: useUserProfileStore.getState().currentActiveProfileId,
       action: {
         name,
