@@ -9,7 +9,7 @@ import * as Sentry from '@sentry/react-native';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
 import React, {useEffect, useState} from 'react';
-import {LogBox, StatusBar} from 'react-native';
+import {AppState, AppStateStatus, LogBox, StatusBar} from 'react-native';
 import Config from 'react-native-config';
 import DeviceInfo from 'react-native-device-info';
 import ErrorBoundary from 'react-native-error-boundary';
@@ -19,6 +19,7 @@ import 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 import RootNavigator from './navigation';
 import {getLanguage} from './src/api/language';
+import {notifyApi} from './src/api/user';
 import AlertModal from './src/components/AlertModal';
 import AppUpdateModal from './src/components/AlertModal/AppUpdateModal';
 import {ErrorFallback} from './src/components/ErrorFallback';
@@ -86,6 +87,28 @@ function App(): JSX.Element {
     const unsubscribe = registerListenerWithFCM();
     return unsubscribe;
   }, []);
+
+  const [appState, setAppState] = useState<AppStateStatus>(
+    AppState.currentState,
+  );
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (appState !== nextAppState) {
+        setAppState(nextAppState);
+        notifyApi('app_state', {state: nextAppState});
+      }
+    };
+
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState]);
 
   if (__DEV__) {
     const ignoreWarns = ['ViewPropTypes will be removed from React Native'];
