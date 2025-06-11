@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="gcm_defaultSenderId" translatable="false">715914580494</string>
-    <string name="google_api_key" translatable="false">AIzaSyAO-epaAEFByEzgNFbFrGyxE9OkVZDzJsM</string>
-    <string name="google_app_id" translatable="false">1:715914580494:android:cc5d519de3672498f8e25f</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAO-epaAEFByEzgNFbFrGyxE9OkVZDzJsM</string>
-    <string name="google_storage_bucket" translatable="false">medsicheck-58e36.appspot.com</string>
-    <string name="project_id" translatable="false">medsicheck-58e36</string>
-</resources>
