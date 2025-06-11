@@ -37,7 +37,9 @@ const Header = ({created_at, labReportDetails}: HeaderProps) => {
             resetStyle
             className="border border-white px-4 py-2 space-x-2 items-center justify-center"
             onPress={() =>
-              details?.report_link ? downloadFile(details?.report_link) : ''
+              details?.report_link
+                ? downloadFile(details?.report_link, '', 'lr_report_download')
+                : ''
             }>
             <Icon name="download" color={customColor.white} />
             <CustomText className="text-white text-sm font-isidoraSemiBold">
@@ -47,7 +49,9 @@ const Header = ({created_at, labReportDetails}: HeaderProps) => {
           <RoundedButton
             resetStyle
             className="border border-white px-4 py-2 space-x-2 items-center justify-center"
-            onPress={() => onShareFile(details?.report_link)}>
+            onPress={() =>
+              onShareFile(details?.report_link, '', 'lr_report_share')
+            }>
             <Icon name="share" color={customColor.white} />
             <CustomText className="text-white text-sm font-isidoraSemiBold">
               {languages?.share}
