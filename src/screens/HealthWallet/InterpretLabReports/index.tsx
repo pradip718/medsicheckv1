@@ -19,6 +19,7 @@ import useLanguageStore from '../../../../store/languageStore';
 import {LabReportList} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
 import {isAndroid} from '../../../../utils';
+import {notifyApi} from '../../../api/user';
 import DeleteModal from '../../../components/AlertModal/DeleteModal';
 import EmptyScreen from '../../../components/EmptyScreen';
 import Icon from '../../../components/Icon';
@@ -141,6 +142,10 @@ const InterpretLabReports = () => {
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
   const [deleteTokenIds, setDeleteTokenIds] = useState<string[]>([]);
 
+  useEffect(() => {
+    notifyApi('lr_report_history');
+  }, []);
+
   const {
     data: labReportList,
     isLoading: isLabReportLoading,
@@ -166,6 +171,7 @@ const InterpretLabReports = () => {
     },
     onSettled: hideLoader,
     onSuccess: async () => {
+      notifyApi('lr_report_deletion', {delete_token_ids: deleteTokenIds});
       await queryClient.invalidateQueries({queryKey: [GET_LAB_REPORT_LIST]});
       setIsEditing(false);
     },

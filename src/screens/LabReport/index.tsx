@@ -23,6 +23,7 @@ import {
   isValidJSON,
 } from '../../../utils/methods';
 import {errorToast} from '../../../utils/toast';
+import {notifyApi} from '../../api/user';
 import EtchedGlass from '../../components/EtchedGlass';
 import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
@@ -98,6 +99,10 @@ const LabReport = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
+
+  useEffect(() => {
+    notifyApi('lr_start');
+  }, []);
 
   const {mutateAsync: postQuestionnaire, isPending: isSubmittingQuery} =
     usePostLabReportQuestionnaire({
@@ -284,7 +289,11 @@ const LabReport = () => {
             return postLabReportFileUpload(binaryData);
           })
           .catch(err => {
+            notifyApi('lr_upload_error', err);
             console.error('Error reading file:', err);
+          })
+          .finally(() => {
+            notifyApi('lr_upload_file');
           });
       } else {
         const base64Data = await RNFetchBlob.fs.readFile(filePath, 'base64');
@@ -311,6 +320,9 @@ const LabReport = () => {
       timestamp: moment().format('YYYY-MM-DD HH:mm'),
       timezone: getTimeZone(),
       path_type: currentQuestionAnswers?.path_type || '',
+    });
+    notifyApi('lr_submit_answer', {
+      q_id: currentQuestionAnswers?.q_id || '',
     });
   };
 

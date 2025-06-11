@@ -47,7 +47,18 @@ export type USER_ACTIVITY =
   | 'voice_scan_report_generation_complete'
   | 'voice_scan_report_generation_error'
   | 'voice_scan_report_view'
-  | 'voice_scan_report_share';
+  | 'voice_scan_report_share'
+  | 'lr_start'
+  | 'lr_upload_file'
+  | 'lr_upload_error'
+  | 'lr_submit_answer'
+  | 'lr_report_view'
+  | 'lr_report_history'
+  | 'lr_report_download'
+  | 'lr_report_share'
+  | 'lr_view_input_file'
+  | 'lr_report_view_error'
+  | 'lr_report_deletion';
 
 export type SCAN_SESSION_STATUS =
   | 'start_scan'
