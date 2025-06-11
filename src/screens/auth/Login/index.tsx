@@ -339,7 +339,9 @@ const Login = () => {
                 <TouchableOpacity
                   onPress={() => {
                     navigation?.navigate('PrivacyPolicy', {
-                      uri: 'https://medsi.ai/t%C3%A9rminos-y-privacidad',
+                      uri:
+                        languages?.pp_link ??
+                        'https://www.medsi.ai/terminos-y-condiciones/',
                     });
                   }}>
                   <CustomText className="text-base mt-6 text-center font-isidoraSemiBold">
