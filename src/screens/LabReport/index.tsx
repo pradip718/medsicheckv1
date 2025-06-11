@@ -72,6 +72,9 @@ const LabReport = () => {
           eng_choices: labReportResponse?.token_id,
           spanish_choices: labReportResponse?.token_id,
         });
+        notifyApi('lr_upload_file', {
+          token_id: labReportResponse?.token_id,
+        });
       },
       onSettled: hideLoader,
     });
@@ -291,9 +294,6 @@ const LabReport = () => {
           .catch(err => {
             notifyApi('lr_upload_error', err);
             console.error('Error reading file:', err);
-          })
-          .finally(() => {
-            notifyApi('lr_upload_file');
           });
       } else {
         const base64Data = await RNFetchBlob.fs.readFile(filePath, 'base64');
@@ -323,6 +323,12 @@ const LabReport = () => {
     });
     notifyApi('lr_submit_answer', {
       q_id: currentQuestionAnswers?.q_id || '',
+      answer_id: currentQuestionAnswers?.answer_id || '',
+      eng_choices,
+      spanish_choices,
+      timestamp: moment().format('YYYY-MM-DD HH:mm'),
+      timezone: getTimeZone(),
+      path_type: currentQuestionAnswers?.path_type || '',
     });
   };
 
