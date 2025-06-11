@@ -58,7 +58,15 @@ export type USER_ACTIVITY =
   | 'lr_report_share'
   | 'lr_view_input_file'
   | 'lr_report_view_error'
-  | 'lr_report_deletion';
+  | 'lr_report_deletion'
+  | 'pr_start'
+  | 'pr_submit_answer'
+  | 'pr_report_view'
+  | 'pr_report_history'
+  | 'pr_report_download'
+  | 'pr_report_share'
+  | 'pr_report_view_error'
+  | 'pr_report_deletion';
 
 export type SCAN_SESSION_STATUS =
   | 'start_scan'
