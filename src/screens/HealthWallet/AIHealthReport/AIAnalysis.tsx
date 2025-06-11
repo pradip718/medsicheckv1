@@ -3,6 +3,7 @@ import React, {memo, useState} from 'react';
 import {ScrollView} from 'react-native';
 import WebView from 'react-native-webview';
 import useLanguageStore from '../../../../store/languageStore';
+import {notifyApi} from '../../../api/user';
 import EmptyScreen from '../../../components/EmptyScreen';
 import FallbackScreen from '../../../components/FallbackScreen';
 import {useGetAIReportDetails} from '../../../hooks/api/report';
@@ -20,7 +21,11 @@ true;
 
 const AIAnalysis = () => {
   const {languages} = useLanguageStore();
-  const {data: aiReportDetails, isFetching} = useGetAIReportDetails({
+  const {
+    data: aiReportDetails,
+    isFetching,
+    error,
+  } = useGetAIReportDetails({
     enabled: false,
   });
 
@@ -33,6 +38,10 @@ const AIAnalysis = () => {
   }
 
   if (!analysis || !_.isString(analysis)) {
+    notifyApi('pr_report_view_error', {
+      error,
+      aiReportDetails,
+    });
     return <FallbackScreen hideNavbar />;
   }
 

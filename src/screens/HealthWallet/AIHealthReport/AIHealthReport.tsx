@@ -20,6 +20,7 @@ import useLanguageStore from '../../../../store/languageStore';
 import {AIHealthList} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
 import {isAndroid} from '../../../../utils';
+import {notifyApi} from '../../../api/user';
 import DeleteModal from '../../../components/AlertModal/DeleteModal';
 import EmptyScreen from '../../../components/EmptyScreen';
 import Icon from '../../../components/Icon';
@@ -167,6 +168,9 @@ const AIHealthReport = () => {
     },
     onSettled: hideLoader,
     onSuccess: async () => {
+      notifyApi('pr_report_deletion', {
+        deleted_tokens: deleteTokenIds,
+      });
       await queryClient.invalidateQueries({queryKey: [GET_AI_REPORT]});
       setIsEditing(false);
     },
@@ -174,6 +178,10 @@ const AIHealthReport = () => {
       showAlert({title: languages?.error, content: error?.message});
     },
   });
+
+  useEffect(() => {
+    notifyApi('pr_report_history');
+  }, []);
 
   useEffect(() => {
     if (aiReportData) {

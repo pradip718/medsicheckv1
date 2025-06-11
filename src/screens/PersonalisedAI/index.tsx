@@ -66,6 +66,10 @@ const PersonalisedAI = () => {
   });
 
   useEffect(() => {
+    notifyApi('pr_start');
+  }, []);
+
+  useEffect(() => {
     const initialPreventixQuestion = aiQuestions?.[0];
     if (
       initialPreventixQuestion &&
@@ -95,8 +99,8 @@ const PersonalisedAI = () => {
       onSuccess: (data: QuestionnaireItem, variables) => {
         const {path_type} = variables;
         setSelectedAnswers('');
-        notifyApi('scan_ai_report', {
-          question_id: currentQuestionAnswers?.q_id,
+        notifyApi('pr_submit_answer', {
+          ...variables,
         });
         if (
           (data && data?.question_type === QuestionType.FinalMessage) ||

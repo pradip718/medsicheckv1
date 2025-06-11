@@ -13,6 +13,7 @@ import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../store/languageStore';
 import {MainStackParamList} from '../../../../types/navigation';
 import {errorToast} from '../../../../utils/toast';
+import {notifyApi} from '../../../api/user';
 import Navbar from '../../../components/Navbar';
 import CustomText from '../../../components/Text';
 import {useGetAIReport, useGetAIReportDetails} from '../../../hooks/api/report';
@@ -98,6 +99,9 @@ const AIHealthReportDetail = ({route}: AIHealthReportDetailProps) => {
     const fetchReportDetails = async () => {
       if (token) {
         getAIReportDetails();
+        notifyApi('pr_report_view', {
+          token_id: token,
+        });
       }
     };
     fetchReportDetails();
