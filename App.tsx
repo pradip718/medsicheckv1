@@ -96,7 +96,7 @@ function App(): JSX.Element {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       if (appState !== nextAppState) {
         setAppState(nextAppState);
-        notifyApi('app_state', {state: nextAppState});
+        notifyApi(nextAppState);
       }
     };
 
