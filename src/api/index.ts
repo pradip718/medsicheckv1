@@ -43,6 +43,7 @@ axiosInstance.interceptors.request.use(
     config.params = {
       ...config.params,
       app_version: DeviceInfo.getVersion(),
+      version: 'v1',
       device_id: deviceId,
       os: Platform.OS,
       brand: DeviceInfo.getBrand(),

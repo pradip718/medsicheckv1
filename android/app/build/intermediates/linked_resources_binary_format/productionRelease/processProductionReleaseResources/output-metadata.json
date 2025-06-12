@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "LINKED_RESOURCES_BINARY_FORMAT",
+    "kind": "Directory"
+  },
+  "applicationId": "mx.medsi.medsicheck",
+  "variantName": "productionRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 70,
+      "versionName": "4.3.5",
+      "outputFile": "linked-resources-binary-format-productionRelease.ap_"
+    }
+  ],
+  "elementType": "File"
+}
