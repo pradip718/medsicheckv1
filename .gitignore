@@ -48,3 +48,26 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Android/Gradle build artifacts
+android/.gradle/
+android/app/build/
+*.bundle
+*.lock
+*.bin
+
+# Build system outputs
+.gradle/
+build/
+*.iml
+local.properties
+
+# IntelliJ project files
+*.ipr
+*.iws
+.idea/
+
+# Ignore all PNGs in assets/images (adjust path as needed)
+assets/images/*.png
+
+# Optional: Ignore the entire build output directory of Android
+**/build/
