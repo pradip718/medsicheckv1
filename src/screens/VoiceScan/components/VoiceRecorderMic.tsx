@@ -1,5 +1,5 @@
 import {useIsFetching} from '@tanstack/react-query';
-import {useEffect} from 'react';
+import {memo, useEffect} from 'react';
 import React, {StyleSheet, View} from 'react-native';
 import {
   Easing,
@@ -24,14 +24,16 @@ const BASE_COLOR = '#C084FC';
 interface VoiceRecorderMicProps {
   isRecording: boolean;
   onPress: () => void;
+  isDisabled?: boolean;
 }
 
-export default function VoiceRecorderMic({
+function VoiceRecorderMic({
   isRecording,
   onPress,
+  isDisabled,
 }: VoiceRecorderMicProps) {
   const {languages} = useLanguageStore();
-  const {recordedTime, onSave, imageData} = useAudio();
+  const {recordedTime, onSave, imageData, imageLoaded} = useAudio();
   const waves = Array(WAVE_COUNT).fill(0);
 
   const isFetchingImage = useIsFetching({queryKey: [GET_VOICE_SCAN_IMAGE]}) > 0;
@@ -80,11 +82,15 @@ export default function VoiceRecorderMic({
       <RoundedButton
         onPress={isRecording && recordedTime > 40 ? onSave : onPress}
         disabled={
+          isDisabled ||
+          !imageLoaded ||
           (isRecording && recordedTime < 40) ||
           isFetchingImage ||
           !imageData?.image_id
         }
-        hasDisabledStyle={false}
+        hasDisabledStyle={
+          isDisabled || !imageLoaded || isFetchingImage || !imageData?.image_id
+        }
         style={isRecording && recordedTime < 40 ? styles.button : {}}>
         {isRecording ? (
           <CustomText
@@ -130,3 +136,5 @@ const styles = StyleSheet.create({
     backgroundColor: BASE_COLOR,
   },
 });
+
+export default memo(VoiceRecorderMic);
