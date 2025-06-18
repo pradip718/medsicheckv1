@@ -9,7 +9,8 @@ import {
   Waveform,
 } from '@simform_solutions/react-native-audio-waveform';
 import {useMutation} from '@tanstack/react-query';
-import React, {Alert, Linking, StyleSheet, View} from 'react-native';
+import {useState} from 'react';
+import React, {Alert, Linking, Platform, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import {PERMISSIONS, request} from 'react-native-permissions';
 import useLanguageStore from '../../../../store/languageStore';
@@ -49,6 +50,8 @@ const AudioRecorder = ({
   const {stopPlayersAndExtractors} = useAudioPlayer();
   const {recordedTime, imageData, onSetSession} = useAudio();
 
+  const [isRecordingInitializing, setIsRecordingInitializing] = useState(false);
+
   const {mutateAsync: initiateSession} = useMutation({
     mutationKey: [INITIATE_VOICE_SCAN],
     mutationFn: initiateVoiceScanSession,
@@ -81,57 +84,58 @@ const AudioRecorder = ({
   };
 
   const onRecord = async () => {
-    if (recorderState === RecorderState.stopped || recordedTime < 40) {
-      // Stopping other player before starting recording
-      if (currentPlayingRef?.current?.currentState === PlayerState.playing) {
-        currentPlayingRef?.current?.stopPlayer();
-      }
+    if (isRecordingInitializing) {
+      return;
+    }
 
-      const hasPermission = await checkHasAudioRecorderPermission();
+    setIsRecordingInitializing(true);
 
-      if (hasPermission === PermissionStatus.granted) {
-        currentPlayingRef = recordingRef;
-        initiateSession({
-          image_id: imageData?.image_id ?? '',
-        });
-      } else if (hasPermission === PermissionStatus.undetermined) {
-        const permissionStatus = await getAudioRecorderPermission();
-        if (permissionStatus === PermissionStatus.granted) {
-          currentPlayingRef = recordingRef;
-          initiateSession({
-            image_id: imageData?.image_id ?? '',
-          });
+    try {
+      if (recorderState === RecorderState.stopped || recordedTime < 40) {
+        if (currentPlayingRef?.current?.currentState === PlayerState.playing) {
+          currentPlayingRef?.current?.stopPlayer();
         }
-      } else {
-        request(PERMISSIONS.ANDROID.RECORD_AUDIO).then(status => {
-          if (status === 'blocked') {
+
+        const hasPermission = await checkHasAudioRecorderPermission();
+
+        if (hasPermission === PermissionStatus.granted) {
+          currentPlayingRef = recordingRef;
+          await initiateSession({image_id: imageData?.image_id ?? ''});
+        } else if (hasPermission === PermissionStatus.undetermined) {
+          const permissionStatus = await getAudioRecorderPermission();
+          if (permissionStatus === PermissionStatus.granted) {
+            currentPlayingRef = recordingRef;
+            await initiateSession({image_id: imageData?.image_id ?? ''});
+          }
+        } else {
+          const permissionType =
+            Platform.OS === 'ios'
+              ? PERMISSIONS.IOS.MICROPHONE
+              : PERMISSIONS.ANDROID.RECORD_AUDIO;
+
+          const status = await request(permissionType);
+
+          if (status === 'blocked' || status === 'unavailable') {
             Alert.alert(
               'Permission Denied',
               'You have denied permission to record audio. Please enable it in the app settings.',
               [
-                {
-                  text: 'Cancel',
-                  onPress: () => {},
-                  style: 'cancel',
-                },
-                {
-                  text: 'Go to Settings',
-                  onPress: () => {
-                    Linking.openSettings();
-                  },
-                },
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'Go to Settings', onPress: () => Linking.openSettings()},
               ],
             );
           }
 
           if (status === PermissionStatus.granted) {
             currentPlayingRef = recordingRef;
-            initiateSession({
-              image_id: imageData?.image_id ?? '',
-            });
+            await initiateSession({image_id: imageData?.image_id ?? ''});
           }
-        });
+        }
       }
+    } catch (error) {
+      console.error('onRecord error:', error);
+    } finally {
+      setIsRecordingInitializing(false);
     }
   };
 
@@ -212,6 +216,7 @@ const AudioRecorder = ({
       <VoiceRecorderMic
         isRecording={recorderState === RecorderState.recording}
         onPress={onRecord}
+        isDisabled={isRecordingInitializing}
       />
     </View>
   );
