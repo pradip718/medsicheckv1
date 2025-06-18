@@ -6,6 +6,8 @@ type AudioContextType = {
   onSave: () => void;
   imageData: VoiceScanImageDataResponse | undefined;
   onSetSession: (session: string) => void;
+  imageLoaded: boolean;
+  onChangeImageLoaded: (loaded: boolean) => void;
 };
 
 const AudioContext = React.createContext<AudioContextType | null>(null);

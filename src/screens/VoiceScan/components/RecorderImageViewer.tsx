@@ -20,7 +20,7 @@ const RecorderImageViewer = ({
   const [fullView, setFullView] = useState<boolean>(false);
   const {languages} = useLanguageStore();
 
-  const {imageData} = useAudio();
+  const {imageData, onChangeImageLoaded} = useAudio();
 
   return (
     <View style={styles.container}>
@@ -58,6 +58,8 @@ const RecorderImageViewer = ({
               source={{uri: imageData?.image_url}}
               style={styles.image}
               resizeMode="contain"
+              onLoad={() => onChangeImageLoaded(false)}
+              onLoadEnd={() => onChangeImageLoaded(true)}
             />
             <View style={styles.minMaxContainer}>
               <Pressable

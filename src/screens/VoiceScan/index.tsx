@@ -40,6 +40,7 @@ const VoiceScan = () => {
   const {showLoader, hideLoader} = useFullPageLoader();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [audioPath, setAudioPath] = useState('');
   const [recorderState, setRecorderState] = useState(RecorderState.stopped);
   const [changeImage, setChangeImage] = useState<boolean>(false);
@@ -203,6 +204,10 @@ const VoiceScan = () => {
     setSession(sessionId);
   };
 
+  const onChangeImageLoaded = (loaded: boolean) => {
+    setImageLoaded(loaded);
+  };
+
   return (
     <AudioProvider
       value={{
@@ -210,6 +215,8 @@ const VoiceScan = () => {
         onSave,
         imageData: voiceScanImageData,
         onSetSession,
+        imageLoaded,
+        onChangeImageLoaded,
       }}>
       <BackgroundImage>
         <SafeAreaView className="flex-1">

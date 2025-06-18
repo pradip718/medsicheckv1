@@ -50,7 +50,11 @@ const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
     notifyApi('voice_scan_report_generation_start', {session_id});
   }, [session_id]);
 
-  const {isSuccess: isProcessSuccess, error: processError} = useQuery({
+  const {
+    isSuccess: isProcessSuccess,
+    error: processError,
+    data: voiceProcessData,
+  } = useQuery({
     queryKey: [PROCESS_VOICE_RECORDING],
     queryFn: () => processVoiceRecording({session_id}),
     enabled: !!session_id,
@@ -78,6 +82,13 @@ const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
   });
 
   useEffect(() => {
+    notifyApi('voice_scan_report_process_success', {
+      isProcessSuccess,
+      voiceProcessData,
+    });
+  }, [isProcessSuccess, voiceProcessData]);
+
+  useEffect(() => {
     if (processError || detailError) {
       notifyApi('voice_scan_report_generation_error', {
         session_id,
@@ -86,6 +97,7 @@ const VoiceScanGeneratingReport = ({route}: VoiceScanGeneratingProps) => {
   }, [processError, detailError, session_id]);
 
   useEffect(() => {
+    notifyApi('voice_scan_report_generation_progress', {voiceScanData});
     if (isVoiceScanReport(voiceScanData)) {
       queryClient.invalidateQueries({queryKey: [GET_VOICE_SCAN_REPORT_LIST]});
       setReportDetail(voiceScanData);
