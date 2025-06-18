@@ -50,6 +50,7 @@ Thumbs.db
 
 # Android/Gradle build artifacts
 android/.gradle/
+android/.gradle/**
 android/app/build/
 *.bundle
 *.lock
