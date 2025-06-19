@@ -1,0 +1,21 @@
+{
+  "name": "AmplifyRTNCore",
+  "version": "1.1.6",
+  "summary": "React Native core module for aws-amplify",
+  "homepage": "https://docs.amplify.aws/",
+  "license": "Apache-2.0",
+  "authors": "Amazon Web Services",
+  "platforms": {
+    "ios": "12.4"
+  },
+  "source": {
+    "git": "https://github.com/aws-amplify/amplify-js.git",
+    "tag": "1.1.6"
+  },
+  "source_files": "ios/**/*.{h,m,mm,swift,c}",
+  "dependencies": {
+    "React-Core": [
+
+    ]
+  }
+}
