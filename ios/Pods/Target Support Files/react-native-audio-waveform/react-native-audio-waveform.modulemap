@@ -1,6 +1,0 @@
-module react_native_audio_waveform {
-  umbrella header "react-native-audio-waveform-umbrella.h"
-
-  export *
-  module * { export * }
-}
