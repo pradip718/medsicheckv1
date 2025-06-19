@@ -597,6 +597,14 @@
     "push": "false"
   },
   "vitals_with_image": {
+    "image2": "https://voice-scan-images.s3.us-west-2.amazonaws.com/image2.png",
+    "image3": "https://voice-scan-images.s3.us-west-2.amazonaws.com/image3.png",
+    "image4": "https://voice-scan-images.s3.us-west-2.amazonaws.com/image4.png",
+    "image0": "https://voice-scan-images.s3.us-west-2.amazonaws.com/image.png",
+    "image1": "https://voice-scan-images.s3.us-west-2.amazonaws.com/image1.png"
+  },
+
+  "voice_scan_images": {
     "DIABETES_RISK": "https://vital-signs-images.s3.us-west-2.amazonaws.com/DIABETES_RISK.png",
     "HYPERTENSION_RISK": "https://vital-signs-images.s3.us-west-2.amazonaws.com/HYPERTENSION_RISK.png",
 
