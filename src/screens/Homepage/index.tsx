@@ -43,6 +43,18 @@ const Homepage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (languages?.voice_scan_images) {
+      const imageUrls = Object.values(languages.voice_scan_images);
+      Promise.all(imageUrls.map(url => Image.prefetch(url)))
+        .then(() => console.log('All VoiceScan images prefetched successfully'))
+        .catch(error =>
+          console.error('Error prefetching Voicescan images:', error),
+        );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const {
     data: reportData,
     isLoading: isUserReadingLoading,
