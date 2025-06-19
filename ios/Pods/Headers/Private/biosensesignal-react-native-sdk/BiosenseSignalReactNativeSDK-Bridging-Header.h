@@ -1,1 +1,0 @@
-../../../../../node_modules/biosensesignal-react-native-sdk/ios/BiosenseSignalReactNativeSDK-Bridging-Header.h
