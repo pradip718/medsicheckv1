@@ -194,6 +194,14 @@ const Login = () => {
     }
   };
 
+  const cleanUserSession = async () => {
+    try {
+      await EncryptedStorage.removeItem(REMEMBERED_USER_SESSION);
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
+
   const proceedLoginStep = async (loginResponse: LoginSuccessResponse) => {
     const password = getValues('password');
     if (
@@ -222,13 +230,14 @@ const Login = () => {
     setIsUserLoggingIn(true);
     try {
       const encryptedPassword = await encryptText(password);
-      console.log('encryptedPassword', encryptedPassword);
       const loginResponse = await login({
         username: email,
         password: encryptedPassword,
       });
       if (stayLoggedIn) {
         await storeUserSession();
+      } else {
+        await cleanUserSession();
       }
       await setUserRegistered();
       await proceedLoginStep(loginResponse);

@@ -1,13 +1,15 @@
 import {Mutex} from 'async-mutex'; // Assuming you're using the `async-mutex` library
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 import {Platform} from 'react-native';
 import Config from 'react-native-config';
 import DeviceInfo from 'react-native-device-info';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {navigationRef} from '../../RootNavigation';
 import useLanguageStore from '../../store/languageStore';
-import {getDeviceLocaleInformation} from '../../utils/methods';
+import {encryptText, getDeviceLocaleInformation} from '../../utils/methods';
 import {errorToast} from '../../utils/toast';
-import {refreshToken, signout} from './auth';
+import {REMEMBERED_USER_SESSION} from '../constants/AsyncStorageKeys';
+import {login, signout} from './auth';
 
 const NO_AUTH_CHECK_URLS = [
   '/account/api/v1/login/',
@@ -25,9 +27,6 @@ const axiosInstance = axios.create({
 function getPathBeforeQuery(url: string) {
   return url.split('?')[0];
 }
-
-let refreshing_token: Promise<AxiosResponse<Record<string, string>>> | null =
-  null;
 
 axiosInstance.interceptors.request.use(
   async config => {
@@ -58,6 +57,8 @@ axiosInstance.interceptors.request.use(
 );
 
 const signoutMutex = new Mutex(); // Create a mutex instance for signout
+const refreshTokenMutex = new Mutex();
+let refreshPromise: Promise<boolean> | null = null;
 
 async function handleSignout(skipSignout = false) {
   const languages = useLanguageStore.getState().languages;
@@ -73,13 +74,44 @@ async function handleSignout(skipSignout = false) {
   }
 }
 
-async function ensureTokenRefresh() {
-  if (!refreshing_token) {
-    refreshing_token = refreshToken();
-    await refreshing_token;
-    refreshing_token = null;
-  } else {
-    await refreshing_token; // Wait for the ongoing refresh
+async function ensureTokenRefresh(): Promise<boolean> {
+  const release = await refreshTokenMutex.acquire();
+
+  try {
+    if (refreshPromise) {
+      return refreshPromise;
+    }
+
+    refreshPromise = (async () => {
+      try {
+        const session = await EncryptedStorage.getItem(REMEMBERED_USER_SESSION);
+        if (session) {
+          const userSession = JSON.parse(session);
+          const encryptPassword = await encryptText(userSession?.password);
+          if (!encryptPassword) throw new Error('Encryption failed');
+
+          await login({
+            username: userSession.username,
+            password: encryptPassword,
+          });
+
+          return true;
+        } else {
+          await handleSignout(true);
+          return false;
+        }
+      } catch (err) {
+        console.log('err', err);
+        await handleSignout(true);
+        return false;
+      } finally {
+        refreshPromise = null;
+      }
+    })();
+
+    return refreshPromise;
+  } finally {
+    release();
   }
 }
 
@@ -89,21 +121,16 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     const statusCode = error.response?.data?.statusCode;
 
-    console.log('statusCode', statusCode);
-
     if (statusCode === 401 && !originalRequest._retry) {
-      console.log('Refreshing Token');
       originalRequest._retry = true;
-      try {
-        await ensureTokenRefresh();
-        return axios(originalRequest); // Retry request with refreshed token
-      } catch (refreshError) {
-        if (!originalRequest._signoutAttempted) {
-          originalRequest._signoutAttempted = true;
-          await handleSignout(true); // Skip signout as token is invalid
-        }
-        return Promise.reject(refreshError);
+
+      const refreshSuccess = await ensureTokenRefresh();
+
+      if (refreshSuccess) {
+        return axios(originalRequest);
       }
+
+      return Promise.reject(error);
     }
 
     if (statusCode === 403 && !originalRequest._signoutAttempted) {
@@ -111,7 +138,7 @@ axiosInstance.interceptors.response.use(
       try {
         if (!originalRequest._signoutAttempted) {
           originalRequest._signoutAttempted = true;
-          await handleSignout(false); // Attempt signout normally
+          await handleSignout(false);
         }
       } finally {
         release();
