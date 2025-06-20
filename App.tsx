@@ -28,6 +28,7 @@ import SignoutModal from './src/components/SignoutModal';
 import Maintenance from './src/screens/Maintenance';
 import useLanguageStore from './store/languageStore';
 import useLoaderStore from './store/loaderStore';
+import useUserProfileStore from './store/profileStore';
 import {toastConfig} from './utils/common';
 import {getDeviceLocaleInformation} from './utils/methods';
 import {registerListenerWithFCM} from './utils/notification';
@@ -94,7 +95,9 @@ function App(): JSX.Element {
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (appState !== nextAppState) {
+      const hasProfileId =
+        useUserProfileStore.getState().currentActiveProfileId;
+      if (appState !== nextAppState && !!hasProfileId) {
         setAppState(nextAppState);
         notifyApi(nextAppState);
       }
