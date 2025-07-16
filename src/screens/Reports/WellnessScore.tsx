@@ -46,11 +46,13 @@ const WellnessScore = ({score}: WellnessScoreProps) => {
   return (
     <View className=" w-full pl-4 flex-row bg-[#0E253A] pb-10">
       <View className="flex-1">
-        <RenderWellScoreTextContent score={0} />
+        <RenderWellScoreTextContent score={score} />
       </View>
-      <View className=" w-[40%] h-[200px] tablet:h-[300px]">
-        <RenderWellScreGraphContent score={score} />
-      </View>
+      {(typeof score === 'string' || typeof score === 'number') && (
+        <View className=" w-[40%] h-[200px] tablet:h-[300px]">
+          <RenderWellScreGraphContent score={score} />
+        </View>
+      )}
     </View>
   );
 };
