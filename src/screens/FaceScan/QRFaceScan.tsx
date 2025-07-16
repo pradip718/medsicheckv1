@@ -134,11 +134,11 @@ const QRFaceScan = () => {
   }, []);
 
   useEffect(() => {
-    if (didFinishedMeasuring) {
+    if (didFinishedMeasuring && finalValue) {
       submitResult();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [didFinishedMeasuring]);
+  }, [didFinishedMeasuring, finalValue]);
 
   const {data: preReadingConfig} = useGetPreHealthReading();
 
@@ -197,19 +197,17 @@ const QRFaceScan = () => {
     data: reportResponse,
   } = useMutation({
     mutationFn: async () => {
-      if (finalValue) {
-        return await postReadings({
-          payload: {
-            data: finalValue,
-            scan_error: imageValidityJSON,
-            reading_id,
-            timestamp: moment().format('YYYY-MM-DD HH:mm'),
-            sdk_name: binahConfig?.sdk_name,
-            sdk_type: binahConfig?.sdk_type,
-            geo_location: location,
-          },
-        });
-      }
+      return await postReadings({
+        payload: {
+          data: finalValue,
+          scan_error: imageValidityJSON,
+          reading_id,
+          timestamp: moment().format('YYYY-MM-DD HH:mm'),
+          sdk_name: binahConfig?.sdk_name,
+          sdk_type: binahConfig?.sdk_type,
+          geo_location: location,
+        },
+      });
     },
     onMutate: () => showLoader(),
     onSuccess: handleReportSuccess,
