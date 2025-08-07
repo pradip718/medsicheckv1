@@ -838,7 +838,7 @@ export async function encryptText(text: string) {
   };
 
   const kmsClient = new KMSClient({
-    region: 'us-west-2',
+    region: 'mx-central-1',
     credentials: {
       accessKeyId: credentials?.access_key ?? '',
       secretAccessKey: credentials?.secret_access_key ?? '',
