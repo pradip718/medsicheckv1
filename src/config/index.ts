@@ -13,7 +13,7 @@ if (typeof global.ReadableStream === 'undefined') {
 }
 
 export const kmsClient = new KMSClient({
-  region: 'us-west-2',
+  region: 'mx-central-1',
   credentials: {
     accessKeyId: useAuthStore.getState().awsCred?.access_key ?? '',
     secretAccessKey: useAuthStore.getState().awsCred?.secret_access_key ?? '',
