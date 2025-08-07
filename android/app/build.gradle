@@ -93,8 +93,8 @@ android {
         applicationId "mx.medsi.medsicheck"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 74
-        versionName "4.3.7"
+        versionCode 77
+        versionName "4.3.8"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     signingConfigs {
@@ -136,7 +136,7 @@ android {
             applicationId "mx.medsi.medsicheck.staging"
             targetSdkVersion rootProject.ext.targetSdkVersion
             resValue "string", "build_config_package", "mx.medsi.medsicheck"
-            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/stage"]
+            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/stage-mx"]
             // resValue "string", "app_name", "Medsi Check Staging"
         }
         development {
@@ -144,7 +144,7 @@ android {
             applicationId "mx.medsi.medsicheck.dev"
             targetSdkVersion rootProject.ext.targetSdkVersion
             resValue "string", "build_config_package", "mx.medsi.medsicheck"
-            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/dev"]
+            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/dev-mx"]
             
             // resValue "string", "app_name", "Medsi Check Dev"
         }
@@ -153,7 +153,7 @@ android {
             applicationId "mx.medsi.medsicheck"
             targetSdkVersion rootProject.ext.targetSdkVersion
             resValue "string", "build_config_package", "mx.medsi.medsicheck"
-            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/prod"]
+            manifestPlaceholders = [appHost: "redirect.medsicheck.medsi.ai", pathPrefix: "/prod-mx"]
             // resValue "string", "app_name", "Medsi Check"
         }
     }
