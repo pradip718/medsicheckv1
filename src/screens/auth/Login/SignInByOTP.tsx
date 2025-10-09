@@ -18,7 +18,13 @@ import {
 } from '../../../../types/api_response';
 import {isValidPhoneNumber} from '../../../../utils/methods';
 import {errorToast} from '../../../../utils/toast';
-import {sendLoginOTP, verifyLoginOTP} from '../../../api/auth';
+import {
+  resendSignUpOTP,
+  sendLoginOTP,
+  sendSignUpOTP,
+  verifyLoginOTP,
+  verifySignUpOTP,
+} from '../../../api/auth';
 import AnimatedWrapper from '../../../components/AnimatedWrapper';
 import CustomTextInput from '../../../components/CustomTextInput';
 import CustomPhoneInput from '../../../components/PhoneInput';
@@ -27,6 +33,12 @@ import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
 import Timer from '../Register/Timer';
 import {LoginParam, LoginType} from './type';
+import {
+  NavigationProp,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native';
+import {MainStackParamList} from '../../../../types/navigation';
 
 type SignInByOTPProps = {
   handleSwitchLoginType: (type: LoginType) => void;
@@ -47,11 +59,15 @@ const SignInByOTP = ({
   proceedLoginStep,
 }: SignInByOTPProps) => {
   const {languages} = useLanguageStore();
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+
   const [didSendOTP, setDidSendOTP] = useState(false);
   const [otp, setOTP] = useState('');
   const [otpSigninType, setOTPSigninType] = useState<OTPSigninType>('Email');
   const [sendOTPResponse, setSendOTPResponse] =
     useState<LoginOTPResponse | null>(null);
+  const [isNewUser, setIsNewUser] = useState(false);
+  console.log('🚀 ~ SignInByOTP ~ isNewUser:', isNewUser);
 
   const {
     control,
@@ -88,6 +104,32 @@ const SignInByOTP = ({
         }
       },
     });
+  const {
+    mutateAsync: verifySignUpOTPMutation,
+    isPending: isValidatingSignUpOTP,
+  } = useMutation({
+    mutationKey: ['verify-signup-otp'],
+    mutationFn: verifySignUpOTP,
+    onSuccess: async res => {
+      console.log('🚀 ~ VerifyLoginOTPScreen ~ res:', res);
+      navigation.dispatch(
+        StackActions.replace(
+          'OTPRegister',
+          otpSigninType === 'Email'
+            ? {email: watchedEmail}
+            : {
+                phoneNumber: watchedPhoneNumber,
+                session: sendOTPResponse?.session || '',
+              },
+        ),
+      );
+    },
+    onError: err => {
+      if (err instanceof AxiosError) {
+        return errorToast(err?.response?.data?.error);
+      }
+    },
+  });
 
   const {mutateAsync: sendLoginOTPMutation, isPending: isSendingLoginOTP} =
     useMutation({
@@ -100,7 +142,42 @@ const SignInByOTP = ({
         setDidSendOTP(true);
         setSendOTPResponse(res);
       },
-      onError: err => {
+      onError: async (err, variables) => {
+        if (err instanceof AxiosError) {
+          console.log('🚀 ~ SignInByOTP ~ err:', err.response);
+          if (err.response?.status === 400 && err.response?.data?.new_user) {
+            try {
+              const res = await sendSignUpOTP({username: variables.username});
+              console.log('🚀 ~ OTPLoginScreen ~ res:', res);
+
+              if (res?.error) {
+                return errorToast(res?.error);
+              }
+              setDidSendOTP(true);
+              setSendOTPResponse(res);
+              setIsNewUser(true);
+              return;
+            } catch (error) {
+              return errorToast(err?.response?.data?.error);
+            }
+          }
+
+          return errorToast(err?.response?.data?.error);
+        }
+      },
+    });
+  const {mutateAsync: sendSignupOTPMutation, isPending: isSendingSignUpOTP} =
+    useMutation({
+      mutationKey: ['send-signup-otp'],
+      mutationFn: resendSignUpOTP,
+      onSuccess: res => {
+        if (res?.error) {
+          return errorToast(res?.error);
+        }
+        setDidSendOTP(true);
+        setSendOTPResponse(res);
+      },
+      onError: async err => {
         if (err instanceof AxiosError) {
           return errorToast(err?.response?.data?.error);
         }
@@ -111,24 +188,33 @@ const SignInByOTP = ({
     const email = getValues('email');
     const phoneNumber = getValues('formattedPhonenumber');
     const username = otpSigninType === 'Phone' ? phoneNumber : email;
-    await sendLoginOTPMutation({
-      username: username ?? '',
-    });
+    isNewUser
+      ? await sendSignupOTPMutation({username: username ?? ''})
+      : await sendLoginOTPMutation({
+          username: username ?? '',
+        });
   };
 
   const handleVerifyLoginOTP = async () => {
     if (!otp) {
       return errorToast(languages?.generic_error_message);
     }
-    await verifyLoginOTPMutation({
-      otp_value: otp,
-      session: sendOTPResponse?.session ?? '',
-      username: sendOTPResponse?.user_name ?? '',
-    });
+    isNewUser
+      ? await verifySignUpOTPMutation({
+          otp_value: otp,
+          username: sendOTPResponse?.user_name ?? '',
+          session:
+            otpSigninType === 'Email' ? '' : sendOTPResponse?.session || '',
+        })
+      : await verifyLoginOTPMutation({
+          otp_value: otp,
+          session: sendOTPResponse?.session ?? '',
+          username: sendOTPResponse?.user_name ?? '',
+        });
   };
 
   return (
-    <View className="mt-4 mx-6">
+    <View className="mx-6 mt-4">
       <RadioButton.Group
         onValueChange={(newValue: string) => {
           if (newValue === 'Email' || newValue === 'Phone') {
@@ -138,7 +224,7 @@ const SignInByOTP = ({
           }
         }}
         value={otpSigninType}>
-        <View className="flex-row mt-8  flex-wrap mediumPhone:flex-nowrap mediumPhone:space-x-4 w-full">
+        <View className="flex-row flex-wrap w-full mt-8 mediumPhone:flex-nowrap mediumPhone:space-x-4">
           <View className="flex-row items-center">
             <RadioButton.Android
               value="Email"
@@ -146,7 +232,7 @@ const SignInByOTP = ({
               underlayColor="white"
               uncheckedColor="white"
             />
-            <CustomText className="text-base font-isidoraMedium text-white">
+            <CustomText className="text-base text-white font-isidoraMedium">
               {languages?.email}
             </CustomText>
           </View>
@@ -157,7 +243,7 @@ const SignInByOTP = ({
               underlayColor="white"
               uncheckedColor="white"
             />
-            <CustomText className="text-base font-isidoraMedium text-white">
+            <CustomText className="text-base text-white font-isidoraMedium">
               {languages?.phone_number}
             </CustomText>
           </View>
@@ -165,7 +251,7 @@ const SignInByOTP = ({
       </RadioButton.Group>
 
       {otpSigninType === 'Email' && (
-        <View className="mt-6 flex-row items-center space-x-4">
+        <View className="flex-row items-center mt-6 space-x-4">
           <View className="flex-grow">
             <Controller
               control={control}
@@ -200,7 +286,7 @@ const SignInByOTP = ({
                 setOTP('');
                 setDidSendOTP(false);
               }}>
-              <CustomText className="text-white underline text-base font-isidoraSemiBold">
+              <CustomText className="text-base text-white underline font-isidoraSemiBold">
                 {languages?.edit}
               </CustomText>
             </Pressable>
@@ -209,7 +295,7 @@ const SignInByOTP = ({
       )}
 
       {otpSigninType === 'Phone' && (
-        <View className="mt-6 flex-row items-center space-x-4">
+        <View className="flex-row items-center mt-6 space-x-4">
           <View className="flex-grow">
             <Controller
               name="formattedPhonenumber"
@@ -232,7 +318,7 @@ const SignInByOTP = ({
                     onBlur={onBlur}
                     key={`${didSendOTP}`}
                   />
-                  <CustomText className="text-base font-isidoraMedium text-red-500">
+                  <CustomText className="text-base text-red-500 font-isidoraMedium">
                     {errors?.formattedPhonenumber?.message}
                   </CustomText>
                 </>
@@ -246,7 +332,7 @@ const SignInByOTP = ({
                 setOTP('');
                 setDidSendOTP(false);
               }}>
-              <CustomText className="text-white underline text-base font-isidoraSemiBold">
+              <CustomText className="text-base text-white underline font-isidoraSemiBold">
                 {languages?.edit}
               </CustomText>
             </Pressable>
@@ -263,7 +349,7 @@ const SignInByOTP = ({
             placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
             maxLength={6}
             value={otp}
-            editable={!isValidatingOTP}
+            editable={!isValidatingOTP || !isValidatingSignUpOTP}
             autoCapitalize="none"
             onChangeText={setOTP}
             editing={!isValidatingOTP}
@@ -274,8 +360,10 @@ const SignInByOTP = ({
           <RoundedButton
             style={styles.button}
             className="mt-10"
-            loading={isValidatingOTP}
-            disabled={isValidatingOTP || otp.length !== 6}
+            loading={isValidatingOTP || isValidatingSignUpOTP}
+            disabled={
+              isValidatingOTP || otp.length !== 6 || isValidatingSignUpOTP
+            }
             onPress={handleVerifyLoginOTP}>
             <CustomText className="text-base text-white font-isidoraSemiBold">
               {languages.validate_otp_button}
@@ -286,7 +374,7 @@ const SignInByOTP = ({
         <RoundedButton
           style={styles.button}
           className="mt-10"
-          loading={isSendingLoginOTP}
+          loading={isSendingLoginOTP || isSendingSignUpOTP}
           disabled={
             isSendingLoginOTP ||
             (otpSigninType === 'Email' && !watchedEmail) ||
