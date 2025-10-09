@@ -7,6 +7,11 @@ import {ProfileType} from './users/user';
 export type MainStackParamList = {
   Login: undefined;
   Register: undefined;
+  OTPRegister: {
+    email?: string;
+    phoneNumber?: string;
+    session?: string;
+  };
   ForgotPassword: undefined;
   ContactVerification: {
     email: string;

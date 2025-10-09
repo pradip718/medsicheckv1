@@ -86,6 +86,7 @@ import {extractQueryParams} from '../utils/methods';
 import HomePageDrawer from './HomePageDrawer';
 import ReportStack from './ReportStack';
 import UnverifiedUserTab from './UnverifiedUserTab';
+import OTPRegister from '../src/screens/auth/Register/OTPRegister';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -323,6 +324,7 @@ const RootNavigator = () => {
         <Stack.Group>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="OTPRegister" component={OTPRegister} />
           <Stack.Screen
             name="ContactVerification"
             component={ContactVerification}
