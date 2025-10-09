@@ -271,15 +271,15 @@ const Login = () => {
               <View>
                 {languages?.showQRScanner?.toLowerCase() === 'true' && (
                   <Pressable
-                    className="self-center flex-row space-x-2 items-center pt-6"
+                    className="flex-row items-center self-center pt-6 space-x-2"
                     onPress={() => {
                       navigation.navigate('QRScanner');
                     }}>
                     <Image
                       source={QRCode as ImageSourcePropType}
-                      className="h-8 w-8"
+                      className="w-8 h-8"
                     />
-                    <CustomText className="text-white font-isidoraSemiBold text-base">
+                    <CustomText className="text-base text-white font-isidoraSemiBold">
                       {languages?.qr_scanner}
                     </CustomText>
                   </Pressable>
@@ -353,7 +353,7 @@ const Login = () => {
                         'https://www.medsi.ai/terminos-y-condiciones/',
                     });
                   }}>
-                  <CustomText className="text-base mt-6 text-center font-isidoraSemiBold">
+                  <CustomText className="mt-6 text-base text-center font-isidoraSemiBold">
                     {languages.tnc} | {languages.pp}
                   </CustomText>
                 </TouchableOpacity>

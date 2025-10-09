@@ -10,7 +10,7 @@ interface CustomPhoneInputProps<TFieldValues extends Record<string, any>>
   extends PhoneInputProps {
   value: ControllerRenderProps<TFieldValues, any>['value'];
   onChange: ControllerRenderProps<TFieldValues, any>['onChange'];
-  onBlur: ControllerRenderProps<TFieldValues, any>['onBlur'];
+  onBlur?: ControllerRenderProps<TFieldValues, any>['onBlur'];
 }
 
 const CustomPhoneInput = <TFieldValues extends Record<string, any>>({
@@ -47,7 +47,7 @@ const CustomPhoneInput = <TFieldValues extends Record<string, any>>({
       textInputProps={{
         placeholderTextColor: 'rgba(255, 255, 255, 0.5)',
         onBlur: () => {
-          onBlur();
+          onBlur?.();
           onFocusChange(false);
         },
         onFocus: () => {

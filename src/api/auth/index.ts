@@ -47,6 +47,25 @@ async function signup(payload: SignUpPayload): Promise<SignUpSuccessResponse> {
     throw error;
   }
 }
+
+export const signupOTP = async (
+  payload: SignUpPayload,
+): Promise<SignUpSuccessResponse> => {
+  try {
+    const locale = getDeviceLocaleInformation();
+
+    const response = await axiosInstance({
+      method: 'POST',
+      url: `v1/sign-up-otp?locale=${locale}`,
+      data: payload,
+    });
+
+    return response?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export async function verifyEmail(payload: VerifyEmailPayload) {
   try {
     const response = await axiosInstance({
@@ -137,6 +156,38 @@ export async function sendLoginOTP(
   }
 }
 
+export async function sendSignUpOTP(
+  payload: LoginOTPPayload,
+): Promise<LoginOTPResponse> {
+  try {
+    const response = await axiosInstance({
+      method: 'POST',
+      url: 'v1/sign-up-otp?auth_type=otp',
+      data: payload,
+    });
+
+    return response?.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function resendSignUpOTP(
+  payload: LoginOTPPayload,
+): Promise<LoginOTPResponse> {
+  try {
+    const response = await axiosInstance({
+      method: 'POST',
+      url: 'v1/sign-up-otp?auth_type=resend_otp',
+      data: payload,
+    });
+
+    return response?.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function verifyLoginOTP(
   payload: VerifyLoginOTPPayload,
 ): Promise<VerifyLoginOTPResponse> {
@@ -144,6 +195,22 @@ export async function verifyLoginOTP(
     const response = await axiosInstance({
       method: 'POST',
       url: 'v1/login-v2?auth_type=verify_auth_otp',
+      data: payload,
+    });
+
+    return response?.data as VerifyLoginOTPResponse;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function verifySignUpOTP(
+  payload: VerifyLoginOTPPayload,
+): Promise<VerifyLoginOTPResponse> {
+  try {
+    const response = await axiosInstance({
+      method: 'POST',
+      url: 'v1/sign-up-otp?auth_type=verify_otp',
       data: payload,
     });
 
