@@ -1,6 +1,6 @@
 {
   "name": "biosensesignal-react-native-sdk",
-  "version": "5.9.3",
+  "version": "5.11.1",
   "summary": "BiosenseSignal React Native SDK",
   "platforms": {
     "ios": "14.0"
