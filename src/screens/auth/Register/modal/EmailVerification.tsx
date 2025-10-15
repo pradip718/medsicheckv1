@@ -157,7 +157,7 @@ const EmailVerificationModal = ({
       await verifySignUpOTPMutation({
         otp_value: otp,
         username: updatedEmail ?? email,
-        session: sendSignupOTPResponse?.Session || '',
+        session: sendSignupOTPResponse?.session || '',
         type: 'login',
       });
     } else {

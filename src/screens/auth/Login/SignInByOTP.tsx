@@ -122,8 +122,10 @@ const SignInByOTP = ({
       console.log('🚀 ~ VerifyLoginOTPScreen ~ res:', res);
       if (
         loginOTPResponse &&
-        'is_verified' in loginOTPResponse &&
-        loginOTPResponse?.is_verified === false
+        'phone_verification_flag' in loginOTPResponse &&
+        'email_verification_flag' in loginOTPResponse &&
+        loginOTPResponse?.phone_verification_flag === true &&
+        loginOTPResponse?.email_verification_flag === false
       ) {
         return navigation.navigate('ContactVerification', {
           email: loginOTPResponse?.user_name,
@@ -179,7 +181,7 @@ const SignInByOTP = ({
           return;
         }
         setDidSendOTP(true);
-        setSendOTPResponse(res);
+        setSendOTPResponse(signupOtpResponse);
         setIsNewUser(true);
         return;
       }
@@ -246,7 +248,7 @@ const SignInByOTP = ({
         });
   };
 
-  console.log('sendOTPResponse', sendOTPResponse);
+  console.log('sendOTPResponses', sendOTPResponse);
 
   const handleVerifyLoginOTP = async () => {
     if (!otp) {
