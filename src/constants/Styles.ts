@@ -1,0 +1,3 @@
+export const QUESTIONNAIRE_SPACING = 32;
+export const SCREEN_PADDING_TOP = 8;
+export const SYMPTOM_CHECKER_SPACING = 24;

@@ -7,6 +7,7 @@ export type HealthWalletCategory = {
     | 'voice_scan_report'
     | 'ai_health_report'
     | 'interpret_lab_report'
+    | 'symptom_checker'
     | 'miscellaneous_files';
   count_title: string;
   count: number;

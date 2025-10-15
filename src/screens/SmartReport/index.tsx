@@ -12,6 +12,9 @@ import CustomText from '../../components/Text';
 import {useGetLabReportQuestionnaire} from '../../hooks/api/report';
 import useGetAIQuestionnaire from '../../hooks/api/useGetAIQuestionnaire';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
+import {errorToast} from '../../../utils/toast';
+import {getSymptomQuestion} from '../../api/symptomchecker';
+import useSymptomChecker from '../../hooks/useSymptomChecker';
 
 const MenuItem = ({
   name,
@@ -60,6 +63,8 @@ const SmartReport = () => {
   const {languages} = useLanguageStore();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {showLoader, hideLoader} = useFullPageLoader();
+  const {symptomCheckerNavigation} = useSymptomChecker();
+
   const {refetch: getAIQuestions} = useGetAIQuestionnaire({
     type: 'latest',
     gcTime: 0,
@@ -98,6 +103,25 @@ const SmartReport = () => {
       },
       disabled: false,
     },
+    {
+      name: languages?.symptom_checker,
+      icon: 'lab_result',
+      description: languages?.symptom_checker_description,
+      action: async () => {
+        showLoader();
+        try {
+          const response = await getSymptomQuestion({type: 'latest'});
+          if (response?.data?.q_id) {
+            symptomCheckerNavigation(response);
+          }
+        } catch (error) {
+          errorToast();
+        } finally {
+          hideLoader();
+        }
+      },
+      disabled: false,
+    },
   ];
 
   const handleBackClick = () => {
@@ -106,12 +130,12 @@ const SmartReport = () => {
     }
   };
   return (
-    <View className="bg-white h-full">
+    <View className="h-full bg-white">
       <SafeAreaScrollView contentContainerStyle={styles.contentContainer}>
         <View className="p-4">
           <Navbar onBackClick={handleBackClick} />
         </View>
-        <CustomText className="text-xl font-isidoraBold text-center">
+        <CustomText className="text-xl text-center font-isidoraBold">
           {languages?.smart_report_title}
         </CustomText>
 
@@ -123,7 +147,7 @@ const SmartReport = () => {
             animate={{opacity: 1}}
             transition={{duration: 1000, type: 'timing'} as any}
           />
-          <CustomText className="text-sm text-center mt-4 px-8">
+          <CustomText className="px-8 mt-4 text-sm text-center">
             {languages?.smart_report_description}
           </CustomText>
           {MENU_ITEM?.map((eachMenu, idx) => (
