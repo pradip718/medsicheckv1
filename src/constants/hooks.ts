@@ -44,3 +44,6 @@ export const PROCESS_VOICE_RECORDING = 'process-voice-recording';
 export const GET_VOICE_SCAN_REPORT_DETAIL = 'get-voice-scan-report-detail';
 export const GET_VOICE_SCAN_REPORT_LIST = 'get-voice-scan-report-list';
 export const DELETE_VOICE_SCAN_REPORT_LIST = 'delete-voice-scan-report-list';
+
+// ---------------------------------------------- Sypmtom Checker ----------------------------------------------
+export const SYMPTOM_CHECKER_REPORTS = 'symptom-checker-reports';

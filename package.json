@@ -42,6 +42,7 @@
     "axios": "^1.6.7",
     "biosensesignal-react-native-sdk": "./BiosenseSignal_ReactNative_SDK_5.11.1.tgz",
     "buffer": "^6.0.3",
+    "date-fns": "^4.1.0",
     "google-libphonenumber": "^3.2.38",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",

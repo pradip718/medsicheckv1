@@ -1072,3 +1072,47 @@ export const checkUserRegistered = async (): Promise<boolean> => {
     return false;
   }
 };
+
+export function extractLabelAndComment(text: string): {
+  label: string;
+  comment: string;
+} {
+  if (!text.includes('<comment>')) {
+    if (text.includes('-')) {
+      const splitText = text.split('-');
+      return {label: splitText[0].trim(), comment: splitText[1].trim()};
+    }
+    return {label: text, comment: ''};
+  }
+  const regex = /(.+?)\s*<comment>(.*?)<\/comment>/;
+
+  const match = text.match(regex);
+
+  if (match) {
+    return {label: match[1].trim().replace(/-/g, ''), comment: match[2]};
+  } else {
+    return {label: text, comment: ''};
+  }
+}
+
+export const onShareSymptomFile = async (fileUrl: string, name?: string) => {
+  try {
+    if (Platform.OS === 'android') {
+      await sharePDFWithAndroid(fileUrl, 'application/pdf');
+    } else {
+      await sharePDFWithIOS(fileUrl, 'application/pdf');
+    }
+
+    notifyApi('share_report', {
+      profile_id: useUserProfileStore.getState().currentActiveProfileId,
+      action: {
+        name,
+        message: 'Shared Report',
+      },
+    });
+    console.log('notifyApi completed');
+  } catch (error) {
+    console.error('Error in onShareFile:', error);
+    throw error; // Re-throw to be caught by the calling function
+  }
+};

@@ -1,7 +1,9 @@
 // import {HealthData} from './jsons';
 
 import {Question} from '../src/screens/auth/Register/Additional_Information/type';
+import {SymptomQuestion} from './api_response';
 import {QuestionnaireItem} from './personalisedai';
+import {SymptomCheckerParams} from './symptom';
 import {ProfileType} from './users/user';
 
 export type MainStackParamList = {
@@ -151,6 +153,21 @@ export type MainStackParamList = {
     vitalKey: string;
   };
   VoiceScanReportList: undefined;
+
+  SymptomChecker: undefined;
+  SymptomSelectBody: SymptomCheckerParams;
+  SymptomFeelSymptoms: SymptomCheckerParams;
+  SymptomPainLevel: SymptomCheckerParams;
+  SymptomSymptomsDuration: SymptomCheckerParams;
+  SymptomStartedMedication: SymptomCheckerParams;
+  SymptomImageUpload: SymptomCheckerParams;
+  SymptomAdditionalDetails: SymptomCheckerParams;
+  SymptomOtherBodyPart: SymptomCheckerParams;
+  SymptomOtherSymptoms: SymptomCheckerParams;
+  SymptomConfirmation: SymptomCheckerParams;
+  SymptomReview: {data: SymptomQuestion[]};
+  SymptomGenerating: {isProgress: boolean} | undefined;
+  SymptomCheckerReport: {token_id: string};
 };
 
 export type PreventixInformationParamList = {

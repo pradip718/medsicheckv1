@@ -3,6 +3,7 @@ import {
   Question,
   QuestionnaireGETReponse,
 } from '../src/screens/auth/Register/Additional_Information/type';
+import {SYMPTOM_CODE} from '../src/constants/enums';
 
 export type AIHealthList = {
   created_at: string;
@@ -410,4 +411,138 @@ export interface VoiceScanReportListResponse {
   statusCode: number;
   success: boolean;
   data: VoiceReportPagination;
+}
+
+export interface GetSymptomParams {
+  type: 'latest' | 'single_question' | 'previous';
+  restart_flag?: 'true' | 'false';
+  q_id?: string;
+}
+
+export enum SymptomGenerationScreen {
+  QUESTIONNAIRE = 'questionnaire',
+  POPUP = 'pop-up',
+  REVIEW = 'review',
+}
+
+export interface SymptomQuestionResponse {
+  data: SymptomQuestion | (SymptomQuestion & {isEdit: boolean});
+  screen: SymptomGenerationScreen;
+  is_follow?: boolean;
+}
+
+export interface SymptomQuestion {
+  q_id: string;
+  question_sequence: number;
+  question_type: string;
+  eng_question: string;
+
+  spanish_question: string;
+  eng_choices: string;
+  spanish_choices: string;
+  multi_select: boolean;
+  code: SYMPTOM_CODE;
+  image_url: {id: string; url: string}[] | null;
+  user_eng_choices: any;
+  user_spanish_choices: any;
+  answer_id: string | null;
+  meta_data?: Record<string, string>;
+}
+
+export interface SymptomQuestionPayload {
+  q_id?: string;
+  eng_choices?: string;
+  spanish_choices?: string;
+  answer_id?: string | null;
+  type?: string;
+  email_flag?: string;
+}
+
+export type SymptomReportList = {
+  created_at: string;
+  lastmodified_at: string;
+  token_id: string;
+  report_link: string;
+  status: 'success' | 'processed';
+};
+
+export type SymptomReportListResponse = {
+  count: number;
+  data: SymptomReportList[];
+};
+
+export interface SymptomCheckerDetailResponse {
+  ai_response: string;
+  created_at: string;
+  report_link: string;
+}
+
+export interface FirstHypothesis {
+  first_hypothesis_name: string;
+  first_hypothesis_text: string;
+  first_hypothesis_percentage: string;
+  first_hypothesis_level_risk?: string;
+}
+
+export interface SecondHypothesis {
+  second_hypothesis_name: string;
+  second_hypothesis_text: string;
+  second_hypothesis_percentage: string;
+  second_hypothesis_level_risk?: string;
+}
+
+export interface ThirdHypothesis {
+  third_hypothesis_name: string;
+  third_hypothesis_text: string;
+  third_hypothesis_percentage: string;
+  third_hypothesis_level_risk?: string;
+}
+
+export interface FourthHypothesis {
+  fourth_hypothesis_name: string;
+  fourth_hypothesis_text: string;
+  fourth_hypothesis_percentage: string;
+  fourth_hypothesis_level_risk?: string;
+}
+
+export interface SymptomCheckerImmediateRecommendation {
+  restrictions: string;
+  hygiene: string;
+  home_remedies: string;
+  justification: string;
+}
+
+export interface SymptomMedicalConsultations {
+  specialty_name: string;
+  reason: string;
+  urgency_level: string;
+}
+export interface SymptomCheckerDetail {
+  patient_age: string;
+  initial_text: string;
+  location_of_lesion: string;
+  lesion_specifications: string;
+  medical_images: string[];
+  first_hypothesis?: FirstHypothesis;
+  second_hypothesis?: SecondHypothesis;
+  third_hypothesis?: ThirdHypothesis;
+  fourth_hypothesis?: FourthHypothesis;
+  immediately_recommendations: SymptomCheckerImmediateRecommendation;
+  medical_consultations: SymptomMedicalConsultations[];
+  additional_exams: {
+    exam_name: string;
+    reason: string;
+    preparation: string;
+  }[];
+  symptom_monitoring: {
+    frequency: string;
+    method: string;
+    methods?: string[];
+    reason: string;
+  }[];
+  lesion_monitoring: {
+    frequency: string;
+    method: string;
+    reason: string;
+  }[];
 }

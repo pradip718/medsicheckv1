@@ -87,6 +87,20 @@ import HomePageDrawer from './HomePageDrawer';
 import ReportStack from './ReportStack';
 import UnverifiedUserTab from './UnverifiedUserTab';
 import OTPRegister from '../src/screens/auth/Register/OTPRegister';
+import SymptomChecker from '../src/screens/SymptomChecker';
+import SymptomCheckerAdditionalDetails from '../src/screens/SymptomChecker/generate/SymptomCheckerAdditionalDetails';
+import SymptomCheckerFeelSymptoms from '../src/screens/SymptomChecker/generate/SymptomCheckerFeelSymptoms';
+import SymptomCheckerFileUpload from '../src/screens/SymptomChecker/generate/SymptomCheckerFileUpload';
+import SymptomCheckerOtherBodyPart from '../src/screens/SymptomChecker/generate/SymptomCheckerOtherBodyPart';
+import SymptomCheckersOtherSymptoms from '../src/screens/SymptomChecker/generate/SymptomCheckersOtherSymptoms';
+import SymptomCheckerPainLevel from '../src/screens/SymptomChecker/generate/SymptomCheckerPainLevel';
+import SymptomCheckerBodyPart from '../src/screens/SymptomChecker/generate/SymptomCheckerBodyPart';
+import SymptomCheckerStartedMedication from '../src/screens/SymptomChecker/generate/SymptomCheckerStartedMedication';
+import SymptomCheckerSymptomDuration from '../src/screens/SymptomChecker/generate/SymptomCheckerSymptomDuration';
+import SymptomCheckerConfirmation from '../src/screens/SymptomChecker/generate/SymptomCheckerConfirmation';
+import SymptomCheckerReview from '../src/screens/SymptomChecker/generate/SymptomCheckerReview';
+import SymptomCheckerGenerating from '../src/screens/SymptomChecker/generate/SymptomCheckerGenerating';
+import SymptomCheckerReport from '../src/screens/SymptomChecker/SymptomCheckerReport';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -492,6 +506,59 @@ const RootNavigator = () => {
           <Stack.Screen
             name="VoiceScanReportList"
             component={VoiceScanReportList}
+          />
+        </Stack.Group>
+
+        <Stack.Group>
+          <Stack.Screen name="SymptomChecker" component={SymptomChecker} />
+          <Stack.Screen
+            name="SymptomAdditionalDetails"
+            component={SymptomCheckerAdditionalDetails}
+          />
+          <Stack.Screen
+            name="SymptomFeelSymptoms"
+            component={SymptomCheckerFeelSymptoms}
+          />
+          <Stack.Screen
+            name="SymptomImageUpload"
+            component={SymptomCheckerFileUpload}
+          />
+          <Stack.Screen
+            name="SymptomOtherBodyPart"
+            component={SymptomCheckerOtherBodyPart}
+          />
+          <Stack.Screen
+            name="SymptomOtherSymptoms"
+            component={SymptomCheckersOtherSymptoms}
+          />
+          <Stack.Screen
+            name="SymptomPainLevel"
+            component={SymptomCheckerPainLevel}
+          />
+          <Stack.Screen
+            name="SymptomSelectBody"
+            component={SymptomCheckerBodyPart}
+          />
+          <Stack.Screen
+            name="SymptomStartedMedication"
+            component={SymptomCheckerStartedMedication}
+          />
+          <Stack.Screen
+            name="SymptomSymptomsDuration"
+            component={SymptomCheckerSymptomDuration}
+          />
+          <Stack.Screen
+            name="SymptomConfirmation"
+            component={SymptomCheckerConfirmation}
+          />
+          <Stack.Screen name="SymptomReview" component={SymptomCheckerReview} />
+          <Stack.Screen
+            name="SymptomGenerating"
+            component={SymptomCheckerGenerating}
+          />
+          <Stack.Screen
+            name="SymptomCheckerReport"
+            component={SymptomCheckerReport}
           />
         </Stack.Group>
       </Stack.Navigator>
