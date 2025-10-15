@@ -4681,9 +4681,9 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.3.0.tgz#f6e14a97858d327252200242d4ccfe522c445522"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
 
-biosensesignal-react-native-sdk@./BiosenseSignal_ReactNative_SDK_5.11.1.tgz:
-  version "5.11.1"
-  resolved "./BiosenseSignal_ReactNative_SDK_5.11.1.tgz#a9650cf3aa08ee26b9e7e6ad90a5dd3046a306ae"
+biosensesignal-react-native-sdk@./BiosenseSignal_ReactNative_SDK_5.9.3.tgz:
+  version "5.9.3"
+  resolved "./BiosenseSignal_ReactNative_SDK_5.9.3.tgz#888dbcf943611e55fa672c6a5c5e8b24d1e21434"
   dependencies:
     react-native-uuid "^2.0.1"
 

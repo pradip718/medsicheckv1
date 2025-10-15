@@ -128,6 +128,7 @@ export type LoginSuccessResponse = {
   phone_number: string;
   phone_verification_flag: boolean;
   email_verification_flag: boolean;
+  user_password: boolean;
 };
 export type LoginErrorResponse = {
   error: string;
@@ -410,4 +411,32 @@ export interface VoiceScanReportListResponse {
   statusCode: number;
   success: boolean;
   data: VoiceReportPagination;
+}
+
+export function isLoginSuccessResponse(
+  data: LoginSuccessResponse | LoginOTPResponse | null,
+): data is LoginSuccessResponse {
+  return data !== null && 'is_verified' in data;
+}
+
+export function isLoginOTPResponse(
+  data: LoginSuccessResponse | LoginOTPResponse | null,
+): data is LoginOTPResponse {
+  return data !== null && 'otp_sent' in data && 'session' in data;
+}
+
+export function isLoginErrorResponse(
+  data:
+    | LoginSuccessResponse
+    | LoginOTPResponse
+    | LoginErrorResponse
+    | null
+    | undefined,
+): data is LoginErrorResponse {
+  return (
+    data !== null &&
+    data !== undefined &&
+    'error' in data &&
+    !('otp_sent' in data) // Distinguish from LoginOTPResponse which can also have 'error'
+  );
 }
