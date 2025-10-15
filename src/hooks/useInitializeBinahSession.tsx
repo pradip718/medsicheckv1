@@ -87,7 +87,6 @@ const useInitializeBinahSession = ({
   cameraLocation: string;
 }) => {
   const {mutateAsync: getBinahConfig} = useFetchBinahConfig();
-  const {data: preReadingConfig} = useGetPreHealthReading();
   const {data: users} = useGetUserAttributes();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
@@ -103,6 +102,7 @@ const useInitializeBinahSession = ({
     errorMessages,
     setSession,
     session: backupSession,
+    geoPosition: location,
   } = useBinahConfigStore();
   const licenseInfo = useLicenseInfo();
   const finalResults = useFinalResults();
@@ -115,6 +115,12 @@ const useInitializeBinahSession = ({
   const [screenActiveState, setScreenActiveState] = useState(
     ScreenActiveState.ACTIVE,
   );
+
+  const {data: preReadingConfig} = useGetPreHealthReading({
+    longitude: location?.longitude ?? undefined,
+    latitude: location?.latitude ?? undefined,
+    altitude: location?.altitude ?? undefined,
+  });
 
   useEffect(() => {
     const fetchErrorMsgJson = async () => {
@@ -427,6 +433,7 @@ const useInitializeBinahSession = ({
     restartSession,
     isRestarting,
     createNewSession,
+    preReadingConfig,
   };
 };
 
