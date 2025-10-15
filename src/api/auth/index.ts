@@ -142,7 +142,7 @@ export async function forgotPassword(payload: ForgotPasswordPayload) {
 
 export async function sendLoginOTP(
   payload: LoginOTPPayload,
-): Promise<LoginOTPResponse> {
+): Promise<LoginOTPResponse | LoginSuccessResponse> {
   try {
     const response = await axiosInstance({
       method: 'POST',
