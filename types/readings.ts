@@ -73,7 +73,9 @@ export type USER_ACTIVITY =
   | 'background'
   | 'inactive'
   | 'unknown'
-  | 'extension';
+  | 'extension'
+  | 'sc_report_history'
+  | 'sr_report_deletion';
 
 export type SCAN_SESSION_STATUS =
   | 'start_scan'
