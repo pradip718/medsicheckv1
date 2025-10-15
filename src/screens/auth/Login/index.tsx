@@ -204,6 +204,12 @@ const Login = () => {
 
   const proceedLoginStep = async (loginResponse: LoginSuccessResponse) => {
     const password = getValues('password');
+    //Only occurs in email signup --> user already been created in cognito for email
+    if (loginResponse?.user_password === false) {
+      return navigation.dispatch(
+        StackActions.replace('OTPRegister', {email: loginResponse?.user_name}),
+      );
+    }
     if (
       'user_id' in loginResponse &&
       (!loginResponse?.email_verification_flag ||

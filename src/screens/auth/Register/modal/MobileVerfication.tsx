@@ -11,7 +11,12 @@ import {
 import useLanguageStore from '../../../../../store/languageStore';
 import {sendPhoneOTPPayload} from '../../../../../types/api_payload';
 import {errorToast} from '../../../../../utils/toast';
-import {sendPhoneOTP, verifyPhone} from '../../../../api/auth';
+import {
+  resendSignUpOTP,
+  sendPhoneOTP,
+  verifyPhone,
+  verifySignUpOTP,
+} from '../../../../api/auth';
 import BasicContainer from '../../../../components/BasicContainer';
 import EtchedGlass from '../../../../components/EtchedGlass';
 import Pressable from '../../../../components/Pressable';
@@ -29,6 +34,7 @@ interface MobileVerificationProps {
   updateCurrentPhoneNumber: (phoneNumber: string) => void;
   closeVerficationModal: (focus?: boolean) => void;
   handlePhoneVerified: (verify: boolean) => void;
+  isOTPSignup: boolean;
 }
 
 const modifyPhonePayload = (
@@ -60,6 +66,7 @@ const MobileVerificationModal = ({
   updateCurrentPhoneNumber,
   closeVerficationModal,
   handlePhoneVerified,
+  isOTPSignup,
 }: MobileVerificationProps) => {
   const {languages} = useLanguageStore();
   const [otp, setOTP] = useState('');
@@ -68,6 +75,20 @@ const MobileVerificationModal = ({
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value: otp,
     setValue: setOTP,
+  });
+
+  const {mutateAsync: sendSignupOTPMutation} = useMutation({
+    mutationKey: ['send-signup-otp'],
+    mutationFn: resendSignUpOTP,
+    onError: err => {
+      if (err instanceof AxiosError) {
+        errorToast(err?.response?.data?.error);
+        closeVerficationModal();
+      }
+    },
+    onSuccess: () => {
+      updateCurrentPhoneNumber(updatedPhoneNumber ?? phoneNumber);
+    },
   });
 
   const {mutateAsync: sendPhoneOTPMutation} = useMutation({
@@ -81,6 +102,23 @@ const MobileVerificationModal = ({
     },
     onSuccess: () => {
       updateCurrentPhoneNumber(updatedPhoneNumber ?? phoneNumber);
+    },
+  });
+
+  const {
+    mutateAsync: verifySignUpOTPMutation,
+    isPending: isValidatingSignUpOTP,
+  } = useMutation({
+    mutationKey: ['verify-signup-otp'],
+    mutationFn: verifySignUpOTP,
+    onError: err => {
+      if (err instanceof AxiosError) {
+        errorToast(err?.response?.data?.error);
+      }
+    },
+    onSuccess: () => {
+      handlePhoneVerified(true);
+      closeVerficationModal();
     },
   });
 
@@ -100,24 +138,42 @@ const MobileVerificationModal = ({
     });
 
   useEffect(() => {
-    sendPhoneOTPMutation(
-      modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
-    );
+    isOTPSignup
+      ? sendSignupOTPMutation(
+          modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
+        )
+      : sendPhoneOTPMutation(
+          modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
+        );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleResendOTP = async () => {
-    await sendPhoneOTPMutation(
-      modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
-    );
+    if (isOTPSignup) {
+      await sendSignupOTPMutation(
+        modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
+      );
+    } else {
+      await sendPhoneOTPMutation(
+        modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
+      );
+    }
   };
 
   const handleVerifyOTP = async () => {
-    await verifyPhoneMutation({
-      username: email,
-      otp_value: otp,
-      user_id,
-    });
+    if (isOTPSignup) {
+      await verifySignUpOTPMutation({
+        otp_value: otp,
+        username: email,
+        session: '',
+      });
+    } else {
+      await verifyPhoneMutation({
+        username: email,
+        otp_value: otp,
+        user_id,
+      });
+    }
   };
 
   const renderCodeInput = useCallback(() => {
@@ -179,8 +235,8 @@ const MobileVerificationModal = ({
               onPress={handleVerifyOTP}
               resetStyle
               className="py-[8] px-[60] bg-midnightBlue"
-              loading={isVerifyingPhone}
-              disabled={isVerifyingPhone}>
+              loading={isOTPSignup ? isValidatingSignUpOTP : isVerifyingPhone}
+              disabled={isOTPSignup ? isValidatingSignUpOTP : isVerifyingPhone}>
               <CustomText className="text-base font-isidoraBold text-white text-center">
                 {languages?.verify_button_text}
               </CustomText>
