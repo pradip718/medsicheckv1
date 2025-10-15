@@ -150,6 +150,11 @@ const HealthWallet = () => {
           }
         };
 
+      case 'symptom_checker':
+        return () => {
+          navigation.navigate('SymptomChecker');
+        };
+
       case 'miscellaneous_files':
         return () => {
           navigation.navigate('MiscellaneousFiles');

@@ -36,6 +36,14 @@ export const HEALTH_WALLET_CATEGORY_LIST: HealthWalletCategory[] = [
     image: require('../../../assets/images/lab_report.png'),
   },
   {
+    name: useLanguageStore.getState().languages.symptom_checker,
+    identifier: 'symptom_checker',
+    count_title: useLanguageStore.getState().languages.total_files_title,
+    count: 12,
+    button_title: useLanguageStore.getState().languages.check_symptoms_now,
+    image: require('../../../assets/images/lab_report.png'),
+  },
+  {
     name: useLanguageStore.getState().languages.miscellaneous_files_title,
     identifier: 'miscellaneous_files',
     count_title: useLanguageStore.getState().languages.total_files_title,
