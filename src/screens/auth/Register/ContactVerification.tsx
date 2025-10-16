@@ -97,11 +97,13 @@ const RenderFooter = ({
 const ContactVerification = ({route}: OTPProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
-  const {email, password, phoneNumber, user_id, loginParams} =
+  const {email, password, phoneNumber, user_id, loginParams, isOTPSignup} =
     route?.params || {
       email: '',
       phoneNumber: '',
     };
+
+  console.log('route', route?.params);
   const [currentEmail, setCurrentEmail] = useState(email);
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState(phoneNumber);
 
@@ -375,6 +377,7 @@ const ContactVerification = ({route}: OTPProps) => {
               email={currentEmail}
               updateCurrentEmail={updateCurrentEmail}
               handleEmailVerified={handleEmailVerified}
+              isOTPSignup={isOTPSignup ?? false}
               closeVerficationModal={(focus?: boolean) => {
                 handleEmailVerificationModal(false);
                 if (focus) {
@@ -391,6 +394,7 @@ const ContactVerification = ({route}: OTPProps) => {
               updatedPhoneNumber={getValues('formattedPhonenumber')}
               user_id={user_id}
               handlePhoneVerified={handlePhoneVerified}
+              isOTPSignup={isOTPSignup ?? false}
               closeVerficationModal={(focus?: boolean) => {
                 handleMobileVerificationModal(false);
                 if (focus) {
