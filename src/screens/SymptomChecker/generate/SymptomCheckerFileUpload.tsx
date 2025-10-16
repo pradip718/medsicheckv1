@@ -52,7 +52,7 @@ const SymptomCheckerFileUpload = () => {
         eng_choices: JSON.stringify(tokens),
         spanish_choices: JSON.stringify(tokens),
         questionData,
-        isFromReportList: params?.isFromReportList || false,
+        // isFromReportList: params?.isFromReportList || false,
       });
       setIsLoading(false);
     },
@@ -132,7 +132,8 @@ const SymptomCheckerFileUpload = () => {
           Boolean(uploadedImages?.length && uploadedImages.length > 3)
         }
         isLoading={isLoading || isSubmitting}
-        questionId={questionData?.q_id}>
+        questionId={questionData?.q_id}
+        isEdit={params?.isEdit}>
         <View style={styles.container}>
           <SymptomCheckerQuestion data={questionData} />
 
