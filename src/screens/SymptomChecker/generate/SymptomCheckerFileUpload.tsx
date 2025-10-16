@@ -52,6 +52,7 @@ const SymptomCheckerFileUpload = () => {
         eng_choices: JSON.stringify(tokens),
         spanish_choices: JSON.stringify(tokens),
         questionData,
+        isFromReportList: params?.isFromReportList || false,
       });
       setIsLoading(false);
     },

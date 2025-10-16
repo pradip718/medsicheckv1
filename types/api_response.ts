@@ -10,6 +10,7 @@ export type AIHealthList = {
   lastmodified_at: string;
   token_id: string;
   report_link: string;
+  status: 'success' | 'processed';
 };
 
 export type AIHealthReportResponse = {
@@ -50,6 +51,7 @@ export type LabReportList = {
   lastmodified_at: string;
   report_link: string;
   token_id: string;
+  status: 'success' | 'processed';
 };
 
 export interface LabReportListResponse {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   NavigationProp,
@@ -20,6 +20,7 @@ import CustomText from '../../../components/Text';
 import {SYMPTOM_CHECKER_SPACING} from '../../../constants/Styles';
 import {units} from '../../../theme';
 import {SymptomCodeScreenMapper} from '../../../../utils/symptom';
+import useFullPageLoader from '../../../hooks/useFullPageLoader';
 
 const checkIsYes = (value: string) => {
   return [ENGLISH_YES.toLowerCase(), SPANISH_YES.toLowerCase(), 'sí'].includes(
@@ -31,7 +32,7 @@ const SymptomCheckerConfirmation = () => {
   const {params} =
     useRoute<RouteProp<MainStackParamList, 'SymptomConfirmation'>>();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
-  console.log('🚀 ~ SymptomCheckerConfirmation ~ params:', params);
+  const {showLoader, hideLoader} = useFullPageLoader();
 
   const isSpanish = isSpanishLocale();
   const questionData = params;
@@ -43,11 +44,12 @@ const SymptomCheckerConfirmation = () => {
 
   const buttons = isSpanish ? spanishChoices : englishChoices;
 
-  const [isLoading, setIsLoading] = useState<string>('');
+  // const [isLoading, setIsLoading] = useState<string>('');
 
   const onSelect = async (choice: string) => {
     try {
-      setIsLoading(choice);
+      // setIsLoading(choice);
+      showLoader();
       const response = await getSymptomQuestion({
         type: 'latest',
         restart_flag: checkIsYes(choice) ? 'true' : 'false',
@@ -78,7 +80,8 @@ const SymptomCheckerConfirmation = () => {
     } catch (error) {
       errorToast();
     } finally {
-      setIsLoading('');
+      // setIsLoading('');
+      hideLoader();
     }
   };
 
@@ -90,14 +93,6 @@ const SymptomCheckerConfirmation = () => {
         <View className="gap-2 mt-12">
           {Array.isArray(buttons) && buttons?.length
             ? buttons.map(button => (
-                // <Button
-                //   key={button}
-                //   text={button}
-                //   variant={checkIsYes(button) ? 'primary' : 'secondary'}
-                //   onPress={() => onSelect(button)}
-                //   disabled={!!isLoading}
-                //   isLoading={isLoading === button}
-                // />
                 <>
                   {checkIsYes(button) ? (
                     <TouchableOpacity
@@ -111,8 +106,8 @@ const SymptomCheckerConfirmation = () => {
                     </TouchableOpacity>
                   ) : (
                     <RoundedButton
-                      disabled={!!isLoading}
-                      loading={isLoading === button}
+                      // disabled={!!isLoading}
+                      // loading={isLoading === button}
                       onPress={() => onSelect(button)}>
                       <CustomText className="text-lg text-white font-isidoraSemiBold">
                         {button}

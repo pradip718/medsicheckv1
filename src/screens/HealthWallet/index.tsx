@@ -31,12 +31,17 @@ import usePrepareFacescan from '../../hooks/usePrepareFacescan';
 import customColor from '../../theme/customColor';
 import {HEALTH_WALLET_CATEGORY_LIST} from './data';
 import {HealthWalletCategory} from './type';
+import {useGetSymptomReports} from '../../hooks/api/symptomchecker';
+import {getSymptomQuestion} from '../../api/symptomchecker';
+import useSymptomChecker from '../../hooks/useSymptomChecker';
+import {errorToast} from '../../../utils/toast';
 
 const HealthWallet = () => {
   const {languages} = useLanguageStore();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {showLoader, hideLoader} = useFullPageLoader();
   const {setReportDetail} = useVoiceScanStore();
+  const {symptomCheckerNavigation} = useSymptomChecker();
 
   const {startScan} = usePrepareFacescan();
 
@@ -44,6 +49,8 @@ const HealthWallet = () => {
     useGetUserReading();
   const {data: voiceScanReportData, isFetching: isUserVoiceReportFetching} =
     useGetUserVoiceReportList();
+  const {data: symptomReportData, isFetching: isSymptomReportFetching} =
+    useGetSymptomReports();
   const {data: aiReportData, isFetching: isAiReportListFetching} =
     useGetAIReport();
   const {data: healthWalletReportList, isFetching: isHealthReportListFetching} =
@@ -80,6 +87,7 @@ const HealthWallet = () => {
 
   const readingLength = reportData?.data?.count || 0;
   const voiceScanReportLength = voiceScanReportData?.data?.count || 0;
+  const symptomReportLength = symptomReportData?.count || 0;
   const aiReportLength = aiReportData?.count || 0;
   const healthWalletReportLength = healthWalletReportList?.count || 0;
   const miscellaneousReportLength = miscellaneousFiles?.count || 0;
@@ -96,6 +104,20 @@ const HealthWallet = () => {
     await getLabReportQuestions();
     navigation.navigate('LabReport');
     hideLoader();
+  };
+
+  const generateSymptomCheckerReport = async () => {
+    showLoader();
+    try {
+      const response = await getSymptomQuestion({type: 'latest'});
+      if (response?.data?.q_id) {
+        symptomCheckerNavigation(response);
+      }
+    } catch (error) {
+      errorToast();
+    } finally {
+      hideLoader();
+    }
   };
 
   const handleRowPress = (
@@ -152,7 +174,11 @@ const HealthWallet = () => {
 
       case 'symptom_checker':
         return () => {
-          navigation.navigate('SymptomChecker');
+          if (symptomReportLength === 0) {
+            return generateSymptomCheckerReport();
+          } else {
+            navigation.navigate('SymptomChecker');
+          }
         };
 
       case 'miscellaneous_files':
@@ -206,6 +232,10 @@ const HealthWallet = () => {
         return isHealthReportListFetching
           ? languages?.loading
           : healthWalletReportLength;
+      case 'symptom_checker':
+        return isSymptomReportFetching
+          ? languages?.loading
+          : symptomReportLength;
       case 'miscellaneous_files':
         return isMiscellaneousFilesFetching
           ? languages?.loading

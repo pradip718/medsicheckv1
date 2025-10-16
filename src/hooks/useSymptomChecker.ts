@@ -5,6 +5,7 @@ import {Keyboard} from 'react-native';
 
 import {
   NavigationProp,
+  StackActions,
   // StackActions,
   useNavigation,
 } from '@react-navigation/native';
@@ -22,6 +23,7 @@ interface SubmitProps {
   questionData: SymptomCheckerParams;
   eng_choices: string;
   spanish_choices: string;
+  isFromReportList?: boolean;
 }
 
 export default function useSymptomChecker() {
@@ -43,14 +45,18 @@ export default function useSymptomChecker() {
 
       if (questionItem?.code) {
         const nextRoute = SymptomCodeScreenMapper[questionItem.code];
-        // navigation.dispatch(
-        //   StackActions.replace(nextRoute, {...questionItem, isEdit}),
-        // );
-        return navigation.navigate(nextRoute, {
-          ...questionItem,
-          isEdit,
-          isFromReportList,
-        });
+        navigation.dispatch(
+          StackActions.replace(nextRoute, {
+            ...questionItem,
+            isEdit,
+            isFromReportList,
+          }),
+        );
+        // return navigation.navigate(nextRoute, {
+        //   ...questionItem,
+        //   isEdit,
+        //   isFromReportList,
+        // });
       }
       return;
     }
@@ -90,6 +96,7 @@ export default function useSymptomChecker() {
     questionData,
     eng_choices,
     spanish_choices,
+    isFromReportList,
   }: SubmitProps) => {
     setIsUpdating(true);
     try {
@@ -104,7 +111,7 @@ export default function useSymptomChecker() {
         ? await updateQuestion(payloadData)
         : await postQuestion(payloadData);
 
-      symptomCheckerNavigation(res, questionData?.isEdit);
+      symptomCheckerNavigation(res, questionData?.isEdit, isFromReportList);
     } catch (error) {
       console.log(error);
       errorToast();

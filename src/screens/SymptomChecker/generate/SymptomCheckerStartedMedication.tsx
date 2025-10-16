@@ -83,6 +83,7 @@ const SymptomCheckerStartedMedication = () => {
       eng_choices: englishChoice,
       spanish_choices: spanishChoice,
       questionData,
+      isFromReportList: params?.isFromReportList || false,
     });
   };
 
