@@ -18,6 +18,7 @@ export type MainStackParamList = {
     password?: string;
     phoneNumber: string;
     user_id: string;
+    isOTPSignup?: boolean;
     loginParams?: {
       isEmailVerified: boolean;
       isPhoneVerified: boolean;
