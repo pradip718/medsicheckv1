@@ -32,6 +32,7 @@ const SymptomCheckerOtherBodyPart = () => {
       eng_choices: bodyPart,
       spanish_choices: bodyPart,
       questionData,
+      isFromReportList: params?.isFromReportList || false,
     });
   };
 

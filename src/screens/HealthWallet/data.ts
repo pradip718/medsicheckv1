@@ -41,7 +41,7 @@ export const HEALTH_WALLET_CATEGORY_LIST: HealthWalletCategory[] = [
     count_title: useLanguageStore.getState().languages.total_files_title,
     count: 12,
     button_title: useLanguageStore.getState().languages.check_symptoms_now,
-    image: require('../../../assets/images/lab_report.png'),
+    image: require('../../../assets/images/symptom_checker.png'),
   },
   {
     name: useLanguageStore.getState().languages.miscellaneous_files_title,

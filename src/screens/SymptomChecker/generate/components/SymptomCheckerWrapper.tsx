@@ -25,11 +25,13 @@ import {
   QUESTIONNAIRE_SPACING,
   SCREEN_PADDING_TOP,
 } from '../../../../constants/Styles';
-import Icon from '../../../../components/Icon';
+// import Icon from '../../../../components/Icon';
 import RoundedButton from '../../../../components/RoundedButton';
 import CustomText from '../../../../components/Text';
 import {SEMIBOLD} from '../../../../constants/Fonts';
 import colors from '../../../../../colors';
+import {goToHome} from '../../../../../utils/navigation';
+// import customColor from '../../../../theme/customColor';
 
 interface SymptomCheckerWrapperProps {
   children: React.ReactNode;
@@ -121,15 +123,21 @@ const SymptomCheckerWrapper = ({
               <TouchableOpacity
                 className="items-end"
                 onPress={() => {
-                  if (params?.isFromReportList) {
-                    navigation.navigate('SymptomChecker');
-                  } else if (isEdit) {
-                    navigation.goBack();
-                  } else {
-                    navigation.navigate('SmartReport');
-                  }
+                  // if (params?.isFromReportList) {
+                  //   navigation.navigate('SymptomChecker');
+                  // }
+                  // if (!isEdit) {
+                  //   // navigation.navigate('SmartReport');
+                  // }
+                  // if (params?.isFromReportList) {
+                  //   navigation.navigate('SymptomChecker');
+                  // } else {
+                  //   navigation.navigate('SmartReport');
+                  // }
+                  goToHome();
                 }}>
-                <Icon name="close" size={24} color={colors.primary} />
+                {/* <Icon name="close" size={24} color={colors.primary} /> */}
+                <Feather name="home" size={24} color={colors.primary} />
               </TouchableOpacity>
             )}
           </View>
