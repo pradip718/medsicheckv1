@@ -68,7 +68,7 @@ local.properties
 .idea/
 
 # Ignore all PNGs in assets/images (adjust path as needed)
-assets/images/*.png
+# assets/images/*.png
 
 # Optional: Ignore the entire build output directory of Android
 **/build/
