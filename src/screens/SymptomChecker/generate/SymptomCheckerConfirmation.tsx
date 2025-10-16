@@ -62,7 +62,7 @@ const SymptomCheckerConfirmation = () => {
         return navigation.dispatch(
           StackActions.replace(nextRoute, {
             ...response.data,
-            isFromReportList: params?.isFromReportList,
+            // isFromReportList: params?.isFromReportList,
           }),
         );
       }
@@ -73,7 +73,7 @@ const SymptomCheckerConfirmation = () => {
         navigation.dispatch(
           StackActions.replace(nextRoute, {
             ...questionItem,
-            isFromReportList: params?.isFromReportList,
+            // isFromReportList: params?.isFromReportList,
           }),
         );
       }

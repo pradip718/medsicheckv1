@@ -14,7 +14,7 @@ import useSymptomChecker from '../../../../hooks/useSymptomChecker';
 import {getSymptomQuestion} from '../../../../api/symptomchecker';
 import {errorToast} from '../../../../../utils/toast';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Icon from '../../../../components/Icon';
+// import Icon from '../../../../components/Icon';
 import {
   QUESTIONNAIRE_SPACING,
   SCREEN_PADDING_TOP,
@@ -24,6 +24,7 @@ import RoundedButton from '../../../../components/RoundedButton';
 import CustomText from '../../../../components/Text';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import colors from '../../../../../colors';
+import {goToHome} from '../../../../../utils/navigation';
 
 interface SymptomCheckerWrapperProps {
   children: React.ReactNode;
@@ -50,6 +51,7 @@ const SymptomCheckerKeyboardAvoidingWrapper = ({
   // scrollHeight = 0,
   questionId,
 }: SymptomCheckerWrapperProps) => {
+  console.log('🚀 ~ SymptomCheckerKeyboardAvoidingWrapper ~ isEdit:', isEdit);
   const {top} = useSafeAreaInsets();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
@@ -106,12 +108,19 @@ const SymptomCheckerKeyboardAvoidingWrapper = ({
                 <Feather name="chevron-left" size={30} color="#1F2937" />
               )}
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               className="items-end"
               onPress={() => {
                 navigation.goBack();
-              }}>
+              }}>x
               <Icon name="close" size={24} color={colors.primary} />
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              className="items-end"
+              onPress={() => {
+                goToHome();
+              }}>
+              <Feather name="home" size={24} color={colors.primary} />
             </TouchableOpacity>
           </View>
           <View style={styles.contentContainer}>{children}</View>
