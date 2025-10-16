@@ -30,12 +30,14 @@ export type ConfirmPasswordPayload = {
 
 export type LoginOTPPayload = {
   username: string;
+  type?: 'login';
 };
 
 export type VerifyLoginOTPPayload = {
   username: string;
   session: string;
   otp_value: string;
+  type?: 'login';
 };
 
 export type sendPhoneOTPPayload =
