@@ -289,51 +289,82 @@ const InterpretLabReports = () => {
     );
   };
 
-  const renderItem = ({item: list}: {item: LabReportList}) => (
-    <TouchableOpacity
-      className="flex-row items-center justify-between border border-[#868686] rounded-3xl px-4 py-4 mt-4"
-      activeOpacity={0.4}
-      onPress={() => {
-        isEditing
-          ? handleValueChange(list.token_id)
-          : navigation.navigate('LabReportDetail', {
-              token: list?.token_id,
-              created_at: list?.created_at,
-            });
-      }}>
-      <View className="flex-row items-center space-x-2 h-4">
-        {isEditing && (
-          <View
-            from={{opacity: 0, translateX: -20}}
-            animate={{opacity: 1, translateX: 0}}
-            transition={
-              {duration: 500, type: 'timing'} as MotiTransitionProp<
-                StyleValueWithReplacedTransforms<ViewStyle>
-              >
-            }>
-            <CheckBox
-              boxType="square"
-              style={styles.checkBox}
-              lineWidth={2}
-              tintColors={{true: 'black', false: 'black'}}
-              onCheckColor="black"
-              onFillColor="white"
-              // onValueChange={() => handleValueChange(list.token_id)}
-              value={deleteTokenIds?.includes(list.token_id)}
-            />
+  const renderItem = ({item: list}: {item: LabReportList}) => {
+    const isInProgress = list?.status === 'processed';
+
+    const onPress = () => {
+      if (isEditing) {
+        return handleValueChange(list.token_id);
+      }
+
+      if (isInProgress) {
+        navigation.navigate('LabReportGenerating', {
+          isProgress: true,
+        });
+        return;
+      }
+
+      navigation.navigate('LabReportDetail', {
+        token: list?.token_id,
+        created_at: list?.created_at,
+      });
+    };
+
+    return (
+      <TouchableOpacity
+        className="flex-row items-center justify-between border border-[#868686] rounded-3xl px-4 py-4 mt-4"
+        activeOpacity={0.4}
+        // onPress={() => {
+        //   isEditing
+        //     ? handleValueChange(list.token_id)
+        //     : navigation.navigate('LabReportDetail', {
+        //         token: list?.token_id,
+        //         created_at: list?.created_at,
+        //       });
+        // }}
+        onPress={onPress}>
+        <View className="flex-row items-center space-x-2 h-4">
+          {isEditing && (
+            <View
+              from={{opacity: 0, translateX: -20}}
+              animate={{opacity: 1, translateX: 0}}
+              transition={
+                {duration: 500, type: 'timing'} as MotiTransitionProp<
+                  StyleValueWithReplacedTransforms<ViewStyle>
+                >
+              }>
+              <CheckBox
+                boxType="square"
+                style={styles.checkBox}
+                lineWidth={2}
+                tintColors={{true: 'black', false: 'black'}}
+                onCheckColor="black"
+                onFillColor="white"
+                // onValueChange={() => handleValueChange(list.token_id)}
+                value={deleteTokenIds?.includes(list.token_id)}
+              />
+            </View>
+          )}
+          <View>
+            <CustomText>
+              {moment(list.created_at).format('YYYY-MM-DD HH:mm:ss')}
+            </CustomText>
           </View>
-        )}
-        <View>
-          <CustomText>
-            {moment(list.created_at).format('YYYY-MM-DD HH:mm:ss')}
-          </CustomText>
         </View>
-      </View>
-      {!isEditing && (
-        <Icon name="chevron-right" size={24} color={customColor.black} />
-      )}
-    </TouchableOpacity>
-  );
+
+        <View className="flex-row items-center">
+          {isInProgress ? (
+            <CustomText className="font-isidoraMedium text-sm text-[#FFC107] mr-3">
+              {languages?.in_progress}
+            </CustomText>
+          ) : null}
+          {!isEditing && (
+            <Icon name="chevron-right" size={24} color={customColor.black} />
+          )}
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView>

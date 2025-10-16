@@ -756,5 +756,10 @@
   "symptom_report_doctor_certificate": "Professional Certificate 3838343",
   "none": "None",
   "symptom_upload_title": "Are you sure?",
-  "symptom_upload_info": "This will replace the currently uploaded photo. Do you want to proceed?"
+  "symptom_upload_info": "This will replace the currently uploaded photo. Do you want to proceed?",
+  "in_progress": "In Progress",
+  "generating_personalised_title": "Your Personalised AI Report is being created.",
+  "generating_personalised_info": "It will be sent to your registered email ID.",
+  "generating_lab_title": "... Generating Lab Report ...\nMight Take A While",
+  "generating_lab_info": "We’re working on your lab report now. In just a few minutes, you’ll be able to access it through your registered email and your Health Wallet."
 }

@@ -70,6 +70,7 @@ export type MainStackParamList = {
     token: string;
     created_at: string;
   };
+  AIReportGenerating: {isProgress: boolean} | undefined;
 
   LabReport: undefined;
   LabReportConclusion: {
@@ -85,6 +86,7 @@ export type MainStackParamList = {
     token: string;
     created_at: string;
   };
+  LabReportGenerating: {isProgress: boolean} | undefined;
 
   MiscellaneousFiles: undefined;
 

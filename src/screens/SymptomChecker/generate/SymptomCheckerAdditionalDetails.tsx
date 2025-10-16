@@ -34,6 +34,7 @@ const SymptomCheckerAdditionalDetails = () => {
       eng_choices: detail,
       spanish_choices: detail,
       questionData,
+      isFromReportList: params?.isFromReportList || false,
     });
   };
 
