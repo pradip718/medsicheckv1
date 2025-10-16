@@ -44,7 +44,6 @@ import CustomText from '../../components/Text';
 import {RESCAN_CONFIGURATION} from '../../constants/hooks';
 import {useGetUserReadingDetail} from '../../hooks/api/readings';
 import useGetOnboarding from '../../hooks/api/useGetOnboarding';
-import useGetPreHealthReading from '../../hooks/api/useGetPreHealthReading';
 import useGetRescanConfiguration from '../../hooks/api/useGetRescanConfiguration';
 import usePostOnboardingSteps from '../../hooks/api/usePostOnboardingSteps';
 import usePostReadings from '../../hooks/api/usePostReading';
@@ -163,10 +162,11 @@ const FaceScannerCamera = () => {
     }
   };
 
-  const {finalValue, restartSession, isRestarting} = useInitializeBinahSession({
-    resetMeasurement,
-    cameraLocation,
-  });
+  const {finalValue, restartSession, isRestarting, preReadingConfig} =
+    useInitializeBinahSession({
+      resetMeasurement,
+      cameraLocation,
+    });
 
   useEffect(() => {
     if (!rescanConfigurations?.rescan_flag && !!rescanConfigurations?.error) {
@@ -192,12 +192,6 @@ const FaceScannerCamera = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [didFinishedMeasuring, finalValue]);
-
-  const {data: preReadingConfig} = useGetPreHealthReading({
-    longitude: location?.longitude ?? undefined,
-    latitude: location?.latitude ?? undefined,
-    altitude: location?.altitude ?? undefined,
-  });
 
   const {mutateAsync: postOnboardingStep, isPending: isPostOnboardingPending} =
     usePostOnboardingSteps();
