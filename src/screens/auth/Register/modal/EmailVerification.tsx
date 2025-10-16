@@ -11,7 +11,12 @@ import {
 import useLanguageStore from '../../../../../store/languageStore';
 import {ResendEmailConfirmationPayload} from '../../../../../types/api_payload';
 import {errorToast} from '../../../../../utils/toast';
-import {resendEmailConfirmation, verifyEmail} from '../../../../api/auth';
+import {
+  resendEmailConfirmation,
+  resendSignUpOTP,
+  verifyEmail,
+  verifySignUpOTP,
+} from '../../../../api/auth';
 import BasicContainer from '../../../../components/BasicContainer';
 import EtchedGlass from '../../../../components/EtchedGlass';
 import Pressable from '../../../../components/Pressable';
@@ -27,6 +32,7 @@ interface EmailVerificationProps {
   updateCurrentEmail: (email: string) => void;
   closeVerficationModal: (focus?: boolean) => void;
   handleEmailVerified: (verify: boolean) => void;
+  isOTPSignup: boolean;
 }
 
 const modifyEmailPayload = (
@@ -52,6 +58,7 @@ const EmailVerificationModal = ({
   updateCurrentEmail,
   closeVerficationModal,
   handleEmailVerified,
+  isOTPSignup,
 }: EmailVerificationProps) => {
   const {languages} = useLanguageStore();
   const [otp, setOTP] = useState('');
@@ -61,6 +68,21 @@ const EmailVerificationModal = ({
     value: otp,
     setValue: setOTP,
   });
+
+  const {mutateAsync: sendSignupOTPMutation, data: sendSignupOTPResponse} =
+    useMutation({
+      mutationKey: ['send-signup-otp'],
+      mutationFn: resendSignUpOTP,
+      onError: err => {
+        if (err instanceof AxiosError) {
+          errorToast(err?.response?.data?.error);
+          closeVerficationModal();
+        }
+      },
+      onSuccess: () => {
+        updateCurrentEmail(updatedEmail ?? email);
+      },
+    });
 
   const {mutateAsync: resendEmailConfirmationMutation} = useMutation({
     mutationKey: ['resend-email-otp'],
@@ -73,6 +95,23 @@ const EmailVerificationModal = ({
     },
     onSuccess: () => {
       updateCurrentEmail(updatedEmail ?? email);
+    },
+  });
+
+  const {
+    mutateAsync: verifySignUpOTPMutation,
+    isPending: isValidatingSignUpOTP,
+  } = useMutation({
+    mutationKey: ['verify-signup-otp'],
+    mutationFn: verifySignUpOTP,
+    onError: err => {
+      if (err instanceof AxiosError) {
+        errorToast(err?.response?.data?.error);
+      }
+    },
+    onSuccess: () => {
+      handleEmailVerified(true);
+      closeVerficationModal();
     },
   });
 
@@ -92,21 +131,41 @@ const EmailVerificationModal = ({
     });
 
   useEffect(() => {
-    resendEmailConfirmationMutation(modifyEmailPayload(updatedEmail, email));
+    isOTPSignup
+      ? sendSignupOTPMutation({
+          ...modifyEmailPayload(updatedEmail, email),
+          type: 'login',
+        })
+      : resendEmailConfirmationMutation(
+          modifyEmailPayload(updatedEmail, email),
+        );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleResendOTP = async () => {
-    await resendEmailConfirmationMutation(
-      modifyEmailPayload(updatedEmail, email),
-    );
+    if (isOTPSignup) {
+      await sendSignupOTPMutation(modifyEmailPayload(updatedEmail, email));
+    } else {
+      await resendEmailConfirmationMutation(
+        modifyEmailPayload(updatedEmail, email),
+      );
+    }
   };
 
   const handleVerifyOTP = async () => {
-    await verifyEmailMutation({
-      username: updatedEmail ?? email,
-      otp_value: otp,
-    });
+    if (isOTPSignup) {
+      await verifySignUpOTPMutation({
+        otp_value: otp,
+        username: updatedEmail ?? email,
+        session: sendSignupOTPResponse?.session || '',
+        type: 'login',
+      });
+    } else {
+      await verifyEmailMutation({
+        username: updatedEmail ?? email,
+        otp_value: otp,
+      });
+    }
   };
 
   const renderCodeInput = useCallback(() => {
@@ -169,8 +228,8 @@ const EmailVerificationModal = ({
               onPress={handleVerifyOTP}
               resetStyle
               className="py-[8] px-[60] bg-midnightBlue"
-              loading={isVerifyingEmail}
-              disabled={isVerifyingEmail}>
+              loading={isOTPSignup ? isValidatingSignUpOTP : isVerifyingEmail}
+              disabled={isOTPSignup ? isValidatingSignUpOTP : isVerifyingEmail}>
               <CustomText className="text-base font-isidoraBold text-white text-center">
                 {languages?.verify_button_text}
               </CustomText>
