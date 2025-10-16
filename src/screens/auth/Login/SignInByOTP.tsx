@@ -1,3 +1,8 @@
+import {
+  NavigationProp,
+  StackActions,
+  useNavigation,
+} from '@react-navigation/native';
 import {useMutation} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
 import React, {useState} from 'react';
@@ -13,9 +18,12 @@ import {StyleSheet, View} from 'react-native';
 import {RadioButton} from 'react-native-paper';
 import useLanguageStore from '../../../../store/languageStore';
 import {
+  isLoginOTPResponse,
+  isLoginSuccessResponse,
   LoginOTPResponse,
   LoginSuccessResponse,
 } from '../../../../types/api_response';
+import {MainStackParamList} from '../../../../types/navigation';
 import {isValidPhoneNumber} from '../../../../utils/methods';
 import {errorToast} from '../../../../utils/toast';
 import {
@@ -33,12 +41,6 @@ import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
 import Timer from '../Register/Timer';
 import {LoginParam, LoginType} from './type';
-import {
-  NavigationProp,
-  StackActions,
-  useNavigation,
-} from '@react-navigation/native';
-import {MainStackParamList} from '../../../../types/navigation';
 
 type SignInByOTPProps = {
   handleSwitchLoginType: (type: LoginType) => void;
@@ -64,8 +66,10 @@ const SignInByOTP = ({
   const [didSendOTP, setDidSendOTP] = useState(false);
   const [otp, setOTP] = useState('');
   const [otpSigninType, setOTPSigninType] = useState<OTPSigninType>('Email');
-  const [sendOTPResponse, setSendOTPResponse] =
-    useState<LoginOTPResponse | null>(null);
+  const [sendOTPResponse, setSendOTPResponse] = useState<
+    LoginOTPResponse | LoginSuccessResponse | null
+  >(null);
+
   const [isNewUser, setIsNewUser] = useState(false);
   console.log('🚀 ~ SignInByOTP ~ isNewUser:', isNewUser);
 
@@ -85,7 +89,10 @@ const SignInByOTP = ({
       onSuccess: async res => {
         if ('session' in res) {
           setSendOTPResponse(prevResponse => ({
-            otp_sent: prevResponse?.otp_sent ?? false,
+            otp_sent:
+              prevResponse && 'otp_sent' in prevResponse
+                ? prevResponse.otp_sent
+                : false,
             user_id: prevResponse?.user_id ?? '',
             user_name: prevResponse?.user_name ?? '',
             session: res?.session ?? '',
@@ -111,7 +118,26 @@ const SignInByOTP = ({
     mutationKey: ['verify-signup-otp'],
     mutationFn: verifySignUpOTP,
     onSuccess: async res => {
+      console.log('loginOTPResponse', loginOTPResponse);
       console.log('🚀 ~ VerifyLoginOTPScreen ~ res:', res);
+      if (
+        loginOTPResponse &&
+        'phone_verification_flag' in loginOTPResponse &&
+        'email_verification_flag' in loginOTPResponse &&
+        loginOTPResponse?.phone_verification_flag === true &&
+        loginOTPResponse?.email_verification_flag === false
+      ) {
+        return navigation.navigate('ContactVerification', {
+          email: loginOTPResponse?.user_name,
+          phoneNumber: loginOTPResponse?.phone_number,
+          user_id: loginOTPResponse?.user_id,
+          isOTPSignup: true,
+          loginParams: {
+            isEmailVerified: loginOTPResponse?.email_verification_flag,
+            isPhoneVerified: loginOTPResponse?.phone_verification_flag,
+          },
+        });
+      }
       navigation.dispatch(
         StackActions.replace(
           'OTPRegister',
@@ -119,7 +145,10 @@ const SignInByOTP = ({
             ? {email: watchedEmail}
             : {
                 phoneNumber: watchedPhoneNumber,
-                session: sendOTPResponse?.session || '',
+                session:
+                  sendOTPResponse && 'session' in sendOTPResponse
+                    ? sendOTPResponse.session
+                    : '',
               },
         ),
       );
@@ -131,41 +160,65 @@ const SignInByOTP = ({
     },
   });
 
-  const {mutateAsync: sendLoginOTPMutation, isPending: isSendingLoginOTP} =
-    useMutation({
-      mutationKey: ['send-login-otp'],
-      mutationFn: sendLoginOTP,
-      onSuccess: res => {
-        if (res?.error) {
-          return errorToast(res?.error);
+  const {
+    mutateAsync: sendLoginOTPMutation,
+    isPending: isSendingLoginOTP,
+    data: loginOTPResponse,
+  } = useMutation({
+    mutationKey: ['send-login-otp'],
+    mutationFn: sendLoginOTP,
+    onSuccess: async res => {
+      console.log('res', res);
+
+      //User Not Confirmed scenario
+      if ('is_verified' in res && res.user_id && res.is_verified === false) {
+        const signupOtpResponse = await sendSignupOTPMutation({
+          username:
+            otpSigninType === 'Email' ? res?.user_name : res?.phone_number,
+        });
+        console.log('signupOtpResponse', signupOtpResponse);
+        if (signupOtpResponse?.error) {
+          return;
         }
         setDidSendOTP(true);
-        setSendOTPResponse(res);
-      },
-      onError: async (err, variables) => {
-        if (err instanceof AxiosError) {
-          console.log('🚀 ~ SignInByOTP ~ err:', err.response);
-          if (err.response?.status === 400 && err.response?.data?.new_user) {
-            try {
-              const res = await sendSignUpOTP({username: variables.username});
-              console.log('🚀 ~ OTPLoginScreen ~ res:', res);
+        setSendOTPResponse(signupOtpResponse);
+        setIsNewUser(true);
+        return;
+      }
 
-              if (res?.error) {
-                return errorToast(res?.error);
-              }
-              setDidSendOTP(true);
-              setSendOTPResponse(res);
-              setIsNewUser(true);
-              return;
-            } catch (error) {
-              return errorToast(err?.response?.data?.error);
+      //User Confirmed scenario
+      if ('error' in res && res?.error) {
+        return errorToast(res?.error);
+      }
+      setDidSendOTP(true);
+      setSendOTPResponse(res);
+    },
+    onError: async (err, variables) => {
+      if (err instanceof AxiosError) {
+        console.log('🚀 ~ SignInByOTP ~ err:', err.response);
+
+        if (err.response?.status === 400 && err.response?.data?.new_user) {
+          try {
+            const res = await sendSignUpOTP({username: variables.username});
+            console.log('🚀 ~ OTPLoginScreen ~ res:', res);
+
+            if (res?.error) {
+              return errorToast(res?.error);
             }
+            setDidSendOTP(true);
+            setSendOTPResponse(res);
+            setIsNewUser(true);
+            return;
+          } catch (error) {
+            return errorToast(err?.response?.data?.error);
           }
-
-          return errorToast(err?.response?.data?.error);
         }
-      },
-    });
+
+        return errorToast(err?.response?.data?.error);
+      }
+    },
+  });
+
   const {mutateAsync: sendSignupOTPMutation, isPending: isSendingSignUpOTP} =
     useMutation({
       mutationKey: ['send-signup-otp'],
@@ -195,6 +248,8 @@ const SignInByOTP = ({
         });
   };
 
+  console.log('sendOTPResponses', sendOTPResponse);
+
   const handleVerifyLoginOTP = async () => {
     if (!otp) {
       return errorToast(languages?.generic_error_message);
@@ -202,13 +257,24 @@ const SignInByOTP = ({
     isNewUser
       ? await verifySignUpOTPMutation({
           otp_value: otp,
-          username: sendOTPResponse?.user_name ?? '',
+          username:
+            otpSigninType === 'Email'
+              ? sendOTPResponse?.user_name ?? ''
+              : isLoginSuccessResponse(sendOTPResponse)
+              ? sendOTPResponse?.phone_number ?? ''
+              : '',
           session:
-            otpSigninType === 'Email' ? '' : sendOTPResponse?.session || '',
+            otpSigninType === 'Email'
+              ? ''
+              : isLoginOTPResponse(sendOTPResponse)
+              ? sendOTPResponse?.session ?? ''
+              : '',
         })
       : await verifyLoginOTPMutation({
           otp_value: otp,
-          session: sendOTPResponse?.session ?? '',
+          session: isLoginOTPResponse(sendOTPResponse)
+            ? sendOTPResponse?.session ?? ''
+            : '',
           username: sendOTPResponse?.user_name ?? '',
         });
   };
@@ -285,6 +351,7 @@ const SignInByOTP = ({
               onPress={() => {
                 setOTP('');
                 setDidSendOTP(false);
+                setIsNewUser(false);
               }}>
               <CustomText className="text-base text-white underline font-isidoraSemiBold">
                 {languages?.edit}
@@ -331,6 +398,7 @@ const SignInByOTP = ({
               onPress={() => {
                 setOTP('');
                 setDidSendOTP(false);
+                setIsNewUser(false);
               }}>
               <CustomText className="text-base text-white underline font-isidoraSemiBold">
                 {languages?.edit}
