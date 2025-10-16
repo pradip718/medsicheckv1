@@ -101,6 +101,8 @@ import SymptomCheckerConfirmation from '../src/screens/SymptomChecker/generate/S
 import SymptomCheckerReview from '../src/screens/SymptomChecker/generate/SymptomCheckerReview';
 import SymptomCheckerGenerating from '../src/screens/SymptomChecker/generate/SymptomCheckerGenerating';
 import SymptomCheckerReport from '../src/screens/SymptomChecker/SymptomCheckerReport';
+import LapReportGenerating from '../src/screens/HealthWallet/InterpretLabReports/LabReportGenerating';
+import AIReportGenerating from '../src/screens/HealthWallet/AIHealthReport/AIReportGenerating';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -416,6 +418,10 @@ const RootNavigator = () => {
             component={AIHealthReportDetail}
           />
           <Stack.Screen
+            name="AIReportGenerating"
+            component={AIReportGenerating}
+          />
+          <Stack.Screen
             name="InterpretLabReport"
             component={InterpretLabReports}
           />
@@ -427,6 +433,10 @@ const RootNavigator = () => {
           />
           <Stack.Screen name="LabScanDetails" component={LabScanDetails} />
           <Stack.Screen name="LabReportDetail" component={LabReportDetail} />
+          <Stack.Screen
+            name="LabReportGenerating"
+            component={LapReportGenerating}
+          />
 
           <Stack.Screen
             name="MiscellaneousFiles"
