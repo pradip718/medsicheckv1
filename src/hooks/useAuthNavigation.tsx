@@ -1,12 +1,12 @@
-import {StackActions} from '@react-navigation/native';
-import {useMutation, UseQueryResult} from '@tanstack/react-query';
+import { StackActions } from '@react-navigation/native';
+import { useMutation, UseQueryResult } from '@tanstack/react-query';
 import BootSplash from 'react-native-bootsplash';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {navigationRef} from '../../RootNavigation';
+import { navigationRef } from '../../RootNavigation';
 import useAppStore from '../../store/appStore';
 import useLanguageStore from '../../store/languageStore';
-import {errorToast} from '../../utils/toast';
-import {REMEMBERED_USER_SESSION} from '../constants/AsyncStorageKeys';
+import { errorToast } from '../../utils/toast';
+import { REMEMBERED_USER_SESSION } from '../constants/AsyncStorageKeys';
 import {
   OnboardingResponse,
   OnboardingStepsResponse,
@@ -66,7 +66,10 @@ const useAuthNavigation = ({
           }),
         );
       default:
-        navigationRef.navigate('TermsAndConditions');
+        navigationRef.dispatch(
+          StackActions.replace('TermsAndConditions'),
+        );
+        // navigationRef.navigate('TermsAndConditions');
     }
   };
 
