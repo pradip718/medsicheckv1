@@ -69,7 +69,7 @@ const SymptomCheckerBodyPart = () => {
       eng_choices: JSON.stringify([englishChoices[selectedPartIndex]]),
       spanish_choices: JSON.stringify([spanishChoices[selectedPartIndex]]),
       questionData,
-      isFromReportList: params?.isFromReportList || false,
+      // isFromReportList: params?.isFromReportList || false,
     });
   };
 
