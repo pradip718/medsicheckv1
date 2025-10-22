@@ -83,7 +83,7 @@ const SymptomCheckerStartedMedication = () => {
       eng_choices: englishChoice,
       spanish_choices: spanishChoice,
       questionData,
-      isFromReportList: params?.isFromReportList || false,
+      // isFromReportList: params?.isFromReportList || false,
     });
   };
 
@@ -97,7 +97,8 @@ const SymptomCheckerStartedMedication = () => {
       }
       isLoading={isLoading}
       questionId={questionData?.q_id}
-      scrollHeight={30}>
+      scrollHeight={30}
+      isEdit={params?.isEdit}>
       <View style={styles.container}>
         <SymptomCheckerQuestion data={questionData} />
 
