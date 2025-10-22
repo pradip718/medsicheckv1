@@ -66,9 +66,10 @@ const useAppInitialization = (props?: MutationOptions) => {
         if (!isAuthenticated) {
           try {
             await EncryptedStorage.removeItem(REMEMBERED_USER_SESSION);
-            navigationRef?.dispatch(StackActions.replace('Login'));
           } catch (error) {
             console.log('error', error);
+          } finally {
+            navigationRef?.dispatch(StackActions.replace('Login'));
           }
           return {isAuthenticated: false};
         }

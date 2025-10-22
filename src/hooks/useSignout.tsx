@@ -17,19 +17,28 @@ const useSignout = () => {
   const handleSignout = async () => {
     setIsLoading(true);
     try {
+      // Try to notify server and sign out
       await notifyApi('logout');
       await signout();
-      setUserAuth({
-        idToken: '',
-        accessToken: '',
-        refreshToken: '',
-      });
-      resetUserProfileState();
-      navigation.reset({index: 0, routes: [{name: 'Login'}]});
-      queryClient.clear();
     } catch (error) {
-      console.log('error', error);
+      console.log('Signout API error:', error);
+      // Continue with local cleanup even if API calls fail
     } finally {
+      // Always clear local state regardless of API success/failure
+      try {
+        // Reset all stores
+        resetUserProfileState();
+        setUserAuth({
+          idToken: '',
+          accessToken: '',
+          refreshToken: '',
+        });
+        // queryClient.clear();
+        navigation.reset({index: 0, routes: [{name: 'Login'}]});
+      } catch (cleanupError) {
+        console.log('Cleanup error:', cleanupError);
+      }
+
       setIsLoading(false);
     }
   };

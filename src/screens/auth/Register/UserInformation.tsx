@@ -196,16 +196,28 @@ export default function UserInformation({
       if (accountStatus?.approved) {
         navigateBasedOnPrevRoute();
       } else {
-        navigation?.navigate('UnverifiedUserTab', {
-          screen: 'UnverifiedHome',
-        });
+        navigation?.dispatch(
+          StackActions.replace('UnverifiedUserTab', {
+            screen: 'UnverifiedHome',
+          }),
+        );
       }
 
       await queryClient.invalidateQueries({queryKey: ['user-attributes']});
       if (!users?.user_id) {
         await postOnboardingStep({milestone: 'user-details-submitted'});
       }
-      reset();
+      reset({
+        given_name: '',
+        family_name: '',
+        gender: GENDER[0].value,
+        birthdate: moment(new Date()).format('DD/MM/YYYY'),
+        height: '',
+        weight: '',
+        height_unit: 'cm',
+        weight_unit: 'kg',
+        middle_name: '',
+      });
     } catch (error) {
       console.error('Error handling onSuccess:', error);
     }
@@ -240,9 +252,11 @@ export default function UserInformation({
     if (fromScreen === 'profile') {
       navigation.goBack();
     } else {
-      navigation.navigate('AdditionalInformation', {
-        isNewUser: true,
-      });
+      navigation?.dispatch(
+        StackActions.replace('AdditionalInformation', {
+          isNewUser: true,
+        }),
+      );
     }
   };
 
