@@ -33,8 +33,8 @@ const useSignout = () => {
           accessToken: '',
           refreshToken: '',
         });
-        // queryClient.clear();
         navigation.reset({index: 0, routes: [{name: 'Login'}]});
+        queryClient.clear();
       } catch (cleanupError) {
         console.log('Cleanup error:', cleanupError);
       }
