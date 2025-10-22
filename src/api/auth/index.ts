@@ -117,7 +117,12 @@ export async function signout() {
       method: 'GET',
       url: 'v1/sign-out',
     });
-    await EncryptedStorage.removeItem(REMEMBERED_USER_SESSION);
+
+    try {
+      await EncryptedStorage.removeItem(REMEMBERED_USER_SESSION);
+    } catch (storageError) {
+      console.log('Could not remove remembered session:', storageError);
+    }
 
     return response?.data;
   } catch (error) {

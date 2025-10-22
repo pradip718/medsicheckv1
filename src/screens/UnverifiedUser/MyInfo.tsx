@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {View} from 'react-native';
 import useLanguageStore from '../../../store/languageStore';
 import {errorToast} from '../../../utils/toast';
-import {deleteFamilyMembersAttributes} from '../../api/user';
+import {deleteFamilyMembersAttributes, notifyApi} from '../../api/user';
 import DeleteAdminModal from '../../components/DeleteAdminModal';
 import RoundedButton from '../../components/RoundedButton';
 import CustomText from '../../components/Text';
@@ -25,11 +25,11 @@ const MyInfo = () => {
     mutationKey: ['DeleteFamilyMembersAttributes'],
     mutationFn: deleteFamilyMembersAttributes,
     onSuccess: async () => {
+      await notifyApi('delete_account');
       await handleSignout();
       hideModal();
     },
   });
-
   const handleDeleteAccount = async () => {
     const admin = familyMembers?.find(family => family.relation === 'Admin');
     if (admin && admin.user_id) {
