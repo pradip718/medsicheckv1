@@ -61,6 +61,10 @@ export default function useSymptomChecker() {
       return;
     }
 
+    if (isEdit) {
+      return navigation.goBack();
+    }
+
     if (response?.screen === 'review') {
       const nextRoute = SymptomCodeScreenMapper.review;
       return navigation.navigate(nextRoute, {
@@ -77,10 +81,6 @@ export default function useSymptomChecker() {
     queryClient.invalidateQueries({
       queryKey: ['symptom-checker'],
     });
-
-    if (isEdit) {
-      return navigation.goBack();
-    }
 
     if (questionItem?.code) {
       const nextRoute = SymptomCodeScreenMapper[questionItem.code];

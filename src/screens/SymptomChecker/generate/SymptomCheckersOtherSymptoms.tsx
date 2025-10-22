@@ -107,7 +107,7 @@ const SymptomCheckersOtherSymptoms = () => {
       eng_choices: JSON.stringify(englishOptions),
       spanish_choices: JSON.stringify(spanishOptions),
       questionData,
-      isFromReportList: params?.isFromReportList || false,
+      // isFromReportList: params?.isFromReportList || false,
     });
   };
 
