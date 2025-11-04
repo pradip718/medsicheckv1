@@ -9,6 +9,7 @@ import {Buffer} from 'buffer';
 import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
 import moment from 'moment';
+import forge from 'node-forge';
 import {Alert, Platform, Share as RNShare} from 'react-native';
 import RNFetchBlob from 'react-native-blob-util';
 import {CountryCode, CountryCodeList} from 'react-native-country-picker-modal';
@@ -827,34 +828,82 @@ export function ensureReadableStreamPolyfill() {
 }
 
 export async function encryptText(text: string) {
-  ensureReadableStreamPolyfill();
+  // ensureReadableStreamPolyfill();
 
-  let credentials = await getAWSSecretKeys();
+  // let credentials = await getAWSSecretKeys();
 
-  const params: EncryptCommandInput = {
-    KeyId: credentials?.kms_arn,
-    Plaintext: Buffer.from(text),
-    EncryptionAlgorithm: credentials?.kms_algorithm,
-  };
+  // const params: EncryptCommandInput = {
+  //   KeyId: credentials?.kms_arn,
+  //   Plaintext: Buffer.from(text),
+  //   EncryptionAlgorithm: credentials?.kms_algorithm,
+  // };
 
-  const kmsClient = new KMSClient({
-    region: 'mx-central-1',
-    credentials: {
-      accessKeyId: credentials?.access_key ?? '',
-      secretAccessKey: credentials?.secret_access_key ?? '',
-    },
-  });
+  // const kmsClient = new KMSClient({
+  //   region: 'mx-central-1',
+  //   credentials: {
+  //     accessKeyId: credentials?.access_key ?? '',
+  //     secretAccessKey: credentials?.secret_access_key ?? '',
+  //   },
+  // });
 
   try {
-    const command = new EncryptCommand(params);
-    const response = await kmsClient.send(command);
+    //   const command = new EncryptCommand(params);
+    //   const response = await kmsClient.send(command);
 
-    console.log('response', response);
-    if (!response.CiphertextBlob) {
-      throw new Error('Encryption failed: CiphertextBlob is undefined');
-    }
+    //   console.log('response', response);
+    //   if (!response.CiphertextBlob) {
+    //     throw new Error('Encryption failed: CiphertextBlob is undefined');
+    //   }
 
-    return Buffer.from(response.CiphertextBlob).toString('base64');
+    //   return Buffer.from(response.CiphertextBlob).toString('base64');
+
+    const publicKeyPem = `-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyFZrqe5A3R7ew8brb29x
+bV6PR/GQ6NCdqk+bfC9695XJBoCZY62dD+jZy/hy4fr70JHv5RfbSHP5mmWXQZ+8
+CgbIkxCKnyCObjvrRTs0DQO8AkDXx0kRZryfynvIzDER5KrYuMJwRBK/X5kz2Uwy
+OoCfpNtm1pdBgBhGTMKonyaktAoQqj8OT8LqhGn8ikrAGAkmFc/9a4SDiqv+BEVp
+1xBnWAyEL4WTu72pzxmzwBYkrjYMlUEoLH4HhDEa1fXq3B/zfQB404/7+NHPgADd
+E6W0kNfF8O1/stgOGEEqa3tHjV73YoyvnGYWoJ2rjmPABISolkFk6fU4ikMx3ey0
+5l1+sORgdxGnt2mZFvIDuTbcHMeyDP317TWsqMH5aGnia8nOkOGbB4xCx4wSa5Q5
+Rv706YqlQuJMLH4KXkAQQaYPTzqNybsWlt2wJhqWAjOfye0Kb2Zqsztft8frWKzg
+15jMhibDe318QeqDCEx/zYzwsKPcZ2pyGG/klDhX+e3ccgoAwZfW+3Sa0q373QkU
+zDKnFGiBY+vxzf+D/nhVPEn+9YAAVw4vegSldMNC2lH40u5ZWsZWq3VH5Y6QLhag
+fRLcIFVCnGLd7VvXK/j5f/YkKQlibnHebx6KR3Q+Rbmn9fR2Rq62vt8yDhQ225nF
+4gQR11gP238Tv0RDkbY5TuUCAwEAAQ==
+-----END PUBLIC KEY-----`;
+
+    // 1. Generate a random AES key
+    // const aesKey = forge.random.getBytesSync(16); // 128-bit key
+
+    // // 2. Encrypt password using AES
+    // const iv = forge.random.getBytesSync(16);
+    // const cipher = forge.cipher.createCipher('AES-CBC', aesKey);
+    // cipher.start({iv});
+    // cipher.update(forge.util.createBuffer(text, 'utf8'));
+    // cipher.finish();
+    // const encryptedPassword = cipher.output.getBytes();
+
+    // 3. Encrypt AES key using RSA public key
+    const formattedPem = publicKeyPem.replace(/\\n/g, '\n').trim();
+
+    const publicKey = forge.pki.publicKeyFromPem(formattedPem);
+
+    const encryptedBytes = publicKey.encrypt(text, 'RSA-OAEP', {
+      md: forge.md.sha256.create(),
+      mgf1: forge.mgf.mgf1.create(forge.md.sha256.create()), // <-- fixed line
+    });
+
+    return forge.util.encode64(encryptedBytes);
+    // console.log('encryptedPassword', encryptedPassword);
+    // const encryptedAesKey = publicKey.encrypt(aesKey, 'RSA-OAEP');
+
+    // 4. Send both to backend
+    // return {
+    //   encryptedPassword: forge.util.encode64(encryptedPassword),
+    //   encryptedAesKey: forge.util.encode64(encryptedAesKey),
+    //   iv: forge.util.encode64(iv),
+    // };
+    // return encryptedPassword;
   } catch (error) {
     console.error('Error encrypting password:', error);
     throw error;
