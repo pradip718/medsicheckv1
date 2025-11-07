@@ -1,6 +1,4 @@
 PODS:
-  - AmplifyRTNCore (1.1.6):
-    - React-Core
   - BEMCheckBox (1.4.1)
   - biosensesignal-react-native-sdk (5.9.3):
     - React-Core
@@ -2014,7 +2012,6 @@ PODS:
   - Yoga (0.0.0)
 
 DEPENDENCIES:
-  - "AmplifyRTNCore (from `../node_modules/@aws-amplify/react-native`)"
   - biosensesignal-react-native-sdk (from `../node_modules/biosensesignal-react-native-sdk`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -2144,8 +2141,6 @@ SPEC REPOS:
     - SocketRocket
 
 EXTERNAL SOURCES:
-  AmplifyRTNCore:
-    :path: "../node_modules/@aws-amplify/react-native"
   biosensesignal-react-native-sdk:
     :path: "../node_modules/biosensesignal-react-native-sdk"
   boost:
@@ -2353,7 +2348,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AmplifyRTNCore: fed43e0ab4504c7ae49291204c3c704da4963255
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   biosensesignal-react-native-sdk: 7abb58e77ab8fe9c35b3e17f3d4cea6694d41fc4
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
