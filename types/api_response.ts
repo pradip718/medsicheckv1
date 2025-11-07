@@ -1,9 +1,8 @@
-import {EncryptionAlgorithmSpec} from '@aws-sdk/client-kms';
+import {SYMPTOM_CODE} from '../src/constants/enums';
 import {
   Question,
   QuestionnaireGETReponse,
 } from '../src/screens/auth/Register/Additional_Information/type';
-import {SYMPTOM_CODE} from '../src/constants/enums';
 
 export type AIHealthList = {
   created_at: string;
@@ -108,17 +107,6 @@ export type VerifySession = {
   token?: string;
   error_title?: string;
   error_msg?: string;
-};
-
-export type AWSTokenResponse = {
-  token: string;
-};
-
-export type AWSSecretKeysResponse = {
-  access_key: string;
-  secret_access_key: string;
-  kms_arn: string;
-  kms_algorithm: EncryptionAlgorithmSpec;
 };
 
 export type LoginSuccessResponse = {
@@ -577,3 +565,8 @@ export function isLoginErrorResponse(
     !('otp_sent' in data) // Distinguish from LoginOTPResponse which can also have 'error'
   );
 }
+
+export type GetPublicKeyResponse = {
+  token: string;
+  public_key: string;
+};
