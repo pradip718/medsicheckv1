@@ -12,6 +12,7 @@ import {
   ForgotPasswordPayload,
   LoginOTPPayload,
   LoginPayload,
+  OTPChannel,
   ResendEmailConfirmationPayload,
   sendPhoneOTPPayload,
   SignUpPayload,
@@ -144,13 +145,17 @@ export async function forgotPassword(payload: ForgotPasswordPayload) {
   }
 }
 
+const appendChannel = (channel?: OTPChannel) =>
+  channel ? `&channel=${channel}` : '';
+
 export async function sendLoginOTP(
   payload: LoginOTPPayload,
 ): Promise<LoginOTPResponse | LoginSuccessResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/login-v2?auth_type=otp',
+      url: `v1/login-v2?auth_type=otp${channelQuery}`,
       data: payload,
     });
 
@@ -164,9 +169,10 @@ export async function sendSignUpOTP(
   payload: LoginOTPPayload,
 ): Promise<LoginOTPResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/sign-up-otp?auth_type=otp',
+      url: `v1/sign-up-otp?auth_type=otp${channelQuery}`,
       data: payload,
     });
 
@@ -180,9 +186,10 @@ export async function resendSignUpOTP(
   payload: LoginOTPPayload,
 ): Promise<LoginOTPResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/sign-up-otp?auth_type=resend_otp',
+      url: `v1/sign-up-otp?auth_type=resend_otp${channelQuery}`,
       data: payload,
     });
 
@@ -196,9 +203,10 @@ export async function verifyLoginOTP(
   payload: VerifyLoginOTPPayload,
 ): Promise<VerifyLoginOTPResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/login-v2?auth_type=verify_auth_otp',
+      url: `v1/login-v2?auth_type=verify_auth_otp${channelQuery}`,
       data: payload,
     });
 
@@ -212,9 +220,10 @@ export async function verifySignUpOTP(
   payload: VerifyLoginOTPPayload,
 ): Promise<VerifyLoginOTPResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/sign-up-otp?auth_type=verify_otp',
+      url: `v1/sign-up-otp?auth_type=verify_otp${channelQuery}`,
       data: payload,
     });
 

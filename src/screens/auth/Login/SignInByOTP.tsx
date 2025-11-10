@@ -16,7 +16,9 @@ import {
 } from 'react-hook-form';
 import {StyleSheet, View} from 'react-native';
 import {RadioButton} from 'react-native-paper';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import useLanguageStore from '../../../../store/languageStore';
+import {LoginOTPPayload, OTPChannel} from '../../../../types/api_payload';
 import {
   isLoginOTPResponse,
   isLoginSuccessResponse,
@@ -35,6 +37,7 @@ import {
 } from '../../../api/auth';
 import AnimatedWrapper from '../../../components/AnimatedWrapper';
 import CustomTextInput from '../../../components/CustomTextInput';
+import Icon from '../../../components/Icon';
 import CustomPhoneInput from '../../../components/PhoneInput';
 import Pressable from '../../../components/Pressable';
 import RoundedButton from '../../../components/RoundedButton';
@@ -66,6 +69,7 @@ const SignInByOTP = ({
   const [didSendOTP, setDidSendOTP] = useState(false);
   const [otp, setOTP] = useState('');
   const [otpSigninType, setOTPSigninType] = useState<OTPSigninType>('Email');
+  const [otpChannel, setOTPChannel] = useState<OTPChannel>('sms');
   const [sendOTPResponse, setSendOTPResponse] = useState<
     LoginOTPResponse | LoginSuccessResponse | null
   >(null);
@@ -81,6 +85,18 @@ const SignInByOTP = ({
 
   const watchedEmail = useWatch({name: 'email', control});
   const watchedPhoneNumber = useWatch({name: 'formattedPhonenumber', control});
+
+  const setDeliveryChannel = (channel: OTPChannel) => {
+    if (channel === otpChannel) {
+      return;
+    }
+
+    if (channel === 'whatsapp' && otpSigninType !== 'Phone') {
+      setOTPSigninType('Phone');
+    }
+
+    setOTPChannel(channel);
+  };
 
   const {mutateAsync: verifyLoginOTPMutation, isPending: isValidatingOTP} =
     useMutation({
@@ -175,6 +191,7 @@ const SignInByOTP = ({
         const signupOtpResponse = await sendSignupOTPMutation({
           username:
             otpSigninType === 'Email' ? res?.user_name : res?.phone_number,
+          ...(otpSigninType === 'Phone' ? {channel: otpChannel} : {}),
         });
         console.log('signupOtpResponse', signupOtpResponse);
         if (signupOtpResponse?.error) {
@@ -199,7 +216,10 @@ const SignInByOTP = ({
 
         if (err.response?.status === 400 && err.response?.data?.new_user) {
           try {
-            const res = await sendSignUpOTP({username: variables.username});
+            const res = await sendSignUpOTP({
+              username: variables.username,
+              channel: variables.channel ?? otpChannel,
+            });
             console.log('🚀 ~ OTPLoginScreen ~ res:', res);
 
             if (res?.error) {
@@ -237,15 +257,43 @@ const SignInByOTP = ({
       },
     });
 
-  const handleSendOTP = async () => {
+  const handleSendOTP = async (channelOverride?: OTPChannel) => {
     const email = getValues('email');
     const phoneNumber = getValues('formattedPhonenumber');
+    const selectedChannel = channelOverride ?? otpChannel;
+
+    if (channelOverride && channelOverride !== otpChannel) {
+      setDeliveryChannel(channelOverride);
+    }
+
+    if (otpSigninType === 'Phone') {
+      if (!phoneNumber) {
+        return errorToast(languages?.required_phone_number);
+      }
+      const isPhoneValid = isValidPhoneNumber(phoneNumber ?? '');
+      if (!isPhoneValid) {
+        return errorToast(languages?.phone_number_must_be_valid);
+      }
+    } else if (!email) {
+      return errorToast(languages?.email_empty);
+    }
+
     const username = otpSigninType === 'Phone' ? phoneNumber : email;
-    isNewUser
-      ? await sendSignupOTPMutation({username: username ?? ''})
-      : await sendLoginOTPMutation({
-          username: username ?? '',
-        });
+
+    if (!username) {
+      return;
+    }
+
+    const otpPayload: LoginOTPPayload = {
+      username: username ?? '',
+      ...(otpSigninType === 'Phone' ? {channel: selectedChannel} : {}),
+    };
+
+    if (isNewUser) {
+      await sendSignupOTPMutation(otpPayload);
+    } else {
+      await sendLoginOTPMutation(otpPayload);
+    }
   };
 
   console.log('sendOTPResponses', sendOTPResponse);
@@ -254,6 +302,9 @@ const SignInByOTP = ({
     if (!otp) {
       return errorToast(languages?.generic_error_message);
     }
+    const verificationChannel =
+      otpSigninType === 'Phone' ? otpChannel : undefined;
+
     isNewUser
       ? await verifySignUpOTPMutation({
           otp_value: otp,
@@ -269,6 +320,7 @@ const SignInByOTP = ({
               : isLoginOTPResponse(sendOTPResponse)
               ? sendOTPResponse?.session ?? ''
               : '',
+          ...(verificationChannel ? {channel: verificationChannel} : {}),
         })
       : await verifyLoginOTPMutation({
           otp_value: otp,
@@ -276,8 +328,16 @@ const SignInByOTP = ({
             ? sendOTPResponse?.session ?? ''
             : '',
           username: sendOTPResponse?.user_name ?? '',
+          ...(verificationChannel ? {channel: verificationChannel} : {}),
         });
   };
+
+  const isDisabled =
+    isSendingLoginOTP ||
+    (otpSigninType === 'Email' && !watchedEmail) ||
+    (otpSigninType === 'Email' && !!errors?.email) ||
+    (otpSigninType === 'Phone' && !watchedPhoneNumber) ||
+    (otpSigninType === 'Phone' && !!errors?.formattedPhonenumber);
 
   return (
     <View className="mx-6 mt-4">
@@ -287,6 +347,9 @@ const SignInByOTP = ({
             setOTPSigninType(newValue);
             setDidSendOTP(false);
             setOTP('');
+            if (newValue === 'Email' && otpChannel !== 'sms') {
+              setOTPChannel('sms');
+            }
           }
         }}
         value={otpSigninType}>
@@ -423,7 +486,7 @@ const SignInByOTP = ({
             editing={!isValidatingOTP}
           />
           <View className="flex-row items-center justify-end my-4">
-            <Timer onResendPress={handleSendOTP} />
+            <Timer onResendPress={() => handleSendOTP()} />
           </View>
           <RoundedButton
             style={styles.button}
@@ -441,20 +504,54 @@ const SignInByOTP = ({
       ) : (
         <RoundedButton
           style={styles.button}
-          className="mt-10"
+          className="mt-10 space-x-2"
           loading={isSendingLoginOTP || isSendingSignUpOTP}
-          disabled={
-            isSendingLoginOTP ||
-            (otpSigninType === 'Email' && !watchedEmail) ||
-            (otpSigninType === 'Email' && !!errors?.email) ||
-            (otpSigninType === 'Phone' && !watchedPhoneNumber) ||
-            (otpSigninType === 'Phone' && !!errors?.formattedPhonenumber)
-          }
-          onPress={handleSendOTP}>
+          disabled={isDisabled}
+          onPress={() => handleSendOTP(otpChannel)}>
           <CustomText className="text-base text-white font-isidoraSemiBold">
             {languages.get_otp_button}
           </CustomText>
+          {otpSigninType === 'Phone' &&
+            (otpChannel === 'whatsapp' ? (
+              <Icon
+                name="whatsapp"
+                size={20}
+                color={isDisabled ? '#222B45' : '#25D366'}
+              />
+            ) : (
+              <MaterialIcon
+                name="sms"
+                size={20}
+                color={isDisabled ? '#222B45' : '#FFFFFF'}
+              />
+            ))}
         </RoundedButton>
+      )}
+
+      {otpSigninType === 'Phone' && (
+        <>
+          <Pressable
+            className="flex-row items-center justify-center mt-4 space-x-2"
+            onPress={() =>
+              setDeliveryChannel(otpChannel === 'whatsapp' ? 'sms' : 'whatsapp')
+            }>
+            {otpChannel === 'whatsapp' ? (
+              <Icon name="whatsapp" size={18} color="#25D366" />
+            ) : (
+              <MaterialIcon name="sms" size={18} color="#FFFFFF" />
+            )}
+            <CustomText className="text-sm text-white font-isidoraMedium">
+              {otpChannel === 'whatsapp'
+                ? languages.get_otp_by_message_button
+                : languages.get_otp_by_whatsapp_button}
+            </CustomText>
+          </Pressable>
+          <CustomText className="mt-2 text-xs text-center text-white/70 font-isidoraMedium">
+            {otpChannel === 'whatsapp'
+              ? languages.otp_channel_whatsapp_info
+              : languages.otp_channel_message_info}
+          </CustomText>
+        </>
       )}
 
       <RoundedButton
