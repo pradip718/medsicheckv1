@@ -1,14 +1,9 @@
-import {
-  EncryptCommand,
-  EncryptCommandInput,
-  KMSClient,
-} from '@aws-sdk/client-kms';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Sex} from 'biosensesignal-react-native-sdk';
-import {Buffer} from 'buffer';
 import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
 import moment from 'moment';
+import forge from 'node-forge';
 import {Alert, Platform, Share as RNShare} from 'react-native';
 import RNFetchBlob from 'react-native-blob-util';
 import {CountryCode, CountryCodeList} from 'react-native-country-picker-modal';
@@ -19,7 +14,6 @@ import {Asset} from 'react-native-image-picker';
 import * as RNLocalize from 'react-native-localize';
 import Share from 'react-native-share';
 import {isAndroid} from '.';
-import {getAWSSecretKeys} from '../src/api/auth';
 import {updateLocale} from '../src/api/language';
 import {notifyApi} from '../src/api/user';
 import {
@@ -51,6 +45,7 @@ import 'react-native-url-polyfill/auto';
 import {VoiceScanReport} from '../types/api_response';
 
 import {ReadableStream as PolyfillReadableStream} from 'web-streams-polyfill';
+import {getAWSPublicKeys} from '../src/api/auth';
 import {USER_ACTIVITY} from '../types/readings';
 
 export const getImgBasedOnScore = (score: number) => {
@@ -829,32 +824,23 @@ export function ensureReadableStreamPolyfill() {
 export async function encryptText(text: string) {
   ensureReadableStreamPolyfill();
 
-  let credentials = await getAWSSecretKeys();
-
-  const params: EncryptCommandInput = {
-    KeyId: credentials?.kms_arn,
-    Plaintext: Buffer.from(text),
-    EncryptionAlgorithm: credentials?.kms_algorithm,
-  };
-
-  const kmsClient = new KMSClient({
-    region: 'mx-central-1',
-    credentials: {
-      accessKeyId: credentials?.access_key ?? '',
-      secretAccessKey: credentials?.secret_access_key ?? '',
-    },
-  });
-
   try {
-    const command = new EncryptCommand(params);
-    const response = await kmsClient.send(command);
+    const keysResponse = await getAWSPublicKeys();
 
-    console.log('response', response);
-    if (!response.CiphertextBlob) {
-      throw new Error('Encryption failed: CiphertextBlob is undefined');
+    if (!keysResponse?.public_key) {
+      throw new Error('Encryption failed');
     }
 
-    return Buffer.from(response.CiphertextBlob).toString('base64');
+    const formattedPem = keysResponse.public_key.replace(/\\n/g, '\n').trim();
+
+    const publicKey = forge.pki.publicKeyFromPem(formattedPem);
+
+    const encryptedBytes = publicKey.encrypt(text, 'RSA-OAEP', {
+      md: forge.md.sha1.create(),
+      mgf1: forge.mgf.mgf1.create(forge.md.sha1.create()), // <-- fixed line
+    });
+
+    return forge.util.encode64(encryptedBytes);
   } catch (error) {
     console.error('Error encrypting password:', error);
     throw error;
