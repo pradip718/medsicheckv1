@@ -262,12 +262,21 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
     try {
       const modifiedPayload = _.cloneDeep(data);
       const relationKey = getRelationKeyByValue(data.relation);
-      if (relationKey === 'other') {
+
+      if (!relationKey) {
+        _.set(modifiedPayload, 'relation', languages?.relation_list?.other);
+        _.set(
+          modifiedPayload,
+          'other_relation',
+          languages?.relation_list?.other,
+        );
+      } else if (relationKey === 'other') {
         _.set(
           modifiedPayload,
           'relation',
           JSON.stringify({
-            [data.relation]: data.other_relation,
+            [data.relation]:
+              data.other_relation || languages?.relation_list?.other,
           }),
         );
         _.unset(modifiedPayload, 'other_relation');
@@ -624,27 +633,12 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                             </>
                           )}
                           name="other_relation"
-                          rules={{
-                            required:
-                              value ===
-                              getKeyByValue(
-                                languages?.relation_list?.other,
-                                languages?.relation_list,
-                              )
-                                ? languages?.other_relation_required
-                                : undefined,
-                            pattern: {
-                              value: /^[a-zA-Z ]+$/,
-                              message: languages?.letter_space_validation,
-                            },
-                          }}
                         />
                       )}
                       <ErrorText message={errors?.relation?.message} />
                     </>
                   )}
                   name="relation"
-                  rules={{required: languages?.relation_required}}
                 />
               </View>
             </View>
