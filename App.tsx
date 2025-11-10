@@ -73,6 +73,7 @@ function App(): JSX.Element {
     const loadLanguage = async () => {
       const locale = getDeviceLocaleInformation();
       const {data: language} = await getLanguage(locale);
+      console.log('language', language);
       setLanguages(language);
     };
 
