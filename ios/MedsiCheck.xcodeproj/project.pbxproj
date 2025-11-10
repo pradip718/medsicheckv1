@@ -8,11 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MedsiCheckTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MedsiCheckTests.m */; };
+		03637E0E3EF1C3ABB9FD1893 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		1C31E2B6F02CCE624C43F994 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */; };
 		34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */; };
 		56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */; };
-		62D00323FF04E0D726EE210D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 79768F85A2072F8393F9A7FD /* PrivacyInfo.xcprivacy */; };
-		6A9A1E57FF562F791D9BC638 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 79768F85A2072F8393F9A7FD /* PrivacyInfo.xcprivacy */; };
+		5C96AC9403CE02428522C960 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */; };
 		6FC0CCDF815666EF3F852CB2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */; };
 		9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */; };
 		AE962B642DA3AE6700C86AAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE962B622DA3AE6700C86AAA /* InfoPlist.strings */; };
@@ -71,7 +72,6 @@
 		AEEF05A62D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
 		AEEF05A72D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
 		AEEF05A82D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
-		B1951F0AD127B6614B56A231 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 79768F85A2072F8393F9A7FD /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,9 +143,9 @@
 		5709B34CF0A7D63546082F79 /* Pods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig"; sourceTree = "<group>"; };
 		796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
-		79768F85A2072F8393F9A7FD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MedsiCheck/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-MedsiCheck-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
 		8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
+		98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MedsiCheck/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; sourceTree = "<group>"; };
 		AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; sourceTree = "<group>"; };
 		AE962B632DA3AE6700C86AAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -270,7 +270,7 @@
 				AE9814502D478545001E7BD8 /* Resources */,
 				AE98171F2D479B05001E7BD8 /* Main */,
 				AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */,
-				79768F85A2072F8393F9A7FD /* PrivacyInfo.xcprivacy */,
+				98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */,
 			);
 			name = MedsiCheck;
 			sourceTree = "<group>";
@@ -550,7 +550,7 @@
 				AE98140B2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
 				AE98140E2D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AEEF059F2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
-				B1951F0AD127B6614B56A231 /* PrivacyInfo.xcprivacy in Resources */,
+				5C96AC9403CE02428522C960 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,7 +571,7 @@
 				AE9813EF2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
 				AE9813F22D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AEEF059E2D46C049002EE9AB /* BootSplash.storyboard in Resources */,
-				62D00323FF04E0D726EE210D /* PrivacyInfo.xcprivacy in Resources */,
+				1C31E2B6F02CCE624C43F994 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,7 +592,7 @@
 				AE9813FD2D4755AD001E7BD8 /* icomoon.ttf in Resources */,
 				AE9814002D4755AD001E7BD8 /* IsidoraSans-Regular.ttf in Resources */,
 				AEEF05A02D46C049002EE9AB /* BootSplash.storyboard in Resources */,
-				6A9A1E57FF562F791D9BC638 /* PrivacyInfo.xcprivacy in Resources */,
+				03637E0E3EF1C3ABB9FD1893 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
