@@ -20,8 +20,7 @@ import {
   VerifyPhonePayload,
 } from '../../../types/api_payload';
 import {
-  AWSSecretKeysResponse,
-  AWSTokenResponse,
+  GetPublicKeyResponse,
   LoginErrorResponse,
   LoginOTPResponse,
   LoginSuccessResponse,
@@ -375,34 +374,18 @@ async function getSessionToken({
   }
 }
 
-async function getAWSSecretKeys(): Promise<AWSSecretKeysResponse | null> {
-  try {
-    const tokenResponse = await axiosInstance({
-      method: 'GET',
-      url: `v1/generate-token?env=${Config.Environment}`,
-    });
+async function getAWSPublicKeys(): Promise<GetPublicKeyResponse | null> {
+  const tokenResponse = await axiosInstance({
+    method: 'GET',
+    url: `v1/generate-token?env=${Config.Environment}`,
+  });
 
-    const tokenData: AWSTokenResponse = tokenResponse?.data;
-
-    if (tokenData?.token) {
-      const response = await axiosInstance({
-        method: 'POST',
-        url: `v1/get-secret-keys?env=${Config.Environment}`,
-        data: {
-          token: tokenResponse?.data?.token,
-        },
-      });
-      return response?.data;
-    }
-    return null;
-  } catch (error: unknown) {
-    throw error;
-  }
+  return tokenResponse?.data;
 }
 
 export {
   getAccountStatus,
-  getAWSSecretKeys,
+  getAWSPublicKeys,
   getOnboardingApi,
   getOnboardingStepsApi,
   getSessionToken,
