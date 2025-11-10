@@ -28,9 +28,12 @@ export type ConfirmPasswordPayload = {
   password: string;
 };
 
+export type OTPChannel = 'sms' | 'whatsapp';
+
 export type LoginOTPPayload = {
   username: string;
   type?: 'login';
+  channel?: OTPChannel;
 };
 
 export type VerifyLoginOTPPayload = {
@@ -38,6 +41,7 @@ export type VerifyLoginOTPPayload = {
   session: string;
   otp_value: string;
   type?: 'login';
+  channel?: OTPChannel;
 };
 
 export type sendPhoneOTPPayload =
