@@ -236,7 +236,7 @@ const ContactVerification = ({route}: OTPProps) => {
             <Header />
 
             <AnimatedWrapper className="px-6 mt-8 flex-row items-center space-x-4">
-              <View className="flex-grow">
+              <View className="flex-1">
                 <Controller
                   control={control}
                   render={({field: {onChange, onBlur, value, ref}}) => (
@@ -295,7 +295,7 @@ const ContactVerification = ({route}: OTPProps) => {
               )}
             </AnimatedWrapper>
             <AnimatedWrapper className="px-6 mt-4 flex-row items-center space-x-4">
-              <View className="flex-grow">
+              <View className="flex-1">
                 <Controller
                   name="formattedPhonenumber"
                   control={control}
