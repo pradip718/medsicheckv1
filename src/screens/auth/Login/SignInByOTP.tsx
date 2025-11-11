@@ -536,9 +536,9 @@ const SignInByOTP = ({
               setDeliveryChannel(otpChannel === 'whatsapp' ? 'sms' : 'whatsapp')
             }>
             {otpChannel === 'whatsapp' ? (
-              <Icon name="whatsapp" size={18} color="#25D366" />
-            ) : (
               <MaterialIcon name="sms" size={18} color="#FFFFFF" />
+            ) : (
+              <Icon name="whatsapp" size={18} color="#25D366" />
             )}
             <CustomText className="text-sm text-white font-isidoraMedium">
               {otpChannel === 'whatsapp'
@@ -546,11 +546,6 @@ const SignInByOTP = ({
                 : languages.get_otp_by_whatsapp_button}
             </CustomText>
           </Pressable>
-          <CustomText className="mt-2 text-xs text-center text-white/70 font-isidoraMedium">
-            {otpChannel === 'whatsapp'
-              ? languages.otp_channel_whatsapp_info
-              : languages.otp_channel_message_info}
-          </CustomText>
         </>
       )}
 
