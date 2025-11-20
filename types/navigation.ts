@@ -15,6 +15,10 @@ export type MainStackParamList = {
     session?: string;
   };
   ForgotPassword: undefined;
+  PreapprovedPasswordChange: {
+    username: string;
+    session: string;
+  };
   ContactVerification: {
     email: string;
     password?: string;

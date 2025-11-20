@@ -55,6 +55,12 @@ export type VerifyPhonePayload = {
   otp_value: string;
 };
 
+export type ChangePasswordPayload = {
+  username: string;
+  session: string;
+  password: string;
+};
+
 //--------------------------------------------Health Risks--------------------------------------------
 export type HealthRisksPayload = {
   risk_type: string;
