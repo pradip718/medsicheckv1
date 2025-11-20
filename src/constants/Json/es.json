@@ -12,6 +12,13 @@
   "phone": "Teléfono",
   "create_password": "Crear Contraseña",
   "confirm_password": "Confirmar Contraseña",
+  "change_password": "Cambiar Contraseña",
+  "preapproved_password_change_message": "Por favor establece una nueva contraseña para tu cuenta",
+  "password_is_required": "La contraseña es obligatoria",
+  "confirm_password_is_required": "La confirmación de la contraseña es obligatoria",
+  "password_requirements_message_with_length_and_requirements": "La contraseña debe tener al menos 8 caracteres e incluir al menos una letra mayúscula, una letra minúscula, un número y un carácter especial (#?!@$%^&*-)",
+  "password_does_not_match_error_message": "Las contraseñas no coinciden",
+  "password_change_success": "La contraseña se cambió correctamente",
   "sign_up": "Registrarse",
   "have_acount": "¿Ya tienes una cuenta?",
 

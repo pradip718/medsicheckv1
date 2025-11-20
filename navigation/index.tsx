@@ -37,10 +37,12 @@ import HealthWallet from '../src/screens/HealthWallet';
 import AIHealthReport from '../src/screens/HealthWallet/AIHealthReport/AIHealthReport';
 import AIHealthReportDetail from '../src/screens/HealthWallet/AIHealthReport/AIHealthReportDetail';
 import AIQuestionnaireDetails from '../src/screens/HealthWallet/AIHealthReport/AIQuestionnaireDetails';
+import AIReportGenerating from '../src/screens/HealthWallet/AIHealthReport/AIReportGenerating';
 import AIScanDetails from '../src/screens/HealthWallet/AIHealthReport/AIScanDetails';
 import InterpretLabReports from '../src/screens/HealthWallet/InterpretLabReports';
 import LabQuestionnaireDetails from '../src/screens/HealthWallet/InterpretLabReports/LabQuestionnaireDetails';
 import LabReportDetail from '../src/screens/HealthWallet/InterpretLabReports/LabReportDetail';
+import LapReportGenerating from '../src/screens/HealthWallet/InterpretLabReports/LabReportGenerating';
 import LabScanDetails from '../src/screens/HealthWallet/InterpretLabReports/LabScanDetails';
 import MiscellaneousFiles from '../src/screens/HealthWallet/MiscellanouseFiles';
 import HelpDesk from '../src/screens/HelpDesk';
@@ -61,6 +63,20 @@ import ReportDetails from '../src/screens/Reports/ReportDetails';
 import SessionReportDetail from '../src/screens/Reports/SessionReportDetail';
 import CommunicationPreferences from '../src/screens/Settings/CommunicationPreferences';
 import MobileVerification from '../src/screens/Settings/MobileVerification';
+import SymptomChecker from '../src/screens/SymptomChecker';
+import SymptomCheckerReport from '../src/screens/SymptomChecker/SymptomCheckerReport';
+import SymptomCheckerAdditionalDetails from '../src/screens/SymptomChecker/generate/SymptomCheckerAdditionalDetails';
+import SymptomCheckerBodyPart from '../src/screens/SymptomChecker/generate/SymptomCheckerBodyPart';
+import SymptomCheckerConfirmation from '../src/screens/SymptomChecker/generate/SymptomCheckerConfirmation';
+import SymptomCheckerFeelSymptoms from '../src/screens/SymptomChecker/generate/SymptomCheckerFeelSymptoms';
+import SymptomCheckerFileUpload from '../src/screens/SymptomChecker/generate/SymptomCheckerFileUpload';
+import SymptomCheckerGenerating from '../src/screens/SymptomChecker/generate/SymptomCheckerGenerating';
+import SymptomCheckerOtherBodyPart from '../src/screens/SymptomChecker/generate/SymptomCheckerOtherBodyPart';
+import SymptomCheckerPainLevel from '../src/screens/SymptomChecker/generate/SymptomCheckerPainLevel';
+import SymptomCheckerReview from '../src/screens/SymptomChecker/generate/SymptomCheckerReview';
+import SymptomCheckerStartedMedication from '../src/screens/SymptomChecker/generate/SymptomCheckerStartedMedication';
+import SymptomCheckerSymptomDuration from '../src/screens/SymptomChecker/generate/SymptomCheckerSymptomDuration';
+import SymptomCheckersOtherSymptoms from '../src/screens/SymptomChecker/generate/SymptomCheckersOtherSymptoms';
 import TnC from '../src/screens/TnC';
 import ViewReport from '../src/screens/ViewReport';
 import VoiceScan from '../src/screens/VoiceScan';
@@ -71,12 +87,14 @@ import VoiceScanGeneratingReport from '../src/screens/VoiceScan/VoiceScanGenerat
 import VoiceScanIntro from '../src/screens/VoiceScan/VoiceScanIntro';
 import ForgotPassword from '../src/screens/auth/ForgotPassword';
 import Login from '../src/screens/auth/Login';
+import PreapprovedPasswordChange from '../src/screens/auth/Login/PreapprovedPasswordChange';
 import Register from '../src/screens/auth/Register';
 import AdditionalInformation from '../src/screens/auth/Register/Additional_Information';
 import AdditionalDetails from '../src/screens/auth/Register/Additional_Information/AdditionalDetails';
 import QuestionnaireSection from '../src/screens/auth/Register/Additional_Information/QuestionnaireSection';
 import ContactVerification from '../src/screens/auth/Register/ContactVerification';
 import OTP from '../src/screens/auth/Register/OTP';
+import OTPRegister from '../src/screens/auth/Register/OTPRegister';
 import UserInformation from '../src/screens/auth/Register/UserInformation';
 import useAppStore from '../store/appStore';
 import useAuthStore from '../store/authStore';
@@ -86,23 +104,6 @@ import {extractQueryParams} from '../utils/methods';
 import HomePageDrawer from './HomePageDrawer';
 import ReportStack from './ReportStack';
 import UnverifiedUserTab from './UnverifiedUserTab';
-import OTPRegister from '../src/screens/auth/Register/OTPRegister';
-import SymptomChecker from '../src/screens/SymptomChecker';
-import SymptomCheckerAdditionalDetails from '../src/screens/SymptomChecker/generate/SymptomCheckerAdditionalDetails';
-import SymptomCheckerFeelSymptoms from '../src/screens/SymptomChecker/generate/SymptomCheckerFeelSymptoms';
-import SymptomCheckerFileUpload from '../src/screens/SymptomChecker/generate/SymptomCheckerFileUpload';
-import SymptomCheckerOtherBodyPart from '../src/screens/SymptomChecker/generate/SymptomCheckerOtherBodyPart';
-import SymptomCheckersOtherSymptoms from '../src/screens/SymptomChecker/generate/SymptomCheckersOtherSymptoms';
-import SymptomCheckerPainLevel from '../src/screens/SymptomChecker/generate/SymptomCheckerPainLevel';
-import SymptomCheckerBodyPart from '../src/screens/SymptomChecker/generate/SymptomCheckerBodyPart';
-import SymptomCheckerStartedMedication from '../src/screens/SymptomChecker/generate/SymptomCheckerStartedMedication';
-import SymptomCheckerSymptomDuration from '../src/screens/SymptomChecker/generate/SymptomCheckerSymptomDuration';
-import SymptomCheckerConfirmation from '../src/screens/SymptomChecker/generate/SymptomCheckerConfirmation';
-import SymptomCheckerReview from '../src/screens/SymptomChecker/generate/SymptomCheckerReview';
-import SymptomCheckerGenerating from '../src/screens/SymptomChecker/generate/SymptomCheckerGenerating';
-import SymptomCheckerReport from '../src/screens/SymptomChecker/SymptomCheckerReport';
-import LapReportGenerating from '../src/screens/HealthWallet/InterpretLabReports/LabReportGenerating';
-import AIReportGenerating from '../src/screens/HealthWallet/AIHealthReport/AIReportGenerating';
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -353,6 +354,10 @@ const RootNavigator = () => {
           />
 
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+          <Stack.Screen
+            name="PreapprovedPasswordChange"
+            component={PreapprovedPasswordChange}
+          />
           <Stack.Screen name="OTP" component={OTP} />
           <Stack.Screen name="TermsAndConditions" component={TnC} />
           <Stack.Screen name="UserInformation" component={UserInformation} />
