@@ -249,7 +249,21 @@ const Login = () => {
       await proceedLoginStep(loginResponse);
     } catch (error) {
       if (error instanceof AxiosError) {
-        errorToast(error?.response?.data?.error || '');
+        const errorResponse = error?.response?.data;
+        // Check if password change is required for preapproved user
+        if (
+          errorResponse?.password_change_required === true &&
+          errorResponse?.session &&
+          errorResponse?.challenge_name === 'NEW_PASSWORD_REQUIRED'
+        ) {
+          // Navigate to password change screen
+          navigation.navigate('PreapprovedPasswordChange', {
+            username: email,
+            session: errorResponse.session,
+          });
+          return;
+        }
+        errorToast(errorResponse?.error || '');
       }
     } finally {
       setIsUserLoggingIn(false);
