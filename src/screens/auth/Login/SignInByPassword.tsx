@@ -22,6 +22,7 @@ type SignInByPasswordProps = {
   handlePasswordLogin: (params: LoginParam) => void;
   handleSwitchLoginType: (type: LoginType) => void;
   isUserLoggingIn: boolean;
+  showAlternativeLoginButton?: boolean;
   formProps: {
     handleSubmit: UseFormHandleSubmit<LoginParam>;
     control: Control<LoginParam>;
@@ -33,6 +34,7 @@ const SignInByPassword = ({
   handleSwitchLoginType,
   handlePasswordLogin,
   isUserLoggingIn,
+  showAlternativeLoginButton = true,
   formProps,
 }: SignInByPasswordProps) => {
   const {
@@ -143,14 +145,16 @@ const SignInByPassword = ({
           {languages.login}
         </CustomText>
       </RoundedButton>
-      <RoundedButton
-        style={styles.signInOtpButton}
-        className="mt-2 bg-transparent"
-        onPress={() => handleSwitchLoginType('OTP')}>
-        <CustomText className="text-base text-white font-isidoraSemiBold">
-          {languages.sign_in_by_otp_button}
-        </CustomText>
-      </RoundedButton>
+      {showAlternativeLoginButton && (
+        <RoundedButton
+          style={styles.signInOtpButton}
+          className="mt-2 bg-transparent"
+          onPress={() => handleSwitchLoginType('OTP')}>
+          <CustomText className="text-base text-white font-isidoraSemiBold">
+            {languages.sign_in_by_otp_button}
+          </CustomText>
+        </RoundedButton>
+      )}
     </>
   );
 };
@@ -202,7 +206,7 @@ const styles = StyleSheet.create({
   signInButton: {
     width: '50%',
     backgroundColor: '#222B45',
-    marginTop: 70,
+    marginTop: 28,
   },
   signInOtpButton: {
     backgroundColor: 'transparent',
