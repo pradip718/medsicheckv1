@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "postinstall": "npx react-native setup-ios-permissions && npx pod-install",
+    "postinstall": "RCT_NEW_ARCH_ENABLED=0 npx pod-install",
     "android:staging": "react-native run-android --mode=stagingdebug --appIdSuffix 'staging'",
     "android:staging-release": "react-native run-android --mode=stagingrelease --appIdSuffix 'staging'",
     "android:development": "react-native run-android --mode=developmentdebug  --appIdSuffix 'dev'",
