@@ -69,7 +69,7 @@ const SignInByOTP = ({
   const [didSendOTP, setDidSendOTP] = useState(false);
   const [otp, setOTP] = useState('');
   const [otpSigninType, setOTPSigninType] = useState<OTPSigninType>('Email');
-  const [otpChannel, setOTPChannel] = useState<OTPChannel>('sms');
+  const [otpChannel, setOTPChannel] = useState<OTPChannel>('whatsapp');
   const [sendOTPResponse, setSendOTPResponse] = useState<
     LoginOTPResponse | LoginSuccessResponse | null
   >(null);
