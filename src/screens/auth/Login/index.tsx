@@ -277,132 +277,136 @@ const Login = () => {
             bounces={false}
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={styles.screenContent}>
-            <View style={styles.hero}>
-              {languages?.showQRScanner?.toLowerCase?.() === 'true' && (
-                <Pressable
-                  style={styles.qrButton}
-                  onPress={() => navigation.navigate('QRScanner')}>
-                  <Image
-                    source={QRCode as ImageSourcePropType}
-                    style={styles.qrIcon}
-                  />
-                  <CustomText style={styles.qrText}>
-                    {languages?.qr_scanner}
-                  </CustomText>
-                </Pressable>
-              )}
-              <View style={styles.heroImageRow}>
-                <View style={styles.medsiCheckWrapper}>
-                  <Image
-                    style={styles.medsiCheck}
-                    source={require('../../../../assets/images/MedsiCheck.png')}
-                    resizeMode="contain"
-                  />
-                </View>
-                <Image
-                  style={styles.loginImgPerson}
-                  source={require('../../../../assets/images/LoginImgPerson.png')}
-                  resizeMode="contain"
-                />
-              </View>
-              {/* <CustomText style={styles.heroTitle} className="font-isidoraBold">
+            <View style={styles.contentWrapper}>
+              <View style={styles.mainSection}>
+                <View style={styles.hero}>
+                  {languages?.showQRScanner?.toLowerCase?.() === 'true' && (
+                    <Pressable
+                      style={styles.qrButton}
+                      onPress={() => navigation.navigate('QRScanner')}>
+                      <Image
+                        source={QRCode as ImageSourcePropType}
+                        style={styles.qrIcon}
+                      />
+                      <CustomText style={styles.qrText}>
+                        {languages?.qr_scanner}
+                      </CustomText>
+                    </Pressable>
+                  )}
+                  <View style={styles.heroImageRow}>
+                    <View style={styles.medsiCheckWrapper}>
+                      <Image
+                        style={styles.medsiCheck}
+                        source={require('../../../../assets/images/MedsiCheck.png')}
+                        resizeMode="contain"
+                      />
+                    </View>
+                    <Image
+                      style={styles.loginImgPerson}
+                      source={require('../../../../assets/images/LoginImgPerson.png')}
+                      resizeMode="contain"
+                    />
+                  </View>
+                  {/* <CustomText style={styles.heroTitle} className="font-isidoraBold">
                 {isPasswordLogin
                   ? languages?.login
                   : languages?.sign_in_by_otp_button}
               </CustomText> */}
-              {heroSubtitleText ? (
-                <CustomText
-                  style={styles.heroSubtitle}
-                  className="font-isidoraRegular">
-                  {heroSubtitleText}
-                </CustomText>
-              ) : null}
-            </View>
+                  {heroSubtitleText ? (
+                    <CustomText
+                      style={styles.heroSubtitle}
+                      className="font-isidoraRegular">
+                      {heroSubtitleText}
+                    </CustomText>
+                  ) : null}
+                </View>
 
-            <View style={styles.formCard}>
-              <AnimatePresence exitBeforeEnter>
-                {isPasswordLogin ? (
-                  <View
-                    key="password-form"
-                    from={{opacity: 0.8, translateY: 12}}
-                    animate={{opacity: 1, translateY: 0}}
-                    exit={{opacity: 0, translateY: -12}}
-                    transition={{type: 'timing', duration: 250} as any}>
-                    <SignInByPassword
-                      handlePasswordLogin={handlePasswordLogin}
-                      isUserLoggingIn={isUserLoggingIn}
-                      showAlternativeLoginButton={false}
-                      formProps={{
-                        handleSubmit,
-                        control,
-                        formState,
-                      }}
-                      handleSwitchLoginType={handleSwitchLoginType}
-                    />
+                <View style={styles.formCard}>
+                  <AnimatePresence exitBeforeEnter>
+                    {isPasswordLogin ? (
+                      <View
+                        key="password-form"
+                        from={{opacity: 0.8, translateY: 12}}
+                        animate={{opacity: 1, translateY: 0}}
+                        exit={{opacity: 0, translateY: -12}}
+                        transition={{type: 'timing', duration: 250} as any}>
+                        <SignInByPassword
+                          handlePasswordLogin={handlePasswordLogin}
+                          isUserLoggingIn={isUserLoggingIn}
+                          showAlternativeLoginButton={false}
+                          formProps={{
+                            handleSubmit,
+                            control,
+                            formState,
+                          }}
+                          handleSwitchLoginType={handleSwitchLoginType}
+                        />
 
-                    <View style={styles.orRow}>
-                      <View style={styles.orLine} />
-                      <CustomText style={styles.orText}>
-                        {orLabel ?? 'OR'}
-                      </CustomText>
-                      <View style={styles.orLine} />
-                    </View>
+                        <View style={styles.orRow}>
+                          <View style={styles.orLine} />
+                          <CustomText style={styles.orText}>
+                            {orLabel ?? 'OR'}
+                          </CustomText>
+                          <View style={styles.orLine} />
+                        </View>
 
-                    <TouchableOpacity
-                      style={styles.otpEntryButton}
-                      onPress={() => handleSwitchLoginType('OTP')}>
-                      <CustomText style={styles.otpEntryButtonText}>
-                        {languages?.sign_in_by_otp_button}
-                      </CustomText>
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <View
-                    key="otp-form"
-                    from={{opacity: 0.8, translateY: 12}}
-                    animate={{opacity: 1, translateY: 0}}
-                    exit={{opacity: 0, translateY: -12}}
-                    transition={{type: 'timing', duration: 250} as any}>
-                    <SignInByOTP
-                      handleSwitchLoginType={handleSwitchLoginType}
-                      proceedLoginStep={proceedLoginStep}
-                      formProps={{
-                        handleSubmit,
-                        control,
-                        formState,
-                        getValues,
-                      }}
-                    />
-                  </View>
-                )}
-              </AnimatePresence>
-            </View>
+                        <TouchableOpacity
+                          style={styles.otpEntryButton}
+                          onPress={() => handleSwitchLoginType('OTP')}>
+                          <CustomText style={styles.otpEntryButtonText}>
+                            {languages?.sign_in_by_otp_button}
+                          </CustomText>
+                        </TouchableOpacity>
+                      </View>
+                    ) : (
+                      <View
+                        key="otp-form"
+                        from={{opacity: 0.8, translateY: 12}}
+                        animate={{opacity: 1, translateY: 0}}
+                        exit={{opacity: 0, translateY: -12}}
+                        transition={{type: 'timing', duration: 250} as any}>
+                        <SignInByOTP
+                          handleSwitchLoginType={handleSwitchLoginType}
+                          proceedLoginStep={proceedLoginStep}
+                          formProps={{
+                            handleSubmit,
+                            control,
+                            formState,
+                            getValues,
+                          }}
+                        />
+                      </View>
+                    )}
+                  </AnimatePresence>
+                </View>
+              </View>
 
-            <View style={styles.footer}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation?.navigate('PrivacyPolicy', {
-                    uri:
-                      languages?.pp_link ??
-                      'https://www.medsi.ai/terminos-y-condiciones/',
-                  });
-                }}>
-                <CustomText style={styles.footerLink}>
-                  {languages.tnc} | {languages.pp}
-                </CustomText>
-              </TouchableOpacity>
-              <View style={styles.signUpTextWrapper}>
-                <CustomText style={styles.footerText}>
-                  {languages?.no_acount}{' '}
-                </CustomText>
+              <View style={styles.footer}>
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(AppRoute.REGISTER as never)
-                  }>
-                  <CustomText style={styles.signUpText}>
-                    {languages?.sign_up}
+                  onPress={() => {
+                    navigation?.navigate('PrivacyPolicy', {
+                      uri:
+                        languages?.pp_link ??
+                        'https://www.medsi.ai/terminos-y-condiciones/',
+                    });
+                  }}>
+                  <CustomText style={styles.footerLink}>
+                    {languages.tnc} | {languages.pp}
                   </CustomText>
                 </TouchableOpacity>
+                <View style={styles.signUpTextWrapper}>
+                  <CustomText style={styles.footerText}>
+                    {languages?.no_acount}{' '}
+                  </CustomText>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate(AppRoute.REGISTER as never)
+                    }>
+                    <CustomText style={styles.signUpText}>
+                      {languages?.sign_up}
+                    </CustomText>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </KeyboardAwareScrollView>
@@ -424,6 +428,13 @@ const styles = StyleSheet.create({
   screenContent: {
     flexGrow: 1,
     paddingBottom: 24,
+  },
+  contentWrapper: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  mainSection: {
+    flexShrink: 0,
   },
   hero: {
     alignItems: 'center',

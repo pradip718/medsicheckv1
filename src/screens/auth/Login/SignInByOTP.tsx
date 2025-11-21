@@ -14,8 +14,7 @@ import {
   UseFormHandleSubmit,
   useWatch,
 } from 'react-hook-form';
-import {StyleSheet, View} from 'react-native';
-import {RadioButton} from 'react-native-paper';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import useLanguageStore from '../../../../store/languageStore';
 import {LoginOTPPayload, OTPChannel} from '../../../../types/api_payload';
@@ -340,48 +339,38 @@ const SignInByOTP = ({
     (otpSigninType === 'Phone' && !!errors?.formattedPhonenumber);
 
   return (
-    <View className="mx-6 mt-4">
-      <RadioButton.Group
-        onValueChange={(newValue: string) => {
-          if (newValue === 'Email' || newValue === 'Phone') {
-            setOTPSigninType(newValue);
-            setDidSendOTP(false);
-            setOTP('');
-            if (newValue === 'Email' && otpChannel !== 'sms') {
-              setOTPChannel('sms');
-            }
-          }
-        }}
-        value={otpSigninType}>
-        <View className="flex-row flex-wrap w-full mt-8 mediumPhone:flex-nowrap mediumPhone:space-x-4">
-          <View className="flex-row items-center">
-            <RadioButton.Android
-              value="Email"
-              color="white"
-              underlayColor="white"
-              uncheckedColor="white"
-            />
-            <CustomText className="text-base text-white font-isidoraMedium">
-              {languages?.email}
-            </CustomText>
-          </View>
-          <View className="flex-row items-center">
-            <RadioButton.Android
-              value="Phone"
-              color="white"
-              underlayColor="white"
-              uncheckedColor="white"
-            />
-            <CustomText className="text-base text-white font-isidoraMedium">
-              {languages?.phone_number}
-            </CustomText>
-          </View>
-        </View>
-      </RadioButton.Group>
+    <View style={styles.container}>
+      <View style={styles.tabBar}>
+        {(['Email', 'Phone'] as OTPSigninType[]).map(option => {
+          const isActive = otpSigninType === option;
+          return (
+            <TouchableOpacity
+              key={option}
+              style={[styles.tabButton, isActive && styles.tabButtonActive]}
+              onPress={() => {
+                if (otpSigninType !== option) {
+                  setOTPSigninType(option);
+                  setDidSendOTP(false);
+                  setOTP('');
+                  if (option === 'Email' && otpChannel !== 'sms') {
+                    setOTPChannel('sms');
+                  }
+                }
+              }}>
+              <CustomText
+                style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
+                {option === 'Email'
+                  ? languages?.email
+                  : languages?.phone_number}
+              </CustomText>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
 
       {otpSigninType === 'Email' && (
-        <View className="flex-row items-center mt-6 space-x-4">
-          <View className="flex-grow">
+        <View style={styles.fieldRow}>
+          <View style={styles.fieldGrow}>
             <Controller
               control={control}
               render={({field: {onChange, value, onBlur}}) => (
@@ -410,13 +399,13 @@ const SignInByOTP = ({
           </View>
           {didSendOTP && (
             <Pressable
-              className="flex-shrink"
+              style={styles.editButton}
               onPress={() => {
                 setOTP('');
                 setDidSendOTP(false);
                 setIsNewUser(false);
               }}>
-              <CustomText className="text-base text-white underline font-isidoraSemiBold">
+              <CustomText style={styles.editButtonText}>
                 {languages?.edit}
               </CustomText>
             </Pressable>
@@ -425,8 +414,8 @@ const SignInByOTP = ({
       )}
 
       {otpSigninType === 'Phone' && (
-        <View className="flex-row items-center mt-6 space-x-4">
-          <View className="flex-grow">
+        <View style={styles.fieldRow}>
+          <View style={styles.fieldGrow}>
             <Controller
               name="formattedPhonenumber"
               control={control}
@@ -447,8 +436,9 @@ const SignInByOTP = ({
                     value={value}
                     onBlur={onBlur}
                     key={`${didSendOTP}`}
+                    s
                   />
-                  <CustomText className="text-base text-red-500 font-isidoraMedium">
+                  <CustomText style={styles.phoneError}>
                     {errors?.formattedPhonenumber?.message}
                   </CustomText>
                 </>
@@ -457,13 +447,13 @@ const SignInByOTP = ({
           </View>
           {didSendOTP && (
             <Pressable
-              className="flex-shrink"
+              style={styles.editButton}
               onPress={() => {
                 setOTP('');
                 setDidSendOTP(false);
                 setIsNewUser(false);
               }}>
-              <CustomText className="text-base text-white underline font-isidoraSemiBold">
+              <CustomText style={styles.editButtonText}>
                 {languages?.edit}
               </CustomText>
             </Pressable>
@@ -472,7 +462,7 @@ const SignInByOTP = ({
       )}
 
       {didSendOTP ? (
-        <AnimatedWrapper className="mt-6">
+        <AnimatedWrapper style={styles.otpWrapper}>
           <CustomTextInput
             style={styles.input}
             keyboardType="numeric"
@@ -485,53 +475,55 @@ const SignInByOTP = ({
             onChangeText={setOTP}
             editing={!isValidatingOTP}
           />
-          <View className="flex-row items-center justify-end my-4">
+          <View style={styles.timerRow}>
             <Timer onResendPress={() => handleSendOTP()} />
           </View>
-          <RoundedButton
-            style={styles.button}
-            className="mt-10"
-            loading={isValidatingOTP || isValidatingSignUpOTP}
-            disabled={
-              isValidatingOTP || otp.length !== 6 || isValidatingSignUpOTP
-            }
-            onPress={handleVerifyLoginOTP}>
-            <CustomText className="text-base text-white font-isidoraSemiBold">
-              {languages.validate_otp_button}
-            </CustomText>
-          </RoundedButton>
+          <View style={styles.sectionSpacing}>
+            <RoundedButton
+              style={styles.primaryButton}
+              loading={isValidatingOTP || isValidatingSignUpOTP}
+              disabled={
+                isValidatingOTP || otp.length !== 6 || isValidatingSignUpOTP
+              }
+              onPress={handleVerifyLoginOTP}>
+              <CustomText style={styles.primaryButtonText}>
+                {languages.validate_otp_button}
+              </CustomText>
+            </RoundedButton>
+          </View>
         </AnimatedWrapper>
       ) : (
-        <RoundedButton
-          style={styles.button}
-          className="mt-10 space-x-2"
-          loading={isSendingLoginOTP || isSendingSignUpOTP}
-          disabled={isDisabled}
-          onPress={() => handleSendOTP(otpChannel)}>
-          <CustomText className="text-base text-white font-isidoraSemiBold">
-            {languages.get_otp_button}
-          </CustomText>
-          {otpSigninType === 'Phone' &&
-            (otpChannel === 'whatsapp' ? (
-              <Icon
-                name="whatsapp"
-                size={20}
-                color={isDisabled ? '#222B45' : '#25D366'}
-              />
-            ) : (
-              <MaterialIcon
-                name="sms"
-                size={20}
-                color={isDisabled ? '#222B45' : '#FFFFFF'}
-              />
-            ))}
-        </RoundedButton>
+        <View style={styles.sectionSpacing}>
+          <RoundedButton
+            style={styles.primaryButton}
+            loading={isSendingLoginOTP || isSendingSignUpOTP}
+            disabled={isDisabled}
+            onPress={() => handleSendOTP(otpChannel)}>
+            <CustomText style={styles.primaryButtonText}>
+              {languages.get_otp_button}
+            </CustomText>
+            {otpSigninType === 'Phone' &&
+              (otpChannel === 'whatsapp' ? (
+                <Icon
+                  name="whatsapp"
+                  size={20}
+                  color={isDisabled ? '#222B45' : '#25D366'}
+                />
+              ) : (
+                <MaterialIcon
+                  name="sms"
+                  size={20}
+                  color={isDisabled ? '#222B45' : '#FFFFFF'}
+                />
+              ))}
+          </RoundedButton>
+        </View>
       )}
 
       {otpSigninType === 'Phone' && (
         <>
           <Pressable
-            className="flex-row items-center justify-center mt-4 space-x-2"
+            style={styles.channelToggle}
             onPress={() =>
               setDeliveryChannel(otpChannel === 'whatsapp' ? 'sms' : 'whatsapp')
             }>
@@ -540,7 +532,7 @@ const SignInByOTP = ({
             ) : (
               <Icon name="whatsapp" size={18} color="#25D366" />
             )}
-            <CustomText className="text-sm text-white font-isidoraMedium">
+            <CustomText style={styles.channelToggleText}>
               {otpChannel === 'whatsapp'
                 ? languages.get_otp_by_message_button
                 : languages.get_otp_by_whatsapp_button}
@@ -549,11 +541,16 @@ const SignInByOTP = ({
         </>
       )}
 
+      <View style={styles.orRow}>
+        <View style={styles.orLine} />
+        <CustomText style={styles.orText}>OR</CustomText>
+        <View style={styles.orLine} />
+      </View>
+
       <RoundedButton
-        style={styles.signInOtpButton}
-        className="mt-2 bg-transparent"
+        style={styles.secondaryButton}
         onPress={() => handleSwitchLoginType('Password')}>
-        <CustomText className="text-base text-white font-isidoraSemiBold">
+        <CustomText style={styles.secondaryButtonText}>
           {languages.sign_in_by_password_button}
         </CustomText>
       </RoundedButton>
@@ -564,12 +561,121 @@ const SignInByOTP = ({
 export default SignInByOTP;
 
 const styles = StyleSheet.create({
-  signInOtpButton: {
+  container: {
+    marginHorizontal: 24,
+    marginTop: 16,
+  },
+  tabBar: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    borderRadius: 999,
+    padding: 4,
+    marginTop: 8,
+  },
+  tabButton: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tabButtonActive: {
+    backgroundColor: 'white',
+  },
+  tabLabel: {
+    color: 'rgba(255,255,255,0.7)',
+    fontFamily: 'IsidoraSans-SemiBold',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  tabLabelActive: {
+    color: '#1B2653',
+  },
+  fieldRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  fieldGrow: {
+    flex: 1,
+  },
+  editButton: {
+    marginLeft: 12,
+  },
+  editButtonText: {
+    color: 'white',
+    textDecorationLine: 'underline',
+    fontFamily: 'IsidoraSans-SemiBold',
+    fontSize: 14,
+  },
+  phoneError: {
+    color: '#F87171',
+    fontFamily: 'IsidoraSans-Medium',
+    fontSize: 13,
+    marginTop: 6,
+  },
+  sectionSpacing: {
+    marginTop: 28,
+  },
+  otpWrapper: {
+    marginTop: 16,
+  },
+  timerRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  primaryButton: {
+    width: '100%',
+    backgroundColor: '#222B45',
+    gap: 8,
+  },
+  primaryButtonText: {
+    color: 'white',
+    fontFamily: 'IsidoraSans-SemiBold',
+    fontSize: 15,
+  },
+  orRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  orLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+  },
+  orText: {
+    marginHorizontal: 10,
+    color: 'rgba(255,255,255,0.9)',
+    fontFamily: 'IsidoraSans-SemiBold',
+    fontSize: 12,
+  },
+  channelToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+  },
+  channelToggleText: {
+    color: 'white',
+    fontFamily: 'IsidoraSans-Medium',
+    fontSize: 13,
+    marginLeft: 8,
+  },
+  secondaryButton: {
+    width: '100%',
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
     backgroundColor: 'transparent',
   },
-  button: {
-    width: '50%',
-    backgroundColor: '#222B45',
+  secondaryButtonText: {
+    color: 'white',
+    fontFamily: 'IsidoraSans-SemiBold',
+    fontSize: 15,
+    textAlign: 'center',
   },
   input: {
     height: 36,
