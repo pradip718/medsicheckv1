@@ -402,7 +402,7 @@ const SignInByOTP = ({
               rules={{
                 required: languages?.email_empty,
                 pattern: {
-                  value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                   message: languages?.email_validation_error_msg,
                 },
               }}
