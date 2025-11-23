@@ -9,7 +9,10 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import useLanguageStore from '../../../../../store/languageStore';
-import {sendPhoneOTPPayload} from '../../../../../types/api_payload';
+import {
+  OTPChannel,
+  sendPhoneOTPPayload,
+} from '../../../../../types/api_payload';
 import {errorToast} from '../../../../../utils/toast';
 import {
   resendSignUpOTP,
@@ -19,6 +22,7 @@ import {
 } from '../../../../api/auth';
 import BasicContainer from '../../../../components/BasicContainer';
 import EtchedGlass from '../../../../components/EtchedGlass';
+import Icon from '../../../../components/Icon';
 import Pressable from '../../../../components/Pressable';
 import RoundedButton from '../../../../components/RoundedButton';
 import CustomText from '../../../../components/Text';
@@ -35,6 +39,7 @@ interface MobileVerificationProps {
   closeVerficationModal: (focus?: boolean) => void;
   handlePhoneVerified: (verify: boolean) => void;
   isOTPSignup: boolean;
+  channel: OTPChannel;
 }
 
 const modifyPhonePayload = (
@@ -42,11 +47,13 @@ const modifyPhonePayload = (
   phoneNumber: string,
   updatedPhone: string,
   email: string,
+  channel: OTPChannel,
 ): sendPhoneOTPPayload => {
   if (updatedPhone === phoneNumber) {
     return {
       user_id,
       username: email,
+      channel,
     };
   } else {
     return {
@@ -54,6 +61,7 @@ const modifyPhonePayload = (
       username: email,
       updated_value: updatedPhone,
       update_flag: true,
+      channel,
     };
   }
 };
@@ -67,6 +75,7 @@ const MobileVerificationModal = ({
   closeVerficationModal,
   handlePhoneVerified,
   isOTPSignup,
+  channel,
 }: MobileVerificationProps) => {
   const {languages} = useLanguageStore();
   const [otp, setOTP] = useState('');
@@ -138,25 +147,33 @@ const MobileVerificationModal = ({
     });
 
   useEffect(() => {
+    const payload = modifyPhonePayload(
+      user_id,
+      phoneNumber,
+      updatedPhoneNumber,
+      email,
+      channel,
+    );
+
     isOTPSignup
-      ? sendSignupOTPMutation(
-          modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
-        )
-      : sendPhoneOTPMutation(
-          modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
-        );
+      ? sendSignupOTPMutation(payload)
+      : sendPhoneOTPMutation(payload);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleResendOTP = async () => {
+    const payload = modifyPhonePayload(
+      user_id,
+      phoneNumber,
+      updatedPhoneNumber,
+      email,
+      channel,
+    );
+
     if (isOTPSignup) {
-      await sendSignupOTPMutation(
-        modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
-      );
+      await sendSignupOTPMutation(payload);
     } else {
-      await sendPhoneOTPMutation(
-        modifyPhonePayload(user_id, phoneNumber, updatedPhoneNumber, email),
-      );
+      await sendPhoneOTPMutation(payload);
     }
   };
 
@@ -169,6 +186,7 @@ const MobileVerificationModal = ({
       });
     } else {
       await verifyPhoneMutation({
+        channel,
         username: email,
         otp_value: otp,
         user_id,
@@ -195,7 +213,7 @@ const MobileVerificationModal = ({
             style={[
               styles.cellRoot,
               isFocused && styles.focusCell,
-              {marginRight: index < CELL_COUNT - 1 ? 10 : 0},
+              index < CELL_COUNT - 1 ? styles.cellSpacing : null,
             ]}>
             <CustomText
               style={styles.cellText}
@@ -206,8 +224,7 @@ const MobileVerificationModal = ({
         )}
       />
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [otp]);
+  }, [otp, getCellOnLayoutHandler, props, ref]);
 
   return (
     <BasicContainer style={styles.container} className="min-h-[300]">
@@ -215,7 +232,7 @@ const MobileVerificationModal = ({
         <CustomText className="text-center mt-4 text-xl font-isidoraSemiBold">
           {languages?.mobile_verification}
         </CustomText>
-        <View className="mt-6">
+        <View className="mt-6 space-y-3">
           <CustomText className="text-center text-base">
             {languages?.email_verification_description}
           </CustomText>
@@ -223,6 +240,18 @@ const MobileVerificationModal = ({
             <CustomText className="text-base">
               {updatedPhoneNumber ?? phoneNumber ?? ''}
             </CustomText>
+            <View className="flex-row items-center space-x-2 mt-2">
+              {channel === 'whatsapp' ? (
+                <Icon name="whatsapp" size={18} color="#25D366" />
+              ) : (
+                <Icon name="sms" size={18} color="#FFFFFF" />
+              )}
+              <CustomText className="text-sm text-white font-isidoraMedium">
+                {channel === 'whatsapp'
+                  ? 'OTP sent via WhatsApp'
+                  : 'OTP sent via SMS'}
+              </CustomText>
+            </View>
             <Pressable onPress={() => closeVerficationModal(true)}>
               <CustomText className="text-base font-isidoraBold text-ultramarineBlue">
                 {languages?.change}
@@ -277,6 +306,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: '#000',
     borderBottomWidth: 1,
+  },
+  cellSpacing: {
+    marginRight: 10,
   },
   cellText: {
     color: '#000',
