@@ -44,19 +44,21 @@ export type VerifyLoginOTPPayload = {
   channel?: OTPChannel;
 };
 
+type BasePhoneOTPPayload = {
+  user_id: string;
+  username: string;
+  channel?: OTPChannel;
+};
+
 export type sendPhoneOTPPayload =
-  | {user_id: string; username: string; update_flag?: false}
-  | {
-      user_id: string;
-      username: string;
-      update_flag: true;
-      updated_value: string;
-    };
+  | (BasePhoneOTPPayload & {update_flag?: false})
+  | (BasePhoneOTPPayload & {update_flag: true; updated_value: string});
 
 export type VerifyPhonePayload = {
   user_id: string;
   username: string;
   otp_value: string;
+  channel?: OTPChannel;
 };
 
 //--------------------------------------------Health Risks--------------------------------------------
