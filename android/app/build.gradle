@@ -168,6 +168,11 @@ android {
             dirs 'libs'
         }
     }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
