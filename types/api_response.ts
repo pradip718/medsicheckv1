@@ -124,6 +124,10 @@ export type LoginSuccessResponse = {
 export type LoginErrorResponse = {
   error: string;
   is_verified: boolean;
+  password_change_required?: boolean;
+  challenge_name?: string;
+  session?: string;
+  data?: string;
 };
 
 export type LoginOTPResponse = {

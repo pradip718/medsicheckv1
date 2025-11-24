@@ -433,7 +433,6 @@ const FaceScannerCamera = () => {
             progress={progress}
             readingId={reading_id}
             imageValidity={imageValidity}
-            isRecording={fakeRecording}
           />
         </View>
         <View className="justify-between flex-grow py-4">

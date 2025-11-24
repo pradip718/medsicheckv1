@@ -8,6 +8,7 @@ import {navigationRef} from '../../../RootNavigation';
 import useAuthStore from '../../../store/authStore';
 import useUserProfileStore from '../../../store/profileStore';
 import {
+  ChangePasswordPayload,
   ConfirmPasswordPayload,
   ForgotPasswordPayload,
   LoginOTPPayload,
@@ -111,7 +112,10 @@ export async function login(payload: LoginPayload) {
     return response?.data as LoginSuccessResponse;
   } catch (error) {
     if (error instanceof AxiosError) {
-      errorToast(error?.response?.data?.error);
+      const errorResponse = error?.response?.data;
+      if (errorResponse?.password_change_required !== true) {
+        errorToast(errorResponse?.error);
+      }
     }
     throw error as LoginErrorResponse;
   }
@@ -249,6 +253,23 @@ export async function postConfirmPassword(payload: ConfirmPasswordPayload) {
 
     return response?.data;
   } catch (error) {
+    throw error;
+  }
+}
+
+export async function changePassword(payload: ChangePasswordPayload) {
+  try {
+    const response = await axiosInstance({
+      method: 'POST',
+      url: 'v1/login-v2?auth_type=temp_password_change',
+      data: payload,
+    });
+
+    return response?.data as LoginSuccessResponse;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      errorToast(error?.response?.data?.error);
+    }
     throw error;
   }
 }
