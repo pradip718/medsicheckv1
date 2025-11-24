@@ -8,6 +8,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import useLanguageStore from '../../../../../store/languageStore';
 import {
   OTPChannel,
@@ -26,6 +27,7 @@ import Icon from '../../../../components/Icon';
 import Pressable from '../../../../components/Pressable';
 import RoundedButton from '../../../../components/RoundedButton';
 import CustomText from '../../../../components/Text';
+import customColor from '../../../../theme/customColor';
 import Timer from '../Timer';
 
 const CELL_COUNT = 6;
@@ -229,9 +231,21 @@ const MobileVerificationModal = ({
   return (
     <BasicContainer style={styles.container} className="min-h-[300]">
       <EtchedGlass>
-        <CustomText className="text-center mt-4 text-xl font-isidoraSemiBold">
-          {languages?.mobile_verification}
-        </CustomText>
+        <View className="flex-row justify-center items-center space-x-2 mt-4 ">
+          <CustomText className="text-center text-xl font-isidoraSemiBold">
+            {languages?.mobile_verification}
+          </CustomText>
+          {channel === 'whatsapp' ? (
+            <Icon name="whatsapp" size={18} color="#25D366" />
+          ) : (
+            <MaterialIcon
+              name="sms"
+              size={18}
+              color={customColor.ultramarineBlue}
+              // className="text-primary"
+            />
+          )}
+        </View>
         <View className="mt-6 space-y-3">
           <CustomText className="text-center text-base">
             {languages?.email_verification_description}
@@ -240,18 +254,6 @@ const MobileVerificationModal = ({
             <CustomText className="text-base">
               {updatedPhoneNumber ?? phoneNumber ?? ''}
             </CustomText>
-            <View className="flex-row items-center space-x-2 mt-2">
-              {channel === 'whatsapp' ? (
-                <Icon name="whatsapp" size={18} color="#25D366" />
-              ) : (
-                <Icon name="sms" size={18} color="#FFFFFF" />
-              )}
-              <CustomText className="text-sm text-white font-isidoraMedium">
-                {channel === 'whatsapp'
-                  ? 'OTP sent via WhatsApp'
-                  : 'OTP sent via SMS'}
-              </CustomText>
-            </View>
             <Pressable onPress={() => closeVerficationModal(true)}>
               <CustomText className="text-base font-isidoraBold text-ultramarineBlue">
                 {languages?.change}
