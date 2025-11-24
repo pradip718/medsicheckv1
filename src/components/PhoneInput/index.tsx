@@ -22,6 +22,15 @@ const CustomPhoneInput = <TFieldValues extends Record<string, any>>({
   // const phoneInput = useRef<PhoneInput>(null);
   const {languages} = useLanguageStore();
   const [isFocused, setIsFocused] = useState(false);
+  const {countryPickerProps, ...phoneInputProps} = restProps;
+
+  const mergedCountryPickerProps = {
+    ...countryPickerProps,
+    filterProps: {
+      ...(countryPickerProps?.filterProps ?? {}),
+      placeholder: languages?.search_placeholder ?? 'Search...',
+    },
+  };
 
   const onFocusChange = (focus: boolean) => {
     setIsFocused(focus);
@@ -54,8 +63,9 @@ const CustomPhoneInput = <TFieldValues extends Record<string, any>>({
           onFocusChange(true);
         },
       }}
+      countryPickerProps={mergedCountryPickerProps}
       // autoFocus
-      {...restProps}
+      {...phoneInputProps}
     />
   );
 };
