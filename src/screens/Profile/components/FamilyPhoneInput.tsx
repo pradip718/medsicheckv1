@@ -8,7 +8,7 @@ import {parsePhoneNumber} from '../../../../utils/methods';
 import {SEMIBOLD} from '../../../constants/Fonts';
 
 interface FamilyPhoneInputProps extends PhoneInputProps {
-  control: Control<Family, any, Family>;
+  control: Control<Family>;
 }
 
 const FamilyPhoneInput = ({
@@ -18,6 +18,15 @@ const FamilyPhoneInput = ({
 }: FamilyPhoneInputProps) => {
   const phoneInput = useRef<PhoneInput>(null);
   const {languages} = useLanguageStore();
+  const {countryPickerProps, ...phoneInputProps} = restProps;
+
+  const mergedCountryPickerProps = {
+    ...countryPickerProps,
+    filterProps: {
+      ...(countryPickerProps?.filterProps ?? {}),
+      placeholder: languages?.search_placeholder ?? 'Search...',
+    },
+  };
 
   return (
     <Controller
@@ -53,8 +62,9 @@ const FamilyPhoneInput = ({
             onBlur: onBlur,
           }}
           disabled={disabled}
+          countryPickerProps={mergedCountryPickerProps}
           // autoFocus
-          {...restProps}
+          {...phoneInputProps}
         />
       )}
     />

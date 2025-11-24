@@ -436,7 +436,6 @@ const SignInByOTP = ({
                     value={value}
                     onBlur={onBlur}
                     key={`${didSendOTP}`}
-                    s
                   />
                   <CustomText style={styles.phoneError}>
                     {errors?.formattedPhonenumber?.message}
@@ -520,7 +519,7 @@ const SignInByOTP = ({
         </View>
       )}
 
-      {otpSigninType === 'Phone' && (
+      {otpSigninType === 'Phone' && !didSendOTP && (
         <>
           <Pressable
             style={styles.channelToggle}
