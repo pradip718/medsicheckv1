@@ -13,6 +13,7 @@ import {
   ForgotPasswordPayload,
   LoginOTPPayload,
   LoginPayload,
+  OTPChannel,
   ResendEmailConfirmationPayload,
   sendPhoneOTPPayload,
   SignUpPayload,
@@ -84,8 +85,14 @@ export async function verifyPhone(payload: VerifyPhonePayload) {
   try {
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/sign-up-v2?flow_type=verify_phone',
-      data: payload,
+      url: `v1/sign-up-v2?flow_type=verify_phone${
+        payload.channel ? `&channel=${payload.channel}` : ''
+      }`,
+      data: {
+        user_id: payload.user_id,
+        username: payload.username,
+        otp_value: payload.otp_value,
+      },
     });
 
     return response?.data;
@@ -148,13 +155,17 @@ export async function forgotPassword(payload: ForgotPasswordPayload) {
   }
 }
 
+const appendChannel = (channel?: OTPChannel) =>
+  channel ? `&channel=${channel}` : '';
+
 export async function sendLoginOTP(
   payload: LoginOTPPayload,
 ): Promise<LoginOTPResponse | LoginSuccessResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/login-v2?auth_type=otp',
+      url: `v1/login-v2?auth_type=otp${channelQuery}`,
       data: payload,
     });
 
@@ -168,9 +179,10 @@ export async function sendSignUpOTP(
   payload: LoginOTPPayload,
 ): Promise<LoginOTPResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/sign-up-otp?auth_type=otp',
+      url: `v1/sign-up-otp?auth_type=otp${channelQuery}`,
       data: payload,
     });
 
@@ -184,9 +196,10 @@ export async function resendSignUpOTP(
   payload: LoginOTPPayload,
 ): Promise<LoginOTPResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/sign-up-otp?auth_type=resend_otp',
+      url: `v1/sign-up-otp?auth_type=resend_otp${channelQuery}`,
       data: payload,
     });
 
@@ -200,9 +213,10 @@ export async function verifyLoginOTP(
   payload: VerifyLoginOTPPayload,
 ): Promise<VerifyLoginOTPResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/login-v2?auth_type=verify_auth_otp',
+      url: `v1/login-v2?auth_type=verify_auth_otp${channelQuery}`,
       data: payload,
     });
 
@@ -216,9 +230,10 @@ export async function verifySignUpOTP(
   payload: VerifyLoginOTPPayload,
 ): Promise<VerifyLoginOTPResponse> {
   try {
+    const channelQuery = appendChannel(payload.channel);
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/sign-up-otp?auth_type=verify_otp',
+      url: `v1/sign-up-otp?auth_type=verify_otp${channelQuery}`,
       data: payload,
     });
 
@@ -279,8 +294,16 @@ export async function sendPhoneOTP(payload: sendPhoneOTPPayload) {
   try {
     const response = await axiosInstance({
       method: 'POST',
-      url: 'v1/sign-up-v2?flow_type=send_phone_otp',
-      data: payload,
+      url: `v1/sign-up-v2?flow_type=send_phone_otp${
+        payload.channel ? `&channel=${payload.channel}` : ''
+      }`,
+      data: {
+        user_id: payload.user_id,
+        username: payload.username,
+        ...(payload.update_flag
+          ? {update_flag: true, updated_value: payload.updated_value}
+          : {}),
+      },
     });
 
     return response?.data;
