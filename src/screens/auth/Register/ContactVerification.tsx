@@ -286,14 +286,13 @@ const ContactVerification = ({route}: OTPProps) => {
               ) : (
                 <RoundedButton
                   resetStyle
-                  className="bg-midnightBlue min-h-[22] min-w-[57] px-2 py-1 max-w-[70]"
+                  className="bg-midnightBlue flex-row items-center justify-center px-3 py-2 rounded-full space-x-2"
                   onPress={() => {
                     Keyboard.dismiss();
                     handleEmailVerificationModal(true);
                   }}>
-                  <CustomText
-                    className="text-white text-sm font-isidoraMedium"
-                    numberOfLines={1}>
+                  <MaterialIcon name="email" size={18} color="#FFFFFF" />
+                  <CustomText className="text-white text-xs font-isidoraMedium">
                     {languages?.mobile_verification_message_title}
                   </CustomText>
                 </RoundedButton>
@@ -335,15 +334,18 @@ const ContactVerification = ({route}: OTPProps) => {
               ) : (
                 <RoundedButton
                   resetStyle
-                  className="bg-midnightBlue min-h-[22] min-w-[57] px-2 py-1 max-w-[70]"
+                  className="bg-midnightBlue flex-row items-center justify-center px-3 py-2 rounded-full space-x-2"
                   onPress={() => {
                     Keyboard.dismiss();
                     handleMobileVerificationModal(true);
                     setPhoneInputFocus(false);
                   }}>
-                  <CustomText
-                    className="text-white text-sm font-isidoraMedium"
-                    numberOfLines={1}>
+                  {phoneOtpChannel === 'whatsapp' ? (
+                    <Icon name="whatsapp" size={18} color="#25D366" />
+                  ) : (
+                    <MaterialIcon name="sms" size={18} color="#FFFFFF" />
+                  )}
+                  <CustomText className="text-white text-xs font-isidoraMedium">
                     {languages?.mobile_verification_message_title}
                   </CustomText>
                 </RoundedButton>
