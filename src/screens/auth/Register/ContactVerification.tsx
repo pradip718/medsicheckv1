@@ -16,9 +16,11 @@ import {
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native-paper';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {AuthBackground} from '../../../../assets';
 import useAppStore from '../../../../store/appStore';
 import useLanguageStore from '../../../../store/languageStore';
+import {OTPChannel} from '../../../../types/api_payload';
 import {MainStackParamList} from '../../../../types/navigation';
 import {encryptText, isValidPhoneNumber} from '../../../../utils/methods';
 import {login} from '../../../api/auth';
@@ -26,6 +28,7 @@ import BottomAlert from '../../../components/AlertModal/BottomAlert';
 import AnimatedWrapper from '../../../components/AnimatedWrapper';
 import Icon from '../../../components/Icon';
 import CustomPhoneInput from '../../../components/PhoneInput';
+import Pressable from '../../../components/Pressable';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
 import {REMEMBERED_USER_SESSION} from '../../../constants/AsyncStorageKeys';
@@ -110,6 +113,8 @@ const ContactVerification = ({route}: OTPProps) => {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
   const [phoneInputFocus, setPhoneInputFocus] = useState(false);
+  const [phoneOtpChannel, setPhoneOtpChannel] =
+    useState<OTPChannel>('whatsapp');
 
   const [showEmailVerificationModal, setShowEmailVerificationModal] =
     useState(false);
@@ -270,7 +275,7 @@ const ContactVerification = ({route}: OTPProps) => {
                   rules={{
                     required: languages?.email_required,
                     pattern: {
-                      value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                      value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
                       message: languages?.email_validation_error_msg,
                     },
                   }}
@@ -281,14 +286,13 @@ const ContactVerification = ({route}: OTPProps) => {
               ) : (
                 <RoundedButton
                   resetStyle
-                  className="bg-midnightBlue min-h-[22] min-w-[57] px-2 py-1 max-w-[70]"
+                  className="bg-midnightBlue flex-row items-center justify-center px-3 py-2 rounded-full space-x-2"
                   onPress={() => {
                     Keyboard.dismiss();
                     handleEmailVerificationModal(true);
                   }}>
-                  <CustomText
-                    className="text-white text-sm font-isidoraMedium"
-                    numberOfLines={1}>
+                  <MaterialIcon name="email" size={18} color="#FFFFFF" />
+                  <CustomText className="text-white text-xs font-isidoraMedium">
                     {languages?.mobile_verification_message_title}
                   </CustomText>
                 </RoundedButton>
@@ -330,20 +334,43 @@ const ContactVerification = ({route}: OTPProps) => {
               ) : (
                 <RoundedButton
                   resetStyle
-                  className="bg-midnightBlue min-h-[22] min-w-[57] px-2 py-1 max-w-[70]"
+                  className="bg-midnightBlue flex-row items-center justify-center px-3 py-2 rounded-full space-x-2"
                   onPress={() => {
                     Keyboard.dismiss();
                     handleMobileVerificationModal(true);
                     setPhoneInputFocus(false);
                   }}>
-                  <CustomText
-                    className="text-white text-sm font-isidoraMedium"
-                    numberOfLines={1}>
+                  {phoneOtpChannel === 'whatsapp' ? (
+                    <Icon name="whatsapp" size={18} color="#25D366" />
+                  ) : (
+                    <MaterialIcon name="sms" size={18} color="#FFFFFF" />
+                  )}
+                  <CustomText className="text-white text-xs font-isidoraMedium">
                     {languages?.mobile_verification_message_title}
                   </CustomText>
                 </RoundedButton>
               )}
             </AnimatedWrapper>
+            {!isPhoneVerified && (
+              <Pressable
+                className="px-6 flex-row items-center justify-center mt-3 space-x-2"
+                onPress={() =>
+                  setPhoneOtpChannel(prev =>
+                    prev === 'whatsapp' ? 'sms' : 'whatsapp',
+                  )
+                }>
+                {phoneOtpChannel === 'whatsapp' ? (
+                  <MaterialIcon name="sms" size={18} color="#FFFFFF" />
+                ) : (
+                  <Icon name="whatsapp" size={18} color="#25D366" />
+                )}
+                <CustomText className="text-sm text-white font-isidoraMedium">
+                  {phoneOtpChannel === 'whatsapp'
+                    ? languages?.get_otp_by_message_button
+                    : languages?.get_otp_by_whatsapp_button}
+                </CustomText>
+              </Pressable>
+            )}
             <AnimatedWrapper
               className="mt-12"
               isTranslateY={false}
@@ -395,6 +422,7 @@ const ContactVerification = ({route}: OTPProps) => {
               user_id={user_id}
               handlePhoneVerified={handlePhoneVerified}
               isOTPSignup={isOTPSignup ?? false}
+              channel={phoneOtpChannel}
               closeVerficationModal={(focus?: boolean) => {
                 handleMobileVerificationModal(false);
                 if (focus) {
