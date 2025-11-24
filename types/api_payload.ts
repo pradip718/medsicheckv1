@@ -61,6 +61,12 @@ export type VerifyPhonePayload = {
   channel?: OTPChannel;
 };
 
+export type ChangePasswordPayload = {
+  username: string;
+  session: string;
+  password: string;
+};
+
 //--------------------------------------------Health Risks--------------------------------------------
 export type HealthRisksPayload = {
   risk_type: string;
