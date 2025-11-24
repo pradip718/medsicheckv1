@@ -13,6 +13,7 @@ import {
   Image,
   ImageBackground,
   ImageSourcePropType,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
@@ -27,12 +28,10 @@ import useLanguageStore from '../../../../store/languageStore';
 import useUserProfileStore from '../../../../store/profileStore';
 import {LoginSuccessResponse} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
-import {isAndroid} from '../../../../utils';
 import {encryptText, setUserRegistered} from '../../../../utils/methods';
 import {errorToast} from '../../../../utils/toast';
 import {login} from '../../../api/auth';
 import {notifyApi} from '../../../api/user';
-import Pressable from '../../../components/Pressable';
 import CustomText from '../../../components/Text';
 import {REMEMBERED_USER_SESSION} from '../../../constants/AsyncStorageKeys';
 import useGetAccountStatus from '../../../hooks/api/useGetAccountStatus';
@@ -60,6 +59,13 @@ const Login = () => {
 
   const [isUserLoggingIn, setIsUserLoggingIn] = useState(false);
   const [loginType, setLoginType] = useState<LoginType>('Password');
+  const isPasswordLogin = loginType === 'Password';
+  const translations =
+    (languages as unknown as Record<string, string | undefined>) ?? {};
+  const heroSubtitleText = isPasswordLogin
+    ? translations?.login_subtitle
+    : translations?.otp_subtitle;
+  const orLabel = translations?.or;
 
   const {refetch: getAccountStatus} = useGetAccountStatus({
     enabled: false,
@@ -284,87 +290,112 @@ const Login = () => {
             showsVerticalScrollIndicator={false}
             bounces={false}
             keyboardShouldPersistTaps="handled"
-            className="grow">
-            <View
-              // style={styles.content}
-              className="justify-between h-full">
-              <View>
-                {languages?.showQRScanner?.toLowerCase() === 'true' && (
-                  <Pressable
-                    className="flex-row items-center self-center pt-6 space-x-2"
-                    onPress={() => {
-                      navigation.navigate('QRScanner');
-                    }}>
+            contentContainerStyle={styles.screenContent}>
+            <View style={styles.contentWrapper}>
+              <View style={styles.mainSection}>
+                <View style={styles.hero}>
+                  {languages?.showQRScanner?.toLowerCase?.() === 'true' && (
+                    <Pressable
+                      style={styles.qrButton}
+                      onPress={() => navigation.navigate('QRScanner')}>
+                      <Image
+                        source={QRCode as ImageSourcePropType}
+                        style={styles.qrIcon}
+                      />
+                      <CustomText style={styles.qrText}>
+                        {languages?.qr_scanner}
+                      </CustomText>
+                    </Pressable>
+                  )}
+                  <View style={styles.heroImageRow}>
+                    <View style={styles.medsiCheckWrapper}>
+                      <Image
+                        style={styles.medsiCheck}
+                        source={require('../../../../assets/images/MedsiCheck.png')}
+                        resizeMode="contain"
+                      />
+                    </View>
                     <Image
-                      source={QRCode as ImageSourcePropType}
-                      className="w-8 h-8"
-                    />
-                    <CustomText className="text-base text-white font-isidoraSemiBold">
-                      {languages?.qr_scanner}
-                    </CustomText>
-                  </Pressable>
-                )}
-
-                <View className="flex-row justify-center">
-                  <View className="justify-end">
-                    <Image
-                      style={styles.medsiCheck}
-                      source={require('../../../../assets/images/MedsiCheck.png')}
+                      style={styles.loginImgPerson}
+                      source={require('../../../../assets/images/LoginImgPerson.png')}
                       resizeMode="contain"
                     />
                   </View>
-                  <Image
-                    style={styles.loginImgPerson}
-                    source={require('../../../../assets/images/LoginImgPerson.png')}
-                    resizeMode="contain"
-                  />
+                  {/* <CustomText style={styles.heroTitle} className="font-isidoraBold">
+                {isPasswordLogin
+                  ? languages?.login
+                  : languages?.sign_in_by_otp_button}
+              </CustomText> */}
+                  {heroSubtitleText ? (
+                    <CustomText
+                      style={styles.heroSubtitle}
+                      className="font-isidoraRegular">
+                      {heroSubtitleText}
+                    </CustomText>
+                  ) : null}
                 </View>
 
-                <AnimatePresence exitBeforeEnter>
-                  {loginType === 'Password' && (
-                    <View
-                      key="password-login"
-                      className="mt-8"
-                      from={{opacity: 0.5, scale: 0}}
-                      animate={{opacity: 1, scale: 1}}
-                      exit={{opacity: 0.5, scale: 0}}
-                      transition={{type: 'timing', duration: 400} as any}>
-                      <SignInByPassword
-                        handlePasswordLogin={handlePasswordLogin}
-                        isUserLoggingIn={isUserLoggingIn}
-                        formProps={{
-                          handleSubmit,
-                          control,
-                          formState,
-                        }}
-                        handleSwitchLoginType={handleSwitchLoginType}
-                      />
-                    </View>
-                  )}
-                  {loginType === 'OTP' && (
-                    <View
-                      key="otp-login"
-                      className="mt-8"
-                      from={{opacity: 0.5, scale: 0}}
-                      animate={{opacity: 1, scale: 1}}
-                      exit={{opacity: 0.5, scale: 0}}
-                      transition={{type: 'timing', duration: 400} as any}>
-                      <SignInByOTP
-                        handleSwitchLoginType={handleSwitchLoginType}
-                        proceedLoginStep={proceedLoginStep}
-                        formProps={{
-                          handleSubmit,
-                          control,
-                          formState,
-                          getValues,
-                        }}
-                      />
-                    </View>
-                  )}
-                </AnimatePresence>
+                <View style={styles.formCard}>
+                  <AnimatePresence exitBeforeEnter>
+                    {isPasswordLogin ? (
+                      <View
+                        key="password-form"
+                        from={{opacity: 0.8, translateY: 12}}
+                        animate={{opacity: 1, translateY: 0}}
+                        exit={{opacity: 0, translateY: -12}}
+                        transition={{type: 'timing', duration: 250} as any}>
+                        <SignInByPassword
+                          handlePasswordLogin={handlePasswordLogin}
+                          isUserLoggingIn={isUserLoggingIn}
+                          showAlternativeLoginButton={false}
+                          formProps={{
+                            handleSubmit,
+                            control,
+                            formState,
+                          }}
+                          handleSwitchLoginType={handleSwitchLoginType}
+                        />
+
+                        <View style={styles.orRow}>
+                          <View style={styles.orLine} />
+                          <CustomText style={styles.orText}>
+                            {orLabel ?? 'OR'}
+                          </CustomText>
+                          <View style={styles.orLine} />
+                        </View>
+
+                        <TouchableOpacity
+                          style={styles.otpEntryButton}
+                          onPress={() => handleSwitchLoginType('OTP')}>
+                          <CustomText style={styles.otpEntryButtonText}>
+                            {languages?.sign_in_by_otp_button}
+                          </CustomText>
+                        </TouchableOpacity>
+                      </View>
+                    ) : (
+                      <View
+                        key="otp-form"
+                        from={{opacity: 0.8, translateY: 12}}
+                        animate={{opacity: 1, translateY: 0}}
+                        exit={{opacity: 0, translateY: -12}}
+                        transition={{type: 'timing', duration: 250} as any}>
+                        <SignInByOTP
+                          handleSwitchLoginType={handleSwitchLoginType}
+                          proceedLoginStep={proceedLoginStep}
+                          formProps={{
+                            handleSubmit,
+                            control,
+                            formState,
+                            getValues,
+                          }}
+                        />
+                      </View>
+                    )}
+                  </AnimatePresence>
+                </View>
               </View>
 
-              <View key="Footer">
+              <View style={styles.footer}>
                 <TouchableOpacity
                   onPress={() => {
                     navigation?.navigate('PrivacyPolicy', {
@@ -373,23 +404,19 @@ const Login = () => {
                         'https://www.medsi.ai/terminos-y-condiciones/',
                     });
                   }}>
-                  <CustomText className="mt-6 text-base text-center font-isidoraSemiBold">
+                  <CustomText style={styles.footerLink}>
                     {languages.tnc} | {languages.pp}
                   </CustomText>
                 </TouchableOpacity>
                 <View style={styles.signUpTextWrapper}>
-                  <CustomText
-                    style={styles.footerText}
-                    className="text-base text-white font-isidoraRegular">
+                  <CustomText style={styles.footerText}>
                     {languages?.no_acount}{' '}
                   </CustomText>
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate(AppRoute.REGISTER as never)
                     }>
-                    <CustomText
-                      style={styles.signUpText}
-                      className="text-base font-isidoraBold">
+                    <CustomText style={styles.signUpText}>
                       {languages?.sign_up}
                     </CustomText>
                   </TouchableOpacity>
@@ -407,76 +434,145 @@ const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
   },
-  // contentContainer: {
-  //   flexGrow: 1,
-  // },
   container: {
-    paddingHorizontal: 28,
-    paddingTop: 20,
     flex: 1,
-    // marginBottom: 40,
+    paddingHorizontal: 12,
+    paddingTop: 8,
   },
-  headerContainer: {
-    flexDirection: 'row',
+  screenContent: {
+    flexGrow: 1,
+    paddingBottom: 24,
+  },
+  contentWrapper: {
+    flex: 1,
     justifyContent: 'space-between',
+  },
+  mainSection: {
+    flexShrink: 0,
+  },
+  hero: {
     alignItems: 'center',
+    paddingTop: 8,
   },
-  logo: {
+  qrButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
     alignSelf: 'center',
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    marginBottom: 8,
   },
-  content: {
-    flex: 1,
-    // justifyContent: 'space-between',
+  qrIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 8,
+  },
+  qrText: {
+    color: color.white,
+    fontFamily: 'IsidoraSans-SemiBold',
+    fontSize: 13,
+  },
+  heroImageRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    width: '100%',
+  },
+  medsiCheckWrapper: {
+    justifyContent: 'flex-end',
+    marginRight: -12,
   },
   medsiCheck: {
-    marginRight: -18,
-    marginBottom: -10,
-    height: units.scale(120),
     width: units.scale(120),
+    height: units.scale(120),
   },
   loginImgPerson: {
-    marginTop: 50,
+    width: units.scale(150),
     height: units.scale(200),
-    width: units.scale(140),
-    alignSelf: 'center',
+  },
+  heroTitle: {
+    marginTop: 8,
+    fontSize: 26,
+    color: color.white,
+  },
+  heroSubtitle: {
+    marginTop: 4,
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.8)',
+    textAlign: 'center',
+    paddingHorizontal: 16,
+  },
+  formCard: {
+    marginTop: 16,
+    marginHorizontal: 8,
+    paddingVertical: 24,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.18)',
+    shadowColor: '#000000',
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 0, height: 10},
+    shadowRadius: 16,
+  },
+  orRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 24,
+    marginTop: 24,
+  },
+  orLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+  },
+  orText: {
+    marginHorizontal: 10,
+    color: 'rgba(255,255,255,0.9)',
+    fontSize: 12,
+    fontFamily: 'IsidoraSans-SemiBold',
+  },
+  otpEntryButton: {
+    marginTop: 16,
+    marginHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
+    alignItems: 'center',
+  },
+  otpEntryButtonText: {
+    color: color.white,
+    fontFamily: 'IsidoraSans-SemiBold',
+    fontSize: 15,
+  },
+  footer: {
+    marginTop: 32,
+    alignItems: 'center',
+  },
+  footerLink: {
+    marginTop: 12,
+    fontSize: 14,
+    textAlign: 'center',
+    color: color.white,
+    fontFamily: 'IsidoraSans-SemiBold',
   },
   signUpTextWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginVertical: 40,
-  },
-  signInButton: {
-    width: '50%',
-    backgroundColor: '#222B45',
-    marginTop: 70,
-  },
-  signInOtpButton: {
-    width: '50%',
-    backgroundColor: 'transparent',
+    marginTop: 24,
   },
   footerText: {
     textAlign: 'left',
+    color: 'rgba(255,255,255,0.85)',
+    fontFamily: 'IsidoraSans-Regular',
   },
   signUpText: {
     color: color.white,
-  },
-  phoneWrapper: {
-    height: 60,
-    width: '100%',
-    paddingHorizontal: 30,
-    borderRadius: 18,
-    backgroundColor: color.pearl,
-    flexDirection: 'row',
-  },
-  phoneInput: {
-    width: '100%',
-    borderRadius: 18,
-    backgroundColor: 'transparent',
-  },
-  checkBox: {
-    transform: isAndroid
-      ? [{scaleX: 1}, {scaleY: 1}]
-      : [{scaleX: 0.8}, {scaleY: 0.8}],
+    fontFamily: 'IsidoraSans-Bold',
+    marginLeft: 4,
   },
 });
 

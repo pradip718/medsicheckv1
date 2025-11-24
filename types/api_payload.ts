@@ -28,9 +28,12 @@ export type ConfirmPasswordPayload = {
   password: string;
 };
 
+export type OTPChannel = 'sms' | 'whatsapp';
+
 export type LoginOTPPayload = {
   username: string;
   type?: 'login';
+  channel?: OTPChannel;
 };
 
 export type VerifyLoginOTPPayload = {
@@ -38,21 +41,24 @@ export type VerifyLoginOTPPayload = {
   session: string;
   otp_value: string;
   type?: 'login';
+  channel?: OTPChannel;
+};
+
+type BasePhoneOTPPayload = {
+  user_id: string;
+  username: string;
+  channel?: OTPChannel;
 };
 
 export type sendPhoneOTPPayload =
-  | {user_id: string; username: string; update_flag?: false}
-  | {
-      user_id: string;
-      username: string;
-      update_flag: true;
-      updated_value: string;
-    };
+  | (BasePhoneOTPPayload & {update_flag?: false})
+  | (BasePhoneOTPPayload & {update_flag: true; updated_value: string});
 
 export type VerifyPhonePayload = {
   user_id: string;
   username: string;
   otp_value: string;
+  channel?: OTPChannel;
 };
 
 export type ChangePasswordPayload = {
