@@ -38,6 +38,11 @@ import Icon from '../../../components/Icon';
 import Navbar from '../../../components/Navbar';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
+import {
+  BINAH_ALERT_LIMITS,
+  HEIGHT_LIMITS_FEET,
+  WEIGHT_LIMITS_LBS,
+} from '../../../constants';
 import {SEMIBOLD} from '../../../constants/Fonts';
 import useGetAccountStatus from '../../../hooks/api/useGetAccountStatus';
 import useGetFamilyMembers from '../../../hooks/api/useGetFamilyMembers';
@@ -73,6 +78,14 @@ export default function UserInformation({
     enabled: false,
   });
 
+  const maxSelectableDob = moment()
+    .subtract(BINAH_ALERT_LIMITS.MIN_AGE_YEARS, 'years')
+    .toDate();
+
+  const minSelectableDob = moment()
+    .subtract(BINAH_ALERT_LIMITS.MAX_AGE_YEARS, 'years')
+    .toDate();
+
   const [openGenderDropdown, setOpenGenderDropdown] = useState<boolean>(false);
   const [openHeightDropdown, setOpenHeightDropdown] = useState<boolean>(false);
   const [openWeightDropdown, setOpenWeightDropdown] = useState<boolean>(false);
@@ -107,12 +120,13 @@ export default function UserInformation({
     getValues,
     setValue,
     watch,
+    clearErrors,
   } = useForm<User>({
     defaultValues: {
       given_name: '',
       family_name: '',
       gender: GENDER[0].value,
-      birthdate: moment(new Date()).format('DD/MM/YYYY'),
+      birthdate: moment(maxSelectableDob).format('DD/MM/YYYY'),
       height: '',
       weight: '',
       height_unit: 'cm',
@@ -129,7 +143,8 @@ export default function UserInformation({
         given_name: users?.given_name || '',
         family_name: users?.family_name || '',
         gender: users?.gender ?? GENDER[0].value,
-        birthdate: users?.birthdate || moment(new Date()).format('DD/MM/YYYY'),
+        birthdate:
+          users?.birthdate || moment(maxSelectableDob).format('DD/MM/YYYY'),
         height: users?.height || '',
         weight: users?.weight || '',
         height_unit: users?.height_unit || 'cm',
@@ -137,6 +152,7 @@ export default function UserInformation({
         middle_name: users?.middle_name ?? '',
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [users, reset]);
 
   const setNewUserProfileId = async () => {
@@ -212,7 +228,7 @@ export default function UserInformation({
         given_name: '',
         family_name: '',
         gender: GENDER[0].value,
-        birthdate: moment(new Date()).format('DD/MM/YYYY'),
+        birthdate: moment(maxSelectableDob).format('DD/MM/YYYY'),
         height: '',
         weight: '',
         height_unit: 'cm',
@@ -261,15 +277,59 @@ export default function UserInformation({
     }
   };
 
-  const handleDateValidation = async (data: User) => {
-    const thirteenYearsAge = moment().subtract(13, 'years').toDate();
-    const selectedDate = moment(data?.birthdate, 'DD/MM/YYYY', true);
+  const validateBirthdate = (
+    value: string,
+    options: {showModal?: boolean} = {},
+  ) => {
+    const {showModal = false} = options;
+    const selectedDate = moment(value, 'DD/MM/YYYY', true);
+    const youngestAllowed = moment().subtract(
+      BINAH_ALERT_LIMITS.MIN_AGE_YEARS,
+      'years',
+    );
+    const oldestAllowed = moment().subtract(
+      BINAH_ALERT_LIMITS.MAX_AGE_YEARS,
+      'years',
+    );
 
-    if (selectedDate.isAfter(thirteenYearsAge)) {
-      return showGenericModal();
-    } else {
-      handleSaveAndContinue(data);
+    if (!selectedDate.isValid()) {
+      return false;
     }
+
+    if (
+      selectedDate.isAfter(youngestAllowed) ||
+      selectedDate.isBefore(oldestAllowed)
+    ) {
+      if (showModal) {
+        showGenericModal();
+      }
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleDateValidation = async (data: User) => {
+    const isValidDob = validateBirthdate(data.birthdate, {showModal: true});
+    if (!isValidDob) {
+      return;
+    }
+    handleSaveAndContinue(data);
+  };
+
+  const clampDobDate = (rawValue?: string) => {
+    const parsedMoment = moment(rawValue, 'DD/MM/YYYY', true);
+    if (!parsedMoment.isValid()) {
+      return maxSelectableDob;
+    }
+    const parsedDate = parsedMoment.toDate();
+    if (parsedDate > maxSelectableDob) {
+      return maxSelectableDob;
+    }
+    if (parsedDate < minSelectableDob) {
+      return minSelectableDob;
+    }
+    return parsedDate;
   };
 
   const handleSaveAndContinue = async (data: User) => {
@@ -416,21 +476,22 @@ export default function UserInformation({
                     <DatePicker
                       modal
                       open={isDatePickerVisible}
-                      date={
-                        value
-                          ? moment(value, 'DD/MM/YYYY').toDate()
-                          : new Date()
-                      }
+                      date={clampDobDate(value)}
                       onConfirm={date => {
-                        onChange(moment(date).format('DD/MM/YYYY'));
+                        const formattedDate = moment(date).format('DD/MM/YYYY');
+                        onChange(formattedDate);
+                        validateBirthdate(formattedDate);
                         hideDatePicker();
                       }}
                       mode="date"
                       onCancel={hideDatePicker}
-                      maximumDate={new Date()}
-                      minimumDate={new Date('1900-01-01')}
+                      maximumDate={maxSelectableDob}
+                      minimumDate={minSelectableDob}
                     />
                     <ErrorText message={errors?.birthdate?.message} />
+                    <CustomText style={styles.dobNote}>
+                      {languages?.dob_age_limit_note}
+                    </CustomText>
                   </>
                 )}
                 name="birthdate"
@@ -505,8 +566,14 @@ export default function UserInformation({
                     rules={{
                       required: languages?.height_required,
                       validate: value => {
-                        const minHeight = heightUnit === 'cm' ? 50 : 1.5;
-                        const maxHeight = heightUnit === 'cm' ? 300 : 9;
+                        const minHeight =
+                          heightUnit === 'cm'
+                            ? BINAH_ALERT_LIMITS.MIN_HEIGHT_CM
+                            : HEIGHT_LIMITS_FEET.min;
+                        const maxHeight =
+                          heightUnit === 'cm'
+                            ? BINAH_ALERT_LIMITS.MAX_HEIGHT_CM
+                            : HEIGHT_LIMITS_FEET.max;
                         const heightValue = parseFloat(value);
 
                         if (isNaN(heightValue)) {
@@ -544,6 +611,7 @@ export default function UserInformation({
                           setValue={val => {
                             onChange(val);
                             setValue('height', '');
+                            clearErrors('height');
                           }}
                           zIndex={50}
                           style={styles.heightAndWeightDropdown}
@@ -589,8 +657,14 @@ export default function UserInformation({
                     rules={{
                       required: 'Weight is required',
                       validate: value => {
-                        const minWeight = weightUnit === 'kg' ? 20 : 44;
-                        const maxWeight = weightUnit === 'kg' ? 250 : 551;
+                        const minWeight =
+                          weightUnit === 'kg'
+                            ? BINAH_ALERT_LIMITS.MIN_WEIGHT_KG
+                            : WEIGHT_LIMITS_LBS.min;
+                        const maxWeight =
+                          weightUnit === 'kg'
+                            ? BINAH_ALERT_LIMITS.MAX_WEIGHT_KG
+                            : WEIGHT_LIMITS_LBS.max;
 
                         const weightValue = parseFloat(value);
 
@@ -625,7 +699,11 @@ export default function UserInformation({
                           items={WEIGHT}
                           setOpen={setOpenWeightDropdown}
                           onChangeValue={onChange}
-                          setValue={onChange}
+                          setValue={val => {
+                            onChange(val);
+                            setValue('weight', '');
+                            clearErrors('weight');
+                          }}
                           dropDownDirection="BOTTOM"
                           style={styles.heightAndWeightDropdown}
                           labelStyle={styles.heightAndWeightDropdownLabel}
@@ -726,5 +804,11 @@ const styles = StyleSheet.create({
   genderDropdownText: {
     fontFamily: SEMIBOLD,
     fontSize: 16,
+  },
+  dobNote: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#6583FF',
+    fontFamily: SEMIBOLD,
   },
 });
