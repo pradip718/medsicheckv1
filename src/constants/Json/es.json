@@ -499,8 +499,10 @@
   "lastUpdatedOn": "Ultima actualización en:",
   "attachments": "Archivos adjuntos:",
   "important_parameter": "Parámetros importantes",
-  "dob_validation_header": "Atención!!",
-  "dob_validation_subheader": "Nuestra investigación no ha considerado la población menor de 13 años, por lo que la lectura puede ser confiable o no.",
+  "dob_validation_header": "¡Atención!",
+  "dob_validation_subheader": "El SDK de Medsi admite usuarios entre 18 y 110 años. Las mediciones fuera de este rango no son confiables.",
+  "dob_age_limit_note": "La edad mínima admitida es 18 años.",
+  "dob_validation_error": "Ingrese una fecha de nacimiento que mantenga al usuario entre 18 y 110 años.",
   "communication_preferences": "Preferencia de comunicacion",
   "mobile_verification_message_title": "Verificar",
   "mobile_verification_message_content": "Procede a verificar tu número de móvil de WhatsApp",
@@ -558,5 +560,18 @@
   "tnc_link": "https://medsi.ai/t%C3%A9rminos-y-privacidad",
   "pp_link": "https://medsi.ai/t%C3%A9rminos-y-privacidad",
   "email_required": "Se requiere correo electrónico",
-  "phone_required": "El número de teléfono es obligatorio"
+  "phone_required": "El número de teléfono es obligatorio",
+
+  "height_required": "La altura es requerida",
+  "valid_height_error": "Por favor ingrese una altura válida.",
+  "min_height_cm_error": "La altura mínima es de 130 cm.",
+  "max_height_cm_error": "La altura máxima es de 230 cm.",
+  "min_height_ft_error": "La altura mínima es de 4.3 pies.",
+  "max_height_ft_error": "La altura máxima es de 7.6 pies.",
+  "weight_required": "El peso es requerido",
+  "valid_weight_error": "Por favor ingrese un peso válido.",
+  "min_weight_kgs_error": "El peso mínimo es de 40 kg.",
+  "max_weight_kgs_error": "El peso máximo es de 200 kg.",
+  "min_weight_lbs_error": "El peso mínimo es de 88 lbs.",
+  "max_weight_lbs_error": "El peso máximo es de 441 lbs."
 }
