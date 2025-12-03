@@ -106,6 +106,7 @@ export default function UserInformation({
     trigger,
     getValues,
     setValue,
+    watch,
   } = useForm<User>({
     defaultValues: {
       given_name: '',
@@ -278,6 +279,8 @@ export default function UserInformation({
       errorToast('Failed to Update User Information');
     }
   };
+  const heightUnit = watch('height_unit');
+  const weightUnit = watch('weight_unit');
 
   return (
     <ImageBackground source={Background as any}>
@@ -485,13 +488,7 @@ export default function UserInformation({
                         style={styles.borderWidthZero}
                         contextMenuHidden={true}
                         onChangeText={text => {
-                          const unit = getValues().height_unit;
-                          if (unit === 'cm') {
-                            const integerOnly = text.replace(/[^0-9]/g, '');
-                            onChange(integerOnly);
-                          } else {
-                            onChange(text);
-                          }
+                          onChange(text);
                           if (errors.height) {
                             trigger('height');
                           }
@@ -508,9 +505,8 @@ export default function UserInformation({
                     rules={{
                       required: languages?.height_required,
                       validate: value => {
-                        const unit = getValues().height_unit;
-                        const minHeight = unit === 'cm' ? 50 : 1.5;
-                        const maxHeight = unit === 'cm' ? 300 : 9;
+                        const minHeight = heightUnit === 'cm' ? 50 : 1.5;
+                        const maxHeight = heightUnit === 'cm' ? 300 : 9;
                         const heightValue = parseFloat(value);
 
                         if (isNaN(heightValue)) {
@@ -518,13 +514,13 @@ export default function UserInformation({
                         }
 
                         if (heightValue < minHeight) {
-                          return unit === 'cm'
+                          return heightUnit === 'cm'
                             ? languages?.min_height_cm_error
                             : languages?.min_height_ft_error;
                         }
 
                         if (heightValue > maxHeight) {
-                          return unit === 'cm'
+                          return heightUnit === 'cm'
                             ? languages?.max_height_cm_error
                             : languages?.max_height_ft_error;
                         }
@@ -580,25 +576,7 @@ export default function UserInformation({
                         onBlur={onBlur}
                         style={styles.borderWidthZero}
                         onChangeText={text => {
-                          let validText = text.replace(/[^0-9.]/g, '');
-                          const decimalCount = validText.split('.').length - 1;
-                          if (decimalCount > 1) {
-                            validText = validText.substring(
-                              0,
-                              validText.lastIndexOf('.'),
-                            );
-                          }
-                          if (validText.includes('.')) {
-                            const [integerPart, decimalPart] =
-                              validText.split('.');
-                            if (decimalPart.length > 2) {
-                              validText = `${integerPart}.${decimalPart.substring(
-                                0,
-                                2,
-                              )}`;
-                            }
-                          }
-                          onChange(validText);
+                          onChange(text);
                           if (errors.weight) {
                             trigger('weight');
                           }
@@ -611,9 +589,8 @@ export default function UserInformation({
                     rules={{
                       required: 'Weight is required',
                       validate: value => {
-                        const unit = getValues().weight_unit;
-                        const minWeight = unit === 'kg' ? 20 : 44;
-                        const maxWeight = unit === 'kg' ? 250 : 551;
+                        const minWeight = weightUnit === 'kg' ? 20 : 44;
+                        const maxWeight = weightUnit === 'kg' ? 250 : 551;
 
                         const weightValue = parseFloat(value);
 
@@ -622,13 +599,13 @@ export default function UserInformation({
                         }
 
                         if (weightValue < minWeight) {
-                          return unit === 'kg'
+                          return weightUnit === 'kg'
                             ? languages?.min_weight_kgs_error
                             : languages?.min_weight_lbs_error;
                         }
 
                         if (weightValue > maxWeight) {
-                          return unit === 'kg'
+                          return weightUnit === 'kg'
                             ? languages?.max_weight_kgs_error
                             : languages?.max_weight_lbs_error;
                         }
