@@ -564,14 +564,14 @@
 
   "height_required": "La altura es requerida",
   "valid_height_error": "Por favor ingrese una altura válida.",
-  "min_height_cm_error": "La altura mínima es de 130 cm.",
-  "max_height_cm_error": "La altura máxima es de 230 cm.",
-  "min_height_ft_error": "La altura mínima es de 4.3 pies.",
-  "max_height_ft_error": "La altura máxima es de 7.6 pies.",
+  "min_height_cm_error": "La altura mínima es de 50 cm.",
+  "max_height_cm_error": "La altura máxima es de 300 cm.",
+  "min_height_ft_error": "La altura mínima es de 1.5 pies.",
+  "max_height_ft_error": "La altura máxima es de 9 pies.",
   "weight_required": "El peso es requerido",
   "valid_weight_error": "Por favor ingrese un peso válido.",
-  "min_weight_kgs_error": "El peso mínimo es de 40 kg.",
-  "max_weight_kgs_error": "El peso máximo es de 200 kg.",
-  "min_weight_lbs_error": "El peso mínimo es de 88 lbs.",
-  "max_weight_lbs_error": "El peso máximo es de 441 lbs."
+  "min_weight_kgs_error": "El peso mínimo es de 20 kg.",
+  "max_weight_kgs_error": "El peso máximo es de 250 kg.",
+  "min_weight_lbs_error": "El peso mínimo es de 44 lbs.",
+  "max_weight_lbs_error": "El peso máximo es de 551 lbs."
 }

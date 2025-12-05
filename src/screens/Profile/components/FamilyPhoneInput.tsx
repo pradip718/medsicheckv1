@@ -32,13 +32,6 @@ const FamilyPhoneInput = ({
     <Controller
       name="phone_number"
       control={control}
-      rules={{
-        // required: 'Phone Number is Required',
-        pattern: {
-          value: /^\+(?:[0-9] ?){6,14}[0-9]$/,
-          message: languages?.phone_number_must_be_valid,
-        },
-      }}
       render={({field: {onChange, value, onBlur}}) => (
         <PhoneInput
           ref={phoneInput}
