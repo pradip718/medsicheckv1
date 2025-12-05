@@ -1,3 +1,4 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import {
   NavigationProp,
   RouteProp,
@@ -38,11 +39,6 @@ import Icon from '../../../components/Icon';
 import Navbar from '../../../components/Navbar';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
-import {
-  BINAH_ALERT_LIMITS,
-  HEIGHT_LIMITS_FEET,
-  WEIGHT_LIMITS_LBS,
-} from '../../../constants';
 import {SEMIBOLD} from '../../../constants/Fonts';
 import useGetAccountStatus from '../../../hooks/api/useGetAccountStatus';
 import useGetFamilyMembers from '../../../hooks/api/useGetFamilyMembers';
@@ -51,6 +47,7 @@ import usePostOnboardingSteps from '../../../hooks/api/usePostOnboardingSteps';
 import useBackButton from '../../../hooks/useBackButton';
 import {color} from '../../../theme';
 import customColor from '../../../theme/customColor';
+import {createUserInformationSchema} from '../../../validation';
 import {GENDER, HEIGHT, WEIGHT} from './data';
 
 type UserInformationRouteProp = RouteProp<
@@ -78,14 +75,6 @@ export default function UserInformation({
     enabled: false,
   });
 
-  const maxSelectableDob = moment()
-    .subtract(BINAH_ALERT_LIMITS.MIN_AGE_YEARS, 'years')
-    .toDate();
-
-  const minSelectableDob = moment()
-    .subtract(BINAH_ALERT_LIMITS.MAX_AGE_YEARS, 'years')
-    .toDate();
-
   const [openGenderDropdown, setOpenGenderDropdown] = useState<boolean>(false);
   const [openHeightDropdown, setOpenHeightDropdown] = useState<boolean>(false);
   const [openWeightDropdown, setOpenWeightDropdown] = useState<boolean>(false);
@@ -111,6 +100,8 @@ export default function UserInformation({
   };
   useBackButton(showSignoutModal);
 
+  const userInformationSchema = createUserInformationSchema(languages);
+
   const {
     control,
     handleSubmit,
@@ -119,14 +110,14 @@ export default function UserInformation({
     trigger,
     getValues,
     setValue,
-    watch,
     clearErrors,
   } = useForm<User>({
+    resolver: zodResolver(userInformationSchema),
     defaultValues: {
       given_name: '',
       family_name: '',
       gender: GENDER[0].value,
-      birthdate: moment(maxSelectableDob).format('DD/MM/YYYY'),
+      birthdate: moment(new Date()).format('DD/MM/YYYY'),
       height: '',
       weight: '',
       height_unit: 'cm',
@@ -143,8 +134,7 @@ export default function UserInformation({
         given_name: users?.given_name || '',
         family_name: users?.family_name || '',
         gender: users?.gender ?? GENDER[0].value,
-        birthdate:
-          users?.birthdate || moment(maxSelectableDob).format('DD/MM/YYYY'),
+        birthdate: users?.birthdate || moment(new Date()).format('DD/MM/YYYY'),
         height: users?.height || '',
         weight: users?.weight || '',
         height_unit: users?.height_unit || 'cm',
@@ -228,7 +218,7 @@ export default function UserInformation({
         given_name: '',
         family_name: '',
         gender: GENDER[0].value,
-        birthdate: moment(maxSelectableDob).format('DD/MM/YYYY'),
+        birthdate: moment(new Date()).format('DD/MM/YYYY'),
         height: '',
         weight: '',
         height_unit: 'cm',
@@ -277,59 +267,15 @@ export default function UserInformation({
     }
   };
 
-  const validateBirthdate = (
-    value: string,
-    options: {showModal?: boolean} = {},
-  ) => {
-    const {showModal = false} = options;
-    const selectedDate = moment(value, 'DD/MM/YYYY', true);
-    const youngestAllowed = moment().subtract(
-      BINAH_ALERT_LIMITS.MIN_AGE_YEARS,
-      'years',
-    );
-    const oldestAllowed = moment().subtract(
-      BINAH_ALERT_LIMITS.MAX_AGE_YEARS,
-      'years',
-    );
-
-    if (!selectedDate.isValid()) {
-      return false;
-    }
-
-    if (
-      selectedDate.isAfter(youngestAllowed) ||
-      selectedDate.isBefore(oldestAllowed)
-    ) {
-      if (showModal) {
-        showGenericModal();
-      }
-      return false;
-    }
-
-    return true;
-  };
-
   const handleDateValidation = async (data: User) => {
-    const isValidDob = validateBirthdate(data.birthdate, {showModal: true});
-    if (!isValidDob) {
-      return;
-    }
-    handleSaveAndContinue(data);
-  };
+    const thirteenYearsAge = moment().subtract(13, 'years').toDate();
+    const selectedDate = moment(data?.birthdate, 'DD/MM/YYYY', true);
 
-  const clampDobDate = (rawValue?: string) => {
-    const parsedMoment = moment(rawValue, 'DD/MM/YYYY', true);
-    if (!parsedMoment.isValid()) {
-      return maxSelectableDob;
+    if (selectedDate.isAfter(thirteenYearsAge)) {
+      return showGenericModal();
+    } else {
+      handleSaveAndContinue(data);
     }
-    const parsedDate = parsedMoment.toDate();
-    if (parsedDate > maxSelectableDob) {
-      return maxSelectableDob;
-    }
-    if (parsedDate < minSelectableDob) {
-      return minSelectableDob;
-    }
-    return parsedDate;
   };
 
   const handleSaveAndContinue = async (data: User) => {
@@ -339,8 +285,6 @@ export default function UserInformation({
       errorToast('Failed to Update User Information');
     }
   };
-  const heightUnit = watch('height_unit');
-  const weightUnit = watch('weight_unit');
 
   return (
     <ImageBackground source={Background as any}>
@@ -377,8 +321,7 @@ export default function UserInformation({
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
                       onChangeText={text => {
-                        const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
-                        onChange(sanitizedText);
+                        onChange(text);
                         if (errors.given_name) {
                           trigger('given_name');
                         }
@@ -390,17 +333,6 @@ export default function UserInformation({
                   </>
                 )}
                 name="given_name"
-                rules={{
-                  required: languages?.first_name_required,
-                  pattern: {
-                    value: /^[a-zA-Z ]+$/,
-                    message: languages?.letter_space_validation,
-                  },
-                  minLength: {
-                    value: 2,
-                    message: languages?.min_name_character,
-                  },
-                }}
               />
             </View>
             <View className="mt-4">
@@ -417,8 +349,7 @@ export default function UserInformation({
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
                       onChangeText={text => {
-                        const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
-                        onChange(sanitizedText);
+                        onChange(text);
                         if (errors.family_name) {
                           trigger('family_name');
                         }
@@ -430,17 +361,6 @@ export default function UserInformation({
                   </>
                 )}
                 name="family_name"
-                rules={{
-                  required: languages?.last_name_required,
-                  pattern: {
-                    value: /^[a-zA-Z ]+$/,
-                    message: languages?.letter_space_validation,
-                  },
-                  minLength: {
-                    value: 2,
-                    message: languages?.min_name_character,
-                  },
-                }}
               />
             </View>
             <View className="mt-4">
@@ -476,26 +396,24 @@ export default function UserInformation({
                     <DatePicker
                       modal
                       open={isDatePickerVisible}
-                      date={clampDobDate(value)}
+                      date={
+                        value
+                          ? moment(value, 'DD/MM/YYYY').toDate()
+                          : new Date()
+                      }
                       onConfirm={date => {
-                        const formattedDate = moment(date).format('DD/MM/YYYY');
-                        onChange(formattedDate);
-                        validateBirthdate(formattedDate);
+                        onChange(moment(date).format('DD/MM/YYYY'));
                         hideDatePicker();
                       }}
                       mode="date"
                       onCancel={hideDatePicker}
-                      maximumDate={maxSelectableDob}
-                      minimumDate={minSelectableDob}
+                      maximumDate={new Date()}
+                      minimumDate={new Date('1900-01-01')}
                     />
                     <ErrorText message={errors?.birthdate?.message} />
-                    <CustomText style={styles.dobNote}>
-                      {languages?.dob_age_limit_note}
-                    </CustomText>
                   </>
                 )}
                 name="birthdate"
-                rules={{required: true}}
               />
             </View>
             <View className="mt-4">
@@ -526,7 +444,6 @@ export default function UserInformation({
                     </>
                   )}
                   name="gender"
-                  rules={{required: true}}
                 />
               </View>
             </View>
@@ -563,38 +480,6 @@ export default function UserInformation({
                       />
                     )}
                     name="height"
-                    rules={{
-                      required: languages?.height_required,
-                      validate: value => {
-                        const minHeight =
-                          heightUnit === 'cm'
-                            ? BINAH_ALERT_LIMITS.MIN_HEIGHT_CM
-                            : HEIGHT_LIMITS_FEET.min;
-                        const maxHeight =
-                          heightUnit === 'cm'
-                            ? BINAH_ALERT_LIMITS.MAX_HEIGHT_CM
-                            : HEIGHT_LIMITS_FEET.max;
-                        const heightValue = parseFloat(value);
-
-                        if (isNaN(heightValue)) {
-                          return 'Please enter a valid height.';
-                        }
-
-                        if (heightValue < minHeight) {
-                          return heightUnit === 'cm'
-                            ? languages?.min_height_cm_error
-                            : languages?.min_height_ft_error;
-                        }
-
-                        if (heightValue > maxHeight) {
-                          return heightUnit === 'cm'
-                            ? languages?.max_height_cm_error
-                            : languages?.max_height_ft_error;
-                        }
-
-                        return true;
-                      },
-                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -620,7 +505,6 @@ export default function UserInformation({
                         />
                       )}
                       name="height_unit"
-                      rules={{required: true}}
                     />
                   </View>
                 </View>
@@ -654,39 +538,6 @@ export default function UserInformation({
                       />
                     )}
                     name="weight"
-                    rules={{
-                      required: 'Weight is required',
-                      validate: value => {
-                        const minWeight =
-                          weightUnit === 'kg'
-                            ? BINAH_ALERT_LIMITS.MIN_WEIGHT_KG
-                            : WEIGHT_LIMITS_LBS.min;
-                        const maxWeight =
-                          weightUnit === 'kg'
-                            ? BINAH_ALERT_LIMITS.MAX_WEIGHT_KG
-                            : WEIGHT_LIMITS_LBS.max;
-
-                        const weightValue = parseFloat(value);
-
-                        if (isNaN(weightValue)) {
-                          return 'Please enter a valid weight.';
-                        }
-
-                        if (weightValue < minWeight) {
-                          return weightUnit === 'kg'
-                            ? languages?.min_weight_kgs_error
-                            : languages?.min_weight_lbs_error;
-                        }
-
-                        if (weightValue > maxWeight) {
-                          return weightUnit === 'kg'
-                            ? languages?.max_weight_kgs_error
-                            : languages?.max_weight_lbs_error;
-                        }
-
-                        return true;
-                      },
-                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -712,7 +563,6 @@ export default function UserInformation({
                         />
                       )}
                       name="weight_unit"
-                      rules={{required: true}}
                     />
                   </View>
                 </View>
