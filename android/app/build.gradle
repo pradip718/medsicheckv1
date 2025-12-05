@@ -93,7 +93,7 @@ android {
         applicationId "mx.medsi.medsicheck"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 115
+        versionCode 116
         versionName "5.2.5"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
