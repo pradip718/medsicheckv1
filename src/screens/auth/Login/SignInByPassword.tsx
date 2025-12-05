@@ -79,13 +79,6 @@ const SignInByPassword = ({
             />
           )}
           name="email"
-          rules={{
-            required: languages?.email_empty,
-            pattern: {
-              value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-              message: languages?.email_validation_error_msg,
-            },
-          }}
         />
 
         <Controller
@@ -106,7 +99,6 @@ const SignInByPassword = ({
             />
           )}
           name="password"
-          rules={{required: languages?.password_empty}}
         />
 
         <View className="flex-row justify-between items-center mt-5 space-x-4">
