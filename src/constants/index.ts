@@ -29,6 +29,13 @@ export const PUBLIC_DEEPLINK_PATH = [
   'about-app',
 ];
 
+export const MEDSI_ALERT_LIMITS = {
+  MIN_HEIGHT_CM: 50,
+  MAX_HEIGHT_CM: 300,
+  MIN_WEIGHT_KG: 20,
+  MAX_WEIGHT_KG: 250,
+} as const;
+
 export const BINAH_ALERT_LIMITS = {
   MIN_HEIGHT_CM: 130,
   MAX_HEIGHT_CM: 230,
@@ -39,11 +46,11 @@ export const BINAH_ALERT_LIMITS = {
 } as const;
 
 export const HEIGHT_LIMITS_FEET = {
-  min: BINAH_ALERT_LIMITS.MIN_HEIGHT_CM / 30.48,
-  max: BINAH_ALERT_LIMITS.MAX_HEIGHT_CM / 30.48,
+  min: 1.5,
+  max: 9,
 };
 
 export const WEIGHT_LIMITS_LBS = {
-  min: BINAH_ALERT_LIMITS.MIN_WEIGHT_KG * 2.20462,
-  max: BINAH_ALERT_LIMITS.MAX_WEIGHT_KG * 2.20462,
+  min: 44,
+  max: 551,
 };

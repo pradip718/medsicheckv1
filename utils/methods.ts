@@ -16,6 +16,7 @@ import Share from 'react-native-share';
 import {isAndroid} from '.';
 import {updateLocale} from '../src/api/language';
 import {notifyApi} from '../src/api/user';
+import {BINAH_ALERT_LIMITS} from '../src/constants';
 import {
   DEVICE_LOCALE,
   REMEMBERED_USER_DEVICE,
@@ -903,24 +904,72 @@ export function convertFeetAndInchesToCm(
   height: number,
   height_unit: 'cm' | 'in' | 'feet',
 ): number | undefined {
-  if (height_unit === 'feet' || height_unit === 'in') {
-    const feet = Math.floor(height);
-    const inches = (height - feet) * 12;
-    const cm = feet * 30.48 + inches * 2.54;
-    return cm >= 130 && cm <= 230 ? cm : undefined;
+  // Validate input
+  if (height === null || height === undefined || isNaN(height) || height < 0) {
+    return undefined;
   }
-  return height >= 130 && height <= 230 ? height : undefined;
+
+  if (height_unit === 'feet') {
+    const heightStr = height.toString();
+    const parts = heightStr.split('.');
+
+    // Validate feet part exists and is valid
+    if (!parts[0] || parts[0].trim() === '') {
+      return undefined;
+    }
+
+    const feet = parseInt(parts[0], 10);
+    if (isNaN(feet) || feet < 0) {
+      return undefined;
+    }
+
+    // Handle inches part (optional)
+    let inches = 0;
+    if (parts[1]) {
+      const parsedInches = parseInt(parts[1], 10);
+      if (isNaN(parsedInches) || parsedInches < 0 || parsedInches > 11) {
+        return undefined;
+      }
+      inches = parsedInches;
+    }
+
+    const cm = feet * 30.48 + inches * 2.54;
+    return cm;
+  }
+
+  if (height_unit === 'in') {
+    const cm = height * 2.54;
+    return isNaN(cm) ? undefined : cm;
+  }
+
+  if (height_unit === 'cm') {
+    return height;
+  }
+
+  // Unknown unit
+  return undefined;
 }
 
 export function convertWeightToKg(
   weight: number,
   weight_unit: 'kg' | 'lbs',
 ): number | undefined {
+  // Validate input
+  if (weight === null || weight === undefined || isNaN(weight) || weight < 0) {
+    return undefined;
+  }
+
   if (weight_unit === 'lbs') {
     const kg = weight * 0.453592;
-    return kg >= 40 && kg <= 200 ? kg : undefined;
+    return isNaN(kg) ? undefined : kg;
   }
-  return weight >= 40 && weight <= 200 ? weight : undefined;
+
+  if (weight_unit === 'kg') {
+    return weight;
+  }
+
+  // Unknown unit
+  return undefined;
 }
 
 export function getAgeFromBirthdate(
@@ -928,8 +977,68 @@ export function getAgeFromBirthdate(
   format: string = 'DD/MM/YYYY',
 ): number | undefined {
   const age = Number(moment().diff(moment(birthdate, format), 'years'));
-  return age >= 18 && age <= 110 ? age : undefined;
+  return age;
 }
+
+/**
+ * Clamps a numeric value between a minimum and maximum value.
+ * @param value - The value to clamp
+ * @param min - Minimum allowed value
+ * @param max - Maximum allowed value
+ * @returns The clamped value, or undefined if value is undefined
+ */
+export const clamp = (
+  value: number | undefined,
+  min: number,
+  max: number,
+): number | undefined => {
+  if (value === undefined) {
+    return undefined;
+  }
+  return Math.max(min, Math.min(max, value));
+};
+
+/**
+ * Builds subject demographic data for Binah SDK session with proper value clamping.
+ * Ensures age, height, and weight are within Binah SDK supported limits.
+ * @param users - User object containing demographic information
+ * @returns Demographic data object with clamped values, or undefined if users is undefined
+ */
+export const buildSubjectDemographic = (users: User | undefined) => {
+  if (!users) {
+    return undefined;
+  }
+
+  const age = users.birthdate
+    ? getAgeFromBirthdate(users.birthdate)
+    : undefined;
+  const height = users.height
+    ? convertFeetAndInchesToCm(Number(users.height), users.height_unit)
+    : undefined;
+  const weight = users.weight
+    ? convertWeightToKg(Number(users.weight), users.weight_unit)
+    : undefined;
+
+  return {
+    age: clamp(
+      age,
+      BINAH_ALERT_LIMITS.MIN_AGE_YEARS,
+      BINAH_ALERT_LIMITS.MAX_AGE_YEARS,
+    ),
+    height: clamp(
+      height,
+      BINAH_ALERT_LIMITS.MIN_HEIGHT_CM,
+      BINAH_ALERT_LIMITS.MAX_HEIGHT_CM,
+    ),
+    weight: clamp(
+      weight,
+      BINAH_ALERT_LIMITS.MIN_WEIGHT_KG,
+      BINAH_ALERT_LIMITS.MAX_WEIGHT_KG,
+    ),
+    sex: getGenderForDemoGraphic(users.gender),
+  };
+};
+
 export const formatTimes = (
   utcStart: string,
   utcEnd: string | undefined | null = null,

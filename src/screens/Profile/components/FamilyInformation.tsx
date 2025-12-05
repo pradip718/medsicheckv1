@@ -1,3 +1,4 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import CheckBox from '@react-native-community/checkbox';
 import {
   NavigationProp,
@@ -41,16 +42,12 @@ import Icon from '../../../components/Icon';
 import Navbar from '../../../components/Navbar';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
-import {
-  BINAH_ALERT_LIMITS,
-  HEIGHT_LIMITS_FEET,
-  WEIGHT_LIMITS_LBS,
-} from '../../../constants';
 import {SEMIBOLD} from '../../../constants/Fonts';
 import useGetFamilyMembers from '../../../hooks/api/useGetFamilyMembers';
 import useBackButton from '../../../hooks/useBackButton';
 import {color} from '../../../theme';
 import customColor from '../../../theme/customColor';
+import {createFamilyInformationSchema} from '../../../validation';
 import {GENDER, HEIGHT, RELATIONSHIPS, WEIGHT} from '../data';
 import FamilyPhoneInput from './FamilyPhoneInput';
 
@@ -84,14 +81,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const maxSelectableDob = moment()
-    .subtract(BINAH_ALERT_LIMITS.MIN_AGE_YEARS, 'years')
-    .toDate();
-
-  const minSelectableDob = moment()
-    .subtract(BINAH_ALERT_LIMITS.MAX_AGE_YEARS, 'years')
-    .toDate();
-
   const showSignoutModal = () => {
     navigation.goBack();
     return true;
@@ -111,6 +100,8 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
     },
   });
 
+  const familyInformationSchema = createFamilyInformationSchema(languages);
+
   const {
     control,
     handleSubmit,
@@ -120,16 +111,16 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
     setValue,
     setError,
     trigger,
-    watch,
     clearErrors,
   } = useForm<Family>({
+    resolver: zodResolver(familyInformationSchema),
     defaultValues: {
       given_name: '',
       family_name: '',
       gender: GENDER[0].value,
       email: '',
       phone_number: '',
-      birthdate: moment(maxSelectableDob).format('DD/MM/YYYY'),
+      birthdate: moment(new Date()).format('DD/MM/YYYY'),
       height: '',
       weight: '',
       height_unit: 'cm',
@@ -160,7 +151,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
           relation: details?.email,
           phone_number: details?.phone_number,
           birthdate:
-            details?.birthdate || moment(maxSelectableDob).format('DD/MM/YYYY'),
+            details?.birthdate || moment(new Date()).format('DD/MM/YYYY'),
           height: details?.height,
           weight: details?.weight,
           height_unit: details?.height_unit,
@@ -263,76 +254,16 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
     ).find(key => key === value);
   };
 
-  const validateBirthdate = (
-    value: string,
-    options: {showModal?: boolean} = {},
-  ) => {
-    const {showModal = false} = options;
-    const selectedDate = moment(value, 'DD/MM/YYYY', true);
-    const youngestAllowed = moment().subtract(
-      BINAH_ALERT_LIMITS.MIN_AGE_YEARS,
-      'years',
-    );
-    const oldestAllowed = moment().subtract(
-      BINAH_ALERT_LIMITS.MAX_AGE_YEARS,
-      'years',
-    );
-
-    if (!selectedDate.isValid()) {
-      setError('birthdate', {
-        type: 'validate',
-        message:
-          languages?.dob_validation_subheader ||
-          'Binah SDK currently supports ages between 18 and 110 years.',
-      });
-      return false;
-    }
-
-    if (
-      selectedDate.isAfter(youngestAllowed) ||
-      selectedDate.isBefore(oldestAllowed)
-    ) {
-      setError('birthdate', {
-        type: 'validate',
-        message:
-          languages?.dob_validation_subheader ||
-          'Binah SDK currently supports ages between 18 and 110 years.',
-      });
-      if (showModal) {
-        showGenericModal();
-      }
-      return false;
-    }
-
-    clearErrors('birthdate');
-    return true;
-  };
-
   const handleDateValidation = async (data: Family) => {
-    const isValidDob = validateBirthdate(data.birthdate, {showModal: true});
-    if (!isValidDob) {
-      return;
-    }
-    handleSaveAndContinue(data);
-  };
+    const thirteenYearsAge = moment().subtract(13, 'years').toDate();
+    const selectedDate = moment(data?.birthdate, 'DD/MM/YYYY', true);
 
-  const clampDobDate = (rawValue?: string) => {
-    const parsedMoment = moment(rawValue, 'DD/MM/YYYY', true);
-    if (!parsedMoment.isValid()) {
-      return maxSelectableDob;
+    if (selectedDate.isAfter(thirteenYearsAge)) {
+      return showGenericModal();
+    } else {
+      handleSaveAndContinue(data);
     }
-    const parsedDate = parsedMoment.toDate();
-    if (parsedDate > maxSelectableDob) {
-      return maxSelectableDob;
-    }
-    if (parsedDate < minSelectableDob) {
-      return minSelectableDob;
-    }
-    return parsedDate;
   };
-
-  const heightUnit = watch('height_unit');
-  const weightUnit = watch('weight_unit');
 
   const handleSaveAndContinue = async (data: Family) => {
     try {
@@ -410,17 +341,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="given_name"
-                rules={{
-                  required: languages?.first_name_required,
-                  pattern: {
-                    value: /^[a-zA-Z ]+$/,
-                    message: languages?.letter_space_validation,
-                  },
-                  minLength: {
-                    value: 2,
-                    message: languages?.min_name_character,
-                  },
-                }}
               />
             </View>
             <View className="mt-4">
@@ -450,13 +370,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="family_name"
-                rules={{
-                  required: languages?.last_name_required,
-                  pattern: {
-                    value: /^[a-zA-Z ]+$/,
-                    message: languages?.letter_space_validation,
-                  },
-                }}
               />
             </View>
 
@@ -512,13 +425,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="email"
-                rules={{
-                  // required: 'Email is Required',
-                  pattern: {
-                    value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                    message: languages?.email_validation_error_msg,
-                  },
-                }}
               />
             </View>
 
@@ -592,26 +498,24 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       title={languages?.select_date}
                       locale={isSpanishLocale() ? 'es' : 'en'}
                       open={isDatePickerVisible}
-                      date={clampDobDate(value)}
+                      date={
+                        value
+                          ? moment(value, 'DD/MM/YYYY').toDate()
+                          : new Date()
+                      }
                       onConfirm={date => {
-                        const formattedDate = moment(date).format('DD/MM/YYYY');
-                        onChange(formattedDate);
-                        validateBirthdate(formattedDate);
+                        onChange(moment(date).format('DD/MM/YYYY'));
                         hideDatePicker();
                       }}
                       mode="date"
                       onCancel={hideDatePicker}
-                      maximumDate={maxSelectableDob}
-                      minimumDate={minSelectableDob}
+                      maximumDate={new Date()}
+                      minimumDate={new Date('1900-01-01')}
                     />
                     <ErrorText message={errors?.birthdate?.message} />
-                    <CustomText style={styles.dobNote}>
-                      {languages?.dob_age_limit_note}
-                    </CustomText>
                   </>
                 )}
                 name="birthdate"
-                rules={{required: true}}
               />
             </View>
             <View className="mt-4">
@@ -642,7 +546,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                     </>
                   )}
                   name="gender"
-                  rules={{required: true}}
                 />
               </View>
             </View>
@@ -753,42 +656,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       />
                     )}
                     name="height"
-                    rules={{
-                      required: languages?.height_required,
-                      validate: value => {
-                        const unit = getValues().height_unit;
-                        const minHeight =
-                          unit === 'cm'
-                            ? BINAH_ALERT_LIMITS.MIN_HEIGHT_CM
-                            : HEIGHT_LIMITS_FEET.min;
-                        const maxHeight =
-                          unit === 'cm'
-                            ? BINAH_ALERT_LIMITS.MAX_HEIGHT_CM
-                            : HEIGHT_LIMITS_FEET.max;
-                        const heightValue = parseFloat(value);
-
-                        if (isNaN(heightValue)) {
-                          return (
-                            (languages as any)?.valid_height_error ||
-                            'Please enter a valid height.'
-                          );
-                        }
-
-                        if (heightValue < minHeight) {
-                          return unit === 'cm'
-                            ? languages?.min_height_cm_error
-                            : languages?.min_height_ft_error;
-                        }
-
-                        if (heightValue > maxHeight) {
-                          return unit === 'cm'
-                            ? languages?.max_height_cm_error
-                            : languages?.max_height_ft_error;
-                        }
-
-                        return true;
-                      },
-                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -814,7 +681,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                         />
                       )}
                       name="height_unit"
-                      rules={{required: true}}
                     />
                   </View>
                 </View>
@@ -848,43 +714,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       />
                     )}
                     name="weight"
-                    rules={{
-                      required: languages?.weight_required,
-                      validate: value => {
-                        const unit = getValues().weight_unit;
-                        const minWeight =
-                          unit === 'kg'
-                            ? BINAH_ALERT_LIMITS.MIN_WEIGHT_KG
-                            : WEIGHT_LIMITS_LBS.min;
-                        const maxWeight =
-                          unit === 'kg'
-                            ? BINAH_ALERT_LIMITS.MAX_WEIGHT_KG
-                            : WEIGHT_LIMITS_LBS.max;
-
-                        const weightValue = parseFloat(value);
-
-                        if (isNaN(weightValue)) {
-                          return (
-                            (languages as any)?.valid_weight_error ||
-                            'Please enter a valid weight.'
-                          );
-                        }
-
-                        if (weightValue < minWeight) {
-                          return unit === 'kg'
-                            ? languages?.min_weight_kgs_error
-                            : languages?.min_weight_lbs_error;
-                        }
-
-                        if (weightValue > maxWeight) {
-                          return unit === 'kg'
-                            ? languages?.max_weight_kgs_error
-                            : languages?.max_weight_lbs_error;
-                        }
-
-                        return true;
-                      },
-                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -910,7 +739,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                         />
                       )}
                       name="weight_unit"
-                      rules={{required: true}}
                     />
                   </View>
                 </View>
