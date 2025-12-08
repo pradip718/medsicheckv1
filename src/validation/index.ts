@@ -2,7 +2,11 @@
 export type {ValidationLanguages} from './types';
 
 // Export auth schemas
-export {createLoginSchema, createRegisterSchema} from './authSchemas';
+export {
+  createLoginSchema,
+  createOTPLoginSchema,
+  createRegisterSchema,
+} from './authSchemas';
 
 // Export user schemas
 export {createUserInformationSchema} from './userSchemas';
