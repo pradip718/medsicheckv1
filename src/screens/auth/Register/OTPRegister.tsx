@@ -24,7 +24,7 @@ import useLanguageStore from '../../../../store/languageStore';
 import {SignUpPayload} from '../../../../types/api_payload';
 import {SignUpSuccessResponse} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
-import {encryptText, isValidPhoneNumber} from '../../../../utils/methods';
+import {encryptText} from '../../../../utils/methods';
 import {errorToast} from '../../../../utils/toast';
 import {login, signupOTP} from '../../../api/auth';
 import Icon from '../../../components/Icon';
@@ -52,8 +52,6 @@ const OTPRegister = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-  const [phone, setPhone] = useState(params?.phoneNumber || '');
-  const [phoneError, setPhoneError] = useState('');
 
   const queryClient = useQueryClient();
 
@@ -76,10 +74,10 @@ const OTPRegister = () => {
     mode: 'onBlur',
     reValidateMode: 'onChange',
     defaultValues: {
-      email: '',
+      email: params?.email || '',
       password: '',
       confirmPassword: '',
-      formattedPhonenumber: '',
+      formattedPhonenumber: params?.phoneNumber || '',
     },
   });
 
@@ -91,11 +89,8 @@ const OTPRegister = () => {
         confirmPassword: '',
         formattedPhonenumber: params?.phoneNumber || '',
       });
-      if (params?.phoneNumber) {
-        setPhone(params.phoneNumber);
-      }
     }
-  }, [params, reset]);
+  }, [params, reset, setValue]);
 
   const {mutateAsync: loginAndNavigate, isPending: isLogging} = useMutation({
     mutationKey: ['fetch-profile-navigate'],
@@ -122,13 +117,14 @@ const OTPRegister = () => {
     },
     onSuccess: res => {
       const email = getValues('email');
+      const phoneNumber = getValues('formattedPhonenumber');
       const password = getValues('confirmPassword');
       if (res?.email_verification_flag && res?.phone_verification_flag) {
         loginAndNavigate();
       } else {
         navigation.navigate('ContactVerification', {
           email,
-          phoneNumber: phone,
+          phoneNumber,
           password: password,
           user_id: res?.user_id ?? '',
           loginParams: {
@@ -187,7 +183,7 @@ const OTPRegister = () => {
     await signupMutation({
       username: email,
       password: confirmPassword,
-      phone_number: formattedPhonenumber || phone,
+      phone_number: formattedPhonenumber,
       ...(params?.phoneNumber && {session: params.session || ''}),
     });
   };
@@ -235,67 +231,24 @@ const OTPRegister = () => {
         </View>
 
         <View className="flex-row items-center mt-4 space-x-4">
-          {/* <Controller
-            name="formattedPhonenumber"
-            control={control}
-            rules={{
-              required: languages?.required_phone_number,
-              validate: value => {
-                const isValidPhone = isValidPhoneNumber(value);
-                if (!isValidPhone) {
-                  return languages?.phone_number_must_be_valid;
-                }
-              },
-            }}
-            render={({field: {onChange, value, onBlur}}) => (
-              <>
-                <CustomPhoneInput<RegisterParams>
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                />
-                <CustomText className="text-base text-red-500 font-isidoraMedium">
-                  {errors?.formattedPhonenumber?.message}
-                </CustomText>
-              </>
-            )}
-          /> */}
           <View className="flex-grow">
-            <CustomPhoneInput
-              onChange={value => {
-                setPhone(value);
-                setValue('formattedPhonenumber', value, {shouldValidate: true});
-
-                let error = '';
-                if (value) {
-                  const isValidPhone = isValidPhoneNumber(value);
-                  if (!isValidPhone) {
-                    error = languages?.phone_number_must_be_valid;
-                  }
-                } else {
-                  error = languages?.required_phone_number;
-                }
-                setPhoneError(error);
-              }}
-              value={phone}
-              disabled={!!params?.phoneNumber}
-              onBlur={() => {
-                setValue('formattedPhonenumber', phone, {shouldValidate: true});
-                let error = '';
-                if (phone) {
-                  const isValidPhone = isValidPhoneNumber(phone);
-                  if (!isValidPhone) {
-                    error = languages?.phone_number_must_be_valid;
-                  }
-                } else {
-                  error = languages?.required_phone_number;
-                }
-                setPhoneError(error);
-              }}
+            <Controller
+              name="formattedPhonenumber"
+              control={control}
+              render={({field: {onChange, value, onBlur}}) => (
+                <>
+                  <CustomPhoneInput<RegisterParams>
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    disabled={!!params?.phoneNumber}
+                  />
+                  <CustomText className="text-base text-red-500 font-isidoraMedium">
+                    {errors?.formattedPhonenumber?.message}
+                  </CustomText>
+                </>
+              )}
             />
-            <CustomText className="text-base text-red-500 font-isidoraMedium">
-              {phoneError}
-            </CustomText>
           </View>
 
           {params?.phoneNumber && (

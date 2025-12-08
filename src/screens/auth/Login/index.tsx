@@ -393,12 +393,6 @@ const Login = () => {
                         <SignInByOTP
                           handleSwitchLoginType={handleSwitchLoginType}
                           proceedLoginStep={proceedLoginStep}
-                          formProps={{
-                            handleSubmit,
-                            control,
-                            formState,
-                            getValues,
-                          }}
                         />
                       </View>
                     )}
