@@ -1,21 +1,38 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import React, {useState} from 'react';
+import {useForm} from 'react-hook-form';
 import {ImageBackground, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {AuthBackground} from '../../../../assets';
+import useLanguageStore from '../../../../store/languageStore';
 import SafeAreaScrollView from '../../../components/SafeAreaScrollView';
+import {createForgotPasswordSchema} from '../../../validation';
 import NewPassword from './NewPassword';
 import UserNameField from './UserNameField';
 
+type ForgotPasswordParam = {
+  email: string;
+};
+
 const ForgotPassword = () => {
-  const [email, setEmail] = useState('');
+  const {languages} = useLanguageStore();
   const [didSendCode, setDidSendCode] = useState(false);
+
+  const forgotPasswordSchema = createForgotPasswordSchema(languages);
+
+  const {handleSubmit, control, getValues, formState} =
+    useForm<ForgotPasswordParam>({
+      resolver: zodResolver(forgotPasswordSchema),
+      mode: 'onBlur',
+      reValidateMode: 'onChange',
+      shouldFocusError: true,
+      defaultValues: {
+        email: '',
+      },
+    });
 
   const handleSendCode = (haveSendCode: boolean) => {
     setDidSendCode(haveSendCode);
-  };
-
-  const onEmailChange = (eml: string) => {
-    setEmail(eml);
   };
 
   return (
@@ -27,12 +44,16 @@ const ForgotPassword = () => {
           className="h-full"
           contentContainerStyle={styles.contentContainer}>
           {didSendCode ? (
-            <NewPassword email={email} />
+            <NewPassword email={getValues('email')} />
           ) : (
             <UserNameField
               handleSendCode={handleSendCode}
-              onEmailChange={onEmailChange}
-              email={email}
+              formProps={{
+                handleSubmit,
+                control,
+                formState,
+                getValues,
+              }}
             />
           )}
         </SafeAreaScrollView>

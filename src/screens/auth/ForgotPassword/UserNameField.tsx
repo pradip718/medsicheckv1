@@ -2,6 +2,13 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useMutation} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
 import React from 'react';
+import {
+  Control,
+  Controller,
+  FormState,
+  UseFormGetValues,
+  UseFormHandleSubmit,
+} from 'react-hook-form';
 import {StyleSheet, View} from 'react-native';
 import useLanguageStore from '../../../../store/languageStore';
 import {MainStackParamList} from '../../../../types/navigation';
@@ -11,28 +18,44 @@ import CustomTextInput from '../../../components/CustomTextInput';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
 
-type UserNameFieldProps = {
-  handleSendCode: (didSendCode: boolean) => void;
-  onEmailChange: (email: string) => void;
+type ForgotPasswordParam = {
   email: string;
 };
 
-const UserNameField = ({
-  handleSendCode,
-  email,
-  onEmailChange,
-}: UserNameFieldProps) => {
+type UserNameFieldProps = {
+  handleSendCode: (didSendCode: boolean) => void;
+  formProps: {
+    handleSubmit: UseFormHandleSubmit<ForgotPasswordParam>;
+    control: Control<ForgotPasswordParam>;
+    formState: FormState<ForgotPasswordParam>;
+    getValues: UseFormGetValues<ForgotPasswordParam>;
+  };
+};
+
+const UserNameField = ({handleSendCode, formProps}: UserNameFieldProps) => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
   const {languages} = useLanguageStore();
+  const {
+    handleSubmit,
+    control,
+    formState: {errors, isDirty, isValid},
+    getValues,
+  } = formProps;
 
   const {mutateAsync: sendCodeForUsers, isPending: isSendingCode} = useMutation(
     {
-      mutationFn: async () => {
-        const output = await forgotPassword({username: email});
-        return output;
-      },
+      mutationFn: forgotPassword,
       onError: error => {
+        if (error instanceof AxiosError) {
+          return errorToast(
+            error.response?.data?.error || languages?.generic_error_message,
+          );
+        }
         errorToast(error.message || languages?.generic_error_message);
+      },
+      onSuccess: () => {
+        successToast(languages?.confirmation_code_sent_message);
+        handleSendCode(true);
       },
     },
   );
@@ -42,34 +65,34 @@ const UserNameField = ({
   };
 
   const onSendCode = async () => {
-    try {
-      await sendCodeForUsers();
-      successToast(languages?.confirmation_code_sent_message);
-      handleSendCode(true);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        errorToast(error.message || languages?.generic_error_message);
-      }
-    }
+    const email = getValues('email');
+    await sendCodeForUsers({username: email});
   };
 
   return (
     <View className="h-full flex-1 justify-center items-center px-8">
-      <CustomTextInput
-        inputMode="email"
-        placeholder={languages?.email}
-        placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
-        leftIconName="mail"
-        value={email}
-        autoCapitalize="none"
-        onChangeText={onEmailChange}
-        onBlur={() => {}}
+      <Controller
+        control={control}
+        render={({field: {onChange, value, onBlur}}) => (
+          <CustomTextInput
+            inputMode="email"
+            placeholder={languages?.email}
+            placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
+            leftIconName="mail"
+            value={value}
+            autoCapitalize="none"
+            onChangeText={onChange}
+            onBlur={onBlur}
+            error={errors.email?.message}
+          />
+        )}
+        name="email"
       />
       <RoundedButton
         resetStyle
         style={styles.resendCodeButton}
-        onPress={onSendCode}
-        disabled={!email || isSendingCode}
+        onPress={handleSubmit(onSendCode)}
+        disabled={!isDirty || !isValid || isSendingCode}
         loading={isSendingCode}>
         <CustomText className="text-lg text-white font-isidoraSemiBold">
           {languages?.send_code}
