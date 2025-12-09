@@ -82,6 +82,18 @@ export const createOTPLoginSchema = (languages?: ValidationLanguages) =>
     });
 
 /**
+ * Forgot password form validation schema
+ * Validates email field for password reset
+ */
+export const createForgotPasswordSchema = (languages?: ValidationLanguages) =>
+  z.object({
+    email: z
+      .string()
+      .min(1, languages?.email_empty || 'Email is required')
+      .email(languages?.email_validation_error_msg || 'Invalid email format'),
+  });
+
+/**
  * Registration form validation schema
  * Validates email, password, confirm password, and phone number for user registration
  * Includes password strength requirements and password matching validation
