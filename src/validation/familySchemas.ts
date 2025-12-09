@@ -33,13 +33,7 @@ export const createFamilyInformationSchema = (
           message:
             languages?.email_validation_error_msg || 'Invalid email format',
         }),
-      phone_number: z
-        .string()
-        .optional()
-        .refine(val => !val || /^\+(?:[0-9] ?){6,14}[0-9]$/.test(val), {
-          message:
-            languages?.phone_number_must_be_valid || 'Invalid phone number',
-        }),
+      phone_number: z.string().optional(),
       birthdate: z.string().min(1, 'Birthdate is required'),
       height: z
         .string()
