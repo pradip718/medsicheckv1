@@ -101,126 +101,131 @@ const NewPassword = ({email}: NewPasswordProps) => {
   });
 
   return (
-    <View className="h-full flex-1 justify-center items-center px-8">
-      <CustomTextInput
-        inputMode="number"
-        placeholder={languages?.code}
-        placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
-        value={code}
-        autoCapitalize="none"
-        onChangeText={(codeTxt: string) => {
-          setCode(codeTxt);
-        }}
-        onBlur={() => {}}
-      />
-      <Controller
-        control={control}
-        render={({field: {onChange, value, onBlur}}) => (
-          <>
-            <TextInput
-              label={
-                <CustomText
-                  style={styles.inputLabel}
-                  className="text-base font-isidoraSemiBold">
-                  {languages?.new_password_txt}
-                </CustomText>
-              }
-              value={value}
-              className="bg-transparent mt-4 w-full"
-              textColor="white"
-              activeUnderlineColor="rgba(255, 255, 255, 0.45)"
-              secureTextEntry={!showPassword}
-              // right={<Icon name="person" size={20} color={customColor.black} />}
-              right={
-                <TextInput.Icon
-                  icon={!showPassword ? 'eye' : 'eye-off'}
-                  color={customColor.black}
-                  onPress={() => setShowPassword(prev => !prev)}
-                />
-              }
-              onChangeText={onChange}
-              onBlur={onBlur}
-            />
-            <CustomText className="text-base font-isidoraMedium text-red-500">
-              {errors?.password?.message}
-            </CustomText>
-          </>
-        )}
-        name="password"
-        rules={{
-          required: languages?.password_is_required,
-          pattern: {
-            value:
-              /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-            message:
-              languages?.password_requirements_message_with_length_and_requirements,
-          },
-        }}
-      />
+    <View style={styles.container}>
+      <View style={styles.formContent}>
+        <CustomTextInput
+          style={styles.input}
+          inputMode="number"
+          placeholder={languages?.code}
+          placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
+          leftIconName="lock"
+          value={code}
+          keyboardType="numeric"
+          maxLength={6}
+          autoCapitalize="none"
+          onChangeText={(codeTxt: string) => {
+            setCode(codeTxt);
+          }}
+          onBlur={() => {}}
+        />
+        <Controller
+          control={control}
+          render={({field: {onChange, value, onBlur}}) => (
+            <>
+              <TextInput
+                label={
+                  <CustomText
+                    style={styles.inputLabel}
+                    className="text-base font-isidoraSemiBold">
+                    {languages?.new_password_txt}
+                  </CustomText>
+                }
+                value={value}
+                style={styles.textInput}
+                textColor="white"
+                activeUnderlineColor="rgba(255, 255, 255, 0.45)"
+                secureTextEntry={!showPassword}
+                right={
+                  <TextInput.Icon
+                    icon={!showPassword ? 'eye' : 'eye-off'}
+                    color={customColor.black}
+                    onPress={() => setShowPassword(prev => !prev)}
+                  />
+                }
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+              <CustomText style={styles.errorText}>
+                {errors?.password?.message}
+              </CustomText>
+            </>
+          )}
+          name="password"
+          rules={{
+            required: languages?.password_is_required,
+            pattern: {
+              value:
+                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+              message:
+                languages?.password_requirements_message_with_length_and_requirements,
+            },
+          }}
+        />
 
-      <Controller
-        control={control}
-        render={({field: {onChange, value, onBlur}}) => (
-          <>
-            <TextInput
-              label={
-                <CustomText
-                  style={styles.inputLabel}
-                  className="text-base font-isidoraSemiBold">
-                  {languages?.confirm_password}
-                </CustomText>
-              }
-              value={value}
-              className="bg-transparent mt-4 w-full"
-              textColor="white"
-              activeUnderlineColor="rgba(255, 255, 255, 0.45)"
-              placeholderTextColor="rgba(255, 255, 255, 0.45)"
-              secureTextEntry={!showConfirmPassword}
-              right={
-                <TextInput.Icon
-                  icon={!showConfirmPassword ? 'eye' : 'eye-off'}
-                  color={customColor.black}
-                  onPress={() => setShowConfirmPassword(prev => !prev)}
-                />
-              }
-              onChangeText={onChange}
-              onBlur={onBlur}
-            />
-            <CustomText className="text-base font-isidoraMedium text-red-500">
-              {errors?.confirmPassword?.message}
-            </CustomText>
-          </>
-        )}
-        name="confirmPassword"
-        rules={{
-          required: languages?.confirm_password_is_required,
-          pattern: {
-            value:
-              /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-            message:
-              languages?.password_requirements_message_with_length_and_requirements,
-          },
-        }}
-      />
+        <Controller
+          control={control}
+          render={({field: {onChange, value, onBlur}}) => (
+            <>
+              <TextInput
+                label={
+                  <CustomText
+                    style={styles.inputLabel}
+                    className="text-base font-isidoraSemiBold">
+                    {languages?.confirm_password}
+                  </CustomText>
+                }
+                value={value}
+                style={styles.textInput}
+                textColor="white"
+                activeUnderlineColor="rgba(255, 255, 255, 0.45)"
+                placeholderTextColor="rgba(255, 255, 255, 0.45)"
+                secureTextEntry={!showConfirmPassword}
+                right={
+                  <TextInput.Icon
+                    icon={!showConfirmPassword ? 'eye' : 'eye-off'}
+                    color={customColor.black}
+                    onPress={() => setShowConfirmPassword(prev => !prev)}
+                  />
+                }
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+              <CustomText style={styles.errorText}>
+                {errors?.confirmPassword?.message}
+              </CustomText>
+            </>
+          )}
+          name="confirmPassword"
+          rules={{
+            required: languages?.confirm_password_is_required,
+            pattern: {
+              value:
+                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+              message:
+                languages?.password_requirements_message_with_length_and_requirements,
+            },
+          }}
+        />
 
-      <RoundedButton
-        resetStyle
-        style={styles.resendCodeButton}
-        onPress={handleSubmit(changePassword)}
-        disabled={isResettingPassword || !isDirty || !isValid || !code}
-        loading={isResettingPassword}>
-        <CustomText className="text-lg text-white font-isidoraSemiBold">
-          {languages?.submit}
+        <RoundedButton
+          resetStyle
+          style={styles.submitButton}
+          onPress={handleSubmit(changePassword)}
+          disabled={isResettingPassword || !isDirty || !isValid || !code}
+          loading={isResettingPassword}>
+          <CustomText className="text-lg text-white font-isidoraSemiBold">
+            {languages?.submit}
+          </CustomText>
+        </RoundedButton>
+      </View>
+      <View style={styles.footer}>
+        <CustomText style={styles.footerText}>
+          {languages?.back_to}{' '}
+          <CustomText style={styles.footerLink} onPress={navigateToLogin}>
+            {languages?.login}
+          </CustomText>
         </CustomText>
-      </RoundedButton>
-      <CustomText className="text-base font-isidoraMedium text-black mt-10">
-        {languages?.back_to}{' '}
-        <CustomText
-          className="font-isidoraSemiBold text-white underline"
-          onPress={navigateToLogin}>
-          {languages?.login}
-        </CustomText>
-      </CustomText>
+      </View>
     </View>
   );
 };
@@ -228,13 +233,49 @@ const NewPassword = ({email}: NewPasswordProps) => {
 export default NewPassword;
 
 const styles = StyleSheet.create({
-  resendCodeButton: {
-    width: '50%',
-    backgroundColor: '#222B45',
-    marginTop: 70,
-    paddingVertical: 8,
+  container: {
+    minHeight: 400,
+  },
+  formContent: {
+    paddingHorizontal: 24,
+  },
+  input: {
+    height: 36,
+    marginBottom: 20,
+  },
+  textInput: {
+    marginTop: 20,
+    backgroundColor: 'transparent',
   },
   inputLabel: {
     color: 'rgba(255, 255, 255, 0.45)',
+  },
+  errorText: {
+    fontSize: 14,
+    color: '#ff4444',
+    fontFamily: 'IsidoraSans-Medium',
+    marginTop: 4,
+  },
+  submitButton: {
+    width: '50%',
+    backgroundColor: '#222B45',
+    marginTop: 28,
+    paddingVertical: 8,
+    alignSelf: 'center',
+  },
+  footer: {
+    alignItems: 'center',
+    paddingBottom: 16,
+    marginTop: 24,
+  },
+  footerText: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.85)',
+    fontFamily: 'IsidoraSans-Regular',
+  },
+  footerLink: {
+    color: 'rgba(255,255,255,1)',
+    fontFamily: 'IsidoraSans-SemiBold',
+    textDecorationLine: 'underline',
   },
 });
