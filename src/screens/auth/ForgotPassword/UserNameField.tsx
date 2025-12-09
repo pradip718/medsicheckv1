@@ -70,42 +70,45 @@ const UserNameField = ({handleSendCode, formProps}: UserNameFieldProps) => {
   };
 
   return (
-    <View className="h-full flex-1 justify-center items-center px-8">
-      <Controller
-        control={control}
-        render={({field: {onChange, value, onBlur}}) => (
-          <CustomTextInput
-            inputMode="email"
-            placeholder={languages?.email}
-            placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
-            leftIconName="mail"
-            value={value}
-            autoCapitalize="none"
-            onChangeText={onChange}
-            onBlur={onBlur}
-            error={errors.email?.message}
-          />
-        )}
-        name="email"
-      />
-      <RoundedButton
-        resetStyle
-        style={styles.resendCodeButton}
-        onPress={handleSubmit(onSendCode)}
-        disabled={!isDirty || !isValid || isSendingCode}
-        loading={isSendingCode}>
-        <CustomText className="text-lg text-white font-isidoraSemiBold">
-          {languages?.send_code}
+    <View style={styles.container}>
+      <View style={styles.formContent}>
+        <Controller
+          control={control}
+          render={({field: {onChange, value, onBlur}}) => (
+            <CustomTextInput
+              style={styles.input}
+              inputMode="email"
+              placeholder={languages?.email}
+              placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
+              leftIconName="mail"
+              value={value}
+              autoCapitalize="none"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              error={errors.email?.message}
+            />
+          )}
+          name="email"
+        />
+        <RoundedButton
+          resetStyle
+          style={styles.sendCodeButton}
+          onPress={handleSubmit(onSendCode)}
+          disabled={!isDirty || !isValid || isSendingCode}
+          loading={isSendingCode}>
+          <CustomText className="text-lg text-white font-isidoraSemiBold">
+            {languages?.send_code}
+          </CustomText>
+        </RoundedButton>
+      </View>
+      <View style={styles.footer}>
+        <CustomText style={styles.footerText}>
+          {languages?.back_to}{' '}
+          <CustomText style={styles.footerLink} onPress={navigateToLogin}>
+            {languages?.login}
+          </CustomText>
         </CustomText>
-      </RoundedButton>
-      <CustomText className="text-base font-isidoraMedium text-black mt-10">
-        {languages?.back_to}{' '}
-        <CustomText
-          className="font-isidoraSemiBold text-white underline"
-          onPress={navigateToLogin}>
-          {languages?.login}
-        </CustomText>
-      </CustomText>
+      </View>
     </View>
   );
 };
@@ -113,10 +116,36 @@ const UserNameField = ({handleSendCode, formProps}: UserNameFieldProps) => {
 export default UserNameField;
 
 const styles = StyleSheet.create({
-  resendCodeButton: {
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  formContent: {
+    paddingHorizontal: 24,
+  },
+  input: {
+    height: 36,
+  },
+  sendCodeButton: {
     width: '50%',
     backgroundColor: '#222B45',
-    marginTop: 70,
+    marginTop: 28,
     paddingVertical: 8,
+    alignSelf: 'center',
+  },
+  footer: {
+    alignItems: 'center',
+    paddingBottom: 16,
+    marginTop: 24,
+  },
+  footerText: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.85)',
+    fontFamily: 'IsidoraSans-Regular',
+  },
+  footerLink: {
+    color: 'rgba(255,255,255,1)',
+    fontFamily: 'IsidoraSans-SemiBold',
+    textDecorationLine: 'underline',
   },
 });
