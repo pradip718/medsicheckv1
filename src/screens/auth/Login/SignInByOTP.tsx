@@ -345,7 +345,7 @@ const SignInByOTP = ({
                   setDidSendOTP(false);
                   setOTP('');
                   if (option === 'Email' && otpChannel !== 'sms') {
-                    setOTPChannel('sms');
+                    setOTPChannel('whatsapp');
                   }
                 }
               }}>

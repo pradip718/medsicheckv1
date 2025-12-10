@@ -416,7 +416,7 @@
   "get_otp_via_whatsapp": "Send OTP via WhatsApp",
   "otp_channel_message_info": "OTP will be delivered via SMS.",
   "otp_channel_whatsapp_info": "OTP will be delivered via WhatsApp.",
-  "email_mobile_placeholder": "Enter Email or mobile number",
+  "email_mobile_placeholder": "Enter Email",
   "enter_otp_placeholder": "Enter OTP",
   "get_otp_button": "Get OTP",
   "validate_otp_button": "Validate OTP",
