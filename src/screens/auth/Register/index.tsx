@@ -1,3 +1,4 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
@@ -21,7 +22,7 @@ import useLanguageStore from '../../../../store/languageStore';
 import {SignUpPayload} from '../../../../types/api_payload';
 import {SignUpSuccessResponse} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
-import {encryptText, isValidPhoneNumber} from '../../../../utils/methods';
+import {encryptText} from '../../../../utils/methods';
 import {errorToast} from '../../../../utils/toast';
 import {login, signup} from '../../../api/auth';
 import CustomPhoneInput from '../../../components/PhoneInput';
@@ -30,6 +31,7 @@ import CustomText from '../../../components/Text';
 import {REMEMBERED_USER_SESSION} from '../../../constants/AsyncStorageKeys';
 import useAuthNavigation from '../../../hooks/useAuthNavigation';
 import customColor from '../../../theme/customColor';
+import {createRegisterSchema} from '../../../validation';
 import Header from './Header';
 
 type RegisterParams = {
@@ -59,13 +61,23 @@ const Register = () => {
     hide();
   });
 
+  const registerSchema = createRegisterSchema(languages);
+
   const {
     handleSubmit,
     control,
     getValues,
     formState: {errors, isDirty, isValid},
   } = useForm<RegisterParams>({
+    resolver: zodResolver(registerSchema),
     mode: 'onBlur',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      formattedPhonenumber: '',
+    },
   });
 
   const {mutateAsync: loginAndNavigate, isPending: isLogging} = useMutation({
@@ -194,28 +206,12 @@ const Register = () => {
             </>
           )}
           name="email"
-          rules={{
-            required: languages?.email_required,
-            pattern: {
-              value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-              message: languages?.email_validation_error_msg,
-            },
-          }}
         />
 
         <View className="mt-4">
           <Controller
             name="formattedPhonenumber"
             control={control}
-            rules={{
-              required: languages?.required_phone_number,
-              validate: value => {
-                const isValidPhone = isValidPhoneNumber(value);
-                if (!isValidPhone) {
-                  return languages?.phone_number_must_be_valid;
-                }
-              },
-            }}
             render={({field: {onChange, value, onBlur}}) => (
               <>
                 <CustomPhoneInput<RegisterParams>
@@ -265,15 +261,6 @@ const Register = () => {
             </>
           )}
           name="password"
-          rules={{
-            required: languages?.password_is_required,
-            pattern: {
-              value:
-                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*._-]).{8,}$/,
-              message:
-                languages?.password_requirements_message_with_length_and_requirements,
-            },
-          }}
         />
 
         <Controller
@@ -311,15 +298,6 @@ const Register = () => {
             </>
           )}
           name="confirmPassword"
-          rules={{
-            required: languages?.confirm_password_is_required,
-            pattern: {
-              value:
-                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*._-]).{8,}$/,
-              message:
-                languages?.password_requirements_message_with_length_and_requirements,
-            },
-          }}
         />
       </>
     );

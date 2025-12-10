@@ -1,3 +1,4 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import {
   NavigationProp,
   StackActions,
@@ -41,6 +42,7 @@ import useGetOnboardingSteps from '../../../hooks/api/useGetOnboardingSteps';
 import useGetUserAttributes from '../../../hooks/api/useGetUserAttributes';
 import useGetUserReading from '../../../hooks/api/useGetUserReading';
 import {color, units} from '../../../theme';
+import {createLoginSchema} from '../../../validation';
 import SignInByOTP from './SignInByOTP';
 import SignInByPassword from './SignInByPassword';
 import {
@@ -74,8 +76,17 @@ const Login = () => {
   const {refetch: getUserAttributes} = useGetUserAttributes({enabled: false});
   const {refetch: getUserReading} = useGetUserReading({enabled: false});
 
+  const loginSchema = createLoginSchema(languages);
+
   const {handleSubmit, control, getValues, formState} = useForm<LoginParam>({
-    mode: 'onChange',
+    resolver: zodResolver(loginSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+    shouldFocusError: true,
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   const {
@@ -382,12 +393,6 @@ const Login = () => {
                         <SignInByOTP
                           handleSwitchLoginType={handleSwitchLoginType}
                           proceedLoginStep={proceedLoginStep}
-                          formProps={{
-                            handleSubmit,
-                            control,
-                            formState,
-                            getValues,
-                          }}
                         />
                       </View>
                     )}
