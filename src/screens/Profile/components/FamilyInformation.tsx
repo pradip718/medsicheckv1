@@ -1,3 +1,4 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import CheckBox from '@react-native-community/checkbox';
 import {
   NavigationProp,
@@ -46,6 +47,7 @@ import useGetFamilyMembers from '../../../hooks/api/useGetFamilyMembers';
 import useBackButton from '../../../hooks/useBackButton';
 import {color} from '../../../theme';
 import customColor from '../../../theme/customColor';
+import {createFamilyInformationSchema} from '../../../validation';
 import {GENDER, HEIGHT, RELATIONSHIPS, WEIGHT} from '../data';
 import FamilyPhoneInput from './FamilyPhoneInput';
 
@@ -98,6 +100,8 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
     },
   });
 
+  const familyInformationSchema = createFamilyInformationSchema(languages);
+
   const {
     control,
     handleSubmit,
@@ -107,7 +111,9 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
     setValue,
     setError,
     trigger,
+    clearErrors,
   } = useForm<Family>({
+    resolver: zodResolver(familyInformationSchema),
     defaultValues: {
       given_name: '',
       family_name: '',
@@ -144,7 +150,8 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
           email: details?.email,
           relation: details?.email,
           phone_number: details?.phone_number,
-          birthdate: details?.birthdate,
+          birthdate:
+            details?.birthdate || moment(new Date()).format('DD/MM/YYYY'),
           height: details?.height,
           weight: details?.weight,
           height_unit: details?.height_unit,
@@ -334,17 +341,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="given_name"
-                rules={{
-                  required: languages?.first_name_required,
-                  pattern: {
-                    value: /^[a-zA-Z ]+$/,
-                    message: languages?.letter_space_validation,
-                  },
-                  minLength: {
-                    value: 2,
-                    message: languages?.min_name_character,
-                  },
-                }}
               />
             </View>
             <View className="mt-4">
@@ -374,13 +370,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="family_name"
-                rules={{
-                  required: languages?.last_name_required,
-                  pattern: {
-                    value: /^[a-zA-Z ]+$/,
-                    message: languages?.letter_space_validation,
-                  },
-                }}
               />
             </View>
 
@@ -436,13 +425,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="email"
-                rules={{
-                  // required: 'Email is Required',
-                  pattern: {
-                    value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                    message: languages?.email_validation_error_msg,
-                  },
-                }}
               />
             </View>
 
@@ -534,7 +516,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                   </>
                 )}
                 name="birthdate"
-                rules={{required: true}}
               />
             </View>
             <View className="mt-4">
@@ -565,7 +546,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                     </>
                   )}
                   name="gender"
-                  rules={{required: true}}
                 />
               </View>
             </View>
@@ -662,13 +642,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                         style={styles.borderWidthZero}
                         contextMenuHidden={true}
                         onChangeText={text => {
-                          const unit = getValues().height_unit;
-                          if (unit === 'cm') {
-                            const integerOnly = text.replace(/[^0-9]/g, '');
-                            onChange(integerOnly);
-                          } else {
-                            onChange(text);
-                          }
+                          onChange(text);
                           if (errors.height) {
                             trigger('height');
                           }
@@ -682,33 +656,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       />
                     )}
                     name="height"
-                    rules={{
-                      required: languages?.height_required,
-                      validate: value => {
-                        const unit = getValues().height_unit;
-                        const minHeight = unit === 'cm' ? 50 : 1.5;
-                        const maxHeight = unit === 'cm' ? 300 : 9;
-                        const heightValue = parseFloat(value);
-
-                        if (isNaN(heightValue)) {
-                          return 'Please enter a valid height.';
-                        }
-
-                        if (heightValue < minHeight) {
-                          return unit === 'cm'
-                            ? languages?.min_height_cm_error
-                            : languages?.min_height_ft_error;
-                        }
-
-                        if (heightValue > maxHeight) {
-                          return unit === 'cm'
-                            ? languages?.max_height_cm_error
-                            : languages?.max_height_ft_error;
-                        }
-
-                        return true;
-                      },
-                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -725,6 +672,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                           setValue={val => {
                             onChange(val);
                             setValue('height', '');
+                            clearErrors('height');
                           }}
                           zIndex={50}
                           style={styles.heightAndWeightDropdown}
@@ -733,7 +681,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                         />
                       )}
                       name="height_unit"
-                      rules={{required: true}}
                     />
                   </View>
                 </View>
@@ -757,11 +704,7 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                         onBlur={onBlur}
                         style={styles.borderWidthZero}
                         onChangeText={text => {
-                          const validText = text.replace(/[^0-9.]/g, '');
-                          const decimalCount = validText.split('.').length - 1;
-                          if (decimalCount <= 1) {
-                            onChange(validText);
-                          }
+                          onChange(text);
                           if (errors.weight) {
                             trigger('weight');
                           }
@@ -771,34 +714,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                       />
                     )}
                     name="weight"
-                    rules={{
-                      required: 'Weight is required',
-                      validate: value => {
-                        const unit = getValues().weight_unit;
-                        const minWeight = unit === 'kg' ? 20 : 44;
-                        const maxWeight = unit === 'kg' ? 250 : 551;
-
-                        const weightValue = parseFloat(value);
-
-                        if (isNaN(weightValue)) {
-                          return 'Please enter a valid weight.';
-                        }
-
-                        if (weightValue < minWeight) {
-                          return unit === 'kg'
-                            ? languages?.min_weight_kgs_error
-                            : languages?.min_weight_lbs_error;
-                        }
-
-                        if (weightValue > maxWeight) {
-                          return unit === 'kg'
-                            ? languages?.max_weight_kgs_error
-                            : languages?.max_weight_lbs_error;
-                        }
-
-                        return true;
-                      },
-                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -811,7 +726,11 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                           items={WEIGHT}
                           setOpen={setOpenWeightDropdown}
                           onChangeValue={onChange}
-                          setValue={onChange}
+                          setValue={val => {
+                            onChange(val);
+                            setValue('weight', '');
+                            clearErrors('weight');
+                          }}
                           dropDownDirection="BOTTOM"
                           style={styles.heightAndWeightDropdown}
                           labelStyle={styles.heightAndWeightDropdownLabel}
@@ -820,7 +739,6 @@ export default function FamilyInformation({route}: FamilyInformationProps) {
                         />
                       )}
                       name="weight_unit"
-                      rules={{required: true}}
                     />
                   </View>
                 </View>
@@ -909,5 +827,11 @@ const styles = StyleSheet.create({
   genderDropdownText: {
     fontFamily: SEMIBOLD,
     fontSize: 16,
+  },
+  dobNote: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#6583FF',
+    fontFamily: SEMIBOLD,
   },
 });
