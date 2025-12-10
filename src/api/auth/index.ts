@@ -161,18 +161,14 @@ const appendChannel = (channel?: OTPChannel) =>
 export async function sendLoginOTP(
   payload: LoginOTPPayload,
 ): Promise<LoginOTPResponse | LoginSuccessResponse> {
-  try {
-    const channelQuery = appendChannel(payload.channel);
-    const response = await axiosInstance({
-      method: 'POST',
-      url: `v1/login-v2?auth_type=otp${channelQuery}`,
-      data: payload,
-    });
+  const channelQuery = appendChannel(payload.channel);
+  const response = await axiosInstance({
+    method: 'POST',
+    url: `v1/login-v2?auth_type=otp${channelQuery}`,
+    data: payload,
+  });
 
-    return response?.data;
-  } catch (error) {
-    throw error;
-  }
+  return response?.data;
 }
 
 export async function sendSignUpOTP(
@@ -244,17 +240,13 @@ export async function verifySignUpOTP(
 }
 
 export async function postConfirmPassword(payload: ConfirmPasswordPayload) {
-  try {
-    const response = await axiosInstance({
-      method: 'POST',
-      url: 'v1/sign-up?flow_type=confirm_password',
-      data: payload,
-    });
+  const response = await axiosInstance({
+    method: 'POST',
+    url: 'v1/sign-up?flow_type=confirm_password',
+    data: payload,
+  });
 
-    return response?.data;
-  } catch (error) {
-    throw error;
-  }
+  return response?.data;
 }
 
 export async function changePassword(payload: ChangePasswordPayload) {

@@ -1,3 +1,4 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import {
   NavigationProp,
   RouteProp,
@@ -23,22 +24,24 @@ import useLanguageStore from '../../../../store/languageStore';
 import {SignUpPayload} from '../../../../types/api_payload';
 import {SignUpSuccessResponse} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
-import {encryptText, isValidPhoneNumber} from '../../../../utils/methods';
+import {encryptText} from '../../../../utils/methods';
 import {errorToast} from '../../../../utils/toast';
 import {login, signupOTP} from '../../../api/auth';
+import Icon from '../../../components/Icon';
 import CustomPhoneInput from '../../../components/PhoneInput';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
 import {REMEMBERED_USER_SESSION} from '../../../constants/AsyncStorageKeys';
 import useAuthNavigation from '../../../hooks/useAuthNavigation';
 import customColor from '../../../theme/customColor';
+import {createRegisterSchema} from '../../../validation';
 import Header from './Header';
-import Icon from '../../../components/Icon';
 
 type RegisterParams = {
   email: string;
   password: string;
   confirmPassword: string;
+  formattedPhonenumber: string;
 };
 
 const OTPRegister = () => {
@@ -49,8 +52,6 @@ const OTPRegister = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-  const [phone, setPhone] = useState(params?.phoneNumber || '');
-  const [phoneError, setPhoneError] = useState('');
 
   const queryClient = useQueryClient();
 
@@ -59,25 +60,37 @@ const OTPRegister = () => {
     shouldCheckOnboarding: true,
   });
 
+  const registerSchema = createRegisterSchema(languages);
+
   const {
     handleSubmit,
     control,
     getValues,
     reset,
+    setValue,
     formState: {errors, isDirty, isValid},
   } = useForm<RegisterParams>({
+    resolver: zodResolver(registerSchema),
     mode: 'onBlur',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      email: params?.email || '',
+      password: '',
+      confirmPassword: '',
+      formattedPhonenumber: params?.phoneNumber || '',
+    },
   });
 
   useEffect(() => {
-    if (params?.email) {
+    if (params?.email || params?.phoneNumber) {
       reset({
-        email: params.email || '',
+        email: params?.email || '',
         password: '',
         confirmPassword: '',
+        formattedPhonenumber: params?.phoneNumber || '',
       });
     }
-  }, [params, reset]);
+  }, [params, reset, setValue]);
 
   const {mutateAsync: loginAndNavigate, isPending: isLogging} = useMutation({
     mutationKey: ['fetch-profile-navigate'],
@@ -104,14 +117,14 @@ const OTPRegister = () => {
     },
     onSuccess: res => {
       const email = getValues('email');
-      // const phoneNumber = getValues('formattedPhonenumber');
+      const phoneNumber = getValues('formattedPhonenumber');
       const password = getValues('confirmPassword');
       if (res?.email_verification_flag && res?.phone_verification_flag) {
         loginAndNavigate();
       } else {
         navigation.navigate('ContactVerification', {
           email,
-          phoneNumber: phone,
+          phoneNumber,
           password: password,
           user_id: res?.user_id ?? '',
           loginParams: {
@@ -162,6 +175,7 @@ const OTPRegister = () => {
     email,
     password,
     confirmPassword,
+    formattedPhonenumber,
   }: RegisterParams) => {
     if (password !== confirmPassword) {
       return errorToast(languages?.password_does_not_match_error_message);
@@ -169,7 +183,7 @@ const OTPRegister = () => {
     await signupMutation({
       username: email,
       password: confirmPassword,
-      phone_number: phone,
+      phone_number: formattedPhonenumber,
       ...(params?.phoneNumber && {session: params.session || ''}),
     });
   };
@@ -208,13 +222,6 @@ const OTPRegister = () => {
                 </>
               )}
               name="email"
-              rules={{
-                required: languages?.email_required,
-                pattern: {
-                  value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                  message: languages?.email_validation_error_msg,
-                },
-              }}
             />
           </View>
 
@@ -224,65 +231,24 @@ const OTPRegister = () => {
         </View>
 
         <View className="flex-row items-center mt-4 space-x-4">
-          {/* <Controller
-            name="formattedPhonenumber"
-            control={control}
-            rules={{
-              required: languages?.required_phone_number,
-              validate: value => {
-                const isValidPhone = isValidPhoneNumber(value);
-                if (!isValidPhone) {
-                  return languages?.phone_number_must_be_valid;
-                }
-              },
-            }}
-            render={({field: {onChange, value, onBlur}}) => (
-              <>
-                <CustomPhoneInput<RegisterParams>
-                  onChange={onChange}
-                  value={value}
-                  onBlur={onBlur}
-                />
-                <CustomText className="text-base text-red-500 font-isidoraMedium">
-                  {errors?.formattedPhonenumber?.message}
-                </CustomText>
-              </>
-            )}
-          /> */}
           <View className="flex-grow">
-            <CustomPhoneInput
-              onChange={value => {
-                setPhone(value);
-
-                let error = '';
-                if (value) {
-                  const isValidPhone = isValidPhoneNumber(value);
-                  if (!isValidPhone) {
-                    error = languages?.phone_number_must_be_valid;
-                  }
-                } else {
-                  error = languages?.required_phone_number;
-                }
-                setPhoneError(error);
-              }}
-              value={phone}
-              disabled={!!params?.phoneNumber}
-              onBlur={() => {
-                let error = '';
-                if (phone) {
-                  const isValidPhone = isValidPhoneNumber(phone);
-                  if (!isValidPhone) {
-                    error = languages?.phone_number_must_be_valid;
-                  }
-                } else {
-                  error = languages?.required_phone_number;
-                }
-                setPhoneError(error);
-              }}
+            <Controller
+              name="formattedPhonenumber"
+              control={control}
+              render={({field: {onChange, value, onBlur}}) => (
+                <>
+                  <CustomPhoneInput<RegisterParams>
+                    onChange={onChange}
+                    value={value}
+                    onBlur={onBlur}
+                    disabled={!!params?.phoneNumber}
+                  />
+                  <CustomText className="text-base text-red-500 font-isidoraMedium">
+                    {errors?.formattedPhonenumber?.message}
+                  </CustomText>
+                </>
+              )}
             />
-            <CustomText className="text-base text-red-500 font-isidoraMedium">
-              {phoneError}
-            </CustomText>
           </View>
 
           {params?.phoneNumber && (
@@ -324,15 +290,6 @@ const OTPRegister = () => {
             </>
           )}
           name="password"
-          rules={{
-            required: languages?.password_is_required,
-            pattern: {
-              value:
-                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*._-]).{8,}$/,
-              message:
-                languages?.password_requirements_message_with_length_and_requirements,
-            },
-          }}
         />
 
         <Controller
@@ -370,15 +327,6 @@ const OTPRegister = () => {
             </>
           )}
           name="confirmPassword"
-          rules={{
-            required: languages?.confirm_password_is_required,
-            pattern: {
-              value:
-                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*._-]).{8,}$/,
-              message:
-                languages?.password_requirements_message_with_length_and_requirements,
-            },
-          }}
         />
       </>
     );
@@ -415,9 +363,7 @@ const OTPRegister = () => {
                 style={styles.signUpButton}
                 onPress={handleSubmit(handleSignUp)}
                 loading={isSigningUp || isLogging}
-                disabled={
-                  isSigningUp || !isDirty || !isValid || isLogging || !phone
-                }>
+                disabled={isSigningUp || !isDirty || !isValid || isLogging}>
                 <CustomText className="text-base text-white font-isidoraSemiBold">
                   {languages?.sign_up}
                 </CustomText>

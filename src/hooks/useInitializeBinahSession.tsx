@@ -10,7 +10,6 @@ import {
   Session,
   SessionBuilder,
   SessionState,
-  Sex,
   VitalSign,
   VitalSignTypes,
   useEnabledVitalSigns,
@@ -36,13 +35,8 @@ import useBinahConfigStore from '../../store/binahConfigStore';
 import useLanguageStore from '../../store/languageStore';
 import {MainStackParamList} from '../../types/navigation';
 import {USER_ACTIVITY} from '../../types/readings';
-import {User} from '../../types/users/user';
 import {isAndroid} from '../../utils';
-import {
-  convertFeetAndInchesToCm,
-  convertWeightToKg,
-  getAgeFromBirthdate,
-} from '../../utils/methods';
+import {buildSubjectDemographic} from '../../utils/methods';
 import {errorToast} from '../../utils/toast';
 import {getBinahErrorMessage} from '../api/binah';
 import useGetPreHealthReading from './api/useGetPreHealthReading';
@@ -62,16 +56,6 @@ const checkCameraPermissions = async (): Promise<boolean> => {
   } catch (e) {
     return false;
   }
-};
-
-const getGenderForDemoGraphic = (gender: User['gender'] | undefined): Sex => {
-  if (gender === 'male') {
-    return Sex.MALE;
-  }
-  if (gender === 'female') {
-    return Sex.FEMALE;
-  }
-  return Sex.UNSPECIFIED;
 };
 
 enum ScreenActiveState {
@@ -189,26 +173,7 @@ const useInitializeBinahSession = ({
               : CameraLocation.FRONT,
           subjectDemographic:
             binahConfig?.demographic_flag === 'True'
-              ? {
-                  age: users?.birthdate
-                    ? getAgeFromBirthdate(users?.birthdate)
-                    : undefined,
-                  height: users?.height
-                    ? convertFeetAndInchesToCm(
-                        Number(users?.height),
-                        users?.height_unit,
-                      )
-                    : undefined,
-                  weight: users?.weight
-                    ? convertWeightToKg(
-                        Number(users?.weight),
-                        users?.weight_unit,
-                      )
-                    : undefined,
-                  sex: users?.gender
-                    ? getGenderForDemoGraphic(users?.gender)
-                    : undefined,
-                }
+              ? buildSubjectDemographic(users)
               : undefined,
         },
       );
