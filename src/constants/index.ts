@@ -28,3 +28,29 @@ export const PUBLIC_DEEPLINK_PATH = [
   'register',
   'about-app',
 ];
+
+export const MEDSI_ALERT_LIMITS = {
+  MIN_HEIGHT_CM: 50,
+  MAX_HEIGHT_CM: 300,
+  MIN_WEIGHT_KG: 20,
+  MAX_WEIGHT_KG: 250,
+} as const;
+
+export const BINAH_ALERT_LIMITS = {
+  MIN_HEIGHT_CM: 130,
+  MAX_HEIGHT_CM: 230,
+  MIN_WEIGHT_KG: 40,
+  MAX_WEIGHT_KG: 200,
+  MIN_AGE_YEARS: 18,
+  MAX_AGE_YEARS: 110,
+} as const;
+
+export const HEIGHT_LIMITS_FEET = {
+  min: 1.5,
+  max: 9,
+};
+
+export const WEIGHT_LIMITS_LBS = {
+  min: 44,
+  max: 551,
+};

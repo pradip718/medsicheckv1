@@ -1,3 +1,4 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import {
   NavigationProp,
   StackActions,
@@ -6,14 +7,7 @@ import {
 import {useMutation} from '@tanstack/react-query';
 import {AxiosError} from 'axios';
 import React, {useState} from 'react';
-import {
-  Control,
-  Controller,
-  FormState,
-  UseFormGetValues,
-  UseFormHandleSubmit,
-  useWatch,
-} from 'react-hook-form';
+import {Controller, useForm, useWatch} from 'react-hook-form';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import useLanguageStore from '../../../../store/languageStore';
@@ -25,7 +19,6 @@ import {
   LoginSuccessResponse,
 } from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
-import {isValidPhoneNumber} from '../../../../utils/methods';
 import {errorToast} from '../../../../utils/toast';
 import {
   resendSignUpOTP,
@@ -41,25 +34,19 @@ import CustomPhoneInput from '../../../components/PhoneInput';
 import Pressable from '../../../components/Pressable';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
+import {createOTPLoginSchema} from '../../../validation';
 import Timer from '../Register/Timer';
 import {LoginParam, LoginType} from './type';
 
 type SignInByOTPProps = {
   handleSwitchLoginType: (type: LoginType) => void;
   proceedLoginStep: (res: LoginSuccessResponse) => Promise<void>;
-  formProps: {
-    handleSubmit: UseFormHandleSubmit<LoginParam>;
-    control: Control<LoginParam>;
-    formState: FormState<LoginParam>;
-    getValues: UseFormGetValues<LoginParam>;
-  };
 };
 
 type OTPSigninType = 'Email' | 'Phone';
 
 const SignInByOTP = ({
   handleSwitchLoginType,
-  formProps,
   proceedLoginStep,
 }: SignInByOTPProps) => {
   const {languages} = useLanguageStore();
@@ -76,11 +63,21 @@ const SignInByOTP = ({
   const [isNewUser, setIsNewUser] = useState(false);
   console.log('🚀 ~ SignInByOTP ~ isNewUser:', isNewUser);
 
+  const otpLoginSchema = createOTPLoginSchema(languages);
+
   const {
     control,
-    formState: {errors},
+    formState: {errors, isValid},
     getValues,
-  } = formProps;
+  } = useForm<LoginParam>({
+    resolver: zodResolver(otpLoginSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      email: '',
+      formattedPhonenumber: '',
+    },
+  });
 
   const watchedEmail = useWatch({name: 'email', control});
   const watchedPhoneNumber = useWatch({name: 'formattedPhonenumber', control});
@@ -265,15 +262,9 @@ const SignInByOTP = ({
       setDeliveryChannel(channelOverride);
     }
 
-    if (otpSigninType === 'Phone') {
-      if (!phoneNumber) {
-        return errorToast(languages?.required_phone_number);
-      }
-      const isPhoneValid = isValidPhoneNumber(phoneNumber ?? '');
-      if (!isPhoneValid) {
-        return errorToast(languages?.phone_number_must_be_valid);
-      }
-    } else if (!email) {
+    if (otpSigninType === 'Phone' && !phoneNumber) {
+      return errorToast(languages?.required_phone_number);
+    } else if (otpSigninType === 'Email' && !email) {
       return errorToast(languages?.email_empty);
     }
 
@@ -335,6 +326,7 @@ const SignInByOTP = ({
     isSendingLoginOTP ||
     (otpSigninType === 'Email' && !watchedEmail) ||
     (otpSigninType === 'Email' && !!errors?.email) ||
+    (otpSigninType === 'Email' && !isValid) ||
     (otpSigninType === 'Phone' && !watchedPhoneNumber) ||
     (otpSigninType === 'Phone' && !!errors?.formattedPhonenumber);
 
@@ -353,7 +345,7 @@ const SignInByOTP = ({
                   setDidSendOTP(false);
                   setOTP('');
                   if (option === 'Email' && otpChannel !== 'sms') {
-                    setOTPChannel('sms');
+                    setOTPChannel('whatsapp');
                   }
                 }
               }}>
@@ -388,13 +380,6 @@ const SignInByOTP = ({
                 />
               )}
               name="email"
-              rules={{
-                required: languages?.email_empty,
-                pattern: {
-                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                  message: languages?.email_validation_error_msg,
-                },
-              }}
             />
           </View>
           {didSendOTP && (
@@ -419,15 +404,6 @@ const SignInByOTP = ({
             <Controller
               name="formattedPhonenumber"
               control={control}
-              rules={{
-                required: languages?.required_phone_number,
-                validate: value => {
-                  const isValidPhone = isValidPhoneNumber(value ?? '');
-                  if (!isValidPhone) {
-                    return languages?.phone_number_must_be_valid;
-                  }
-                },
-              }}
               render={({field: {onChange, value, onBlur}}) => (
                 <>
                   <CustomPhoneInput<LoginParam>

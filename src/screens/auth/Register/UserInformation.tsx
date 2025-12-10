@@ -1,3 +1,4 @@
+import {zodResolver} from '@hookform/resolvers/zod';
 import {
   NavigationProp,
   RouteProp,
@@ -46,6 +47,7 @@ import usePostOnboardingSteps from '../../../hooks/api/usePostOnboardingSteps';
 import useBackButton from '../../../hooks/useBackButton';
 import {color} from '../../../theme';
 import customColor from '../../../theme/customColor';
+import {createUserInformationSchema} from '../../../validation';
 import {GENDER, HEIGHT, WEIGHT} from './data';
 
 type UserInformationRouteProp = RouteProp<
@@ -98,6 +100,8 @@ export default function UserInformation({
   };
   useBackButton(showSignoutModal);
 
+  const userInformationSchema = createUserInformationSchema(languages);
+
   const {
     control,
     handleSubmit,
@@ -106,7 +110,9 @@ export default function UserInformation({
     trigger,
     getValues,
     setValue,
+    clearErrors,
   } = useForm<User>({
+    resolver: zodResolver(userInformationSchema),
     defaultValues: {
       given_name: '',
       family_name: '',
@@ -136,6 +142,7 @@ export default function UserInformation({
         middle_name: users?.middle_name ?? '',
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [users, reset]);
 
   const setNewUserProfileId = async () => {
@@ -314,8 +321,7 @@ export default function UserInformation({
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
                       onChangeText={text => {
-                        const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
-                        onChange(sanitizedText);
+                        onChange(text);
                         if (errors.given_name) {
                           trigger('given_name');
                         }
@@ -327,17 +333,6 @@ export default function UserInformation({
                   </>
                 )}
                 name="given_name"
-                rules={{
-                  required: languages?.first_name_required,
-                  pattern: {
-                    value: /^[a-zA-Z ]+$/,
-                    message: languages?.letter_space_validation,
-                  },
-                  minLength: {
-                    value: 2,
-                    message: languages?.min_name_character,
-                  },
-                }}
               />
             </View>
             <View className="mt-4">
@@ -354,8 +349,7 @@ export default function UserInformation({
                       value={value}
                       className="w-full h-10 text-base bg-transparent px-2 text-black"
                       onChangeText={text => {
-                        const sanitizedText = text.replace(/[^a-zA-Z ]/g, '');
-                        onChange(sanitizedText);
+                        onChange(text);
                         if (errors.family_name) {
                           trigger('family_name');
                         }
@@ -367,17 +361,6 @@ export default function UserInformation({
                   </>
                 )}
                 name="family_name"
-                rules={{
-                  required: languages?.last_name_required,
-                  pattern: {
-                    value: /^[a-zA-Z ]+$/,
-                    message: languages?.letter_space_validation,
-                  },
-                  minLength: {
-                    value: 2,
-                    message: languages?.min_name_character,
-                  },
-                }}
               />
             </View>
             <View className="mt-4">
@@ -431,7 +414,6 @@ export default function UserInformation({
                   </>
                 )}
                 name="birthdate"
-                rules={{required: true}}
               />
             </View>
             <View className="mt-4">
@@ -462,7 +444,6 @@ export default function UserInformation({
                     </>
                   )}
                   name="gender"
-                  rules={{required: true}}
                 />
               </View>
             </View>
@@ -485,13 +466,7 @@ export default function UserInformation({
                         style={styles.borderWidthZero}
                         contextMenuHidden={true}
                         onChangeText={text => {
-                          const unit = getValues().height_unit;
-                          if (unit === 'cm') {
-                            const integerOnly = text.replace(/[^0-9]/g, '');
-                            onChange(integerOnly);
-                          } else {
-                            onChange(text);
-                          }
+                          onChange(text);
                           if (errors.height) {
                             trigger('height');
                           }
@@ -505,33 +480,6 @@ export default function UserInformation({
                       />
                     )}
                     name="height"
-                    rules={{
-                      required: languages?.height_required,
-                      validate: value => {
-                        const unit = getValues().height_unit;
-                        const minHeight = unit === 'cm' ? 50 : 1.5;
-                        const maxHeight = unit === 'cm' ? 300 : 9;
-                        const heightValue = parseFloat(value);
-
-                        if (isNaN(heightValue)) {
-                          return 'Please enter a valid height.';
-                        }
-
-                        if (heightValue < minHeight) {
-                          return unit === 'cm'
-                            ? languages?.min_height_cm_error
-                            : languages?.min_height_ft_error;
-                        }
-
-                        if (heightValue > maxHeight) {
-                          return unit === 'cm'
-                            ? languages?.max_height_cm_error
-                            : languages?.max_height_ft_error;
-                        }
-
-                        return true;
-                      },
-                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -548,6 +496,7 @@ export default function UserInformation({
                           setValue={val => {
                             onChange(val);
                             setValue('height', '');
+                            clearErrors('height');
                           }}
                           zIndex={50}
                           style={styles.heightAndWeightDropdown}
@@ -556,7 +505,6 @@ export default function UserInformation({
                         />
                       )}
                       name="height_unit"
-                      rules={{required: true}}
                     />
                   </View>
                 </View>
@@ -580,25 +528,7 @@ export default function UserInformation({
                         onBlur={onBlur}
                         style={styles.borderWidthZero}
                         onChangeText={text => {
-                          let validText = text.replace(/[^0-9.]/g, '');
-                          const decimalCount = validText.split('.').length - 1;
-                          if (decimalCount > 1) {
-                            validText = validText.substring(
-                              0,
-                              validText.lastIndexOf('.'),
-                            );
-                          }
-                          if (validText.includes('.')) {
-                            const [integerPart, decimalPart] =
-                              validText.split('.');
-                            if (decimalPart.length > 2) {
-                              validText = `${integerPart}.${decimalPart.substring(
-                                0,
-                                2,
-                              )}`;
-                            }
-                          }
-                          onChange(validText);
+                          onChange(text);
                           if (errors.weight) {
                             trigger('weight');
                           }
@@ -608,34 +538,6 @@ export default function UserInformation({
                       />
                     )}
                     name="weight"
-                    rules={{
-                      required: 'Weight is required',
-                      validate: value => {
-                        const unit = getValues().weight_unit;
-                        const minWeight = unit === 'kg' ? 20 : 44;
-                        const maxWeight = unit === 'kg' ? 250 : 551;
-
-                        const weightValue = parseFloat(value);
-
-                        if (isNaN(weightValue)) {
-                          return 'Please enter a valid weight.';
-                        }
-
-                        if (weightValue < minWeight) {
-                          return unit === 'kg'
-                            ? languages?.min_weight_kgs_error
-                            : languages?.min_weight_lbs_error;
-                        }
-
-                        if (weightValue > maxWeight) {
-                          return unit === 'kg'
-                            ? languages?.max_weight_kgs_error
-                            : languages?.max_weight_lbs_error;
-                        }
-
-                        return true;
-                      },
-                    }}
                   />
 
                   <View style={[styles.heightAndWeightDropdownContainer]}>
@@ -648,7 +550,11 @@ export default function UserInformation({
                           items={WEIGHT}
                           setOpen={setOpenWeightDropdown}
                           onChangeValue={onChange}
-                          setValue={onChange}
+                          setValue={val => {
+                            onChange(val);
+                            setValue('weight', '');
+                            clearErrors('weight');
+                          }}
                           dropDownDirection="BOTTOM"
                           style={styles.heightAndWeightDropdown}
                           labelStyle={styles.heightAndWeightDropdownLabel}
@@ -657,7 +563,6 @@ export default function UserInformation({
                         />
                       )}
                       name="weight_unit"
-                      rules={{required: true}}
                     />
                   </View>
                 </View>
@@ -749,5 +654,11 @@ const styles = StyleSheet.create({
   genderDropdownText: {
     fontFamily: SEMIBOLD,
     fontSize: 16,
+  },
+  dobNote: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#6583FF',
+    fontFamily: SEMIBOLD,
   },
 });
