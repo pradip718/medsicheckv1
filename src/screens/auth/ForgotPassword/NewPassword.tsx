@@ -33,21 +33,29 @@ const NewPassword = ({email}: NewPasswordProps) => {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
-  const {
-    mutateAsync: resetPassword,
-    isPending: isResettingPassword,
-    isError: isErrorResettingPassword,
-  } = useMutation({
-    mutationFn: postConfirmPassword,
-    onError: error => {
-      if (error instanceof AxiosError) {
-        return errorToast(
-          error?.response?.data?.error || languages?.generic_error_message,
-        );
-      }
-      errorToast(languages?.generic_error_message);
-    },
-  });
+  const {mutateAsync: resetPassword, isPending: isResettingPassword} =
+    useMutation({
+      mutationFn: async ({confirmPassword}: {confirmPassword: string}) => {
+        const encryptedConfirmPassword = await encryptText(confirmPassword);
+        return await postConfirmPassword({
+          username: email,
+          otp_value: code,
+          password: encryptedConfirmPassword,
+        });
+      },
+      onSuccess: () => {
+        successToast(languages?.password_change_success);
+        navigateToLogin();
+      },
+      onError: error => {
+        if (error instanceof AxiosError) {
+          return errorToast(
+            error?.response?.data?.error || languages?.generic_error_message,
+          );
+        }
+        return errorToast(languages?.generic_error_message);
+      },
+    });
 
   const navigateToLogin = () => {
     navigation.navigate('Login');
@@ -76,19 +84,10 @@ const NewPassword = ({email}: NewPasswordProps) => {
     if (!isValid) {
       return;
     }
-    const encryptedConfirmPassword = await encryptText(confirmPassword);
 
     await resetPassword({
-      username: email,
-      otp_value: code,
-      password: encryptedConfirmPassword,
+      confirmPassword,
     });
-    if (isErrorResettingPassword) {
-      errorToast(languages?.reset_password_error);
-    } else {
-      successToast(languages?.password_change_success);
-      navigateToLogin();
-    }
   };
 
   const {
@@ -133,6 +132,7 @@ const NewPassword = ({email}: NewPasswordProps) => {
                 style={styles.textInput}
                 textColor="white"
                 activeUnderlineColor="rgba(255, 255, 255, 0.45)"
+                disabled={isResettingPassword}
                 secureTextEntry={!showPassword}
                 right={
                   <TextInput.Icon
@@ -178,6 +178,7 @@ const NewPassword = ({email}: NewPasswordProps) => {
                 textColor="white"
                 activeUnderlineColor="rgba(255, 255, 255, 0.45)"
                 placeholderTextColor="rgba(255, 255, 255, 0.45)"
+                disabled={isResettingPassword}
                 secureTextEntry={!showConfirmPassword}
                 right={
                   <TextInput.Icon

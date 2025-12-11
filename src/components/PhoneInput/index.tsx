@@ -22,7 +22,7 @@ const CustomPhoneInput = <TFieldValues extends Record<string, any>>({
   // const phoneInput = useRef<PhoneInput>(null);
   const {languages} = useLanguageStore();
   const [isFocused, setIsFocused] = useState(false);
-  const {countryPickerProps, ...phoneInputProps} = restProps;
+  const {countryPickerProps, disabled, ...phoneInputProps} = restProps;
 
   const mergedCountryPickerProps = {
     ...countryPickerProps,
@@ -55,6 +55,7 @@ const CustomPhoneInput = <TFieldValues extends Record<string, any>>({
       flagButtonStyle={styles(isFocused).flagButtonStyle}
       textInputProps={{
         placeholderTextColor: 'rgba(255, 255, 255, 0.5)',
+        editable: !disabled,
         onBlur: () => {
           onBlur?.();
           onFocusChange(false);
