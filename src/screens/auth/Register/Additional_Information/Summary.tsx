@@ -1,13 +1,8 @@
 import {isArray, isString} from 'lodash';
 import {View} from 'moti';
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../../store/languageStore';
 import {ParseAndRenderText} from '../../../../../utils/common';

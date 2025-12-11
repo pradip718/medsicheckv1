@@ -6,9 +6,10 @@ import {
 } from '@simform_solutions/react-native-audio-waveform';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import React, {useEffect, useRef, useState} from 'react';
-import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import KeepAwake from 'react-native-keep-awake';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {errorToast} from '../../../utils/toast';

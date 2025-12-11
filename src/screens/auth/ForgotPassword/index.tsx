@@ -1,15 +1,10 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Image, ImageBackground, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {AuthBackground} from '../../../../assets';
 import useLanguageStore from '../../../../store/languageStore';
 import CustomText from '../../../components/Text';

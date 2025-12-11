@@ -4,7 +4,6 @@ import {isNumber, isString} from 'lodash';
 import {Image} from 'moti';
 import React, {PropsWithChildren, useState} from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -12,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import {Card} from 'react-native-paper';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {twMerge} from 'tailwind-merge';
 import useHealthRiskStore from '../../../store/healthRisksStore';
 import useLanguageStore from '../../../store/languageStore';
@@ -102,6 +102,7 @@ const InfoCard = ({
 
 const ViewRiskScore = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
+  const {bottom, top} = useSafeAreaInsets();
 
   const {engine_name, viewRiskDetails} = useHealthRiskStore();
   const {languages} = useLanguageStore();
@@ -119,8 +120,8 @@ const ViewRiskScore = () => {
   return (
     <BasicContainer className="grow">
       <StatusBar backgroundColor="#242E49" barStyle="light-content" />
-      <SafeAreaView className="bg-[#242E49] rounded-b-[32px]">
-        <View className={twMerge('px-4 pt-10', !isAndroid && 'pt-2')}>
+      <View className="bg-[#242E49] rounded-b-[32px]" style={{paddingTop: top}}>
+        <View className={twMerge('px-4', !isAndroid && 'pt-2')}>
           <View className="flex-row justify-between">
             <TouchableOpacity
               className="bg-[#3D4966]  p-4 rounded-lg"
@@ -200,8 +201,8 @@ const ViewRiskScore = () => {
             )}
           </View>
         </View>
-      </SafeAreaView>
-      <SafeAreaView className="bg-[#f2f5f9] flex-1">
+      </View>
+      <View className="bg-[#f2f5f9] flex-1" style={{paddingBottom: bottom}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {ResultInfo && (
             <CollapsibleCard
@@ -328,7 +329,7 @@ const ViewRiskScore = () => {
             </CustomText>
           </Card> */}
         </ScrollView>
-      </SafeAreaView>
+      </View>
     </BasicContainer>
   );
 };

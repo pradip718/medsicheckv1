@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../../store/languageStore';
 import {MiscellanousFilesType} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';

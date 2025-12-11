@@ -1,11 +1,11 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {useQueryClient} from '@tanstack/react-query';
-import {SafeAreaView} from 'moti';
 import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {CodeField, Cursor} from 'react-native-confirmation-code-field';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {errorToast} from '../../../utils/toast';

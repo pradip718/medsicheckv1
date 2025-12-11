@@ -4,7 +4,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {SafeAreaView, View} from 'moti';
+import {View} from 'moti';
 import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {
@@ -16,6 +16,7 @@ import {
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {AuthBackground} from '../../../../assets';
 import useAppStore from '../../../../store/appStore';

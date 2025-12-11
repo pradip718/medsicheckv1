@@ -4,8 +4,9 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import _ from 'lodash';
-import {SafeAreaView, View} from 'moti';
+import {View} from 'moti';
 import React from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import WebView from 'react-native-webview';
 import useLanguageStore from '../../store/languageStore';
 import {MainStackParamList} from '../../types/navigation';

@@ -1,7 +1,8 @@
 import {RouteProp} from '@react-navigation/native';
-import {SafeAreaView, ScrollView} from 'moti';
+import {ScrollView} from 'moti';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {MainStackParamList} from '../../../../types/navigation';
 import {ParseAndRenderText} from '../../../../utils/common';
 import {isValidJSON} from '../../../../utils/methods';

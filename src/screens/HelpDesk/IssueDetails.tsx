@@ -8,10 +8,10 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   useWindowDimensions,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../store/languageStore';

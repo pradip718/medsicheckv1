@@ -1,9 +1,9 @@
 // import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'moti';
 import React, {useState} from 'react';
 import {Dimensions, Image, ScrollView, StyleSheet, View} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   BatteryStatus,
   CorrectPosition,

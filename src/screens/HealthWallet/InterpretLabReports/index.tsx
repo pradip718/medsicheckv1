@@ -9,12 +9,12 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
 import {Modal, Portal} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../../store/languageStore';
 import {LabReportList} from '../../../../types/api_response';
 import {MainStackParamList} from '../../../../types/navigation';
