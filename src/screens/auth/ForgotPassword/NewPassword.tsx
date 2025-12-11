@@ -38,17 +38,10 @@ const NewPassword = ({email}: NewPasswordProps) => {
     isPending: isResettingPassword,
     isError: isErrorResettingPassword,
   } = useMutation({
-    mutationFn: async ({confirmPassword}: {confirmPassword: string}) => {
-      const encryptedConfirmPassword = await encryptText(confirmPassword);
-      return await postConfirmPassword({
-        username: email,
-        otp_value: code,
-        password: encryptedConfirmPassword,
-      });
-    },
+    mutationFn: postConfirmPassword,
     onError: error => {
       if (error instanceof AxiosError) {
-        errorToast(
+        return errorToast(
           error?.response?.data?.error || languages?.generic_error_message,
         );
       }
@@ -83,7 +76,13 @@ const NewPassword = ({email}: NewPasswordProps) => {
     if (!isValid) {
       return;
     }
-    await resetPassword({confirmPassword});
+    const encryptedConfirmPassword = await encryptText(confirmPassword);
+
+    await resetPassword({
+      username: email,
+      otp_value: code,
+      password: encryptedConfirmPassword,
+    });
     if (isErrorResettingPassword) {
       errorToast(languages?.reset_password_error);
     } else {
