@@ -12,6 +12,7 @@ import ViewShot from 'react-native-view-shot';
 // import {CameraHeadPosition} from '../../../../assets';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../store/languageStore';
+import {saveFaceScanFrame} from '../../../../utils/faceScanStorage';
 import {errorToast} from '../../../../utils/toast';
 import {useUploadFacescanImage} from '../../../hooks/api/report';
 import FaceDetection from './FaceDetection';
@@ -20,15 +21,20 @@ interface RenderCameraProps {
   progress: number;
   readingId: string | number[];
   imageValidity: string | undefined;
+  fakeRecording: boolean;
 }
 
 const RenderCamera = ({
   progress,
   readingId,
   imageValidity,
+  fakeRecording,
 }: RenderCameraProps) => {
   const ref: RefObject<ViewShot> = useRef(null);
   const {languages} = useLanguageStore();
+  const lastCaptureTimeRef = useRef<number>(0);
+  const savedFramesRef = useRef<string[]>([]);
+  const frameNumberRef = useRef<number>(0);
 
   const {mutateAsync: uploadImage} = useUploadFacescanImage();
 
@@ -65,6 +71,81 @@ const RenderCamera = ({
     captureUserImage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress]);
+
+  // Every-second capture for local storage - runs independently in parallel
+  useEffect(() => {
+    if (!fakeRecording) {
+      // Reset when not recording
+      lastCaptureTimeRef.current = 0;
+      frameNumberRef.current = 0;
+      return;
+    }
+
+    const captureFrameLocally = () => {
+      const now = Date.now();
+      const elapsed = now - lastCaptureTimeRef.current;
+
+      // Capture every ~33ms (30 frames per second)
+      if (elapsed >= 33 || lastCaptureTimeRef.current === 0) {
+        // Update timestamp IMMEDIATELY before any async work
+        // This ensures the interval timer continues smoothly regardless of what happens next
+        lastCaptureTimeRef.current = now;
+
+        // Check ref validity before deferring
+        if (!ref?.current || !ref?.current?.capture) {
+          return;
+        }
+
+        // Increment frame number immediately (before any async work)
+        const currentFrameNumber = frameNumberRef.current + 1;
+        frameNumberRef.current = currentFrameNumber;
+
+        // Defer ALL async work to next event loop tick
+        // This ensures the interval timer callback returns immediately
+        // Critical on iOS where capture() and file I/O can block
+        setTimeout(() => {
+          // Fire and forget - run completely in parallel, never block interval
+          (async () => {
+            try {
+              // Double-check ref is still valid (may have changed during defer)
+              if (!ref?.current || !ref?.current?.capture) {
+                return;
+              }
+
+              // Capture frame (may take time on iOS, but won't block interval)
+              const base64: string = await ref.current.capture();
+
+              // Defer file I/O to another tick to ensure it never blocks
+              // This is especially important on iOS where RNFS.writeFile can be slow
+              setTimeout(() => {
+                saveFaceScanFrame(readingId, base64, currentFrameNumber)
+                  .then(filePath => {
+                    savedFramesRef.current.push(filePath);
+                  })
+                  .catch(error => {
+                    // Log error but don't throw - frame storage failure shouldn't affect scan
+                    console.error(
+                      'Error saving frame locally (non-blocking):',
+                      error,
+                    );
+                  });
+              }, 0);
+            } catch (error) {
+              // Log error but don't throw - capture failure shouldn't affect scan
+              console.error('Error capturing frame (non-blocking):', error);
+            }
+          })();
+        }, 0);
+      }
+    };
+
+    const intervalId = setInterval(captureFrameLocally, 100); // Check every 100ms
+
+    return () => {
+      clearInterval(intervalId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fakeRecording, readingId]);
 
   const [previewSize, setPreviewSize] = useState({
     x: 0,
