@@ -1,3 +1,4 @@
+import axios from 'axios';
 import axiosInstance from '..';
 import useAuthStore from '../../../store/authStore';
 import useLanguageStore from '../../../store/languageStore';
@@ -245,6 +246,73 @@ async function postReading({payload}: any) {
   return response?.data;
 }
 
+/**
+ * Gets a presigned URL for uploading user scan image
+ * @param reading_id - The reading ID
+ * @param isZip - Whether the file is a zip file
+ * @returns Response containing presigned URL with upload_url field
+ */
+async function getUserScanImagePresignedUrl(
+  reading_id: string,
+  isZip: boolean = false,
+): Promise<{upload_url: string}> {
+  const locale = getDeviceLocaleInformation();
+  const profile_id = useUserProfileStore.getState().currentActiveProfileId;
+  const {deeplinkAuth} = useAuthStore.getState();
+  const activeAxiosInstance = deeplinkAuth?.session_id
+    ? axiosSessionInstance
+    : axiosInstance;
+
+  try {
+    // Determine content type based on file type
+    const contentType = isZip ? 'application/zip' : 'image/jpeg';
+
+    const response = await activeAxiosInstance({
+      method: 'POST',
+      headers: {
+        'Content-Type': contentType,
+      },
+      url: `v1/user_scan_image?reading_id=${reading_id}&locale=${locale}&profile_id=${profile_id}`,
+      data: {}, // Empty data to get presigned URL
+    });
+
+    return response?.data;
+  } catch (error) {
+    console.log('error getting presigned URL', error);
+    throw error;
+  }
+}
+
+/**
+ * Uploads binary data to a presigned URL using PUT request
+ * @param uploadUrl - The presigned URL to upload to
+ * @param binaryData - The binary data (Buffer) to upload
+ * @param contentType - The content type (e.g., 'application/zip' or 'image/jpeg')
+ * @returns Response from the upload
+ */
+async function uploadToPresignedUrl(
+  uploadUrl: string,
+  binaryData: Buffer,
+  contentType: string = 'application/zip',
+): Promise<any> {
+  try {
+    // Use axios directly without interceptors for presigned URL
+    // Presigned URLs already contain authentication in the URL
+    const response = await axios.put(uploadUrl, binaryData, {
+      headers: {
+        'Content-Type': contentType,
+      },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    });
+
+    return response;
+  } catch (error) {
+    console.log('error uploading to presigned URL', error);
+    throw error;
+  }
+}
+
 async function captureUserImage(payload: any) {
   const locale = getDeviceLocaleInformation();
   const profile_id = useUserProfileStore.getState().currentActiveProfileId;
@@ -254,10 +322,15 @@ async function captureUserImage(payload: any) {
     : axiosInstance;
 
   try {
+    console.log('payload', payload);
+    // Determine content type based on payload type
+    // If payload.isZip is true, use application/zip, otherwise use image/jpeg
+    const contentType = payload?.isZip ? 'application/zip' : 'image/jpeg';
+
     const response = await activeAxiosInstance({
       method: 'POST',
       headers: {
-        'Content-Type': 'image/jpeg',
+        'Content-Type': contentType,
       },
       url: `v1/user_scan_image?reading_id=${payload?.reading_id}&locale=${locale}&profile_id=${profile_id}`,
       data: payload?.data,
@@ -265,6 +338,7 @@ async function captureUserImage(payload: any) {
 
     return response?.data;
   } catch (error) {
+    console.log('error', error);
     throw error;
   }
 }
@@ -316,7 +390,9 @@ export {
   getMiscellanousFileDetails,
   getReportReading,
   getReportReadingById,
+  getUserScanImagePresignedUrl,
   postReading,
   preReading,
   syncScanSession,
+  uploadToPresignedUrl,
 };
