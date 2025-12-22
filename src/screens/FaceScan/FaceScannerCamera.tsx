@@ -22,6 +22,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import RNFS from 'react-native-fs';
 import uuid from 'react-native-uuid';
 import {twMerge} from 'tailwind-merge';
 import useAlertStore from '../../../store/alertStore';
@@ -32,8 +33,18 @@ import useLoaderStore from '../../../store/loaderStore';
 import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
-import {errorToast} from '../../../utils/toast';
-import {syncWebScan} from '../../api/report';
+import {
+  deleteFaceScanFrames,
+  listFaceScanFrames,
+  readZipFileAsBinary,
+  zipFaceScanFrames,
+} from '../../../utils/faceScanStorage';
+import {errorToast, successToast} from '../../../utils/toast';
+import {
+  getUserScanImagePresignedUrl,
+  syncWebScan,
+  uploadToPresignedUrl,
+} from '../../api/report';
 import {postCaptureUserActivity} from '../../api/user';
 import BottomAlert from '../../components/AlertModal/BottomAlert';
 import BackgroundImage from '../../components/BackgroundImage';
@@ -188,6 +199,10 @@ const FaceScannerCamera = () => {
 
   useEffect(() => {
     if (didFinishedMeasuring && finalValue) {
+      // Automatically send frames when scan completes
+      handleSendFrames().catch(error => {
+        console.error('Error sending frames automatically:', error);
+      });
       submitResult();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -258,6 +273,9 @@ const FaceScannerCamera = () => {
     notifyApi('end_scan', true, {
       reading_id,
     });
+
+    // Frames are deleted in handleSendFrames after successful upload to bucket
+    // No need to delete here
 
     await proceedToReportScreen();
   };
@@ -386,6 +404,78 @@ const FaceScannerCamera = () => {
     startFakeLoader();
   };
 
+  const handleSendFrames = async () => {
+    console.log('reading_id', reading_id);
+    if (!reading_id) {
+      errorToast(languages?.generic_error_message || 'No reading ID available');
+      return;
+    }
+
+    try {
+      showLoader();
+
+      console.log('reading_id', reading_id);
+      // Check if there are any frames to send
+      const frames = await listFaceScanFrames(reading_id);
+      if (frames.length === 0) {
+        hideLoader();
+        errorToast('No frames found to send');
+        return;
+      }
+
+      // Get presigned URL for uploading zip file
+      const presignedUrlResponse = await getUserScanImagePresignedUrl(
+        reading_id,
+        true, // isZip = true
+      );
+      console.log('Presigned URL response:', presignedUrlResponse);
+
+      if (!presignedUrlResponse?.upload_url) {
+        throw new Error('No upload URL received from server');
+      }
+
+      // Zip all frames
+      const zipFilePath = await zipFaceScanFrames(reading_id);
+      console.log('zipFilePath', zipFilePath);
+
+      // Read zip file as binary
+      const zipBinaryData = await readZipFileAsBinary(zipFilePath);
+
+      // Upload zip file to presigned URL using PUT request
+      await uploadToPresignedUrl(
+        presignedUrlResponse.upload_url,
+        zipBinaryData,
+        'application/zip',
+      );
+      console.log('Zip file uploaded successfully to presigned URL');
+
+      // Clean up zip file after successful upload
+      try {
+        const exists = await RNFS.exists(zipFilePath);
+        if (exists) {
+          await RNFS.unlink(zipFilePath);
+        }
+      } catch (cleanupError) {
+        console.error('Error cleaning up zip file:', cleanupError);
+      }
+
+      // Delete frames only after successful upload to bucket
+      try {
+        await deleteFaceScanFrames(reading_id);
+        console.log('Frames deleted after successful upload');
+      } catch (deleteError) {
+        console.error('Error deleting frames after upload:', deleteError);
+      }
+
+      hideLoader();
+      successToast('Frames sent successfully');
+    } catch (error) {
+      hideLoader();
+      console.error('Error sending frames:', error);
+      errorToast(languages?.generic_error_message || 'Failed to send frames');
+    }
+  };
+
   const handleRefresh = async () => {
     try {
       setIsRefreshing(true);
@@ -433,6 +523,7 @@ const FaceScannerCamera = () => {
             progress={progress}
             readingId={reading_id}
             imageValidity={imageValidity}
+            fakeRecording={fakeRecording}
           />
         </View>
         <View className="justify-between flex-grow py-4">
@@ -468,24 +559,28 @@ const FaceScannerCamera = () => {
           ) : null}
 
           {!didFinishedMeasuring && !fakeRecording && (
-            <View className="px-2 py-1">
-              <RoundedButton
-                onPress={handleMeasureNowPress}
-                loading={
-                  fakeRecording || isResultSubmitting || isPostOnboardingPending
-                }
-                disabled={
-                  fakeRecording ||
-                  isResultSubmitting ||
-                  isPostOnboardingPending ||
-                  !isEnabled ||
-                  !rescanConfigurations?.rescan_flag
-                }>
-                <CustomText className="text-xl text-white font-isidoraSemiBold">
-                  {languages?.measure_button_txt}
-                </CustomText>
-              </RoundedButton>
-            </View>
+            <>
+              <View className="px-2 py-1">
+                <RoundedButton
+                  onPress={handleMeasureNowPress}
+                  loading={
+                    fakeRecording ||
+                    isResultSubmitting ||
+                    isPostOnboardingPending
+                  }
+                  disabled={
+                    fakeRecording ||
+                    isResultSubmitting ||
+                    isPostOnboardingPending ||
+                    !isEnabled ||
+                    !rescanConfigurations?.rescan_flag
+                  }>
+                  <CustomText className="text-xl text-white font-isidoraSemiBold">
+                    {languages?.measure_button_txt}
+                  </CustomText>
+                </RoundedButton>
+              </View>
+            </>
           )}
         </View>
       </SafeAreaScrollView>
