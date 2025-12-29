@@ -72,3 +72,20 @@ local.properties
 
 # Optional: Ignore the entire build output directory of Android
 **/build/
+
+# iOS CocoaPods dependencies
+ios/Pods/
+
+# Android build artifacts
+android/app/.cxx/
+
+# Ruby gems
+vendor/bundle/
+
+# iOS build artifacts
+ios/build/
+ios/DerivedData/
+
+# Hermes engine artifacts
+ios/Pods/hermes-engine-artifacts/
+ios/Pods/hermes-engine/destroot/
