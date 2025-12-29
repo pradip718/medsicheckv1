@@ -34,17 +34,11 @@ import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
 import {
-  deleteFaceScanFrames,
-  listFaceScanFrames,
-  readZipFileAsBinary,
-  zipFaceScanFrames,
-} from '../../../utils/faceScanStorage';
-import {errorToast, successToast} from '../../../utils/toast';
-import {
-  getUserScanImagePresignedUrl,
-  syncWebScan,
-  uploadToPresignedUrl,
-} from '../../api/report';
+  startSDKVideoRecording,
+  stopSDKVideoRecording,
+} from '../../../utils/sdkVideoUpload';
+import {errorToast} from '../../../utils/toast';
+import {getUserScanImagePresignedUrl, syncWebScan} from '../../api/report';
 import {postCaptureUserActivity} from '../../api/user';
 import BottomAlert from '../../components/AlertModal/BottomAlert';
 import BackgroundImage from '../../components/BackgroundImage';
@@ -100,6 +94,7 @@ const FaceScannerCamera = () => {
     useState<boolean>(false);
   const [imageValidityJSON, setImageValidityJSON] = useState<ValidityCount>({});
   const [reading_id, setReadingId] = useState<string>('');
+  const videoFilePathRef = React.useRef<string | null>(null);
   const [visible, setVisible] = useState<boolean>(false);
   const [isOngoingSessions, setIsOngoingSessions] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -199,10 +194,103 @@ const FaceScannerCamera = () => {
 
   useEffect(() => {
     if (didFinishedMeasuring && finalValue) {
-      // Automatically send frames when scan completes
-      handleSendFrames().catch(error => {
-        console.error('Error sending frames automatically:', error);
-      });
+      // Stop video recording and upload using presigned URL (non-blocking)
+      const handleStopAndUploadVideo = async () => {
+        if (!session || !reading_id) {
+          return;
+        }
+
+        try {
+          console.log('Stopping video recording for reading:', reading_id);
+          const videoPath = await stopSDKVideoRecording(session);
+
+          if (videoPath) {
+            videoFilePathRef.current = videoPath;
+            console.log('Video recording stopped, path:', videoPath);
+
+            // Upload video using presigned URL (non-blocking, runs in background)
+            (async () => {
+              try {
+                console.log(
+                  'Getting presigned URL for video upload:',
+                  reading_id,
+                );
+
+                const presignedUrlResponse = await getUserScanImagePresignedUrl(
+                  reading_id,
+                  false,
+                );
+                console.log('Presigned URL response:', presignedUrlResponse);
+
+                if (!presignedUrlResponse?.upload_url) {
+                  throw new Error('No upload URL received from server');
+                }
+
+                // Upload raw binary via RNFS.uploadFiles with binaryStreamOnly
+                const filePath = videoPath.replace('file://', '');
+                const fileInfo = await RNFS.stat(filePath);
+
+                console.log(
+                  'Uploading video file via RNFS.uploadFiles:',
+                  filePath,
+                );
+
+                try {
+                  const uploadResult = await RNFS.uploadFiles({
+                    toUrl: presignedUrlResponse.upload_url,
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'video/mp4', // must match backend signing
+                    },
+                    files: [
+                      {
+                        name: 'video',
+                        filepath: filePath,
+                        filename: 'video.mp4', // static
+                        filetype: 'video/mp4',
+                      },
+                    ],
+                    binaryStreamOnly: true, // ensures raw bytes only
+                    begin: () => console.log('Video upload started'),
+                    progress: (data: any) => {
+                      const uploadProgress =
+                        (data.totalBytesSent / fileInfo.size) * 100;
+                      console.log(
+                        `Upload progress: ${uploadProgress.toFixed(2)}%`,
+                      );
+                    },
+                  }).promise;
+
+                  if (![200, 204].includes(uploadResult.statusCode)) {
+                    throw new Error(
+                      `Upload failed: ${uploadResult.statusCode} ${uploadResult.body}`,
+                    );
+                  }
+
+                  console.log('Video uploaded successfully');
+
+                  // Clean up local file
+                  if (await RNFS.exists(filePath)) {
+                    await RNFS.unlink(filePath);
+                    console.log('Local video file deleted:', filePath);
+                  }
+                } catch (error) {
+                  console.error('Error uploading video:', error);
+                }
+              } catch (uploadError) {
+                console.error('Error uploading video:', uploadError);
+              }
+            })();
+          } else {
+            console.log('No video file to upload');
+          }
+        } catch (videoError) {
+          console.error('Error stopping video recording:', videoError);
+        }
+      };
+
+      handleStopAndUploadVideo();
+
       submitResult();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -274,9 +362,6 @@ const FaceScannerCamera = () => {
       reading_id,
     });
 
-    // Frames are deleted in handleSendFrames after successful upload to bucket
-    // No need to delete here
-
     await proceedToReportScreen();
   };
 
@@ -335,6 +420,24 @@ const FaceScannerCamera = () => {
         notifyApi('start_scan', true, {
           reading_id: readingId,
         });
+
+        // Start video recording before starting the session
+        try {
+          console.log('Starting video recording for reading:', readingId);
+          const videoPath = await startSDKVideoRecording(
+            session,
+            readingId,
+            0,
+            0,
+            30,
+          );
+          videoFilePathRef.current = videoPath;
+          console.log('Video recording started, path:', videoPath);
+        } catch (videoError: any) {
+          console.error('Error starting video recording:', videoError);
+          // Continue with scan even if video recording fails
+        }
+
         await session?.start(+binahConfig?.scan_duration);
       } else {
         await session?.stop();
@@ -404,78 +507,6 @@ const FaceScannerCamera = () => {
     startFakeLoader();
   };
 
-  const handleSendFrames = async () => {
-    console.log('reading_id', reading_id);
-    if (!reading_id) {
-      errorToast(languages?.generic_error_message || 'No reading ID available');
-      return;
-    }
-
-    try {
-      showLoader();
-
-      console.log('reading_id', reading_id);
-      // Check if there are any frames to send
-      const frames = await listFaceScanFrames(reading_id);
-      if (frames.length === 0) {
-        hideLoader();
-        errorToast('No frames found to send');
-        return;
-      }
-
-      // Get presigned URL for uploading zip file
-      const presignedUrlResponse = await getUserScanImagePresignedUrl(
-        reading_id,
-        true, // isZip = true
-      );
-      console.log('Presigned URL response:', presignedUrlResponse);
-
-      if (!presignedUrlResponse?.upload_url) {
-        throw new Error('No upload URL received from server');
-      }
-
-      // Zip all frames
-      const zipFilePath = await zipFaceScanFrames(reading_id);
-      console.log('zipFilePath', zipFilePath);
-
-      // Read zip file as binary
-      const zipBinaryData = await readZipFileAsBinary(zipFilePath);
-
-      // Upload zip file to presigned URL using PUT request
-      await uploadToPresignedUrl(
-        presignedUrlResponse.upload_url,
-        zipBinaryData,
-        'application/zip',
-      );
-      console.log('Zip file uploaded successfully to presigned URL');
-
-      // Clean up zip file after successful upload
-      try {
-        const exists = await RNFS.exists(zipFilePath);
-        if (exists) {
-          await RNFS.unlink(zipFilePath);
-        }
-      } catch (cleanupError) {
-        console.error('Error cleaning up zip file:', cleanupError);
-      }
-
-      // Delete frames only after successful upload to bucket
-      try {
-        await deleteFaceScanFrames(reading_id);
-        console.log('Frames deleted after successful upload');
-      } catch (deleteError) {
-        console.error('Error deleting frames after upload:', deleteError);
-      }
-
-      hideLoader();
-      successToast('Frames sent successfully');
-    } catch (error) {
-      hideLoader();
-      console.error('Error sending frames:', error);
-      errorToast(languages?.generic_error_message || 'Failed to send frames');
-    }
-  };
-
   const handleRefresh = async () => {
     try {
       setIsRefreshing(true);
@@ -507,7 +538,7 @@ const FaceScannerCamera = () => {
   }
 
   return (
-    <BackgroundImage className="h-full" style={styles.container}>
+    <BackgroundImage className="h-full flex-1" style={styles.container}>
       <SafeAreaScrollView
         contentContainerStyle={styles.contentContainer}
         className="h-full"
@@ -523,7 +554,6 @@ const FaceScannerCamera = () => {
             progress={progress}
             readingId={reading_id}
             imageValidity={imageValidity}
-            fakeRecording={fakeRecording}
           />
         </View>
         <View className="justify-between flex-grow py-4">

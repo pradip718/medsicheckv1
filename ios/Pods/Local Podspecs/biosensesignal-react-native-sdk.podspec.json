@@ -19,28 +19,7 @@
   "dependencies": {
     "React-Core": [
 
-    ],
-    "React-Codegen": [
-
-    ],
-    "RCT-Folly": [
-
-    ],
-    "RCTRequired": [
-
-    ],
-    "RCTTypeSafety": [
-
-    ],
-    "ReactCommon/turbomodule/core": [
-
     ]
   },
-  "vendored_frameworks": "BiosenseSignal.xcframework",
-  "compiler_flags": "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -DRCT_NEW_ARCH_ENABLED=1",
-  "pod_target_xcconfig": {
-    "HEADER_SEARCH_PATHS": "\"$(PODS_ROOT)/boost\"",
-    "OTHER_CPLUSPLUSFLAGS": "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
-    "CLANG_CXX_LANGUAGE_STANDARD": "c++17"
-  }
+  "vendored_frameworks": "BiosenseSignal.xcframework"
 }
