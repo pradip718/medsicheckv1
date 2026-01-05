@@ -64,6 +64,7 @@
   "initiate_recording_title": "Ready to measure your vital signs?",
   "initiate_recording_msg": "Sit still, ensure your face is evenly illuminated and there is no light source in the background",
   "measure_button_txt": "Measure Now",
+  "enable_video_recording": "true",
 
   "during_recording_title": "Measuring your vitals...",
   "during_recording_msg": "Hold on, all results will appear in few seconds...",

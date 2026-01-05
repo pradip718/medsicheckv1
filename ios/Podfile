@@ -12,7 +12,7 @@
  node_require('react-native/scripts/react_native_pods.rb')
  node_require('react-native-permissions/scripts/setup.rb')
 
-platform :ios, min_ios_version_supported
+ platform :ios, '15.5'
 prepare_react_native_project!
 
 setup_permissions([
@@ -69,6 +69,13 @@ abstract_target 'MedsiCheckCommonPods' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # Force all pods to compile with iOS 15.5
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.5'
+      end
+    end
 
     bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
     def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)

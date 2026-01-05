@@ -145,7 +145,7 @@
 		796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-MedsiCheck-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
 		8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
-		98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MedsiCheck/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MedsiCheck/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; sourceTree = "<group>"; };
 		AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; sourceTree = "<group>"; };
 		AE962B632DA3AE6700C86AAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1289,7 +1289,7 @@
 				INFOPLIST_FILE = "MedsiCheck dev-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Medsi Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1326,7 +1326,7 @@
 				INFOPLIST_FILE = "MedsiCheck dev-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Medsi Dev";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
