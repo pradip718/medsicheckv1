@@ -89,3 +89,15 @@ ios/DerivedData/
 # Hermes engine artifacts
 ios/Pods/hermes-engine-artifacts/
 ios/Pods/hermes-engine/destroot/
+
+# SDK package files (large .tgz files)
+*.tgz
+BiosenseSignal_ReactNative_SDK_*.tgz
+
+# Android build artifacts (APK, AAB, build outputs)
+*.apk
+*.aab
+android/app/build/
+android/build/
+**/build/intermediates/
+**/build/outputs/
