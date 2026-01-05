@@ -22,6 +22,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import RNFS from 'react-native-fs';
 import uuid from 'react-native-uuid';
 import {twMerge} from 'tailwind-merge';
 import useAlertStore from '../../../store/alertStore';
@@ -32,8 +33,12 @@ import useLoaderStore from '../../../store/loaderStore';
 import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
+import {
+  startSDKVideoRecording,
+  stopSDKVideoRecording,
+} from '../../../utils/sdkVideoUpload';
 import {errorToast} from '../../../utils/toast';
-import {syncWebScan} from '../../api/report';
+import {getUserScanImagePresignedUrl, syncWebScan} from '../../api/report';
 import {postCaptureUserActivity} from '../../api/user';
 import BottomAlert from '../../components/AlertModal/BottomAlert';
 import BackgroundImage from '../../components/BackgroundImage';
@@ -89,6 +94,7 @@ const FaceScannerCamera = () => {
     useState<boolean>(false);
   const [imageValidityJSON, setImageValidityJSON] = useState<ValidityCount>({});
   const [reading_id, setReadingId] = useState<string>('');
+  const videoFilePathRef = React.useRef<string | null>(null);
   const [visible, setVisible] = useState<boolean>(false);
   const [isOngoingSessions, setIsOngoingSessions] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -188,6 +194,111 @@ const FaceScannerCamera = () => {
 
   useEffect(() => {
     if (didFinishedMeasuring && finalValue) {
+      // Stop video recording and upload using presigned URL (non-blocking)
+      const handleStopAndUploadVideo = async () => {
+        if (!session || !reading_id) {
+          return;
+        }
+
+        // Check if video recording is enabled
+        const isVideoRecordingEnabled =
+          languages?.enable_video_recording === 'true';
+        if (!isVideoRecordingEnabled) {
+          console.log('Video recording is disabled, skipping...');
+          return;
+        }
+
+        try {
+          console.log('Stopping video recording for reading:', reading_id);
+          const videoPath = await stopSDKVideoRecording(session);
+
+          if (videoPath) {
+            videoFilePathRef.current = videoPath;
+            console.log('Video recording stopped, path:', videoPath);
+
+            // Upload video using presigned URL (non-blocking, runs in background)
+            (async () => {
+              try {
+                console.log(
+                  'Getting presigned URL for video upload:',
+                  reading_id,
+                );
+
+                const presignedUrlResponse = await getUserScanImagePresignedUrl(
+                  reading_id,
+                  false,
+                );
+                console.log('Presigned URL response:', presignedUrlResponse);
+
+                if (!presignedUrlResponse?.upload_url) {
+                  throw new Error('No upload URL received from server');
+                }
+
+                // Upload raw binary via RNFS.uploadFiles with binaryStreamOnly
+                const filePath = videoPath.replace('file://', '');
+                const fileInfo = await RNFS.stat(filePath);
+
+                console.log(
+                  'Uploading video file via RNFS.uploadFiles:',
+                  filePath,
+                );
+
+                try {
+                  const uploadResult = await RNFS.uploadFiles({
+                    toUrl: presignedUrlResponse.upload_url,
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'video/mp4', // must match backend signing
+                    },
+                    files: [
+                      {
+                        name: 'video',
+                        filepath: filePath,
+                        filename: 'video.mp4', // static
+                        filetype: 'video/mp4',
+                      },
+                    ],
+                    binaryStreamOnly: true, // ensures raw bytes only
+                    begin: () => console.log('Video upload started'),
+                    progress: (data: any) => {
+                      const uploadProgress =
+                        (data.totalBytesSent / fileInfo.size) * 100;
+                      console.log(
+                        `Upload progress: ${uploadProgress.toFixed(2)}%`,
+                      );
+                    },
+                  }).promise;
+
+                  if (![200, 204].includes(uploadResult.statusCode)) {
+                    throw new Error(
+                      `Upload failed: ${uploadResult.statusCode} ${uploadResult.body}`,
+                    );
+                  }
+
+                  console.log('Video uploaded successfully');
+
+                  // Clean up local file
+                  if (await RNFS.exists(filePath)) {
+                    await RNFS.unlink(filePath);
+                    console.log('Local video file deleted:', filePath);
+                  }
+                } catch (error) {
+                  console.error('Error uploading video:', error);
+                }
+              } catch (uploadError) {
+                console.error('Error uploading video:', uploadError);
+              }
+            })();
+          } else {
+            console.log('No video file to upload');
+          }
+        } catch (videoError) {
+          console.error('Error stopping video recording:', videoError);
+        }
+      };
+
+      handleStopAndUploadVideo();
+
       submitResult();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -317,6 +428,28 @@ const FaceScannerCamera = () => {
         notifyApi('start_scan', true, {
           reading_id: readingId,
         });
+
+        // Start video recording before starting the session (if enabled)
+        const isVideoRecordingEnabled =
+          languages?.enable_video_recording === 'true';
+        if (isVideoRecordingEnabled) {
+          try {
+            console.log('Starting video recording for reading:', readingId);
+            const videoPath = await startSDKVideoRecording(
+              session,
+              readingId,
+              0,
+              0,
+              30,
+            );
+            videoFilePathRef.current = videoPath;
+            console.log('Video recording started, path:', videoPath);
+          } catch (videoError: any) {
+            console.error('Error starting video recording:', videoError);
+            // Continue with scan even if video recording fails
+          }
+        }
+
         await session?.start(+binahConfig?.scan_duration);
       } else {
         await session?.stop();
@@ -417,7 +550,7 @@ const FaceScannerCamera = () => {
   }
 
   return (
-    <BackgroundImage className="h-full" style={styles.container}>
+    <BackgroundImage className="h-full flex-1" style={styles.container}>
       <SafeAreaScrollView
         contentContainerStyle={styles.contentContainer}
         className="h-full"
@@ -468,24 +601,28 @@ const FaceScannerCamera = () => {
           ) : null}
 
           {!didFinishedMeasuring && !fakeRecording && (
-            <View className="px-2 py-1">
-              <RoundedButton
-                onPress={handleMeasureNowPress}
-                loading={
-                  fakeRecording || isResultSubmitting || isPostOnboardingPending
-                }
-                disabled={
-                  fakeRecording ||
-                  isResultSubmitting ||
-                  isPostOnboardingPending ||
-                  !isEnabled ||
-                  !rescanConfigurations?.rescan_flag
-                }>
-                <CustomText className="text-xl text-white font-isidoraSemiBold">
-                  {languages?.measure_button_txt}
-                </CustomText>
-              </RoundedButton>
-            </View>
+            <>
+              <View className="px-2 py-1">
+                <RoundedButton
+                  onPress={handleMeasureNowPress}
+                  loading={
+                    fakeRecording ||
+                    isResultSubmitting ||
+                    isPostOnboardingPending
+                  }
+                  disabled={
+                    fakeRecording ||
+                    isResultSubmitting ||
+                    isPostOnboardingPending ||
+                    !isEnabled ||
+                    !rescanConfigurations?.rescan_flag
+                  }>
+                  <CustomText className="text-xl text-white font-isidoraSemiBold">
+                    {languages?.measure_button_txt}
+                  </CustomText>
+                </RoundedButton>
+              </View>
+            </>
           )}
         </View>
       </SafeAreaScrollView>
