@@ -4,16 +4,16 @@ import {
   StackActions,
   useNavigation,
 } from '@react-navigation/native';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {AxiosError} from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import {
   HealthMonitorException,
   SessionState,
   useSessionState,
 } from 'biosensesignal-react-native-sdk';
-import {assign, isArray, isString} from 'lodash';
+import { assign, isArray, isString } from 'lodash';
 import moment from 'moment';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Linking,
@@ -24,30 +24,30 @@ import {
 } from 'react-native';
 import RNFS from 'react-native-fs';
 import uuid from 'react-native-uuid';
-import {twMerge} from 'tailwind-merge';
+import { twMerge } from 'tailwind-merge';
 import useAlertStore from '../../../store/alertStore';
 import useBinahConfigStore from '../../../store/binahConfigStore';
 import useHealthRiskStore from '../../../store/healthRisksStore';
 import useLanguageStore from '../../../store/languageStore';
 import useLoaderStore from '../../../store/loaderStore';
-import {useAIReportFacescanStore} from '../../../store/smartReportStore';
-import {MainStackParamList} from '../../../types/navigation';
-import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
+import { useAIReportFacescanStore } from '../../../store/smartReportStore';
+import { MainStackParamList } from '../../../types/navigation';
+import { SCAN_SESSION_STATUS, USER_ACTIVITY } from '../../../types/readings';
 import {
   startSDKVideoRecording,
   stopSDKVideoRecording,
 } from '../../../utils/sdkVideoUpload';
-import {errorToast} from '../../../utils/toast';
-import {getUserScanImagePresignedUrl, syncWebScan} from '../../api/report';
-import {postCaptureUserActivity} from '../../api/user';
+import { errorToast } from '../../../utils/toast';
+import { getUserScanImagePresignedUrl, syncWebScan } from '../../api/report';
+import { postCaptureUserActivity } from '../../api/user';
 import BottomAlert from '../../components/AlertModal/BottomAlert';
 import BackgroundImage from '../../components/BackgroundImage';
 import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
 import SafeAreaScrollView from '../../components/SafeAreaScrollView';
 import CustomText from '../../components/Text';
-import {RESCAN_CONFIGURATION} from '../../constants/hooks';
-import {useGetUserReadingDetail} from '../../hooks/api/readings';
+import { RESCAN_CONFIGURATION } from '../../constants/hooks';
+import { useGetUserReadingDetail } from '../../hooks/api/readings';
 import useGetOnboarding from '../../hooks/api/useGetOnboarding';
 import useGetRescanConfiguration from '../../hooks/api/useGetRescanConfiguration';
 import usePostOnboardingSteps from '../../hooks/api/usePostOnboardingSteps';
@@ -57,7 +57,7 @@ import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useInitializeBinahSession from '../../hooks/useInitializeBinahSession';
 import useScreenOrientation from '../../hooks/useScreenOrientation';
 import ScanReport from './ScanReport';
-import {ImageValidityView} from './components/ImageValidityView';
+import { ImageValidityView } from './components/ImageValidityView';
 import RenderCamera from './components/RenderCamera';
 import RenderInformationCard from './components/RenderInformationCard';
 import StopButton from './components/StopButton';
