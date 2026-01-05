@@ -29,7 +29,6 @@ const RenderCamera = ({
 }: RenderCameraProps) => {
   const ref: RefObject<ViewShot> = useRef(null);
   const {languages} = useLanguageStore();
-
   const {mutateAsync: uploadImage} = useUploadFacescanImage();
 
   const convertToBinaryAndSend = async (base64Data: string) => {
