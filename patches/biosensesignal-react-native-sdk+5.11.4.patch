@@ -15,6 +15,7 @@ diff --git a/android/src/main/java/com/biosensesignal/react_native_sdk/SessionMa
 +import android.os.HandlerThread
 +import java.nio.ByteBuffer
 +import java.io.File
++import kotlin.math.abs
  import com.biosensesignal.sdk.api.HealthMonitorException
  import com.biosensesignal.sdk.api.SessionEnabledVitalSigns
  import com.biosensesignal.sdk.api.alerts.ErrorData
@@ -356,7 +357,7 @@ diff --git a/android/src/main/java/com/biosensesignal/react_native_sdk/SessionMa
 +                val bitmapAspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
 +                val videoAspectRatio = videoWidth.toFloat() / videoHeight.toFloat()
 +                android.util.Log.w("SessionManager", "Video recording: Bitmap dimensions mismatch - bitmap: ${bitmap.width}x${bitmap.height} (AR: ${String.format("%.2f", bitmapAspectRatio)}), video: ${videoWidth}x${videoHeight} (AR: ${String.format("%.2f", videoAspectRatio)}), scaling required")
-+                if (kotlin.math.abs(bitmapAspectRatio - videoAspectRatio) > 0.01f) {
++                if (abs(bitmapAspectRatio - videoAspectRatio) > 0.01f) {
 +                    android.util.Log.e("SessionManager", "Video recording: ASPECT RATIO MISMATCH - This will cause stretching! Bitmap AR: ${String.format("%.2f", bitmapAspectRatio)}, Video AR: ${String.format("%.2f", videoAspectRatio)}")
 +                }
 +                processedBitmap = Bitmap.createScaledBitmap(bitmap, videoWidth, videoHeight, true)
@@ -881,21 +882,7 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
      func getSessionState(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
          resolve(SessionManager.shared.getSessionState()?.rawValue)
 
-diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
-+++ b/ios/SessionManager.swift	2026-01-05 12:32:29
-@@ -8,6 +8,12 @@
- import Foundation
- import Combine
- import React
-+import AVFoundation
-+import CoreVideo
-+import UIKit
-+import AVFoundation
-+import CoreVideo
-+import UIKit
- 
- 
- class SessionManager:
+diff --git a/src/session/Session.ts b/src/session/Session.ts
 @@ -27,6 +33,20 @@
      private var ppgScanners = [String: PPGDeviceScanner]()
      
