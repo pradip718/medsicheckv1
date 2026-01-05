@@ -200,6 +200,14 @@ const FaceScannerCamera = () => {
           return;
         }
 
+        // Check if video recording is enabled
+        const isVideoRecordingEnabled =
+          languages?.enable_video_recording === 'true';
+        if (!isVideoRecordingEnabled) {
+          console.log('Video recording is disabled, skipping...');
+          return;
+        }
+
         try {
           console.log('Stopping video recording for reading:', reading_id);
           const videoPath = await stopSDKVideoRecording(session);
@@ -421,21 +429,25 @@ const FaceScannerCamera = () => {
           reading_id: readingId,
         });
 
-        // Start video recording before starting the session
-        try {
-          console.log('Starting video recording for reading:', readingId);
-          const videoPath = await startSDKVideoRecording(
-            session,
-            readingId,
-            0,
-            0,
-            30,
-          );
-          videoFilePathRef.current = videoPath;
-          console.log('Video recording started, path:', videoPath);
-        } catch (videoError: any) {
-          console.error('Error starting video recording:', videoError);
-          // Continue with scan even if video recording fails
+        // Start video recording before starting the session (if enabled)
+        const isVideoRecordingEnabled =
+          languages?.enable_video_recording === 'true';
+        if (isVideoRecordingEnabled) {
+          try {
+            console.log('Starting video recording for reading:', readingId);
+            const videoPath = await startSDKVideoRecording(
+              session,
+              readingId,
+              0,
+              0,
+              30,
+            );
+            videoFilePathRef.current = videoPath;
+            console.log('Video recording started, path:', videoPath);
+          } catch (videoError: any) {
+            console.error('Error starting video recording:', videoError);
+            // Continue with scan even if video recording fails
+          }
         }
 
         await session?.start(+binahConfig?.scan_duration);
