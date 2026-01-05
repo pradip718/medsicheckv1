@@ -94,7 +94,6 @@
     "react-native-view-shot": "^3.8.0",
     "react-native-walkthrough-tooltip": "^1.6.0",
     "react-native-webview": "^13.8.7",
-    "react-native-zip-archive": "7.0.2",
     "sp-react-native-in-app-updates": "^1.4.0",
     "tailwind-merge": "^2.3.0",
     "web-streams-polyfill": "^4.0.0",

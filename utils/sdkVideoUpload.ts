@@ -11,9 +11,10 @@ export async function startSDKVideoRecording(
   height: number = 0,
   fps: number = 30,
 ): Promise<string> {
-  const videoFileName = `facescan-${
-    Array.isArray(readingId) ? readingId.join('-') : readingId
-  }-${Date.now()}.mp4`;
+  const readingIdStr = Array.isArray(readingId)
+    ? readingId.join('-')
+    : readingId;
+  const videoFileName = `facescan-${readingIdStr}-${Date.now()}.mp4`;
   const videoOutputPath = `${RNFS.DocumentDirectoryPath}/${videoFileName}`;
 
   await session.startVideoRecording(videoOutputPath, width, height, fps);

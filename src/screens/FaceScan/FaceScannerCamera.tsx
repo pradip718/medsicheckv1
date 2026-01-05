@@ -129,6 +129,40 @@ const FaceScannerCamera = () => {
     setDidFinishedMeasuring(false);
   };
 
+  // Stop video recording and delete local file (no upload) - used when user stops early
+  const stopAndDeleteVideo = async () => {
+    if (!session) {
+      return;
+    }
+
+    // Check if video recording is enabled
+    const isVideoRecordingEnabled =
+      languages?.enable_video_recording === 'true';
+    if (!isVideoRecordingEnabled) {
+      return;
+    }
+
+    try {
+      console.log('Stopping video recording (user stopped early)');
+      const videoPath = await stopSDKVideoRecording(session);
+
+      if (videoPath) {
+        // Delete local video file
+        const filePath = videoPath.replace('file://', '');
+        if (await RNFS.exists(filePath)) {
+          await RNFS.unlink(filePath);
+          console.log(
+            'Local video file deleted (user stopped early):',
+            filePath,
+          );
+        }
+        videoFilePathRef.current = null;
+      }
+    } catch (videoError) {
+      console.error('Error stopping/deleting video recording:', videoError);
+    }
+  };
+
   const resetMeasurement = async (
     type: USER_ACTIVITY,
     msg?: string,
@@ -138,6 +172,9 @@ const FaceScannerCamera = () => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+
+    // Stop video recording and delete local file when user stops (no upload)
+    await stopAndDeleteVideo();
 
     clearFaceScan();
     syncWebScan(type as SCAN_SESSION_STATUS, reading_id, {
