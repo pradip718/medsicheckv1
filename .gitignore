@@ -72,3 +72,15 @@ local.properties
 
 # Optional: Ignore the entire build output directory of Android
 **/build/
+
+# iOS CocoaPods
+ios/Pods/
+ios/Podfile.lock
+
+# Android C++ build artifacts
+android/app/.cxx/
+android/.cxx/
+
+# React Native
+.expo/
+.expo-shared/
