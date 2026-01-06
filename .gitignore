@@ -101,6 +101,3 @@ android/app/build/
 android/build/
 **/build/intermediates/
 **/build/outputs/
-
-# Android Gradle cache
-android/.gradle/
