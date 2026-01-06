@@ -1,7 +1,7 @@
 import {RouteProp} from '@react-navigation/native';
-import {SafeAreaView} from 'moti';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {MainStackParamList} from '../../../../types/navigation';
 import Navbar from '../../../components/Navbar';
 import Report from '../../../components/Report';

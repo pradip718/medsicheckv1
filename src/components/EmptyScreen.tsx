@@ -1,6 +1,6 @@
 import {Text, View} from 'moti';
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../store/languageStore';
 import Navbar from './Navbar';
 

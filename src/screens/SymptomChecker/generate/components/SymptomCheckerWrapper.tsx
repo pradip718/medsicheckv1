@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {
@@ -16,21 +16,21 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import {MainStackParamList} from '../../../../../types/navigation';
 import useLanguageStore from '../../../../../store/languageStore';
-import useSymptomChecker from '../../../../hooks/useSymptomChecker';
-import {getSymptomQuestion} from '../../../../api/symptomchecker';
+import {MainStackParamList} from '../../../../../types/navigation';
 import {errorToast} from '../../../../../utils/toast';
+import {getSymptomQuestion} from '../../../../api/symptomchecker';
 import {
   QUESTIONNAIRE_SPACING,
   SCREEN_PADDING_TOP,
 } from '../../../../constants/Styles';
+import useSymptomChecker from '../../../../hooks/useSymptomChecker';
 // import Icon from '../../../../components/Icon';
+import colors from '../../../../../colors';
+import {goToHome} from '../../../../../utils/navigation';
 import RoundedButton from '../../../../components/RoundedButton';
 import CustomText from '../../../../components/Text';
 import {SEMIBOLD} from '../../../../constants/Fonts';
-import colors from '../../../../../colors';
-import {goToHome} from '../../../../../utils/navigation';
 // import customColor from '../../../../theme/customColor';
 
 interface SymptomCheckerWrapperProps {
@@ -92,13 +92,12 @@ const SymptomCheckerWrapper = ({
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={[styles.container, {paddingBottom: bottom}]}>
         <ScrollView
           style={styles.flex}
           contentContainerStyle={[
             styles.scrollViewContentContainer,
             {paddingTop: top + SCREEN_PADDING_TOP},
-            Platform.OS === 'ios' && {paddingBottom: bottom},
           ]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled">

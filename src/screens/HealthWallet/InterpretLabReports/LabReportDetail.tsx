@@ -6,7 +6,8 @@ import {
 } from '@react-navigation/native';
 import {AxiosError} from 'axios';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, View, useWindowDimensions} from 'react-native';
+import {View, useWindowDimensions} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../store/languageStore';

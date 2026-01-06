@@ -1,6 +1,7 @@
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../store/languageStore';
 import customColor from '../../theme/customColor';
 import Icon from '../Icon';
@@ -16,91 +17,93 @@ const UnverifiedCustomTabBar = ({
   const {languages} = useLanguageStore();
 
   return (
-    <View className="relative space-x-16" style={styles.backgroundImage}>
-      {routes.map((route, index: number) => {
-        const isFocused = index === activeIndex;
+    <SafeAreaView>
+      <View className="relative space-x-16" style={styles.backgroundImage}>
+        {routes.map((route, index: number) => {
+          const isFocused = index === activeIndex;
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
 
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name, route.params);
+            }
+          };
+
+          const onLongPress = () => {
+            navigation.emit({
+              type: 'tabLongPress',
+              target: route.key,
+            });
+          };
+
+          if (route.name === 'UnverifiedHome') {
+            return (
+              <TouchableOpacity
+                key={`${route.name}-${index}`}
+                className="h-[80px] pt-4 flex-1 items-end"
+                onPress={onPress}
+                onLongPress={onLongPress}>
+                <View
+                  className={`h-14 w-16 justify-center items-center space-y-1  ${
+                    isFocused ? 'bg-white rounded-xl' : ''
+                  }`}>
+                  <Icon
+                    name="Home"
+                    size={24}
+                    color={
+                      isFocused ? customColor.blueBerry : customColor.extraGrey
+                    }
+                  />
+                  <CustomText
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    className={`w-[50] text-center ${
+                      isFocused ? 'font-isidoraBold' : ''
+                    }`}>
+                    {languages?.home}
+                  </CustomText>
+                </View>
+              </TouchableOpacity>
+            );
           }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        if (route.name === 'UnverifiedHome') {
-          return (
-            <TouchableOpacity
-              key={`${route.name}-${index}`}
-              className="h-[80px] pt-4 flex-1 items-end"
-              onPress={onPress}
-              onLongPress={onLongPress}>
-              <View
-                className={`h-14 w-16 justify-center items-center space-y-1  ${
-                  isFocused ? 'bg-white rounded-xl' : ''
-                }`}>
-                <Icon
-                  name="Home"
-                  size={24}
-                  color={
-                    isFocused ? customColor.blueBerry : customColor.extraGrey
-                  }
-                />
-                <CustomText
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  className={`w-[50] text-center ${
-                    isFocused ? 'font-isidoraBold' : ''
+          if (route.name === 'UnverifiedProfile') {
+            return (
+              <TouchableOpacity
+                key={`${route.name}-${index}`}
+                className="h-[80px] flex-1 pt-4"
+                onPress={onPress}
+                onLongPress={onLongPress}>
+                <View
+                  className={`h-14 w-16 justify-center items-center space-y-1 ${
+                    isFocused ? 'bg-white rounded-xl' : ''
                   }`}>
-                  {languages?.home}
-                </CustomText>
-              </View>
-            </TouchableOpacity>
-          );
-        }
-        if (route.name === 'UnverifiedProfile') {
-          return (
-            <TouchableOpacity
-              key={`${route.name}-${index}`}
-              className="h-[80px] flex-1 pt-4"
-              onPress={onPress}
-              onLongPress={onLongPress}>
-              <View
-                className={`h-14 w-16 justify-center items-center space-y-1 ${
-                  isFocused ? 'bg-white rounded-xl' : ''
-                }`}>
-                <Icon
-                  name="profile"
-                  size={20}
-                  color={
-                    isFocused ? customColor.blueBerry : customColor.extraGrey
-                  }
-                />
-                <CustomText
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  className={`w-[50] text-center ${
-                    isFocused ? 'font-isidoraBold' : ''
-                  }`}>
-                  {languages?.profile}
-                </CustomText>
-              </View>
-            </TouchableOpacity>
-          );
-        }
-      })}
-    </View>
+                  <Icon
+                    name="profile"
+                    size={20}
+                    color={
+                      isFocused ? customColor.blueBerry : customColor.extraGrey
+                    }
+                  />
+                  <CustomText
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    className={`w-[50] text-center ${
+                      isFocused ? 'font-isidoraBold' : ''
+                    }`}>
+                    {languages?.profile}
+                  </CustomText>
+                </View>
+              </TouchableOpacity>
+            );
+          }
+        })}
+      </View>
+    </SafeAreaView>
   );
 };
 

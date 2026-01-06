@@ -1,6 +1,7 @@
 import {RouteProp} from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {MainStackParamList} from '../../../types/navigation';
 import Navbar from '../../components/Navbar';
 import ConclusionInformation from './ConclusionInformation';

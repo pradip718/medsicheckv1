@@ -1,6 +1,7 @@
 import {AnimatePresence, Image, MotiView, View} from 'moti';
 import React, {useEffect, useState} from 'react';
-import {BackHandler, ImageSourcePropType, SafeAreaView} from 'react-native';
+import {BackHandler, ImageSourcePropType} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {InternetConnected, InternetDisconnected} from '../../assets';
 import useLanguageStore from '../../store/languageStore';
 import {isAndroid} from '../../utils';

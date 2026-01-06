@@ -7,7 +7,6 @@ import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {
   ImageBackground,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   ViewStyle,
@@ -16,6 +15,7 @@ import BootSplash from 'react-native-bootsplash';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {AuthBackground} from '../../../../assets';
 import AppRoute from '../../../../navigation/AppRoute';
 import useLanguageStore from '../../../../store/languageStore';
@@ -176,6 +176,8 @@ const Register = () => {
   };
 
   const renderInputContent = () => {
+    const isSubmitting = isSigningUp || isLogging;
+
     return (
       <>
         <Controller
@@ -194,6 +196,7 @@ const Register = () => {
                 className="bg-transparent"
                 textColor="white"
                 underlineColor="black"
+                disabled={isSubmitting}
                 autoCapitalize="none"
                 inputMode="email"
                 activeUnderlineColor="rgba(255, 255, 255, 0.45)"
@@ -218,6 +221,7 @@ const Register = () => {
                   onChange={onChange}
                   value={value}
                   onBlur={onBlur}
+                  disabled={isSubmitting}
                 />
                 <CustomText className="text-base font-isidoraMedium text-red-500">
                   {errors?.formattedPhonenumber?.message}
@@ -244,6 +248,7 @@ const Register = () => {
                 textColor="white"
                 underlineColor="black"
                 activeUnderlineColor="rgba(255, 255, 255, 0.45)"
+                disabled={isSubmitting}
                 secureTextEntry={!showPassword}
                 right={
                   <TextInput.Icon
@@ -281,6 +286,7 @@ const Register = () => {
                 underlineColor="black"
                 activeUnderlineColor="rgba(255, 255, 255, 0.45)"
                 placeholderTextColor="rgba(255, 255, 255, 0.45)"
+                disabled={isSubmitting}
                 secureTextEntry={!showConfirmPassword}
                 right={
                   <TextInput.Icon

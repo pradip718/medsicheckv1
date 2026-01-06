@@ -9,6 +9,8 @@ import useVoiceScanStore from '../../../store/voiceScanStore';
 import {isVoiceScanReport} from '../../../types/api_response';
 import {MainStackParamList} from '../../../types/navigation';
 import {shouldGoToVoiceScan} from '../../../utils/navigation';
+import {errorToast} from '../../../utils/toast';
+import {getSymptomQuestion} from '../../api/symptomchecker';
 import Icon from '../../components/Icon';
 import Navbar from '../../components/Navbar';
 import RoundedButton from '../../components/RoundedButton';
@@ -20,6 +22,7 @@ import {
   useGetLabReportQuestionnaire,
   useGetMiscellanouseFileDetails,
 } from '../../hooks/api/report';
+import {useGetSymptomReports} from '../../hooks/api/symptomchecker';
 import useGetAIQuestionnaire from '../../hooks/api/useGetAIQuestionnaire';
 import useGetUserReading from '../../hooks/api/useGetUserReading';
 import {
@@ -28,13 +31,10 @@ import {
 } from '../../hooks/api/voiceScan';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import usePrepareFacescan from '../../hooks/usePrepareFacescan';
+import useSymptomChecker from '../../hooks/useSymptomChecker';
 import customColor from '../../theme/customColor';
 import {HEALTH_WALLET_CATEGORY_LIST} from './data';
 import {HealthWalletCategory} from './type';
-import {useGetSymptomReports} from '../../hooks/api/symptomchecker';
-import {getSymptomQuestion} from '../../api/symptomchecker';
-import useSymptomChecker from '../../hooks/useSymptomChecker';
-import {errorToast} from '../../../utils/toast';
 
 const HealthWallet = () => {
   const {languages} = useLanguageStore();
@@ -212,6 +212,8 @@ const HealthWallet = () => {
         return generateAIReport;
       case 'interpret_lab_report':
         return generateLabReport;
+      case 'symptom_checker':
+        return generateSymptomCheckerReport;
       default:
         return () => {};
     }

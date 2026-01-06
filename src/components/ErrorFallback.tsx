@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/react-native';
 import {Text, View} from 'moti';
 import React, {useEffect} from 'react';
-import {SafeAreaView} from 'react-native';
 import {FallbackComponentProps} from 'react-native-error-boundary';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useAppStore from '../../store/appStore';
 import useLanguageStore from '../../store/languageStore';
 import useSignout from '../hooks/useSignout';

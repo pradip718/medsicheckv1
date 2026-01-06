@@ -15,13 +15,13 @@ import {
   ImageBackground,
   ImageSourcePropType,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {AuthBackground, QRCode} from '../../../../assets';
 import AppRoute from '../../../../navigation/AppRoute';
 import useAppStore from '../../../../store/appStore';

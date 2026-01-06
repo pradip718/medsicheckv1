@@ -8,8 +8,9 @@ import {
   useRoute,
 } from '@react-navigation/native';
 
-import {MainStackParamList} from '../../../../types/navigation';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../../store/languageStore';
+import {MainStackParamList} from '../../../../types/navigation';
 import {goToHome} from '../../../../utils/navigation';
 import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
@@ -30,29 +31,33 @@ const SymptomCheckerGenerating = () => {
   };
 
   return (
-    <ImageBackground
-      source={require('../../../../assets/images/generating_background.png')}
-      className="flex-1 p-4 pb-4 bg-white">
-      <View className="items-center justify-center flex-1">
-        <Image
-          source={require('../../../../assets/images/SymptomChecker/symptom_generating.png')}
-          className="w-full h-96"
-          resizeMode="contain"
-        />
-        <View className="gap-4">
-          <Text style={styles.title}>
-            {languages?.generating_symptom_title}
-          </Text>
-          <Text style={styles.info}>{languages?.generating_symptom_info}</Text>
+    <SafeAreaView className="flex-1">
+      <ImageBackground
+        source={require('../../../../assets/images/generating_background.png')}
+        className="flex-1 p-4 pb-4 bg-white">
+        <View className="items-center justify-center flex-1">
+          <Image
+            source={require('../../../../assets/images/SymptomChecker/symptom_generating.png')}
+            className="w-full h-96"
+            resizeMode="contain"
+          />
+          <View className="gap-4">
+            <Text style={styles.title}>
+              {languages?.generating_symptom_title}
+            </Text>
+            <Text style={styles.info}>
+              {languages?.generating_symptom_info}
+            </Text>
+          </View>
         </View>
-      </View>
 
-      <RoundedButton onPress={onPress}>
-        <CustomText className="text-lg text-white font-isidoraSemiBold">
-          {params?.isProgress ? languages?.back : languages?.take_me_home}
-        </CustomText>
-      </RoundedButton>
-    </ImageBackground>
+        <RoundedButton onPress={onPress}>
+          <CustomText className="text-lg text-white font-isidoraSemiBold">
+            {params?.isProgress ? languages?.back : languages?.take_me_home}
+          </CustomText>
+        </RoundedButton>
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
 

@@ -8,23 +8,23 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {MainStackParamList} from '../../../../../types/navigation';
-import useLanguageStore from '../../../../../store/languageStore';
-import useSymptomChecker from '../../../../hooks/useSymptomChecker';
-import {getSymptomQuestion} from '../../../../api/symptomchecker';
-import {errorToast} from '../../../../../utils/toast';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import useLanguageStore from '../../../../../store/languageStore';
+import {MainStackParamList} from '../../../../../types/navigation';
+import {errorToast} from '../../../../../utils/toast';
+import {getSymptomQuestion} from '../../../../api/symptomchecker';
+import useSymptomChecker from '../../../../hooks/useSymptomChecker';
 // import Icon from '../../../../components/Icon';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import colors from '../../../../../colors';
+import {goToHome} from '../../../../../utils/navigation';
+import RoundedButton from '../../../../components/RoundedButton';
+import CustomText from '../../../../components/Text';
+import {SEMIBOLD} from '../../../../constants/Fonts';
 import {
   QUESTIONNAIRE_SPACING,
   SCREEN_PADDING_TOP,
 } from '../../../../constants/Styles';
-import {SEMIBOLD} from '../../../../constants/Fonts';
-import RoundedButton from '../../../../components/RoundedButton';
-import CustomText from '../../../../components/Text';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import colors from '../../../../../colors';
-import {goToHome} from '../../../../../utils/navigation';
 
 interface SymptomCheckerWrapperProps {
   children: React.ReactNode;
@@ -52,7 +52,7 @@ const SymptomCheckerKeyboardAvoidingWrapper = ({
   questionId,
 }: SymptomCheckerWrapperProps) => {
   console.log('🚀 ~ SymptomCheckerKeyboardAvoidingWrapper ~ isEdit:', isEdit);
-  const {top} = useSafeAreaInsets();
+  const {top, bottom} = useSafeAreaInsets();
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const languages = useLanguageStore(store => store.languages);
@@ -86,7 +86,7 @@ const SymptomCheckerKeyboardAvoidingWrapper = ({
 
   return (
     <>
-      <View style={[styles.container]}>
+      <View style={[styles.container, {paddingBottom: bottom}]}>
         <KeyboardAwareScrollView
           contentContainerStyle={[
             // styles.contentContainer,

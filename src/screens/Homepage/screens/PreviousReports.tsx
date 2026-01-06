@@ -4,12 +4,12 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {Modal, Portal} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../../store/languageStore';
 import {ReportPaginationReadingData} from '../../../../types/jsons';
 import {errorToast} from '../../../../utils/toast';

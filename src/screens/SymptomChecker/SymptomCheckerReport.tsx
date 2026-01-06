@@ -1,12 +1,3 @@
-import React, {useMemo, useState} from 'react';
-import {
-  Image,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-} from 'react-native';
 import {
   NavigationProp,
   // NavigationProp,
@@ -17,26 +8,35 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import {useQueryClient} from '@tanstack/react-query';
-import {MainStackParamList} from '../../../types/navigation';
+import React, {useMemo, useState} from 'react';
+import {
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import useLanguageStore from '../../../store/languageStore';
+import {SymptomCheckerDetail} from '../../../types/api_response';
+import {MainStackParamList} from '../../../types/navigation';
+import {errorToast} from '../../../utils/toast';
+import DeleteModal from '../../components/AlertModal/DeleteModal';
+import Icon from '../../components/Icon';
+import Loader from '../../components/Loader';
+import CustomText from '../../components/Text';
+import {BOLD, REGULAR, SEMIBOLD} from '../../constants/Fonts';
+import {SYMPTOM_CHECKER_REPORTS} from '../../constants/hooks';
 import {
   useDeleteSymptomReports,
   useGetSymptomReportDetails,
 } from '../../hooks/api/symptomchecker';
-import {SymptomCheckerDetail} from '../../../types/api_response';
-import {SYMPTOM_CHECKER_REPORTS} from '../../constants/hooks';
-import {errorToast} from '../../../utils/toast';
-import SymptomCheckerDetailHeader from './generate/components/details/SymptomCheckerDetailHeader';
+import useFullPageLoader from '../../hooks/useFullPageLoader';
 import SymptomCheckerAccordion from './generate/components/details/Accordion';
 import Findings from './generate/components/details/Findings';
 import ImmediateRecommendations from './generate/components/details/RecommendationItem';
-import Icon from '../../components/Icon';
-import {BOLD, REGULAR, SEMIBOLD} from '../../constants/Fonts';
+import SymptomCheckerDetailHeader from './generate/components/details/SymptomCheckerDetailHeader';
 import SymptomRateApp from './generate/components/details/SymptomRateApp';
-import CustomText from '../../components/Text';
-import DeleteModal from '../../components/AlertModal/DeleteModal';
-import useFullPageLoader from '../../hooks/useFullPageLoader';
-import Loader from '../../components/Loader';
 
 const SymptomCheckerReport = () => {
   const {params} =

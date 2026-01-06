@@ -6,8 +6,9 @@ import {
 import {useQueryClient} from '@tanstack/react-query';
 import _, {isEmpty} from 'lodash';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../../../store/languageStore';
 import useQuestionStore from '../../../../../store/questionStore';
 import {MainStackParamList} from '../../../../../types/navigation';
