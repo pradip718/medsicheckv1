@@ -1,16 +1,11 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AxiosError} from 'axios';
 import React, {useCallback} from 'react';
-import {
-  Alert,
-  PermissionsAndroid,
-  Platform,
-  SafeAreaView,
-  View,
-} from 'react-native';
+import {Alert, PermissionsAndroid, Platform, View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import Geolocation from 'react-native-geolocation-service';
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useAppStore from '../../store/appStore';
 import useAuthStore from '../../store/authStore';
 import useBinahConfigStore from '../../store/binahConfigStore';

@@ -16,6 +16,7 @@ import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-gesture-handler';
 import {PaperProvider} from 'react-native-paper';
 import 'react-native-reanimated';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import RootNavigator from './navigation';
 import {getLanguage} from './src/api/language';
@@ -131,7 +132,7 @@ function App(): JSX.Element {
   }
 
   return (
-    <>
+    <SafeAreaProvider>
       <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
       <QueryClientProvider client={queryClient}>
         <PaperProvider>
@@ -147,7 +148,7 @@ function App(): JSX.Element {
           </ErrorBoundary>
         </PaperProvider>
       </QueryClientProvider>
-    </>
+    </SafeAreaProvider>
   );
 }
 

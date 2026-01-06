@@ -4,6 +4,7 @@ import {isArray} from 'lodash';
 import React, {useEffect} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Badge} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {twMerge} from 'tailwind-merge';
 import {Medsi_Check_Navabar_img} from '../../../assets';
@@ -250,66 +251,68 @@ const CustomDrawer = () =>
     ];
 
     return (
-      <View className="flex-1" style={styles.container}>
-        <DrawerContentScrollView>
-          {/* <DrawerItemList {...props} /> */}
-          <View className="flex-grow items-center py-6">
-            <Image
-              source={Medsi_Check_Navabar_img as any}
-              style={styles.navbarImage}
-            />
-          </View>
-          <View className="px-4 mb-4">
-            <Profile
-              profileId={userAttributes?.profile_id || ''}
-              name={
-                userAttributes?.given_name || userAttributes?.family_name
-                  ? `${userAttributes?.given_name || ''} ${
-                      userAttributes?.family_name || ''
-                    }`
-                  : null
-              }
-              email={userAttributes?.email || ''}
-            />
-          </View>
-
-          {DRAWER_MENU?.map(eachMenu => (
-            <View className="my-2" key={eachMenu?.name}>
-              <MenuItem
-                name={eachMenu.name}
-                icon={eachMenu.icon}
-                action={eachMenu?.action}
-                iconType={eachMenu?.icon_type ?? ''}
-                disabled={eachMenu?.disabled || false}
+      <SafeAreaView className="flex-1">
+        <View className="flex-1" style={styles.container}>
+          <DrawerContentScrollView>
+            {/* <DrawerItemList {...props} /> */}
+            <View className="flex-grow items-center py-6">
+              <Image
+                source={Medsi_Check_Navabar_img as any}
+                style={styles.navbarImage}
               />
             </View>
-          ))}
-        </DrawerContentScrollView>
+            <View className="px-4 mb-4">
+              <Profile
+                profileId={userAttributes?.profile_id || ''}
+                name={
+                  userAttributes?.given_name || userAttributes?.family_name
+                    ? `${userAttributes?.given_name || ''} ${
+                        userAttributes?.family_name || ''
+                      }`
+                    : null
+                }
+                email={userAttributes?.email || ''}
+              />
+            </View>
 
-        <Pressable
-          className="items-center space-x-4 mt-4 flex-row pl-10 pr-2"
-          onPress={() => {
-            navigation.navigate('HelpDesk');
-          }}>
-          <Icon name={'helpdesk_1'} size={20} color={customColor.black} />
-          <CustomText className="text-sm font-isidoraSemiBold">
-            {languages?.help_desk}
-          </CustomText>
-          {hasUnreadMessage && (
-            <Badge className="absolute right-4 top-1" size={12} />
-          )}
-        </Pressable>
-        <TouchableOpacity
-          className="items-center space-x-4 mt-4 py-4 flex-row pl-10 pr-2"
-          onPress={() => {
-            setSignoutModalVisibility(true);
-          }}>
-          <Icon name={'sign_out'} size={20} color={customColor.black} />
-          <CustomText className="text-sm font-isidoraSemiBold">
-            {languages?.sign_out}
-          </CustomText>
-        </TouchableOpacity>
-      </View>
+            {DRAWER_MENU?.map(eachMenu => (
+              <View className="my-2" key={eachMenu?.name}>
+                <MenuItem
+                  name={eachMenu.name}
+                  icon={eachMenu.icon}
+                  action={eachMenu?.action}
+                  iconType={eachMenu?.icon_type ?? ''}
+                  disabled={eachMenu?.disabled || false}
+                />
+              </View>
+            ))}
+          </DrawerContentScrollView>
+
+          <Pressable
+            className="items-center space-x-4 mt-4 flex-row pl-10 pr-2"
+            onPress={() => {
+              navigation.navigate('HelpDesk');
+            }}>
+            <Icon name={'helpdesk_1'} size={20} color={customColor.black} />
+            <CustomText className="text-sm font-isidoraSemiBold">
+              {languages?.help_desk}
+            </CustomText>
+            {hasUnreadMessage && (
+              <Badge className="absolute right-4 top-1" size={12} />
+            )}
+          </Pressable>
+          <TouchableOpacity
+            className="items-center space-x-4 mt-4 py-4 flex-row pl-10 pr-2"
+            onPress={() => {
+              setSignoutModalVisibility(true);
+            }}>
+            <Icon name={'sign_out'} size={20} color={customColor.black} />
+            <CustomText className="text-sm font-isidoraSemiBold">
+              {languages?.sign_out}
+            </CustomText>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     );
   };
 

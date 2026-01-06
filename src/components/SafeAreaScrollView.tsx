@@ -1,6 +1,7 @@
 import React, {PropsWithChildren} from 'react';
-import {SafeAreaView, ScrollView, ScrollViewProps} from 'react-native';
+import {ScrollView, ScrollViewProps} from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {ErrorFallback} from './ErrorFallback';
 
 interface SafeAreaScrollViewProps extends ScrollViewProps {}

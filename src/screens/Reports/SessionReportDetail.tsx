@@ -9,13 +9,8 @@ import {entries, isEmpty, isObject} from 'lodash';
 import moment from 'moment';
 import {View} from 'moti';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {FlatList, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useAppStore from '../../../store/appStore';
 import useAuthStore from '../../../store/authStore';
 import useLanguageStore from '../../../store/languageStore';

@@ -1,7 +1,8 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {View, motify} from 'moti';
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   NavigationState,
   SceneMap,

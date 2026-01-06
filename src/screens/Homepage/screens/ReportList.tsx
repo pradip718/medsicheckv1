@@ -1,6 +1,7 @@
 import {RouteProp} from '@react-navigation/native';
 import React, {Suspense} from 'react';
-import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../../store/languageStore';
 import {HomepageParamList} from '../../../../types/navigation';
 import {onShare} from '../../../../utils/methods';

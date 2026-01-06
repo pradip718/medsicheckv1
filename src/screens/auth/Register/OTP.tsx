@@ -4,7 +4,6 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import {AxiosError} from 'axios';
-import {SafeAreaView} from 'moti';
 import React, {useState} from 'react';
 import {
   ImageBackground,
@@ -15,6 +14,7 @@ import {
 import {CodeField, Cursor} from 'react-native-confirmation-code-field';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {AuthBackground} from '../../../../assets';
 import useLanguageStore from '../../../../store/languageStore';
 import {MainStackParamList} from '../../../../types/navigation';

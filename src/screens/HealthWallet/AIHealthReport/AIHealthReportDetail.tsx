@@ -7,7 +7,8 @@ import {
 import {AxiosError} from 'axios';
 import {View} from 'moti';
 import React, {useEffect} from 'react';
-import {Animated, SafeAreaView, useWindowDimensions} from 'react-native';
+import {Animated, useWindowDimensions} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import {twMerge} from 'tailwind-merge';
 import useLanguageStore from '../../../../store/languageStore';

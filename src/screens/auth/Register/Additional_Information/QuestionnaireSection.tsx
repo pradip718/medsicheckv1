@@ -6,8 +6,9 @@ import {
 import {useMutation} from '@tanstack/react-query';
 import {Image} from 'moti';
 import React from 'react';
-import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {ProgressBar} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../../../store/languageStore';
 import useQuestionStore from '../../../../../store/questionStore';
 import {MainStackParamList} from '../../../../../types/navigation';

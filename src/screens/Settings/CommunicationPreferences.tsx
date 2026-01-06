@@ -1,7 +1,8 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, Switch, View} from 'react-native';
+import {Switch, View} from 'react-native';
 import {Portal} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../store/languageStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {errorToast} from '../../../utils/toast';

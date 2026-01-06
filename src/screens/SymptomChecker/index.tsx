@@ -9,33 +9,33 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
 import {Modal, Portal} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import useLanguageStore from '../../../store/languageStore';
-import useFullPageLoader from '../../hooks/useFullPageLoader';
-import {MainStackParamList} from '../../../types/navigation';
 import {SymptomReportList} from '../../../types/api_response';
+import {MainStackParamList} from '../../../types/navigation';
+import {isAndroid} from '../../../utils';
+import {getSymptomQuestion} from '../../api/symptomchecker';
 import {notifyApi} from '../../api/user';
+import DeleteModal from '../../components/AlertModal/DeleteModal';
+import EmptyScreen from '../../components/EmptyScreen';
+import Icon from '../../components/Icon';
+import Loader from '../../components/Loader';
+import Navbar from '../../components/Navbar';
+import RoundedButton from '../../components/RoundedButton';
+import CustomText from '../../components/Text';
+import {SYMPTOM_CHECKER_REPORTS} from '../../constants/hooks';
 import {
   useDeleteSymptomReports,
   useGetSymptomReports,
 } from '../../hooks/api/symptomchecker';
-import {SYMPTOM_CHECKER_REPORTS} from '../../constants/hooks';
-import {getSymptomQuestion} from '../../api/symptomchecker';
+import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useSymptomChecker from '../../hooks/useSymptomChecker';
-import Loader from '../../components/Loader';
-import EmptyScreen from '../../components/EmptyScreen';
-import Navbar from '../../components/Navbar';
-import CustomText from '../../components/Text';
-import RoundedButton from '../../components/RoundedButton';
-import Icon from '../../components/Icon';
 import customColor from '../../theme/customColor';
-import DeleteModal from '../../components/AlertModal/DeleteModal';
-import {isAndroid} from '../../../utils';
 import SortReport from '../HealthWallet/SortReport';
 
 const RenderFilterReports = ({

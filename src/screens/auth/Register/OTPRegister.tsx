@@ -10,15 +10,11 @@ import {AxiosError} from 'axios';
 import {MotiTransitionProp, StyleValueWithReplacedTransforms, View} from 'moti';
 import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {
-  ImageBackground,
-  SafeAreaView,
-  StyleSheet,
-  ViewStyle,
-} from 'react-native';
+import {ImageBackground, StyleSheet, ViewStyle} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {AuthBackground} from '../../../../assets';
 import useLanguageStore from '../../../../store/languageStore';
 import {SignUpPayload} from '../../../../types/api_payload';

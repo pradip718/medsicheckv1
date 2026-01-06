@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
 import BootSplash from 'react-native-bootsplash';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {Medsi_Check_Navabar_img} from '../../assets';
 import useLanguageStore from '../../store/languageStore';
 import {formatTimes, getDeviceLocaleInformation} from '../../utils/methods';

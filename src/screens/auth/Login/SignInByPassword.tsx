@@ -67,6 +67,7 @@ const SignInByPassword = ({
           render={({field: {onChange, value, onBlur}}) => (
             <CustomTextInput
               style={styles.input}
+              editable={!isUserLoggingIn}
               inputMode="email"
               placeholder={languages?.username}
               placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
@@ -86,6 +87,7 @@ const SignInByPassword = ({
           render={({field: {onChange, value, onBlur}}) => (
             <CustomTextInput
               placeholder={languages?.password}
+              editable={!isUserLoggingIn}
               placeholderTextColor={'rgba(255, 255, 255, 0.5)'}
               leftIconName="lock"
               secureTextEntry={!isPasswordVisible}
