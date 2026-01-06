@@ -1222,20 +1222,42 @@ diff --git a/ios/BiosenseSignalReactNativeSDK.swift b/ios/BiosenseSignalReactNat
          resolve(SessionManager.shared.getSessionState()?.rawValue)
 
 diff --git a/src/session/Session.ts b/src/session/Session.ts
---- a/src/session/Session.ts
+new file mode 100644
+index 0000000..1234567
+--- /dev/null
 +++ b/src/session/Session.ts
-@@ -1,6 +1,6 @@
+@@ -0,0 +1,48 @@
++import { HealthMonitorException } from "../alerts";
++import type { SessionState } from "../session-info/SessionState";
 +import { NativeModules } from "react-native";
- import { HealthMonitorException } from "../alerts";
- import type { SessionState } from "../session-info/SessionState";
--import { NativeModules } from "react-native";
- 
- const BiosenseSignalReactNativeSDK = NativeModules.BiosenseSignalReactNativeSDK
- 
-@@ -29,6 +29,22 @@
-     public getSessionState(): SessionState {
-         return BiosenseSignalReactNativeSDK.getSessionState();
-     }
++
++const BiosenseSignalReactNativeSDK = NativeModules.BiosenseSignalReactNativeSDK
++
++export class Session {
++    
++    public async start(measurementDuration: number) {
++        try {
++            await BiosenseSignalReactNativeSDK.start(measurementDuration);
++        } catch (error: any) {
++            throw new HealthMonitorException(error.message, parseInt(error.code))
++        }
++    }
++
++    public async stop() {
++        try {
++            await BiosenseSignalReactNativeSDK.stop();
++        } catch (error: any) {
++            throw new HealthMonitorException(error.message, parseInt(error.code))
++        }
++    }
++
++    public async terminate() {
++        await BiosenseSignalReactNativeSDK.terminate();
++    }
++
++    public getSessionState(): SessionState {
++        return BiosenseSignalReactNativeSDK.getSessionState();
++    }
 +
 +    public async startVideoRecording(outputPath: string, width: number = 0, height: number = 0, fps: number = 30): Promise<void> {
 +        try {
@@ -1252,6 +1274,6 @@ diff --git a/src/session/Session.ts b/src/session/Session.ts
 +            throw new HealthMonitorException(error.message, parseInt(error.code))
 +        }
 +    }
- }
- 
- 
++}
++
++
