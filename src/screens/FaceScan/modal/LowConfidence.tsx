@@ -8,6 +8,7 @@ import {Image} from 'moti';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {trackAnalytics, ANALYTICS_EVENTS} from '../../../services/analytics';
 import useLanguageStore from '../../../../store/languageStore';
 import {MainStackParamList} from '../../../../types/navigation';
 import BasicContainer from '../../../components/BasicContainer';
@@ -32,11 +33,17 @@ const LowConfidence = ({
   const {error_msg = []} = params || {error_msg: []};
   const handleRescan = () => {
     hideModal();
+    trackAnalytics(ANALYTICS_EVENTS.FACESCAN_RETRY, {
+      reading_id: params?.reading_id || '',
+    });
     startMeasurement?.();
   };
 
   const handleContinue = async () => {
     hideModal();
+    trackAnalytics(ANALYTICS_EVENTS.FACESCAN_CONTINUE, {
+      reading_id: params?.reading_id || '',
+    });
     await proceedToReportScreen?.();
   };
 

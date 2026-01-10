@@ -8537,6 +8537,11 @@ react-native-localize@^3.4.1:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-3.4.1.tgz#df07c13231b4e8cc949e68513b124105f861229c"
   integrity sha512-NJqJGBUpHtD/MpLCCkrNiqNZ+xFwbHCivxaoN1Oeb8tBAiZr/IqgP3E+MgnqmmdTMOJ33llUfiW3EM6pEIb33w==
 
+react-native-mixpanel@^1.3.0:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/react-native-mixpanel/-/react-native-mixpanel-1.2.5.tgz#1d3348625a82786e860c5a41d3d9d73939f2eeda"
+  integrity sha512-Xbpcj99Wo4NJa/Idp/nLY5m9r/H+v7szRWfQGxZGxDFiqz3VPs87c7hTMQP9OpgId6BFycxWGbkJOptiDSKqQQ==
+
 react-native-pager-view@^6.3.1:
   version "6.6.1"
   resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.6.1.tgz#6b69c8801ddee8d122b121b6fb42e0a180c8ebb9"

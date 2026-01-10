@@ -30,6 +30,12 @@ import RoundedButton from '../../../components/RoundedButton';
 import CustomText from '../../../components/Text';
 import {REMEMBERED_USER_SESSION} from '../../../constants/AsyncStorageKeys';
 import useAuthNavigation from '../../../hooks/useAuthNavigation';
+import {
+  ANALYTICS_EVENTS,
+  identifyUserAndSetProperties,
+  prepareUserProperties,
+  trackAnalytics,
+} from '../../../services/analytics';
 import customColor from '../../../theme/customColor';
 import {createRegisterSchema} from '../../../validation';
 import Header from './Header';
@@ -97,16 +103,34 @@ const Register = () => {
     mutationFn: async (
       payload: SignUpPayload,
     ): Promise<SignUpSuccessResponse> => {
+      trackAnalytics(ANALYTICS_EVENTS.USER_REGISTRATION_STARTED);
       const encryptedPassword = await encryptText(payload?.password);
       return await signup({
         ...payload,
         password: encryptedPassword,
       });
     },
-    onSuccess: res => {
+    onSuccess: async res => {
+      trackAnalytics(ANALYTICS_EVENTS.USER_REGISTRATION_SUCCESS);
       const email = getValues('email');
       const phoneNumber = getValues('formattedPhonenumber');
       const password = getValues('confirmPassword');
+
+      // Identify user immediately and synchronously after registration
+      // This MUST happen before navigation to ensure all subsequent events use user_id
+      if (res?.user_id) {
+        const userProperties = prepareUserProperties({
+          user_id: res.user_id,
+          email: email,
+          phone_number: phoneNumber,
+        } as Record<string, unknown>);
+        // Call synchronously - identifyUserAndSetProperties is synchronous
+        identifyUserAndSetProperties(res.user_id, userProperties);
+        // Small delay to ensure Mixpanel processes the identify call before navigation
+        // This prevents screen views from being tracked with device_id
+        await new Promise(resolve => setTimeout(resolve, 200));
+      }
+
       if (res?.email_verification_flag && res?.phone_verification_flag) {
         loginAndNavigate();
       } else {
@@ -124,6 +148,10 @@ const Register = () => {
     },
     onError: error => {
       if (error instanceof AxiosError) {
+        trackAnalytics(ANALYTICS_EVENTS.USER_REGISTRATION_ERROR, {
+          error_type: error?.response?.data?.error || 'Unknown',
+          error_message: error?.response?.data?.error || 'Registration failed',
+        });
         errorToast(error?.response?.data?.error || '');
       }
     },

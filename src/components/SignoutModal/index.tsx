@@ -9,6 +9,7 @@ import useLoaderStore from '../../../store/loaderStore';
 import useUserProfileStore from '../../../store/profileStore';
 import {signout} from '../../api/auth';
 import {notifyApi} from '../../api/user';
+import {resetUser, trackAnalytics, ANALYTICS_EVENTS} from '../../services/analytics';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import RoundedButton from '../RoundedButton';
 import CustomText from '../Text';
@@ -25,9 +26,11 @@ const SignoutModal = ({visible}: {visible: boolean}) => {
   const onProceed = async () => {
     hideModal();
     showLoader();
+    trackAnalytics(ANALYTICS_EVENTS.USER_LOGOUT);
     try {
       await notifyApi('logout');
       await signout();
+      resetUser();
       setUserAuth({
         idToken: '',
         accessToken: '',

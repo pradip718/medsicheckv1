@@ -56,6 +56,7 @@ import useBackButton from '../../hooks/useBackButton';
 import useFullPageLoader from '../../hooks/useFullPageLoader';
 import useInitializeBinahSession from '../../hooks/useInitializeBinahSession';
 import useScreenOrientation from '../../hooks/useScreenOrientation';
+import {ANALYTICS_EVENTS, trackAnalytics} from '../../services/analytics';
 import ScanReport from './ScanReport';
 import {ImageValidityView} from './components/ImageValidityView';
 import RenderCamera from './components/RenderCamera';
@@ -147,6 +148,13 @@ const FaceScannerCamera = () => {
       const videoPath = await stopSDKVideoRecording(session);
 
       if (videoPath) {
+        trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_STOPPED, {
+          reading_id: reading_id,
+          video_path: videoPath,
+        });
+        trackAnalytics(ANALYTICS_EVENTS.FACESCAN_MEASUREMENT_STOPPED, {
+          reading_id: reading_id,
+        });
         // Delete local video file
         const filePath = videoPath.replace('file://', '');
         if (await RNFS.exists(filePath)) {
@@ -160,6 +168,13 @@ const FaceScannerCamera = () => {
       }
     } catch (videoError) {
       console.error('Error stopping/deleting video recording:', videoError);
+      trackAnalytics(ANALYTICS_EVENTS.FACESCAN_ERROR, {
+        reading_id: reading_id,
+        error_type: 'video_recording_stop_error',
+        error_message: String(videoError),
+        error_source: 'stopAndDeleteVideo',
+        has_reading_id: !!reading_id,
+      });
     }
   };
 
@@ -185,6 +200,28 @@ const FaceScannerCamera = () => {
       message: isString(msg) ? msg : JSON.stringify(msg),
       reading_id: readingId || reading_id,
     });
+
+    // Track scan error
+    if (type === 'scan_error') {
+      const errorMsg = isString(msg) ? msg : JSON.stringify(msg);
+      const validityKeys = Object.keys(imageValidityJSON);
+
+      trackAnalytics(ANALYTICS_EVENTS.FACESCAN_ERROR, {
+        reading_id: readingId || reading_id || 'unknown',
+        error_type: 'measurement_error',
+        error_message: errorMsg,
+        error_source: 'resetMeasurement',
+        image_validity_json: JSON.stringify(imageValidityJSON),
+        image_validity_count: validityKeys.length,
+        has_image_validity_data: validityKeys.length > 0,
+        // Add individual validity counts as separate properties for easier filtering
+        ...(validityKeys.length > 0
+          ? {
+              validity_types: validityKeys.join(','),
+            }
+          : {}),
+      });
+    }
   };
 
   const checkForOngoingSession = async () => {
@@ -252,9 +289,14 @@ const FaceScannerCamera = () => {
           if (videoPath) {
             videoFilePathRef.current = videoPath;
             console.log('Video recording stopped, path:', videoPath);
+            trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_STOPPED, {
+              reading_id: reading_id,
+              video_path: videoPath,
+            });
 
             // Upload video using presigned URL (non-blocking, runs in background)
             (async () => {
+              const uploadStartTime = Date.now();
               try {
                 console.log(
                   'Getting presigned URL for video upload:',
@@ -279,6 +321,11 @@ const FaceScannerCamera = () => {
                   'Uploading video file via RNFS.uploadFiles:',
                   filePath,
                 );
+
+                trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_UPLOAD_STARTED, {
+                  reading_id: reading_id,
+                  file_size: fileInfo.size,
+                });
 
                 try {
                   const uploadResult = await RNFS.uploadFiles({
@@ -312,7 +359,16 @@ const FaceScannerCamera = () => {
                     );
                   }
 
+                  const uploadDuration = Date.now() - uploadStartTime;
                   console.log('Video uploaded successfully');
+                  trackAnalytics(
+                    ANALYTICS_EVENTS.FACESCAN_VIDEO_UPLOAD_SUCCESS,
+                    {
+                      reading_id: reading_id,
+                      upload_duration: uploadDuration,
+                      file_size: fileInfo.size,
+                    },
+                  );
 
                   // Clean up local file
                   if (await RNFS.exists(filePath)) {
@@ -321,9 +377,17 @@ const FaceScannerCamera = () => {
                   }
                 } catch (error) {
                   console.error('Error uploading video:', error);
+                  trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_UPLOAD_ERROR, {
+                    reading_id: reading_id,
+                    error_message: String(error),
+                  });
                 }
               } catch (uploadError) {
                 console.error('Error uploading video:', uploadError);
+                trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_UPLOAD_ERROR, {
+                  reading_id: reading_id,
+                  error_message: String(uploadError),
+                });
               }
             })();
           } else {
@@ -399,9 +463,20 @@ const FaceScannerCamera = () => {
       !data?.success &&
       (data?.error || (isArray(data?.error_msg) && data?.error_msg?.length))
     ) {
+      trackAnalytics(ANALYTICS_EVENTS.FACESCAN_LOW_CONFIDENCE, {
+        reading_id: reading_id,
+        confidence_data: data,
+      });
       await resetMeasurement('scan_error', data.error_msg);
       return setVisible(true);
     }
+    trackAnalytics(ANALYTICS_EVENTS.FACESCAN_MEASUREMENT_SUCCESS, {
+      reading_id: reading_id,
+      final_value: finalValue,
+    });
+    trackAnalytics(ANALYTICS_EVENTS.FACESCAN_REPORT_SUBMITTED, {
+      reading_id: reading_id,
+    });
     syncWebScan('end_scan', reading_id || '');
     notifyApi('end_scan', true, {
       reading_id,
@@ -412,6 +487,10 @@ const FaceScannerCamera = () => {
 
   const handleReportError = (err: any) => {
     errorToast(languages?.post_reading_error);
+    trackAnalytics(ANALYTICS_EVENTS.FACESCAN_REPORT_SUBMISSION_ERROR, {
+      reading_id: reading_id,
+      error_message: err?.message || String(err),
+    });
     resetMeasurement('scan_error', err?.message);
   };
 
@@ -466,6 +545,11 @@ const FaceScannerCamera = () => {
           reading_id: readingId,
         });
 
+        trackAnalytics(ANALYTICS_EVENTS.FACESCAN_MEASUREMENT_STARTED, {
+          reading_id: readingId,
+          scan_duration: binahConfig?.scan_duration,
+        });
+
         // Start video recording before starting the session (if enabled)
         const isVideoRecordingEnabled =
           languages?.enable_video_recording === 'true';
@@ -481,8 +565,19 @@ const FaceScannerCamera = () => {
             );
             videoFilePathRef.current = videoPath;
             console.log('Video recording started, path:', videoPath);
+            trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_STARTED, {
+              reading_id: readingId,
+              video_path: videoPath,
+            });
           } catch (videoError: any) {
             console.error('Error starting video recording:', videoError);
+            trackAnalytics(ANALYTICS_EVENTS.FACESCAN_ERROR, {
+              reading_id: readingId,
+              error_type: 'video_recording_start_error',
+              error_message: String(videoError),
+              error_source: 'startMeasurement',
+              has_reading_id: !!readingId,
+            });
             // Continue with scan even if video recording fails
           }
         }
@@ -492,6 +587,14 @@ const FaceScannerCamera = () => {
         await session?.stop();
       }
     } catch (e) {
+      trackAnalytics(ANALYTICS_EVENTS.FACESCAN_MEASUREMENT_ERROR, {
+        reading_id: readingId,
+        error_message: 'Error while trying to start the session',
+        error_source: 'startMeasurement',
+        session_state: sessionState?.toString() || 'unknown',
+        has_binah_config: !!binahConfig,
+        scan_duration: binahConfig?.scan_duration || null,
+      });
       resetMeasurement(
         'scan_error',
         'Error while trying to start the session',
@@ -671,7 +774,7 @@ const FaceScannerCamera = () => {
         }}>
         {reportResponse?.error ? (
           <FaceScanError
-            params={reportResponse}
+            params={{...reportResponse, reading_id}}
             startMeasurement={startMeasurement}
             proceedToReportScreen={proceedToReportScreen}
             hideModal={() => {
@@ -680,7 +783,7 @@ const FaceScannerCamera = () => {
           />
         ) : (
           <LowConfidence
-            params={reportResponse}
+            params={{...reportResponse, reading_id}}
             startMeasurement={startMeasurement}
             proceedToReportScreen={proceedToReportScreen}
             hideModal={() => {
