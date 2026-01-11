@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from '@react-native-community/netinfo';
 import {Sex} from 'biosensesignal-react-native-sdk';
 import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
@@ -31,6 +32,8 @@ import {
   SelectedAnswers,
 } from '../src/screens/auth/Register/Additional_Information/type';
 import {WellnessScoreKey} from '../src/screens/Reports/data';
+import {trackAnalytics} from '../src/services/analytics';
+import {ANALYTICS_EVENTS} from '../src/services/analytics/types';
 import useAuthStore from '../store/authStore';
 import useLanguageStore from '../store/languageStore';
 import useLoaderStore from '../store/loaderStore';
@@ -1211,3 +1214,120 @@ export const onShareSymptomFile = async (fileUrl: string, name?: string) => {
     throw error; // Re-throw to be caught by the calling function
   }
 };
+
+export async function shouldEnableVideoRecording(
+  enableVideoRecording: string,
+  minimumBandwidthMbps: string,
+  minimumSignalStrength: string,
+  readingId?: string,
+): Promise<boolean> {
+  if (enableVideoRecording !== 'true') {
+    return false;
+  }
+
+  try {
+    const netInfo = await NetInfo.fetch();
+    const details = netInfo.details as Record<string, unknown> | undefined;
+
+    const minBandwidth = parseFloat(minimumBandwidthMbps) || 5;
+    const minSignalStrength = parseFloat(minimumSignalStrength) || 50;
+
+    const allNetInfoDetails = {
+      network_type: netInfo.type,
+      is_connected: netInfo.isConnected,
+      is_internet_reachable: netInfo.isInternetReachable,
+      ...(details || {}),
+    };
+
+    if (netInfo.type === 'cellular') {
+      trackAnalytics(
+        ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_CELLULAR,
+        {
+          reading_id: readingId || 'unknown',
+          ...allNetInfoDetails,
+        },
+      );
+      return false;
+    }
+
+    if (details && 'isConnectionExpensive' in details) {
+      const isExpensive = details.isConnectionExpensive;
+      if (isExpensive === true) {
+        trackAnalytics(
+          ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_EXPENSIVE,
+          {
+            reading_id: readingId || 'unknown',
+            ...allNetInfoDetails,
+          },
+        );
+        return false;
+      }
+    }
+
+    if (details) {
+      const linkSpeed =
+        (details.linkSpeed as number) ||
+        (details.rxLinkSpeed as number) ||
+        (details.txLinkSpeed as number);
+
+      if (linkSpeed && linkSpeed < minBandwidth) {
+        trackAnalytics(
+          ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_LOW_LINK_SPEED,
+          {
+            reading_id: readingId || 'unknown',
+            link_speed: linkSpeed,
+            minimum_bandwidth: minBandwidth,
+            ...allNetInfoDetails,
+          },
+        );
+        return false;
+      }
+
+      if (
+        'strength' in details &&
+        details.strength !== null &&
+        details.strength !== undefined
+      ) {
+        const signalStrength = details.strength as number;
+        if (signalStrength < minSignalStrength) {
+          trackAnalytics(
+            ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_LOW_SIGNAL,
+            {
+              reading_id: readingId || 'unknown',
+              signal_strength: signalStrength,
+              minimum_signal_strength: minSignalStrength,
+              ...allNetInfoDetails,
+            },
+          );
+          return false;
+        }
+      }
+
+      if ('downlink' in details && details.downlink) {
+        const currentBandwidth = details.downlink as number;
+        if (currentBandwidth < minBandwidth) {
+          trackAnalytics(
+            ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_LOW_BANDWIDTH,
+            {
+              reading_id: readingId || 'unknown',
+              bandwidth: currentBandwidth,
+              minimum_bandwidth: minBandwidth,
+              ...allNetInfoDetails,
+            },
+          );
+          return false;
+        }
+      }
+    }
+
+    trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_ENABLED, {
+      reading_id: readingId || 'unknown',
+      ...allNetInfoDetails,
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error checking network info:', error);
+    return true;
+  }
+}

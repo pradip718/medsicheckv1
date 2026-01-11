@@ -33,6 +33,7 @@ import useLoaderStore from '../../../store/loaderStore';
 import {useAIReportFacescanStore} from '../../../store/smartReportStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
+import {shouldEnableVideoRecording} from '../../../utils/methods';
 import {
   startSDKVideoRecording,
   stopSDKVideoRecording,
@@ -136,9 +137,12 @@ const FaceScannerCamera = () => {
       return;
     }
 
-    // Check if video recording is enabled
-    const isVideoRecordingEnabled =
-      languages?.enable_video_recording === 'true';
+    const isVideoRecordingEnabled = await shouldEnableVideoRecording(
+      languages?.enable_video_recording || 'false',
+      languages?.minimum_bandwidth_mbps || '5',
+      languages?.minimum_signal_strength || '50',
+      reading_id,
+    );
     if (!isVideoRecordingEnabled) {
       return;
     }
@@ -274,11 +278,16 @@ const FaceScannerCamera = () => {
           return;
         }
 
-        // Check if video recording is enabled
-        const isVideoRecordingEnabled =
-          languages?.enable_video_recording === 'true';
+        const isVideoRecordingEnabled = await shouldEnableVideoRecording(
+          languages?.enable_video_recording || 'false',
+          languages?.minimum_bandwidth_mbps || '5',
+          languages?.minimum_signal_strength || '50',
+          reading_id,
+        );
         if (!isVideoRecordingEnabled) {
-          console.log('Video recording is disabled, skipping...');
+          console.log(
+            'Video recording is disabled due to network conditions, skipping...',
+          );
           return;
         }
 
@@ -550,9 +559,12 @@ const FaceScannerCamera = () => {
           scan_duration: binahConfig?.scan_duration,
         });
 
-        // Start video recording before starting the session (if enabled)
-        const isVideoRecordingEnabled =
-          languages?.enable_video_recording === 'true';
+        const isVideoRecordingEnabled = await shouldEnableVideoRecording(
+          languages?.enable_video_recording || 'false',
+          languages?.minimum_bandwidth_mbps || '5',
+          languages?.minimum_signal_strength || '50',
+          readingId,
+        );
         if (isVideoRecordingEnabled) {
           try {
             console.log('Starting video recording for reading:', readingId);

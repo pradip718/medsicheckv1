@@ -65,6 +65,8 @@
   "initiate_recording_msg": "Siéntate quieto, asegúrate de que tu cara esté iluminada uniformemente y que no hay una fuente de luz en el fondo",
   "measure_button_txt": "Medir Ahora",
   "enable_video_recording": "true",
+  "minimum_bandwidth_mbps": "5",
+  "minimum_signal_strength": "50",
   "showWalkthrough": "False",
 
   "during_recording_title": "Midiendo tus signos vitales...",

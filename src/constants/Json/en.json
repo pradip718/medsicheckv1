@@ -65,6 +65,8 @@
   "initiate_recording_msg": "Sit still, ensure your face is evenly illuminated and there is no light source in the background",
   "measure_button_txt": "Measure Now",
   "enable_video_recording": "true",
+  "minimum_bandwidth_mbps": "5",
+  "minimum_signal_strength": "50",
 
   "during_recording_title": "Measuring your vitals...",
   "during_recording_msg": "Hold on, all results will appear in few seconds...",

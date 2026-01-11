@@ -15,6 +15,17 @@ export const ANALYTICS_EVENTS = {
   FACESCAN_MEASUREMENT_ERROR: 'FaceScan Measurement Error',
   FACESCAN_VIDEO_RECORDING_STARTED: 'FaceScan Video Recording Started',
   FACESCAN_VIDEO_RECORDING_STOPPED: 'FaceScan Video Recording Stopped',
+  FACESCAN_VIDEO_RECORDING_ENABLED: 'FaceScan Video Recording Enabled',
+  FACESCAN_VIDEO_RECORDING_DISABLED_CELLULAR:
+    'FaceScan Video Recording Disabled - Cellular',
+  FACESCAN_VIDEO_RECORDING_DISABLED_EXPENSIVE:
+    'FaceScan Video Recording Disabled - Expensive Connection',
+  FACESCAN_VIDEO_RECORDING_DISABLED_LOW_LINK_SPEED:
+    'FaceScan Video Recording Disabled - Low Link Speed',
+  FACESCAN_VIDEO_RECORDING_DISABLED_LOW_SIGNAL:
+    'FaceScan Video Recording Disabled - Low Signal Strength',
+  FACESCAN_VIDEO_RECORDING_DISABLED_LOW_BANDWIDTH:
+    'FaceScan Video Recording Disabled - Low Bandwidth',
   FACESCAN_VIDEO_UPLOAD_STARTED: 'FaceScan Video Upload Started',
   FACESCAN_VIDEO_UPLOAD_SUCCESS: 'FaceScan Video Upload Success',
   FACESCAN_VIDEO_UPLOAD_ERROR: 'FaceScan Video Upload Error',
@@ -74,7 +85,7 @@ export const ANALYTICS_EVENTS = {
 } as const;
 
 export type AnalyticsEventName =
-  typeof ANALYTICS_EVENTS[keyof typeof ANALYTICS_EVENTS];
+  (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];
 
 // Property interfaces for different event types
 export interface ScreenViewedProperties {
@@ -166,4 +177,3 @@ export interface UserProperties {
   relation?: string;
   locale?: string;
 }
-
