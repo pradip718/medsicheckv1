@@ -1,32 +1,76 @@
+diff --git a/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt b/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt
+diff --git a/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt b/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt
+index b64a05e..7c6204e 100644
+--- a/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt
++++ b/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt
+@@ -128,6 +128,30 @@ class BiosenseSignalReactNativeSDKModule(reactContext: ReactApplicationContext)
+ 	fun getState(promise: Promise) {
+ 		promise.resolve(SessionManager.getSessionState()?.ordinal)
+ 	}
+-}
+ 
++@ReactMethod
++fun startVideoRecording(outputPath: String, width: Int, height: Int, fps: Int, promise: Promise) {
++    android.util.Log.d("BiosenseSignalReactNativeSDK", "Video recording: Bridge startVideoRecording called - outputPath: $outputPath, width: $width, height: $height, fps: $fps")
++    try {
++        SessionManager.startVideoRecording(outputPath, width, height, fps)
++        android.util.Log.d("BiosenseSignalReactNativeSDK", "Video recording: Bridge startVideoRecording succeeded")
++        promise.resolve(null)
++    } catch (e: HealthMonitorException) {
++        android.util.Log.e("BiosenseSignalReactNativeSDK", "Video recording: Bridge startVideoRecording failed - ${e.domain}: ${e.errorCode}")
++        promise.reject(e.errorCode.toString(), e.domain, e)
++    }
++}
+ 
++@ReactMethod
++fun stopVideoRecording(promise: Promise) {
++    android.util.Log.d("BiosenseSignalReactNativeSDK", "Video recording: Bridge stopVideoRecording called")
++    try {
++        val outputPath = SessionManager.stopVideoRecording()
++        android.util.Log.d("BiosenseSignalReactNativeSDK", "Video recording: Bridge stopVideoRecording succeeded - outputPath: $outputPath")
++        promise.resolve(outputPath)
++    } catch (e: Exception) {
++        android.util.Log.e("BiosenseSignalReactNativeSDK", "Video recording: Bridge stopVideoRecording failed - ${e.message}", e)
++        promise.reject("VIDEO_RECORDING_ERROR", "Error stopping video recording: ${e.message}", e)
++    }
++}
++}
 diff --git a/android/src/main/java/com/biosensesignal/react_native_sdk/SessionManager.kt b/android/src/main/java/com/biosensesignal/react_native_sdk/SessionManager.kt
+index 54e0ad2..bcf2e81 100644
 --- a/android/src/main/java/com/biosensesignal/react_native_sdk/SessionManager.kt
 +++ b/android/src/main/java/com/biosensesignal/react_native_sdk/SessionManager.kt
-@@ -1,6 +1,16 @@
+@@ -1,6 +1,21 @@
  package com.biosensesignal.react_native_sdk
  
  import android.content.Context
 +import android.graphics.Bitmap
++import android.graphics.Canvas
++import android.graphics.Color
++import android.graphics.Paint
++import android.graphics.Rect
 +import android.media.MediaCodec
 +import android.media.MediaCodecInfo
 +import android.media.MediaFormat
 +import android.media.MediaMuxer
-+import android.os.Build
 +import android.os.Handler
 +import android.os.HandlerThread
-+import java.nio.ByteBuffer
++import android.view.Surface
 +import java.io.File
-+import kotlin.math.abs
++import java.util.concurrent.CountDownLatch
++import java.util.concurrent.TimeUnit
  import com.biosensesignal.sdk.api.HealthMonitorException
  import com.biosensesignal.sdk.api.SessionEnabledVitalSigns
  import com.biosensesignal.sdk.api.alerts.ErrorData
-@@ -51,6 +61,22 @@
+@@ -55,7 +70,26 @@ object SessionManager:
+     private val ppgScanners = mutableMapOf<String, PPGDeviceScanner>()
      override val images: Flow<ImageData> = _images
  
-     var eventChannel: BiosenseSignalEventEmitter? = null
-+    
-+    // Video recording properties
+-    var eventChannel: BiosenseSignalEventEmitter? = null
++    var eventChannel: BiosenseSignalEventEmitter? = null    
++    // Video recording properties - Surface-based encoding
 +    private var mediaCodec: MediaCodec? = null
 +    private var mediaMuxer: MediaMuxer? = null
++    private var encoderSurface: Surface? = null
 +    private var isRecordingVideo: Boolean = false
 +    private var videoOutputPath: String? = null
 +    private var frameCount: Int = 0
@@ -34,504 +78,617 @@ diff --git a/android/src/main/java/com/biosensesignal/react_native_sdk/SessionMa
 +    private var videoWidth: Int = 0
 +    private var videoHeight: Int = 0
 +    private var videoFps: Int = 30
-+    private var startTimeUs: Long = 0
 +    private var isVideoInitialized: Boolean = false
-+    private var selectedColorFormat: Int = -1
 +    private var videoRecordingHandler: Handler? = null
 +    private var videoRecordingThread: HandlerThread? = null
++    private var encoderOutputThread: Thread? = null
++    @Volatile private var isEncoderOutputRunning: Boolean = false
++    @Volatile private var isEncodingFrame: Boolean = false
++    private val framePaint = Paint(Paint.FILTER_BITMAP_FLAG)
++
  
      @Throws(HealthMonitorException::class)
      fun createCameraSession(
-@@ -233,6 +259,19 @@
+@@ -262,6 +296,20 @@ object SessionManager:
      override fun onImage(imageData: ImageData) {
          eventChannel?.sendEvent(NativeBridgeEvents.imageData, imageData.toMap())
          _images.tryEmit(imageData)
 +        
-+        // Record frame to video if recording
++        // Record frame if video recording is active
 +        if (isRecordingVideo) {
-+            if (imageData.image is Bitmap) {
-+                videoRecordingHandler?.post {
-+                    recordFrame(imageData.image as Bitmap)
-+                }
-+            } else {
-+                if (frameCount == 0 || frameCount % 30 == 0) {
-+                    android.util.Log.w("SessionManager", "Video recording: Frame $frameCount - image is not Bitmap, type: ${imageData.image?.javaClass?.simpleName}")
++            if (frameCount % 30 == 0 || frameCount < 5) {
++                android.util.Log.d("SessionManager", "Video recording: onImage called, isRecordingVideo=$isRecordingVideo, image null? ${imageData.image == null}")
++            }
++            imageData.image?.let { bitmap ->
++                recordFrame(bitmap)
++            } ?: run {
++                if (frameCount % 30 == 0 || frameCount < 5) {
++                    android.util.Log.w("SessionManager", "Video recording: ⚠️ imageData.image is NULL - cannot record frame!")
 +                }
 +            }
 +        }
      }
  
      override fun onSessionStateChange(sessionState: SessionState) {
-@@ -257,7 +296,428 @@
+@@ -292,6 +340,511 @@ object SessionManager:
+         eventChannel?.sendEvent(NativeBridgeEvents.logsReady, logsInfo.toMap())
+     }
  
-     override fun onFallDetectionData(data: FallDetectionData) {
-         eventChannel?.sendEvent(NativeBridgeEvents.fallDetectionData, data.toMap())
++// MARK: Video Recording
++
++@Throws(HealthMonitorException::class)
++fun startVideoRecording(outputPath: String, width: Int, height: Int, fps: Int) {
++    android.util.Log.d("SessionManager", "Video recording: startVideoRecording called - outputPath: $outputPath, width: $width, height: $height, fps: $fps")
++
++    if (isRecordingVideo) {
++        android.util.Log.w("SessionManager", "Video recording: Already recording, throwing exception")
++        throw HealthMonitorException("VIDEO_RECORDING", -1)
 +    }
-+    
-+    // MARK: Video Recording
-+    
-+    @Throws(HealthMonitorException::class)
-+    fun startVideoRecording(outputPath: String, width: Int, height: Int, fps: Int) {
-+        android.util.Log.d("SessionManager", "Video recording: startVideoRecording called - outputPath: $outputPath, width: $width, height: $height, fps: $fps")
-+        
-+        if (isRecordingVideo) {
-+            android.util.Log.w("SessionManager", "Video recording: Already recording, throwing exception")
-+            throw HealthMonitorException("VIDEO_RECORDING", -1)
-+        }
-+        
-+        this.videoOutputPath = outputPath
-+        this.videoFps = fps
-+        this.frameCount = 0
-+        this.videoTrackIndex = -1
-+        this.startTimeUs = System.nanoTime() / 1000
-+        this.isVideoInitialized = false
-+        
-+        // Initialize background thread for video recording
-+        videoRecordingThread = HandlerThread("VideoRecordingThread").apply {
-+            start()
-+        }
-+        videoRecordingHandler = Handler(videoRecordingThread?.looper!!)
-+        
-+        if (width > 0 && height > 0) {
-+            this.videoWidth = width
-+            this.videoHeight = height
-+            android.util.Log.d("SessionManager", "Video recording: Using provided dimensions - width: $width, height: $height")
-+            initializeVideoEncoder()
-+        } else {
-+            this.videoWidth = 0
-+            this.videoHeight = 0
-+            android.util.Log.d("SessionManager", "Video recording: Auto-detection mode (width=0, height=0), will detect from first frame")
-+        }
-+        
-+        isRecordingVideo = true
-+        android.util.Log.d("SessionManager", "Video recording: Recording started successfully, isRecordingVideo: $isRecordingVideo")
++
++    this.videoOutputPath = outputPath
++    this.videoFps = fps
++    this.frameCount = 0
++    this.videoTrackIndex = -1
++    this.isVideoInitialized = false
++
++    // Initialize background thread for video recording
++    videoRecordingThread = HandlerThread("VideoRecordingThread").apply {
++        start()
 +    }
-+    
-+    private fun initializeVideoEncoder() {
-+        if (videoWidth <= 0 || videoHeight <= 0) {
-+            return
-+        }
-+        
-+        if (isVideoInitialized) {
-+            return
-+        }
-+        
-+        val outputPath = this.videoOutputPath ?: return
-+        
-+        val file = File(outputPath)
-+        if (file.exists()) {
-+            file.delete()
-+        }
-+        
-+        try {
-+            val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, videoWidth, videoHeight)
-+            
-+            val codec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
-+            val codecInfo = codec.codecInfo
-+            val capabilities = codecInfo.getCapabilitiesForType(MediaFormat.MIMETYPE_VIDEO_AVC)
-+            val colorFormats = capabilities.colorFormats
-+            
-+            var selectedColorFormat = -1
-+            for (colorFormat in colorFormats) {
-+                if (colorFormat == MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible ||
-+                    colorFormat == MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar ||
-+                    colorFormat == MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar) {
-+                    selectedColorFormat = colorFormat
++    videoRecordingHandler = Handler(videoRecordingThread?.looper!!)
++
++    if (width > 0 && height > 0) {
++        this.videoWidth = width
++        this.videoHeight = height
++        android.util.Log.d("SessionManager", "Video recording: Using provided dimensions - width: $width, height: $height")
++        initializeVideoEncoder()
++    } else {
++        this.videoWidth = 0
++        this.videoHeight = 0
++        android.util.Log.d("SessionManager", "Video recording: Auto-detection mode (width=0, height=0), will detect from first frame")
++    }
++
++    isRecordingVideo = true
++    android.util.Log.d("SessionManager", "Video recording: Recording started successfully, isRecordingVideo: $isRecordingVideo")
++}
++
++private fun initializeVideoEncoder() {
++    if (videoWidth <= 0 || videoHeight <= 0) {
++        return
++    }
++
++    if (isVideoInitialized) {
++        return
++    }
++
++    val outputPath = this.videoOutputPath ?: return
++
++    val file = File(outputPath)
++    if (file.exists()) {
++        file.delete()
++    }
++
++    try {
++        android.util.Log.d("SessionManager", "Video recording: 🔧 Starting encoder initialization")
++
++        // Configure MediaFormat for H.264 video with Surface input
++        // Using COLOR_FormatSurface is the industry-standard, vendor-agnostic approach
++        val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, videoWidth, videoHeight)
++        format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface)
++        format.setInteger(MediaFormat.KEY_BIT_RATE, videoWidth * videoHeight * 4)
++        format.setInteger(MediaFormat.KEY_FRAME_RATE, videoFps)
++        format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, videoFps)
++
++        android.util.Log.d("SessionManager", "Video recording: Format created - ${format}")
++
++        // Create and configure MediaCodec encoder
++        mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
++        android.util.Log.d("SessionManager", "Video recording: ✅ MediaCodec created")
++
++        mediaCodec?.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
++        android.util.Log.d("SessionManager", "Video recording: ✅ MediaCodec configured")
++
++        // Get the input Surface from MediaCodec
++        // This Surface handles all color space conversion automatically
++        encoderSurface = mediaCodec?.createInputSurface()
++        android.util.Log.d("SessionManager", "Video recording: ✅ Input Surface created - valid: ${encoderSurface?.isValid}")
++
++        mediaCodec?.start()
++        android.util.Log.d("SessionManager", "Video recording: ✅ MediaCodec started")
++
++        // Create MediaMuxer BEFORE starting output thread (prevents race condition)
++        mediaMuxer = MediaMuxer(outputPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
++        android.util.Log.d("SessionManager", "Video recording: ✅ MediaMuxer created")
++
++        val rotation = 0
++        mediaMuxer?.setOrientationHint(rotation)
++
++        // Start dedicated thread for draining encoder output
++        // Must be AFTER MediaMuxer is created to avoid race condition
++        startEncoderOutputThread()
++        android.util.Log.d("SessionManager", "Video recording: ✅ Output thread started")
++
++        android.util.Log.d("SessionManager", "Video recording: ✅ Surface-based encoder initialized - dimensions: ${videoWidth}x${videoHeight}, bitrate: ${videoWidth * videoHeight * 4}, fps: $videoFps")
++
++        isVideoInitialized = true
++    } catch (e: Exception) {
++        android.util.Log.e("SessionManager", "Error initializing video encoder: ${e.message}", e)
++        cleanupVideoRecording()
++        throw HealthMonitorException("VIDEO_RECORDING", -2)
++    }
++}
++
++/**
++ * Start dedicated background thread for draining encoder output.
++ *
++ * This thread continuously pulls encoded H.264 frames from MediaCodec
++ * and writes them to MediaMuxer, handling:
++ * - Format changes (INFO_OUTPUT_FORMAT_CHANGED)
++ * - Adding video track to muxer
++ * - Writing sample data with correct timestamps
++ * - Proper EOS (End of Stream) handling
++ */
++private fun startEncoderOutputThread() {
++    isEncoderOutputRunning = true
++
++    encoderOutputThread = Thread {
++        android.util.Log.d("SessionManager", "Video recording: ▶️ Encoder output thread STARTED")
++        val bufferInfo = MediaCodec.BufferInfo()
++        var iterationCount = 0
++        var tryAgainCount = 0
++        var formatChangeReceived = false
++
++        while (isEncoderOutputRunning) {
++            val codec = mediaCodec
++            if (codec == null) {
++                android.util.Log.w("SessionManager", "Video recording: Codec is null, exiting output thread")
++                break
++            }
++
++            // Wait for muxer to be created (should be very quick, but handle race condition)
++            var muxer = mediaMuxer
++            if (muxer == null) {
++                // Wait up to 100ms for muxer to be created
++                var waitCount = 0
++                while (muxer == null && waitCount < 10 && isEncoderOutputRunning) {
++                    Thread.sleep(10)
++                    muxer = mediaMuxer
++                    waitCount++
++                }
++                if (muxer == null) {
++                    android.util.Log.w("SessionManager", "Video recording: Muxer is still null after waiting, exiting output thread")
 +                    break
 +                }
 +            }
-+            
-+            if (selectedColorFormat == -1 && colorFormats.isNotEmpty()) {
-+                selectedColorFormat = colorFormats[0]
++
++            iterationCount++
++
++            // Log every 100 iterations to show thread is alive
++            if (iterationCount % 100 == 0) {
++                android.util.Log.d("SessionManager", "Video recording: Output thread alive - iteration $iterationCount, tryAgain: $tryAgainCount, formatReceived: $formatChangeReceived, trackIndex: $videoTrackIndex")
 +            }
-+            
-+            codec.release()
-+            
-+            if (selectedColorFormat == -1) {
-+                throw Exception("No supported color format found")
-+            }
-+            
-+            this.selectedColorFormat = selectedColorFormat
-+            format.setInteger(MediaFormat.KEY_COLOR_FORMAT, selectedColorFormat)
-+            format.setInteger(MediaFormat.KEY_BIT_RATE, videoWidth * videoHeight * 4)
-+            format.setInteger(MediaFormat.KEY_FRAME_RATE, videoFps)
-+            format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, videoFps)
-+            
-+            mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
-+            mediaCodec?.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
-+            mediaCodec?.start()
-+            
-+            mediaMuxer = MediaMuxer(outputPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
-+            
-+            val rotation = 0
-+            mediaMuxer?.setOrientationHint(rotation)
-+            android.util.Log.d("SessionManager", "Video recording: Encoder initialized - dimensions: ${videoWidth}x${videoHeight}, aspectRatio: ${String.format("%.2f", videoWidth.toFloat() / videoHeight.toFloat())}, colorFormat: $selectedColorFormat, rotation: $rotation degrees (portrait mode, no rotation needed)")
-+            
-+            isVideoInitialized = true
-+        } catch (e: Exception) {
-+            android.util.Log.e("SessionManager", "Error initializing video encoder: ${e.message}", e)
-+            cleanupVideoRecording()
-+            throw HealthMonitorException("VIDEO_RECORDING", -2)
-+        }
-+    }
-+    
-+    fun stopVideoRecording(): String? {
-+        android.util.Log.d("SessionManager", "Video recording: stopVideoRecording called - isRecordingVideo: $isRecordingVideo, frameCount: $frameCount")
-+        
-+        if (!isRecordingVideo) {
-+            android.util.Log.d("SessionManager", "Video recording: Not recording, returning null")
-+            return null
-+        }
-+        
-+        android.util.Log.d("SessionManager", "Video recording: Stopping recording, frameCount: $frameCount, videoPath: $videoOutputPath")
-+        isRecordingVideo = false
-+        
-+        val semaphore = java.util.concurrent.Semaphore(0)
-+        
-+        // Save values before cleanup (they get reset in cleanupVideoRecording)
-+        val finalVideoTrackIndex = videoTrackIndex
-+        val finalVideoOutputPath = videoOutputPath
-+        
-+        // Wait for all queued frames to be processed
-+        videoRecordingHandler?.post {
++
 +            try {
-+                // Send end-of-stream signal and drain remaining frames
-+                val codec = mediaCodec
-+                if (codec != null && frameCount > 0) {
-+                    try {
-+                        val inputBufferIndex = codec.dequeueInputBuffer(10000)
-+                        if (inputBufferIndex >= 0) {
-+                            codec.queueInputBuffer(
-+                                inputBufferIndex,
-+                                0,
-+                                0,
-+                                0,
-+                                MediaCodec.BUFFER_FLAG_END_OF_STREAM
-+                            )
++                // Use shorter timeout (100ms) for responsive shutdown
++                val outputBufferIndex = codec.dequeueOutputBuffer(bufferInfo, 100)
++
++                when {
++                    outputBufferIndex == MediaCodec.INFO_TRY_AGAIN_LATER -> {
++                        tryAgainCount++
++                        // Quick exit if stop requested
++                        if (!isEncoderOutputRunning) {
++                            android.util.Log.d("SessionManager", "Video recording: Output thread stop requested, exiting")
++                            break
 +                        }
-+                        
-+                        // Drain remaining output buffers
-+                        val bufferInfo = MediaCodec.BufferInfo()
-+                        var outputBufferIndex = codec.dequeueOutputBuffer(bufferInfo, 10000)
-+                        while (outputBufferIndex >= 0) {
-+                            if (videoTrackIndex >= 0 && (bufferInfo.flags and MediaCodec.BUFFER_FLAG_CODEC_CONFIG) == 0) {
-+                                val outputBuffer = codec.getOutputBuffer(outputBufferIndex)
-+                                if (outputBuffer != null && bufferInfo.size > 0) {
++                        Thread.sleep(10) // Brief sleep to avoid busy loop
++                        continue
++                    }
++
++                    outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED -> {
++                        // This is called once when encoder is ready
++                        if (videoTrackIndex == -1) {
++                            val format = codec.outputFormat
++                            videoTrackIndex = muxer.addTrack(format)
++                            muxer.start()
++                            formatChangeReceived = true
++                            android.util.Log.d("SessionManager", "Video recording: 🎯 INFO_OUTPUT_FORMAT_CHANGED received! MediaMuxer started, track index: $videoTrackIndex")
++                        }
++                    }
++
++                    outputBufferIndex >= 0 -> {
++                        val outputBuffer = codec.getOutputBuffer(outputBufferIndex)
++
++                        if (outputBuffer != null && bufferInfo.size > 0) {
++                            // Skip codec config buffers
++                            if ((bufferInfo.flags and MediaCodec.BUFFER_FLAG_CODEC_CONFIG) == 0) {
++                                if (videoTrackIndex >= 0) {
 +                                    outputBuffer.position(bufferInfo.offset)
 +                                    outputBuffer.limit(bufferInfo.offset + bufferInfo.size)
-+                                    mediaMuxer?.writeSampleData(videoTrackIndex, outputBuffer, bufferInfo)
++                                    muxer.writeSampleData(videoTrackIndex, outputBuffer, bufferInfo)
++                                } else {
++                                    android.util.Log.w("SessionManager", "Video recording: Output buffer available but videoTrackIndex is -1. Dropping frame.")
 +                                }
 +                            }
-+                            
-+                            if ((bufferInfo.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
-+                                break
-+                            }
-+                            
-+                            codec.releaseOutputBuffer(outputBufferIndex, false)
-+                            outputBufferIndex = codec.dequeueOutputBuffer(bufferInfo, 10000)
 +                        }
-+                    } catch (e: Exception) {
-+                        android.util.Log.e("SessionManager", "Error draining MediaCodec: ${e.message}")
++
++                        codec.releaseOutputBuffer(outputBufferIndex, false)
++
++                        // Check for End of Stream
++                        if ((bufferInfo.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
++                            android.util.Log.d("SessionManager", "Video recording: EOS reached in output thread")
++                            isEncoderOutputRunning = false
++                            break
++                        }
 +                    }
 +                }
-+                
-+                // Stop and release MediaCodec
-+                try {
-+                    mediaCodec?.stop()
-+                } catch (e: Exception) {
-+                    android.util.Log.e("SessionManager", "Error stopping MediaCodec: ${e.message}")
-+                }
-+                
-+                try {
-+                    mediaCodec?.release()
-+                } catch (e: Exception) {
-+                    android.util.Log.e("SessionManager", "Error releasing MediaCodec: ${e.message}")
-+                }
-+                mediaCodec = null
-+                
-+                // Stop MediaMuxer only if track was added
-+                try {
-+                    if (videoTrackIndex >= 0 && mediaMuxer != null) {
-+                        mediaMuxer?.stop()
-+                        android.util.Log.d("SessionManager", "Video recording stopped successfully with $frameCount frames")
-+                    } else {
-+                        android.util.Log.w("SessionManager", "No video track added, skipping MediaMuxer stop")
-+                    }
-+                } catch (e: Exception) {
-+                    android.util.Log.e("SessionManager", "Error stopping MediaMuxer: ${e.message}")
-+                }
-+                
-+                try {
-+                    mediaMuxer?.release()
-+                } catch (e: Exception) {
-+                    android.util.Log.e("SessionManager", "Error releasing MediaMuxer: ${e.message}")
-+                }
-+                mediaMuxer = null
-+            } finally {
-+                cleanupVideoRecording()
-+                semaphore.release()
++            } catch (e: InterruptedException) {
++                android.util.Log.d("SessionManager", "Video recording: Output thread interrupted, exiting")
++                break
++            } catch (e: IllegalStateException) {
++                android.util.Log.d("SessionManager", "Video recording: Codec stopped, exiting output thread gracefully")
++                break
++            } catch (e: Exception) {
++                android.util.Log.e("SessionManager", "Video recording: Error in output thread: ${e.message}", e)
++                if (!isEncoderOutputRunning) break
 +            }
 +        }
-+        
-+        // Wait for processing to complete (max 5 seconds)
-+        try {
-+            if (!semaphore.tryAcquire(5, java.util.concurrent.TimeUnit.SECONDS)) {
-+                android.util.Log.w("SessionManager", "Video recording: Timeout waiting for frame processing")
-+            }
-+        } catch (e: InterruptedException) {
-+            android.util.Log.e("SessionManager", "Video recording: Interrupted while waiting for frame processing", e)
-+        }
-+        
-+        // Only return path if we actually created a valid video file
-+        // Use saved values since cleanupVideoRecording() resets them
-+        if (finalVideoTrackIndex >= 0 && finalVideoOutputPath != null) {
-+            val file = File(finalVideoOutputPath)
-+            if (file.exists() && file.length() > 0) {
-+                android.util.Log.d("SessionManager", "Video file created: ${finalVideoOutputPath}, size: ${file.length()} bytes")
-+                return finalVideoOutputPath
-+            } else {
-+                android.util.Log.w("SessionManager", "Video file is empty or doesn't exist at: ${finalVideoOutputPath}")
-+            }
-+        } else {
-+            android.util.Log.w("SessionManager", "No valid video track was created (frameCount: $frameCount, videoTrackIndex: $finalVideoTrackIndex, videoPath: $finalVideoOutputPath)")
-+        }
-+        
++
++        android.util.Log.d("SessionManager", "Video recording: ⏹️ Encoder output thread FINISHED - iterations: $iterationCount, formatReceived: $formatChangeReceived, trackIndex: $videoTrackIndex")
++    }
++
++    encoderOutputThread?.start()
++    android.util.Log.d("SessionManager", "Video recording: Encoder output thread start() called")
++}
++
++/**
++ * Stop video recording and finalize the MP4 file.
++ *
++ * Process:
++ * 1. Stop accepting new frames
++ * 2. Signal encoder output thread to stop
++ * 3. Signal EOS (End of Stream) to encoder
++ * 4. Wait for encoder output thread to finish draining
++ * 5. Stop and release MediaCodec and MediaMuxer
++ * 6. Cleanup resources
++ * 7. Return file path if valid video was created
++ */
++fun stopVideoRecording(): String? {
++    android.util.Log.d("SessionManager", "Video recording: Stopping - frames: $frameCount")
++
++    if (!isRecordingVideo) {
++        android.util.Log.d("SessionManager", "Video recording: Not recording")
 +        return null
-     }
-+    
-+    private fun cleanupVideoRecording() {
++    }
++
++    isRecordingVideo = false
++
++    // Save values before cleanup
++    val finalVideoTrackIndex = videoTrackIndex
++    val finalVideoOutputPath = videoOutputPath
++    val finalFrameCount = frameCount
++
++    val shutdownLatch = CountDownLatch(1)
++
++    // Post shutdown task to recording thread
++    videoRecordingHandler?.post {
 +        try {
-+            mediaCodec?.stop()
-+            mediaCodec?.release()
-+        } catch (e: Exception) {
-+            // Ignore
++            android.util.Log.d("SessionManager", "Video recording: Starting shutdown sequence")
++
++            // Signal output thread to stop first
++            isEncoderOutputRunning = false
++            android.util.Log.d("SessionManager", "Video recording: Output thread stop requested")
++
++            val codec = mediaCodec
++            if (codec != null && finalFrameCount > 0) {
++                try {
++                    // Signal End of Stream
++                    codec.signalEndOfInputStream()
++                    android.util.Log.d("SessionManager", "Video recording: EOS signaled to encoder")
++
++                    // Wait for output thread to finish (max 2 seconds)
++                    encoderOutputThread?.join(2000)
++                    if (encoderOutputThread?.isAlive == true) {
++                        android.util.Log.w("SessionManager", "Video recording: Output thread did not finish, interrupting...")
++                        encoderOutputThread?.interrupt()
++                    }
++
++                } catch (e: Exception) {
++                    android.util.Log.e("SessionManager", "Video recording: Error signaling EOS or joining thread: ${e.message}", e)
++                }
++            }
++
++            // Stop and release encoder
++            try {
++                mediaCodec?.stop()
++                android.util.Log.d("SessionManager", "Video recording: MediaCodec stopped")
++            } catch (e: Exception) {
++                android.util.Log.e("SessionManager", "Video recording: Error stopping codec: ${e.message}")
++            }
++
++            try {
++                mediaCodec?.release()
++                android.util.Log.d("SessionManager", "Video recording: MediaCodec released")
++            } catch (e: Exception) {
++                android.util.Log.e("SessionManager", "Video recording: Error releasing codec: ${e.message}")
++            }
++            mediaCodec = null
++
++            // Release Surface
++            try {
++                encoderSurface?.release()
++                android.util.Log.d("SessionManager", "Video recording: Surface released")
++            } catch (e: Exception) {
++                android.util.Log.e("SessionManager", "Video recording: Error releasing surface: ${e.message}")
++            }
++            encoderSurface = null
++
++            // Stop and release muxer
++            try {
++                if (finalVideoTrackIndex >= 0) {
++                    mediaMuxer?.stop()
++                    android.util.Log.d("SessionManager", "Video recording: MediaMuxer stopped")
++                }
++            } catch (e: Exception) {
++                android.util.Log.e("SessionManager", "Video recording: Error stopping muxer: ${e.message}")
++            }
++
++            try {
++                mediaMuxer?.release()
++                android.util.Log.d("SessionManager", "Video recording: MediaMuxer released")
++            } catch (e: Exception) {
++                android.util.Log.e("SessionManager", "Video recording: Error releasing muxer: ${e.message}")
++            }
++            mediaMuxer = null
++
++        } finally {
++            cleanupVideoRecording()
++            android.util.Log.d("SessionManager", "Video recording: Cleanup complete")
++            shutdownLatch.countDown()
 +        }
-+        mediaCodec = null
-+        
-+        try {
-+            mediaMuxer?.stop()
-+            mediaMuxer?.release()
-+        } catch (e: Exception) {
-+            // Ignore
++    }
++
++    // Wait for processing to complete (max 3 seconds)
++    try {
++        if (!shutdownLatch.await(3, TimeUnit.SECONDS)) {
++            android.util.Log.w("SessionManager", "Video recording: Shutdown timeout (3s exceeded)")
++        } else {
++            android.util.Log.d("SessionManager", "Video recording: Shutdown completed successfully")
 +        }
-+        mediaMuxer = null
-+        
-+        videoRecordingThread?.quitSafely()
-+        videoRecordingThread = null
-+        videoRecordingHandler = null
-+        
-+        isRecordingVideo = false
-+        isVideoInitialized = false
-+        videoTrackIndex = -1
-+        frameCount = 0
-+        videoWidth = 0
-+        videoHeight = 0
-+        selectedColorFormat = -1
++    } catch (e: InterruptedException) {
++        android.util.Log.e("SessionManager", "Video recording: Shutdown interrupted", e)
++    }
++
++    android.util.Log.d("SessionManager", "Video recording: Verifying output - trackIndex: $finalVideoTrackIndex, frames: $finalFrameCount, path: $finalVideoOutputPath")
++
++    // Only return path if we created a valid video file
++    if (finalVideoTrackIndex >= 0 && finalVideoOutputPath != null) {
++        val file = File(finalVideoOutputPath)
++        if (file.exists() && file.length() > 0) {
++            android.util.Log.d("SessionManager", "Video recording: ✅ Success - ${file.length()} bytes, $finalFrameCount frames")
++            return finalVideoOutputPath
++        } else {
++            android.util.Log.w("SessionManager", "Video recording: File missing or empty")
++        }
++    } else {
++        android.util.Log.w("SessionManager", "Video recording: No valid video created (trackIndex: $finalVideoTrackIndex, frames: $finalFrameCount)")
++    }
++
++    return null
++}
++
++private fun cleanupVideoRecording() {
++    try {
++        mediaCodec?.stop()
++        mediaCodec?.release()
++    } catch (e: Exception) {
++        // Ignore
++    }
++    mediaCodec = null
++
++    try {
++        encoderSurface?.release()
++    } catch (e: Exception) {
++        // Ignore
++    }
++    encoderSurface = null
++
++    try {
++        mediaMuxer?.stop()
++        mediaMuxer?.release()
++    } catch (e: Exception) {
++        // Ignore
++    }
++    mediaMuxer = null
++
++    videoRecordingThread?.quitSafely()
++    videoRecordingThread = null
++    videoRecordingHandler = null
++
++    encoderOutputThread = null
++    isEncoderOutputRunning = false
++
++    isRecordingVideo = false
++    isVideoInitialized = false
++    isEncodingFrame = false
++    videoTrackIndex = -1
++    frameCount = 0
++    videoWidth = 0
++    videoHeight = 0
++}
++
++/**
++ * Record a frame by drawing it directly to the encoder's Surface.
++ *
++ * This approach:
++ * - Draws Bitmap to Surface using Canvas (hardware-accelerated)
++ * - MediaCodec automatically handles RGB → YUV conversion
++ * - No manual color space conversion needed
++ * - Works on all devices (no vendor quirks)
++ * - Drops frames if encoder is busy (prevents Surface lock conflicts)
++ */
++private fun recordFrame(bitmap: Bitmap) {
++    if (frameCount < 5 || frameCount % 30 == 0) {
++        android.util.Log.d("SessionManager", "Video recording: 🎬 recordFrame called, frame=$frameCount, isRecordingVideo=$isRecordingVideo, bitmap=${bitmap.width}x${bitmap.height}")
 +    }
 +    
-+    private fun recordFrame(bitmap: Bitmap) {
-+        if (!isRecordingVideo) {
-+            return
++    if (!isRecordingVideo) {
++        android.util.Log.w("SessionManager", "Video recording: ⚠️ recordFrame called but isRecordingVideo=false")
++        return
++    }
++
++    // Skip frame if we're still encoding the previous one
++    // This prevents "Surface was already locked" errors
++    if (isEncodingFrame) {
++        if (frameCount % 30 == 0) {
++            android.util.Log.d("SessionManager", "Video recording: Skipping frame $frameCount (encoder busy)")
 +        }
-+        
-+        try {
++        return
++    }
++
++    try {
++        // Mark that we're encoding a frame
++        isEncodingFrame = true
++
++        // Initialize encoder on first frame
++        if (!isVideoInitialized) {
++            videoWidth = bitmap.width
++            videoHeight = bitmap.height
++            android.util.Log.d("SessionManager", "Video recording: 🔧 First frame received - ${videoWidth}x${videoHeight}, initializing encoder...")
++            initializeVideoEncoder()
 +            if (!isVideoInitialized) {
-+                videoWidth = bitmap.width
-+                videoHeight = bitmap.height
-+                android.util.Log.d("SessionManager", "Video recording: Detected dimensions from first frame - width: $videoWidth, height: $videoHeight, aspectRatio: ${videoWidth.toFloat() / videoHeight.toFloat()}")
-+                initializeVideoEncoder()
-+                if (!isVideoInitialized) {
-+                    return
-+                }
-+                android.util.Log.d("SessionManager", "Video recording: Encoder initialized with dimensions - width: $videoWidth, height: $videoHeight")
-+            }
-+            
-+            if (mediaCodec == null) {
++                android.util.Log.e("SessionManager", "Video recording: ❌ Initialization failed after first frame")
 +                return
 +            }
-+            
-+            var processedBitmap = bitmap
-+            val needsScaling = bitmap.width != videoWidth || bitmap.height != videoHeight
-+            
-+            if (needsScaling) {
-+                val bitmapAspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
-+                val videoAspectRatio = videoWidth.toFloat() / videoHeight.toFloat()
-+                android.util.Log.w("SessionManager", "Video recording: Bitmap dimensions mismatch - bitmap: ${bitmap.width}x${bitmap.height} (AR: ${String.format("%.2f", bitmapAspectRatio)}), video: ${videoWidth}x${videoHeight} (AR: ${String.format("%.2f", videoAspectRatio)}), scaling required")
-+                if (abs(bitmapAspectRatio - videoAspectRatio) > 0.01f) {
-+                    android.util.Log.e("SessionManager", "Video recording: ASPECT RATIO MISMATCH - This will cause stretching! Bitmap AR: ${String.format("%.2f", bitmapAspectRatio)}, Video AR: ${String.format("%.2f", videoAspectRatio)}")
-+                }
-+                processedBitmap = Bitmap.createScaledBitmap(bitmap, videoWidth, videoHeight, true)
-+            } else if (frameCount == 0 || frameCount % 30 == 0) {
-+                val bitmapAspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
-+                android.util.Log.d("SessionManager", "Video recording: Frame $frameCount - bitmap: ${bitmap.width}x${bitmap.height} (AR: ${String.format("%.2f", bitmapAspectRatio)}), video: ${videoWidth}x${videoHeight}")
-+            }
-+            
-+            if (processedBitmap.config != Bitmap.Config.ARGB_8888) {
-+                val argbBitmap = processedBitmap.copy(Bitmap.Config.ARGB_8888, false)
-+                if (processedBitmap != bitmap) {
-+                    processedBitmap.recycle()
-+                }
-+                processedBitmap = argbBitmap
-+            }
-+            
-+            val yuvData = bitmapToYuv420(processedBitmap, videoWidth, videoHeight)
-+            encodeFrame(yuvData)
-+            
-+            if (processedBitmap != bitmap) {
-+                processedBitmap.recycle()
-+            }
-+            
-+            frameCount++
-+        } catch (e: Exception) {
-+            android.util.Log.e("SessionManager", "Error recording frame: ${e.message}", e)
++            android.util.Log.d("SessionManager", "Video recording: ✅ Encoder initialized successfully")
 +        }
-+    }
-+    
-+    private fun bitmapToYuv420(bitmap: Bitmap, width: Int, height: Int): ByteArray {
-+        val ySize = width * height
-+        val uvSize = (width / 2) * (height / 2) * 2
-+        val yuv = ByteArray(ySize + uvSize)
-+        val pixels = IntArray(width * height)
-+        
-+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
-+        
-+        val isSemiPlanar = selectedColorFormat == MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar ||
-+                          selectedColorFormat == MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible
-+        
-+        var yIndex = 0
-+        
-+        for (y in 0 until height) {
-+            for (x in 0 until width) {
-+                val pixel = pixels[y * width + x]
-+                val r = (pixel shr 16) and 0xFF
-+                val g = (pixel shr 8) and 0xFF
-+                val b = pixel and 0xFF
-+                
-+                val yVal = (0.299 * r + 0.587 * g + 0.114 * b).toInt().coerceIn(0, 255)
-+                yuv[yIndex++] = yVal.toByte()
-+                
-+                if (y % 2 == 0 && x % 2 == 0) {
-+                    val uVal = (-0.169 * r - 0.331 * g + 0.5 * b + 128).toInt().coerceIn(0, 255)
-+                    val vVal = (0.5 * r - 0.419 * g - 0.081 * b + 128).toInt().coerceIn(0, 255)
-+                    
-+                    if (isSemiPlanar) {
-+                        val uvPos = ((y / 2) * (width / 2) + (x / 2)) * 2
-+                        yuv[ySize + uvPos] = uVal.toByte()
-+                        yuv[ySize + uvPos + 1] = vVal.toByte()
-+                    } else {
-+                        val uvOffset = (y / 2) * (width / 2) + (x / 2)
-+                        yuv[ySize + uvOffset] = uVal.toByte()
-+                        yuv[ySize + (width / 2) * (height / 2) + uvOffset] = vVal.toByte()
-+                    }
-+                }
-+            }
++
++        val surface = encoderSurface
++        if (surface == null || !surface.isValid) {
++            android.util.Log.e("SessionManager", "Video recording: ❌ Surface is null or invalid")
++            return
 +        }
-+        
-+        return yuv
-+    }
-+    
-+    private fun encodeFrame(yuvData: ByteArray) {
-+        val codec = mediaCodec ?: return
-+        
++
++        if (frameCount == 0) {
++            android.util.Log.d("SessionManager", "Video recording: 🎬 About to record first frame to Surface")
++        }
++
++        // Lock canvas from Surface
++        val canvas = surface.lockCanvas(null)
++
++        if (frameCount == 0) {
++            android.util.Log.d("SessionManager", "Video recording: ✅ Canvas locked successfully, drawing frame...")
++        }
++
 +        try {
-+            val inputBufferIndex = codec.dequeueInputBuffer(10000)
-+            if (inputBufferIndex >= 0) {
-+                val inputBuffer = codec.getInputBuffer(inputBufferIndex)
-+                if (inputBuffer != null) {
-+                    val capacity = inputBuffer.capacity()
-+                    if (yuvData.size > capacity) {
-+                        android.util.Log.w("SessionManager", "YUV data size (${yuvData.size}) exceeds buffer capacity ($capacity), truncating")
-+                        inputBuffer.put(yuvData, 0, capacity)
-+                    } else {
-+                        inputBuffer.clear()
-+                        inputBuffer.put(yuvData)
-+                    }
-+                    
-+                    val presentationTimeUs = (System.nanoTime() / 1000) - startTimeUs
-+                    val dataSize = yuvData.size.coerceAtMost(capacity)
-+                    codec.queueInputBuffer(
-+                        inputBufferIndex,
-+                        0,
-+                        dataSize,
-+                        presentationTimeUs,
-+                        0
-+                    )
-+                }
++            // Clear canvas
++            canvas.drawColor(Color.BLACK)
++
++            // Calculate scaling to maintain aspect ratio
++            val srcRect = Rect(0, 0, bitmap.width, bitmap.height)
++            val dstRect = Rect(0, 0, videoWidth, videoHeight)
++
++            // Draw bitmap scaled to video dimensions
++            // Canvas + Surface handle all color conversion and scaling
++            canvas.drawBitmap(bitmap, srcRect, dstRect, framePaint)
++
++            if (frameCount == 0) {
++                android.util.Log.d("SessionManager", "Video recording: ✅ Frame drawn to canvas, unlocking...")
 +            }
-+            
-+            // Process output
-+            val bufferInfo = MediaCodec.BufferInfo()
-+            var outputBufferIndex = codec.dequeueOutputBuffer(bufferInfo, 0)
-+            
-+            while (outputBufferIndex >= 0) {
-+                if (videoTrackIndex == -1) {
-+                    val format = codec.outputFormat
-+                    videoTrackIndex = mediaMuxer?.addTrack(format) ?: -1
-+                    if (videoTrackIndex >= 0) {
-+                        mediaMuxer?.start()
-+                    }
-+                }
-+                
-+                if (videoTrackIndex >= 0 && (bufferInfo.flags and MediaCodec.BUFFER_FLAG_CODEC_CONFIG) == 0) {
-+                    val outputBuffer = codec.getOutputBuffer(outputBufferIndex)
-+                    if (outputBuffer != null && bufferInfo.size > 0) {
-+                        outputBuffer.position(bufferInfo.offset)
-+                        outputBuffer.limit(bufferInfo.offset + bufferInfo.size)
-+                        mediaMuxer?.writeSampleData(videoTrackIndex, outputBuffer, bufferInfo)
-+                    }
-+                }
-+                
-+                codec.releaseOutputBuffer(outputBufferIndex, false)
-+                outputBufferIndex = codec.dequeueOutputBuffer(bufferInfo, 0)
++
++        } finally {
++            // Post frame to encoder
++            // This triggers MediaCodec to encode the Surface contents
++            surface.unlockCanvasAndPost(canvas)
++
++            if (frameCount == 0) {
++                android.util.Log.d("SessionManager", "Video recording: ✅ Canvas unlocked and posted to encoder")
 +            }
-+        } catch (e: Exception) {
-+            android.util.Log.e("SessionManager", "Error encoding frame: ${e.message}", e)
 +        }
++
++        frameCount++
++
++        if (frameCount == 1 || frameCount % 10 == 0) {
++            android.util.Log.d("SessionManager", "Video recording: 📹 Frame $frameCount recorded and posted")
++        }
++
++    } catch (e: Exception) {
++        android.util.Log.e("SessionManager", "Video recording: Error recording frame: ${e.message}", e)
++    } finally {
++        // Always reset the encoding flag
++        isEncodingFrame = false
 +    }
- 
++}
++
      private fun resolveDeviceOrientation(deviceOrientation: Int?): DeviceOrientation? {
          return deviceOrientation?.let {orientation ->
-
-diff --git a/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt b/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt
---- a/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt
-+++ b/android/src/main/java/com/biosensesignal/react_native_sdk/BiosenseSignalReactNativeSDK.kt
-@@ -124,6 +124,34 @@
- 	fun getState(promise: Promise) {
- 		promise.resolve(SessionManager.getSessionState()?.ordinal)
- 	}
+             try {
+diff --git a/ios/BiosenseSignalReactNativeSDK.m b/ios/BiosenseSignalReactNativeSDK.m
+index 9cc4533..74bbe3f 100644
+--- a/ios/BiosenseSignalReactNativeSDK.m
++++ b/ios/BiosenseSignalReactNativeSDK.m
+@@ -40,6 +40,30 @@ RCT_EXTERN_METHOD(getSessionState:
+                   (RCTPromiseResolveBlock)resolve
+                   withRejecter:(RCTPromiseRejectBlock)reject)
+ 
++RCT_EXTERN_METHOD(startVideoRecording:
++                  (nonnull NSString *)outputPath
++                  width:(nonnull NSNumber *)width
++                  height:(nonnull NSNumber *)height
++                  fps:(nonnull NSNumber *)fps
++                  withResolver:(RCTPromiseResolveBlock)resolve
++                  withRejecter:(RCTPromiseRejectBlock)reject)
 +
-+	@ReactMethod
-+	fun startVideoRecording(outputPath: String, width: Int, height: Int, fps: Int, promise: Promise) {
-+		android.util.Log.d("BiosenseSignalReactNativeSDK", "Video recording: Bridge startVideoRecording called - outputPath: $outputPath, width: $width, height: $height, fps: $fps")
-+		try {
-+			SessionManager.startVideoRecording(outputPath, width, height, fps)
-+			android.util.Log.d("BiosenseSignalReactNativeSDK", "Video recording: Bridge startVideoRecording succeeded")
-+			promise.resolve(null)
-+		} catch (e: HealthMonitorException) {
-+			android.util.Log.e("BiosenseSignalReactNativeSDK", "Video recording: Bridge startVideoRecording failed - ${e.domain}: ${e.errorCode}")
-+			promise.reject(e.errorCode.toString(), e.domain, e)
-+		}
-+	}
++RCT_EXTERN_METHOD(stopVideoRecording:
++                  (RCTPromiseResolveBlock)resolve
++                  withRejecter:(RCTPromiseRejectBlock)reject)
 +
-+	@ReactMethod
-+	fun stopVideoRecording(promise: Promise) {
-+		android.util.Log.d("BiosenseSignalReactNativeSDK", "Video recording: Bridge stopVideoRecording called")
-+		try {
-+			val outputPath = SessionManager.stopVideoRecording()
-+			android.util.Log.d("BiosenseSignalReactNativeSDK", "Video recording: Bridge stopVideoRecording succeeded - outputPath: $outputPath")
-+			// Resolve with null if no video was recorded (graceful failure)
-+			promise.resolve(outputPath)
-+		} catch (e: Exception) {
-+			android.util.Log.e("BiosenseSignalReactNativeSDK", "Video recording: Bridge stopVideoRecording failed - ${e.message}", e)
-+			// Only reject if there's an actual exception
-+			promise.reject("VIDEO_RECORDING_ERROR", "Error stopping video recording: ${e.message}", e)
-+		}
-+	}
++RCT_EXTERN_METHOD(startVideoRecording:
++                  (nonnull NSString *)outputPath
++                  width:(nonnull NSNumber *)width
++                  height:(nonnull NSNumber *)height
++                  fps:(nonnull NSNumber *)fps
++                  withResolver:(RCTPromiseResolveBlock)resolve
++                  withRejecter:(RCTPromiseRejectBlock)reject)
++
++RCT_EXTERN_METHOD(stopVideoRecording:
++                  (RCTPromiseResolveBlock)resolve
++                  withRejecter:(RCTPromiseRejectBlock)reject)
++
+ + (BOOL)requiresMainQueueSetup
+ {
+   return NO;
+diff --git a/ios/BiosenseSignalReactNativeSDK.swift b/ios/BiosenseSignalReactNativeSDK.swift
+index 8aa19ba..1c0113c 100644
+--- a/ios/BiosenseSignalReactNativeSDK.swift
++++ b/ios/BiosenseSignalReactNativeSDK.swift
+@@ -136,5 +136,25 @@ class BiosenseSignalReactNativeSDK: NSObject {
+     func getSessionState(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+         resolve(SessionManager.shared.getSessionState()?.rawValue)
+     }
++    
++    @objc(startVideoRecording:width:height:fps:withResolver:withRejecter:)
++    func startVideoRecording(outputPath: String, width: NSNumber, height: NSNumber, fps: NSNumber, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
++        do {
++            try SessionManager.shared.startVideoRecording(outputPath: outputPath, width: width.intValue, height: height.intValue, fps: fps.intValue)
++            resolve(nil)
++        } catch {
++            reject(
++                (error as NSError).code.description,
++                (error as NSError).domain,
++                error
++            )
++        }
++    }
++
++    @objc(stopVideoRecording:withRejecter:)
++    func stopVideoRecording(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
++        let outputPath = SessionManager.shared.stopVideoRecording()
++        resolve(outputPath)
++    }
  }
  
- 
-
 diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
+index c1fc67a..381c6cc 100644
 --- a/ios/SessionManager.swift
 +++ b/ios/SessionManager.swift
 @@ -8,6 +8,9 @@
@@ -544,11 +701,12 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
  
  
  class SessionManager:
-@@ -27,6 +33,20 @@
+@@ -26,7 +29,23 @@ class SessionManager:
+     private var ppgDeviceId: String?
      private var ppgScanners = [String: PPGDeviceScanner]()
      
-     let images = PassthroughSubject<ImageData, Never>()
-+    
+-    let images = PassthroughSubject<ImageData, Never>()
++    let images = PassthroughSubject<ImageData, Never>()    
 +    // Video recording properties
 +    private var videoWriter: AVAssetWriter?
 +    private var videoWriterInput: AVAssetWriterInput?
@@ -561,11 +719,14 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +    private var videoHeight: Int = 0
 +    private var videoFps: Int = 30
 +    private var isVideoInitialized: Bool = false
-+    private let videoRecordingQueue = DispatchQueue(label: "com.biosensesignal.video.recording", qos: .userInitiated)
++    private lazy var videoRecordingQueue: DispatchQueue = {
++        return DispatchQueue(label: "com.biosensesignal.video.recording", qos: .userInitiated)
++    }()
++
      
      private init() {}
      
-@@ -177,6 +197,10 @@
+@@ -177,6 +196,10 @@ class SessionManager:
  
      func terminateSession() {
          session?.terminate()
@@ -576,25 +737,33 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
      }
  
      func getSessionState() -> SessionState? {
-@@ -186,6 +210,12 @@
+@@ -186,6 +209,21 @@ class SessionManager:
      func onImage(imageData: ImageData) {
          images.send(imageData)
          eventEmitter?.sendEvent(withName: NativeBridgeEvents.imageInfo, body: imageData.toMap())
++
++        // Only process video recording if explicitly recording and image is available
++        // Double-check isRecordingVideo to avoid any race conditions
++        guard isRecordingVideo, let image = imageData.image as? UIImage else {
++            return
++        }
 +        
-+        if isRecordingVideo, let image = imageData.image as? UIImage {
-+            videoRecordingQueue.async { [weak self] in
-+                self?.recordFrame(image: image)
++        // Lazy initialization of queue - only created when needed
++        videoRecordingQueue.async { [weak self] in
++            // Double-check again in async block to ensure still recording
++            guard let self = self, self.isRecordingVideo else {
++                return
 +            }
++            self.recordFrame(image: image)
 +        }
      }
      
      func onVitalSign(vitalSign: VitalSign) {
-@@ -241,8 +271,254 @@
-   
-     func onLogsReady(logsInfo: LogsInfo) {
+@@ -243,6 +281,257 @@ class SessionManager:
          eventEmitter?.sendEvent(withName: NativeBridgeEvents.logsReady, body: logsInfo.toMap())
-+    }
-+    
+     }
+     
++
 +    // MARK: Video Recording
 +    
 +    func startVideoRecording(outputPath: String, width: Int, height: Int, fps: Int) throws {
@@ -602,12 +771,12 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +            // Stop and clean up any existing recording synchronously
 +            _ = stopVideoRecording()
 +        }
-+        
++
 +        // Ensure the directory exists
 +        let outputURL = URL(fileURLWithPath: outputPath)
 +        let directoryURL = outputURL.deletingLastPathComponent()
 +        let fileManager = FileManager.default
-+        
++
 +        if !fileManager.fileExists(atPath: directoryURL.path) {
 +            do {
 +                try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
@@ -615,13 +784,13 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +                throw NSError(domain: "VIDEO_RECORDING", code: -3, userInfo: [NSLocalizedDescriptionKey: "Failed to create directory: \(error.localizedDescription)"])
 +            }
 +        }
-+        
++
 +        self.videoOutputPath = outputPath
 +        self.videoFps = fps
 +        self.frameCount = 0
 +        self.frameStartTime = .zero
 +        self.isVideoInitialized = false
-+        
++
 +        if width > 0 && height > 0 {
 +            self.videoWidth = width
 +            self.videoHeight = height
@@ -630,35 +799,35 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +            self.videoWidth = 0
 +            self.videoHeight = 0
 +        }
-+        
++
 +        isRecordingVideo = true
 +    }
-+    
++
 +    private func initializeVideoEncoder() throws {
 +        guard let outputPath = videoOutputPath else {
 +            throw NSError(domain: "VIDEO_RECORDING", code: -2, userInfo: [NSLocalizedDescriptionKey: "No output path"])
 +        }
-+        
++
 +        if videoWidth <= 0 || videoHeight <= 0 {
 +            return
 +        }
-+        
++
 +        if isVideoInitialized {
 +            return
 +        }
-+        
++
 +        let outputURL = URL(fileURLWithPath: outputPath)
 +        let fileManager = FileManager.default
 +        if fileManager.fileExists(atPath: outputPath) {
 +            try? fileManager.removeItem(at: outputURL)
 +        }
-+        
++
 +        do {
 +            videoWriter = try AVAssetWriter(outputURL: outputURL, fileType: .mp4)
 +        } catch {
 +            throw NSError(domain: "VIDEO_RECORDING", code: -4, userInfo: [NSLocalizedDescriptionKey: "Failed to create AVAssetWriter: \(error.localizedDescription)"])
 +        }
-+        
++
 +        let videoSettings: [String: Any] = [
 +            AVVideoCodecKey: AVVideoCodecType.h264,
 +            AVVideoWidthKey: videoWidth,
@@ -668,70 +837,70 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +                AVVideoMaxKeyFrameIntervalKey: videoFps
 +            ]
 +        ]
-+        
++
 +        videoWriterInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
 +        videoWriterInput?.expectsMediaDataInRealTime = true
-+        
++
 +        let sourcePixelBufferAttributes: [String: Any] = [
 +            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32ARGB,
 +            kCVPixelBufferWidthKey as String: videoWidth,
 +            kCVPixelBufferHeightKey as String: videoHeight
 +        ]
-+        
++
 +        pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(
 +            assetWriterInput: videoWriterInput!,
 +            sourcePixelBufferAttributes: sourcePixelBufferAttributes
 +        )
-+        
++
 +        guard let videoWriter = videoWriter, let videoWriterInput = videoWriterInput else {
 +            throw NSError(domain: "VIDEO_RECORDING", code: -2, userInfo: [NSLocalizedDescriptionKey: "Failed to create video writer"])
 +        }
-+        
++
 +        videoWriter.add(videoWriterInput)
-+        
++
 +        guard videoWriter.startWriting() else {
 +            throw NSError(domain: "VIDEO_RECORDING", code: -2, userInfo: [NSLocalizedDescriptionKey: videoWriter.error?.localizedDescription ?? "Failed to start writing"])
 +        }
-+        
++
 +        isVideoInitialized = true
 +    }
-+    
++
 +    func stopVideoRecording() -> String? {
 +        guard isRecordingVideo else {
 +            return nil
 +        }
-+        
++
 +        isRecordingVideo = false
-+        
++
 +        guard let videoWriter = videoWriter, let videoWriterInput = videoWriterInput, frameCount > 0 else {
 +            cleanupVideoRecording()
 +            return nil
 +        }
-+        
++
 +        videoWriterInput.markAsFinished()
-+        
++
 +        let semaphore = DispatchSemaphore(value: 0)
 +        var success = false
-+        
++
 +        videoWriter.finishWriting { [weak self] in
 +            if self?.videoWriter?.status == .completed {
 +                success = true
 +            }
 +            semaphore.signal()
 +        }
-+        
++
 +        _ = semaphore.wait(timeout: .now() + 10)
-+        
++
 +        let outputPath = self.videoOutputPath
 +        cleanupVideoRecording()
-+        
++
 +        if success, let path = outputPath, FileManager.default.fileExists(atPath: path) {
 +            return path
 +        }
-+        
++
 +        return nil
-     }
-     
++    }
++
 +    private func cleanupVideoRecording() {
 +        videoWriter = nil
 +        videoWriterInput = nil
@@ -744,10 +913,13 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +        videoHeight = 0
 +        frameStartTime = .zero
 +    }
-+    
++
 +    private func recordFrame(image: UIImage) {
-+        guard isRecordingVideo else { return }
-+        
++        // Early return if not recording - prevents any video processing overhead
++        guard isRecordingVideo, videoOutputPath != nil else {
++            return
++        }
++
 +        if !isVideoInitialized {
 +            if let cgImage = image.cgImage {
 +                videoWidth = cgImage.width
@@ -758,39 +930,39 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +            } else {
 +                return
 +            }
-+            
++
 +            do {
 +                try initializeVideoEncoder()
 +            } catch {
 +                return
 +            }
 +        }
-+        
++
 +        guard let videoWriter = videoWriter,
 +              let videoWriterInput = videoWriterInput,
 +              let pixelBufferAdaptor = pixelBufferAdaptor,
 +              videoWriter.status == .writing else {
 +            return
 +        }
-+        
++
 +        if frameCount == 0 {
 +            frameStartTime = CMTime.zero
 +            videoWriter.startSession(atSourceTime: frameStartTime)
 +        }
-+        
++
 +        guard let pixelBuffer = createPixelBuffer(from: image, width: videoWidth, height: videoHeight) else {
 +            return
 +        }
-+        
++
 +        let presentationTime = CMTime(value: Int64(frameCount), timescale: Int32(videoFps))
-+        
++
 +        if videoWriterInput.isReadyForMoreMediaData {
 +            if pixelBufferAdaptor.append(pixelBuffer, withPresentationTime: presentationTime) {
 +                frameCount += 1
 +            }
 +        }
 +    }
-+    
++
 +    private func createPixelBuffer(from image: UIImage, width: Int, height: Int) -> CVPixelBuffer? {
 +        var pixelBuffer: CVPixelBuffer?
 +        let status = CVPixelBufferCreate(
@@ -804,14 +976,14 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +            ] as CFDictionary,
 +            &pixelBuffer
 +        )
-+        
++
 +        guard status == kCVReturnSuccess, let buffer = pixelBuffer else {
 +            return nil
 +        }
-+        
++
 +        CVPixelBufferLockBaseAddress(buffer, [])
 +        defer { CVPixelBufferUnlockBaseAddress(buffer, []) }
-+        
++
 +        guard let context = CGContext(
 +            data: CVPixelBufferGetBaseAddress(buffer),
 +            width: width,
@@ -823,7 +995,7 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +        ) else {
 +            return nil
 +        }
-+        
++
 +        var cgImage: CGImage?
 +        if let imageCGImage = image.cgImage {
 +            cgImage = imageCGImage
@@ -831,449 +1003,36 @@ diff --git a/ios/SessionManager.swift b/ios/SessionManager.swift
 +            let ciContext = CIContext()
 +            cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent)
 +        }
-+        
++
 +        guard let finalCGImage = cgImage else {
 +            return nil
 +        }
-+        
++
 +        context.draw(finalCGImage, in: CGRect(x: 0, y: 0, width: width, height: height))
-+        
++
 +        return buffer
 +    }
 +    
++
      //MARK: Private
      private func resolveDeviceOrientation(deviceOrientation: Int?) -> DeviceOrientation? {
          guard let orientation = deviceOrientation, let orientationEnum = DeviceOrientation.init(rawValue: orientation) else {
-
---- a/ios/BiosenseSignalReactNativeSDK.swift
-+++ b/ios/BiosenseSignalReactNativeSDK.swift
-@@ -132,6 +132,33 @@
-         SessionManager.shared.terminateSession()
-     }
-     
-+    @objc(startVideoRecording:width:height:fps:withResolver:withRejecter:)
-+    func startVideoRecording(outputPath: String, width: NSNumber, height: NSNumber, fps: NSNumber, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
-+        do {
-+            try SessionManager.shared.startVideoRecording(outputPath: outputPath, width: width.intValue, height: height.intValue, fps: fps.intValue)
-+            resolve(nil)
-+        } catch let error as NSError {
-+            reject(
-+                error.code.description,
-+                error.domain,
-+                error
-+            )
-+        } catch {
-+            let nsError = error as NSError
-+            reject(
-+                nsError.code.description,
-+                nsError.domain,
-+                error
-+            )
-+        }
-+    }
-+    
-+    @objc(stopVideoRecording:withRejecter:)
-+    func stopVideoRecording(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
-+        let outputPath = SessionManager.shared.stopVideoRecording()
-+        resolve(outputPath)
-+    }
-+    
-     @objc(getSessionState:withRejecter:)
-     func getSessionState(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
-         resolve(SessionManager.shared.getSessionState()?.rawValue)
-
 diff --git a/src/session/Session.ts b/src/session/Session.ts
-@@ -27,6 +33,20 @@
-     private var ppgScanners = [String: PPGDeviceScanner]()
-     
-     let images = PassthroughSubject<ImageData, Never>()
-+    
-+    // Video recording properties
-+    private var videoWriter: AVAssetWriter?
-+    private var videoWriterInput: AVAssetWriterInput?
-+    private var pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor?
-+    private var isRecordingVideo: Bool = false
-+    private var videoOutputPath: String?
-+    private var frameStartTime: CMTime = .zero
-+    private var frameCount: Int = 0
-+    private var videoWidth: Int = 0
-+    private var videoHeight: Int = 0
-+    private var videoFps: Int = 30
-+    private var isVideoInitialized: Bool = false
-+    private let videoRecordingQueue = DispatchQueue(label: "com.biosensesignal.video.recording", qos: .userInitiated)
-     
-     private init() {}
-     
-@@ -177,6 +197,10 @@
- 
-     func terminateSession() {
-         session?.terminate()
-+        // Clean up video recording if active
-+        if isRecordingVideo {
-+            _ = stopVideoRecording()
-+        }
-     }
- 
-     func getSessionState() -> SessionState? {
-@@ -186,6 +210,12 @@
-     func onImage(imageData: ImageData) {
-         images.send(imageData)
-         eventEmitter?.sendEvent(withName: NativeBridgeEvents.imageInfo, body: imageData.toMap())
-+        
-+        if isRecordingVideo, let image = imageData.image as? UIImage {
-+            videoRecordingQueue.async { [weak self] in
-+                self?.recordFrame(image: image)
-+            }
-+        }
-     }
-     
-     func onVitalSign(vitalSign: VitalSign) {
-@@ -241,8 +271,254 @@
-   
-     func onLogsReady(logsInfo: LogsInfo) {
-         eventEmitter?.sendEvent(withName: NativeBridgeEvents.logsReady, body: logsInfo.toMap())
-+    }
-+    
-+    // MARK: Video Recording
-+    
-+    func startVideoRecording(outputPath: String, width: Int, height: Int, fps: Int) throws {
-+        if isRecordingVideo {
-+            // Stop and clean up any existing recording synchronously
-+            _ = stopVideoRecording()
-+        }
-+        
-+        // Ensure the directory exists
-+        let outputURL = URL(fileURLWithPath: outputPath)
-+        let directoryURL = outputURL.deletingLastPathComponent()
-+        let fileManager = FileManager.default
-+        
-+        if !fileManager.fileExists(atPath: directoryURL.path) {
-+            do {
-+                try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
-+            } catch {
-+                throw NSError(domain: "VIDEO_RECORDING", code: -3, userInfo: [NSLocalizedDescriptionKey: "Failed to create directory: \(error.localizedDescription)"])
-+            }
-+        }
-+        
-+        self.videoOutputPath = outputPath
-+        self.videoFps = fps
-+        self.frameCount = 0
-+        self.frameStartTime = .zero
-+        self.isVideoInitialized = false
-+        
-+        if width > 0 && height > 0 {
-+            self.videoWidth = width
-+            self.videoHeight = height
-+            try initializeVideoEncoder()
-+        } else {
-+            self.videoWidth = 0
-+            self.videoHeight = 0
-+        }
-+        
-+        isRecordingVideo = true
-+    }
-+    
-+    private func initializeVideoEncoder() throws {
-+        guard let outputPath = videoOutputPath else {
-+            throw NSError(domain: "VIDEO_RECORDING", code: -2, userInfo: [NSLocalizedDescriptionKey: "No output path"])
-+        }
-+        
-+        if videoWidth <= 0 || videoHeight <= 0 {
-+            return
-+        }
-+        
-+        if isVideoInitialized {
-+            return
-+        }
-+        
-+        let outputURL = URL(fileURLWithPath: outputPath)
-+        let fileManager = FileManager.default
-+        if fileManager.fileExists(atPath: outputPath) {
-+            try? fileManager.removeItem(at: outputURL)
-+        }
-+        
-+        do {
-+            videoWriter = try AVAssetWriter(outputURL: outputURL, fileType: .mp4)
-+        } catch {
-+            throw NSError(domain: "VIDEO_RECORDING", code: -4, userInfo: [NSLocalizedDescriptionKey: "Failed to create AVAssetWriter: \(error.localizedDescription)"])
-+        }
-+        
-+        let videoSettings: [String: Any] = [
-+            AVVideoCodecKey: AVVideoCodecType.h264,
-+            AVVideoWidthKey: videoWidth,
-+            AVVideoHeightKey: videoHeight,
-+            AVVideoCompressionPropertiesKey: [
-+                AVVideoAverageBitRateKey: videoWidth * videoHeight * 4,
-+                AVVideoMaxKeyFrameIntervalKey: videoFps
-+            ]
-+        ]
-+        
-+        videoWriterInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
-+        videoWriterInput?.expectsMediaDataInRealTime = true
-+        
-+        let sourcePixelBufferAttributes: [String: Any] = [
-+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32ARGB,
-+            kCVPixelBufferWidthKey as String: videoWidth,
-+            kCVPixelBufferHeightKey as String: videoHeight
-+        ]
-+        
-+        pixelBufferAdaptor = AVAssetWriterInputPixelBufferAdaptor(
-+            assetWriterInput: videoWriterInput!,
-+            sourcePixelBufferAttributes: sourcePixelBufferAttributes
-+        )
-+        
-+        guard let videoWriter = videoWriter, let videoWriterInput = videoWriterInput else {
-+            throw NSError(domain: "VIDEO_RECORDING", code: -2, userInfo: [NSLocalizedDescriptionKey: "Failed to create video writer"])
-+        }
-+        
-+        videoWriter.add(videoWriterInput)
-+        
-+        guard videoWriter.startWriting() else {
-+            throw NSError(domain: "VIDEO_RECORDING", code: -2, userInfo: [NSLocalizedDescriptionKey: videoWriter.error?.localizedDescription ?? "Failed to start writing"])
-+        }
-+        
-+        isVideoInitialized = true
-+    }
-+    
-+    func stopVideoRecording() -> String? {
-+        guard isRecordingVideo else {
-+            return nil
-+        }
-+        
-+        isRecordingVideo = false
-+        
-+        guard let videoWriter = videoWriter, let videoWriterInput = videoWriterInput, frameCount > 0 else {
-+            cleanupVideoRecording()
-+            return nil
-+        }
-+        
-+        videoWriterInput.markAsFinished()
-+        
-+        let semaphore = DispatchSemaphore(value: 0)
-+        var success = false
-+        
-+        videoWriter.finishWriting { [weak self] in
-+            if self?.videoWriter?.status == .completed {
-+                success = true
-+            }
-+            semaphore.signal()
-+        }
-+        
-+        _ = semaphore.wait(timeout: .now() + 10)
-+        
-+        let outputPath = self.videoOutputPath
-+        cleanupVideoRecording()
-+        
-+        if success, let path = outputPath, FileManager.default.fileExists(atPath: path) {
-+            return path
-+        }
-+        
-+        return nil
-     }
-     
-+    private func cleanupVideoRecording() {
-+        videoWriter = nil
-+        videoWriterInput = nil
-+        pixelBufferAdaptor = nil
-+        isVideoInitialized = false
-+        isRecordingVideo = false
-+        videoOutputPath = nil
-+        frameCount = 0
-+        videoWidth = 0
-+        videoHeight = 0
-+        frameStartTime = .zero
-+    }
-+    
-+    private func recordFrame(image: UIImage) {
-+        guard isRecordingVideo else { return }
-+        
-+        if !isVideoInitialized {
-+            if let cgImage = image.cgImage {
-+                videoWidth = cgImage.width
-+                videoHeight = cgImage.height
-+            } else if let ciImage = image.ciImage {
-+                videoWidth = Int(ciImage.extent.width)
-+                videoHeight = Int(ciImage.extent.height)
-+            } else {
-+                return
-+            }
-+            
-+            do {
-+                try initializeVideoEncoder()
-+            } catch {
-+                return
-+            }
-+        }
-+        
-+        guard let videoWriter = videoWriter,
-+              let videoWriterInput = videoWriterInput,
-+              let pixelBufferAdaptor = pixelBufferAdaptor,
-+              videoWriter.status == .writing else {
-+            return
-+        }
-+        
-+        if frameCount == 0 {
-+            frameStartTime = CMTime.zero
-+            videoWriter.startSession(atSourceTime: frameStartTime)
-+        }
-+        
-+        guard let pixelBuffer = createPixelBuffer(from: image, width: videoWidth, height: videoHeight) else {
-+            return
-+        }
-+        
-+        let presentationTime = CMTime(value: Int64(frameCount), timescale: Int32(videoFps))
-+        
-+        if videoWriterInput.isReadyForMoreMediaData {
-+            if pixelBufferAdaptor.append(pixelBuffer, withPresentationTime: presentationTime) {
-+                frameCount += 1
-+            }
-+        }
-+    }
-+    
-+    private func createPixelBuffer(from image: UIImage, width: Int, height: Int) -> CVPixelBuffer? {
-+        var pixelBuffer: CVPixelBuffer?
-+        let status = CVPixelBufferCreate(
-+            kCFAllocatorDefault,
-+            width,
-+            height,
-+            kCVPixelFormatType_32ARGB,
-+            [
-+                kCVPixelBufferCGImageCompatibilityKey: true,
-+                kCVPixelBufferCGBitmapContextCompatibilityKey: true
-+            ] as CFDictionary,
-+            &pixelBuffer
-+        )
-+        
-+        guard status == kCVReturnSuccess, let buffer = pixelBuffer else {
-+            return nil
-+        }
-+        
-+        CVPixelBufferLockBaseAddress(buffer, [])
-+        defer { CVPixelBufferUnlockBaseAddress(buffer, []) }
-+        
-+        guard let context = CGContext(
-+            data: CVPixelBufferGetBaseAddress(buffer),
-+            width: width,
-+            height: height,
-+            bitsPerComponent: 8,
-+            bytesPerRow: CVPixelBufferGetBytesPerRow(buffer),
-+            space: CGColorSpaceCreateDeviceRGB(),
-+            bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue
-+        ) else {
-+            return nil
-+        }
-+        
-+        var cgImage: CGImage?
-+        if let imageCGImage = image.cgImage {
-+            cgImage = imageCGImage
-+        } else if let ciImage = image.ciImage {
-+            let ciContext = CIContext()
-+            cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent)
-+        }
-+        
-+        guard let finalCGImage = cgImage else {
-+            return nil
-+        }
-+        
-+        context.draw(finalCGImage, in: CGRect(x: 0, y: 0, width: width, height: height))
-+        
-+        return buffer
-+    }
-+    
-     //MARK: Private
-     private func resolveDeviceOrientation(deviceOrientation: Int?) -> DeviceOrientation? {
-         guard let orientation = deviceOrientation, let orientationEnum = DeviceOrientation.init(rawValue: orientation) else {
-
-diff --git a/ios/BiosenseSignalReactNativeSDK.swift b/ios/BiosenseSignalReactNativeSDK.swift
-+++ b/ios/BiosenseSignalReactNativeSDK.swift
-@@ -132,6 +132,33 @@
-         SessionManager.shared.terminateSession()
-     }
-     
-+    @objc(startVideoRecording:width:height:fps:withResolver:withRejecter:)
-+    func startVideoRecording(outputPath: String, width: NSNumber, height: NSNumber, fps: NSNumber, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
-+        do {
-+            try SessionManager.shared.startVideoRecording(outputPath: outputPath, width: width.intValue, height: height.intValue, fps: fps.intValue)
-+            resolve(nil)
-+        } catch let error as NSError {
-+            reject(
-+                error.code.description,
-+                error.domain,
-+                error
-+            )
-+        } catch {
-+            let nsError = error as NSError
-+            reject(
-+                nsError.code.description,
-+                nsError.domain,
-+                error
-+            )
-+        }
-+    }
-+    
-+    @objc(stopVideoRecording:withRejecter:)
-+    func stopVideoRecording(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
-+        let outputPath = SessionManager.shared.stopVideoRecording()
-+        resolve(outputPath)
-+    }
-+    
-     @objc(getSessionState:withRejecter:)
-     func getSessionState(resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
-         resolve(SessionManager.shared.getSessionState()?.rawValue)
-
-diff --git a/src/session/Session.ts b/src/session/Session.ts
-new file mode 100644
-index 0000000..1234567
---- /dev/null
+index 44dff91..6e5e359 100644
+--- a/src/session/Session.ts
 +++ b/src/session/Session.ts
-@@ -0,0 +1,48 @@
-+import { HealthMonitorException } from "../alerts";
-+import type { SessionState } from "../session-info/SessionState";
-+import { NativeModules } from "react-native";
-+
-+const BiosenseSignalReactNativeSDK = NativeModules.BiosenseSignalReactNativeSDK
-+
-+export class Session {
-+    
-+    public async start(measurementDuration: number) {
-+        try {
-+            await BiosenseSignalReactNativeSDK.start(measurementDuration);
-+        } catch (error: any) {
-+            throw new HealthMonitorException(error.message, parseInt(error.code))
-+        }
-+    }
-+
-+    public async stop() {
-+        try {
-+            await BiosenseSignalReactNativeSDK.stop();
-+        } catch (error: any) {
-+            throw new HealthMonitorException(error.message, parseInt(error.code))
-+        }
-+    }
-+
-+    public async terminate() {
-+        await BiosenseSignalReactNativeSDK.terminate();
-+    }
-+
-+    public getSessionState(): SessionState {
-+        return BiosenseSignalReactNativeSDK.getSessionState();
-+    }
+@@ -29,6 +29,14 @@ export class Session {
+     public getSessionState(): SessionState {
+         return BiosenseSignalReactNativeSDK.getSessionState();
+     }
 +
 +    public async startVideoRecording(outputPath: string, width: number = 0, height: number = 0, fps: number = 30): Promise<void> {
-+        try {
-+            await BiosenseSignalReactNativeSDK.startVideoRecording(outputPath, width, height, fps);
-+        } catch (error: any) {
-+            throw new HealthMonitorException(error.message, parseInt(error.code))
-+        }
++        await BiosenseSignalReactNativeSDK.startVideoRecording(outputPath, width, height, fps);
 +    }
 +
 +    public async stopVideoRecording(): Promise<string | null> {
-+        try {
-+            return await BiosenseSignalReactNativeSDK.stopVideoRecording();
-+        } catch (error: any) {
-+            throw new HealthMonitorException(error.message, parseInt(error.code))
-+        }
++        return await BiosenseSignalReactNativeSDK.stopVideoRecording();
 +    }
-+}
-+
-+
+ }
+ 
+ 

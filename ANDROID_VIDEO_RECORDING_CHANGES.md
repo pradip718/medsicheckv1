@@ -91,16 +91,27 @@ override fun onImage(imageData: ImageData) {
     eventChannel?.sendEvent(NativeBridgeEvents.imageData, imageData.toMap())
     _images.tryEmit(imageData)
 
-    // Record frame to video if recording
+    // Record frame if video recording is active
     if (isRecordingVideo) {
-        if (imageData.image is Bitmap) {
-            videoRecordingHandler?.post {
-                recordFrame(imageData.image as Bitmap)
+        if (frameCount % 30 == 0 || frameCount < 5) {
+            android.util.Log.d("SessionManager", "Video recording: onImage called, isRecordingVideo=$isRecordingVideo, image null? ${imageData.image == null}")
+        }
+        imageData.image?.let { bitmap ->
+            recordFrame(bitmap)
+        } ?: run {
+            if (frameCount % 30 == 0 || frameCount < 5) {
+                android.util.Log.w("SessionManager", "Video recording: ⚠️ imageData.image is NULL - cannot record frame!")
             }
         }
     }
 }
 ```
+
+**Key Points:**
+
+- Calls `recordFrame()` directly (Surface operations are thread-safe)
+- Includes debug logging to track frame arrival and null bitmap cases
+- Uses Kotlin's safe call operator (`?.let`) for null safety
 
 ### Step 4: Add Video Recording Methods
 
@@ -520,7 +531,12 @@ private fun cleanupVideoRecording() {
  * - Drops frames if encoder is busy (prevents Surface lock conflicts)
  */
 private fun recordFrame(bitmap: Bitmap) {
+    if (frameCount < 5 || frameCount % 30 == 0) {
+        android.util.Log.d("SessionManager", "Video recording: 🎬 recordFrame called, frame=$frameCount, isRecordingVideo=$isRecordingVideo, bitmap=${bitmap.width}x${bitmap.height}")
+    }
+
     if (!isRecordingVideo) {
+        android.util.Log.w("SessionManager", "Video recording: ⚠️ recordFrame called but isRecordingVideo=false")
         return
     }
 
@@ -541,12 +557,13 @@ private fun recordFrame(bitmap: Bitmap) {
         if (!isVideoInitialized) {
             videoWidth = bitmap.width
             videoHeight = bitmap.height
-            android.util.Log.d("SessionManager", "Video recording: First frame - ${videoWidth}x${videoHeight}")
+            android.util.Log.d("SessionManager", "Video recording: 🔧 First frame received - ${videoWidth}x${videoHeight}, initializing encoder...")
             initializeVideoEncoder()
             if (!isVideoInitialized) {
-                android.util.Log.e("SessionManager", "Video recording: Initialization failed")
+                android.util.Log.e("SessionManager", "Video recording: ❌ Initialization failed after first frame")
                 return
             }
+            android.util.Log.d("SessionManager", "Video recording: ✅ Encoder initialized successfully")
         }
 
         val surface = encoderSurface
@@ -680,7 +697,12 @@ public async stopVideoRecording(): Promise<string | null> {
 9. **Thread Safety**: Uses CountDownLatch for synchronization
 10. **Frame Dropping Logic**: Prevents "Surface was already locked" errors by skipping frames when encoder is busy
 11. **Race Condition Prevention**: MediaMuxer created before output thread starts
-12. **Comprehensive Logging**: Detailed debug logs for troubleshooting
+12. **Comprehensive Debug Logging**: Detailed logs for troubleshooting including:
+    - Frame arrival tracking (`onImage` calls)
+    - Null bitmap detection
+    - Frame recording progress
+    - Encoder initialization steps
+    - First frame handling
 
 ---
 
@@ -800,6 +822,50 @@ startEncoderOutputThread()    // Start AFTER
 **Cause:** Manual YUV conversion with incorrect stride/padding handling.
 
 **Solution:** Switched to Surface-based encoding - MediaCodec handles conversion automatically.
+
+### Issue 5: No frames recorded (frames: 0, trackIndex: -1)
+
+**Symptom:** `stopVideoRecording()` returns `null`, logs show `frames: 0` and `trackIndex: -1`
+
+**Diagnosis:** Use the debug logs to identify the issue:
+
+1. **Check if `onImage` is being called:**
+
+   ```
+   Video recording: onImage called, isRecordingVideo=true, image null? false
+   ```
+
+   - If `isRecordingVideo=false`: Recording wasn't started properly
+   - If `image null? true`: SDK isn't providing bitmaps (SDK issue)
+
+2. **Check if `recordFrame` is being called:**
+
+   ```
+   Video recording: 🎬 recordFrame called, frame=0, isRecordingVideo=true, bitmap=XXXxXXX
+   ```
+
+   - If this log doesn't appear: `onImage` isn't calling `recordFrame` (check `imageData.image`)
+
+3. **Check encoder initialization:**
+
+   ```
+   Video recording: 🔧 First frame received - XXXxXXX, initializing encoder...
+   Video recording: ✅ Encoder initialized successfully
+   ```
+
+   - If initialization fails: Check device logs for MediaCodec errors
+
+4. **Check for warnings:**
+   ```
+   Video recording: ⚠️ imageData.image is NULL - cannot record frame!
+   ```
+   - This indicates the SDK's `ImageData.image` is null
+
+**Common Causes:**
+
+- `imageData.image` is `null` (SDK not providing bitmaps)
+- `isRecordingVideo` is `false` (state management issue)
+- Encoder initialization fails (device compatibility issue)
 
 ---
 
