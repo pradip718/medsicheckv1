@@ -6,6 +6,10 @@ import useUserProfileStore from '../../../store/profileStore';
 import {encryptText} from '../../../utils/methods';
 import {login} from '../../api/auth';
 import {REMEMBERED_USER_SESSION} from '../../constants/AsyncStorageKeys';
+import {
+  identifyUserAndSetProperties,
+  prepareUserProperties,
+} from '../../services/analytics';
 import useGetFamilyMembers from './useGetFamilyMembers';
 import useGetUserAttributes from './useGetUserAttributes';
 import useGetUserReading from './useGetUserReading';
@@ -32,7 +36,47 @@ export const useFetchAndSetProfile = (
       if (!currentActiveProfileId) {
         setCurrentActiveProfileId(admin?.user_id || '');
       }
-      await Promise.allSettled([getUserAttributes(), getUserReading()]);
+      const [userAttributesResult] = await Promise.allSettled([
+        getUserAttributes(),
+        getUserReading(),
+      ]);
+
+      // Identify user and set properties after successful profile fetch
+      if (userAttributesResult.status === 'fulfilled') {
+        // refetch() returns {data, isSuccess, isError, ...}
+        const refetchResult = userAttributesResult.value;
+        const userAttributes = refetchResult?.data;
+        if (
+          userAttributes &&
+          typeof userAttributes === 'object' &&
+          !(userAttributes instanceof Error)
+        ) {
+          const userId =
+            (userAttributes as any).user_id ||
+            (userAttributes as any).profile_id;
+          if (userId) {
+            // Prepare and set all user properties including email
+            const userProperties = prepareUserProperties(
+              userAttributes as Record<string, unknown>,
+            );
+            // Identify user and set properties together
+            identifyUserAndSetProperties(userId, userProperties);
+          } else {
+            if (__DEV__) {
+              console.warn(
+                '[Analytics] No user_id or profile_id found in user attributes',
+              );
+            }
+          }
+        } else {
+          if (__DEV__) {
+            console.warn(
+              '[Analytics] Invalid user attributes data:',
+              userAttributes,
+            );
+          }
+        }
+      }
     }
   };
 

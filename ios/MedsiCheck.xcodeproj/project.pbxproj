@@ -11,11 +11,9 @@
 		03637E0E3EF1C3ABB9FD1893 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1C31E2B6F02CCE624C43F994 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */; };
-		34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */; };
-		56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */; };
+		30B6B8CB979B67C2F4B72549 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A52073B53280FC0BA7FEB5 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */; };
 		5C96AC9403CE02428522C960 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */; };
-		6FC0CCDF815666EF3F852CB2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */; };
-		9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */; };
+		805C826AF27FDD91430732C7 /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2D6A7DA64BD7AC001126F7 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */; };
 		AE962B642DA3AE6700C86AAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE962B622DA3AE6700C86AAA /* InfoPlist.strings */; };
 		AE962B652DA3AE6700C86AAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE962B622DA3AE6700C86AAA /* InfoPlist.strings */; };
 		AE962B662DA3AE6700C86AAA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE962B622DA3AE6700C86AAA /* InfoPlist.strings */; };
@@ -72,6 +70,8 @@
 		AEEF05A62D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
 		AEEF05A72D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
 		AEEF05A82D46C52C002EE9AB /* Firebase in Resources */ = {isa = PBXBuildFile; fileRef = AEEF05A52D46C52C002EE9AB /* Firebase */; };
+		C118C136B2662FCB1628FCCB /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE1916B77C569A40DBF30DE1 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */; };
+		E099C5D9A1B6882D2E10C4C0 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 791B4E042A1D7C6CCB8B31DD /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,24 +130,17 @@
 		00E356EE1AD99517003FC87E /* MedsiCheckTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MedsiCheckTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* MedsiCheckTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MedsiCheckTests.m; sourceTree = "<group>"; };
-		0F948343B2444D45EDB4FB6C /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* MedsiCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedsiCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MedsiCheck/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../MedsiCheck/Info.plist; sourceTree = "<group>"; };
-		1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheck.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		21A252BE48B65A82ABCEAFEC /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig"; sourceTree = "<group>"; };
-		25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-MedsiCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck.debug.xcconfig"; sourceTree = "<group>"; };
-		40E3121E5214B4F76E2225D8 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckStaging.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5709B34CF0A7D63546082F79 /* Pods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck/Pods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig"; sourceTree = "<group>"; };
-		796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-MedsiCheck-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheck-MedsiCheckTests/Pods-MedsiCheck-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
-		8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
+		20CC761B07AD07039267795A /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; sourceTree = "<group>"; };
+		3AE22208A03C7AA648176957 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig"; sourceTree = "<group>"; };
+		63D12EE4E4FD7E98A0AC561A /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; sourceTree = "<group>"; };
+		65BEA54B0BC4BA5F5654F8A3 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig"; sourceTree = "<group>"; };
+		791B4E042A1D7C6CCB8B31DD /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckStaging.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		803612EF72DA9B5DB02F6F3F /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; sourceTree = "<group>"; };
+		83A52073B53280FC0BA7FEB5 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		98D011427F536AEC4423726E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MedsiCheck/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig"; sourceTree = "<group>"; };
-		AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig"; sourceTree = "<group>"; };
 		AE962B632DA3AE6700C86AAA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AE962B672DA3AE8100C86AAA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		AE962C182DA3B54400C86AAA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -184,9 +177,12 @@
 		AEEF059C2D46B9F3002EE9AB /* MedsiCheckStaging.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MedsiCheckStaging.entitlements; sourceTree = "<group>"; };
 		AEEF059D2D46C049002EE9AB /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
 		AEEF05A52D46C52C002EE9AB /* Firebase */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Firebase; sourceTree = "<group>"; };
-		DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF2D6A7DA64BD7AC001126F7 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheck.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D006229EE49FD2B7191F69D0 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FEE7B8B608EB1651E3D9A7CB /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig"; sourceTree = "<group>"; };
+		EE1916B77C569A40DBF30DE1 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MedsiCheckCommonPods-MedsiCheckTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF4DE94AAE6D816A635F27C9 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig"; sourceTree = "<group>"; };
+		FD2D6C6289B9F9D9BF14451E /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; path = "Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -204,7 +200,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FC0CCDF815666EF3F852CB2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */,
+				C118C136B2662FCB1628FCCB /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,9 +209,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE98235B2D49E028001E7BD8 /* AnuraCore.xcframework in Frameworks */,
-				56E86328AC6987EB2B6BEA0F /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */,
 				AE9823602D49E02B001E7BD8 /* libdfx.xcframework in Frameworks */,
 				AE98235E2D49E02A001E7BD8 /* FaceMesh.xcframework in Frameworks */,
+				805C826AF27FDD91430732C7 /* libPods-MedsiCheckCommonPods-MedsiCheck.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,9 +220,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE981F332D47DC8B001E7BD8 /* AnuraCore.xcframework in Frameworks */,
-				34A9C3FF633450E6563C7694 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */,
 				AE981F382D47DC8E001E7BD8 /* libdfx.xcframework in Frameworks */,
 				AE981F362D47DC8D001E7BD8 /* FaceMesh.xcframework in Frameworks */,
+				30B6B8CB979B67C2F4B72549 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,9 +231,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE9823542D494CA4001E7BD8 /* AnuraCore.xcframework in Frameworks */,
-				9FD0AEF7BE4C5A633D9A102F /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */,
 				AE9823592D494CA7001E7BD8 /* libdfx.xcframework in Frameworks */,
 				AE9823572D494CA5001E7BD8 /* FaceMesh.xcframework in Frameworks */,
+				E099C5D9A1B6882D2E10C4C0 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,13 +275,13 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				1CE4652E68FA0C359FCA5646 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */,
 				AE9817992D47A396001E7BD8 /* AnuraCore.xcframework */,
 				AE98179A2D47A396001E7BD8 /* FaceMesh.xcframework */,
 				AE98179B2D47A396001E7BD8 /* libdfx.xcframework */,
-				25A40A20DB08E6F552EE22CC /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */,
-				4664F2C73B0DB91AF17848F7 /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */,
-				DA3A25FAE9E7CDDAFB3F65D2 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */,
+				AF2D6A7DA64BD7AC001126F7 /* libPods-MedsiCheckCommonPods-MedsiCheck.a */,
+				83A52073B53280FC0BA7FEB5 /* libPods-MedsiCheckCommonPods-MedsiCheckDev.a */,
+				791B4E042A1D7C6CCB8B31DD /* libPods-MedsiCheckCommonPods-MedsiCheckStaging.a */,
+				EE1916B77C569A40DBF30DE1 /* libPods-MedsiCheckCommonPods-MedsiCheckTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -366,18 +362,14 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-MedsiCheck.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-MedsiCheck.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-MedsiCheck-MedsiCheckTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-MedsiCheck-MedsiCheckTests.release.xcconfig */,
-				FEE7B8B608EB1651E3D9A7CB /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */,
-				796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */,
-				AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */,
-				21A252BE48B65A82ABCEAFEC /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */,
-				0F948343B2444D45EDB4FB6C /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */,
-				9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */,
-				40E3121E5214B4F76E2225D8 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */,
-				8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */,
+				20CC761B07AD07039267795A /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */,
+				FD2D6C6289B9F9D9BF14451E /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */,
+				803612EF72DA9B5DB02F6F3F /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */,
+				65BEA54B0BC4BA5F5654F8A3 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */,
+				D006229EE49FD2B7191F69D0 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */,
+				63D12EE4E4FD7E98A0AC561A /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */,
+				3AE22208A03C7AA648176957 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */,
+				EF4DE94AAE6D816A635F27C9 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -389,12 +381,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "MedsiCheckTests" */;
 			buildPhases = (
-				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				4A796FC8D6012CF0DCCF2D2F /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
-				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+				ED70481B351E3F760D874307 /* [CP] Embed Pods Frameworks */,
+				2A3FB4E522D161BE140FB077 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -410,15 +402,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "MedsiCheck" */;
 			buildPhases = (
-				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				3BBD9D5DE35DC690C43ECEFE /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
-				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
 				AEEF05AB2D46C923002EE9AB /* Google Analytics Run Script */,
 				AE98235D2D49E028001E7BD8 /* Embed Frameworks */,
+				513057A7F483F068C297894F /* [CP] Embed Pods Frameworks */,
+				809244639797570927E233EC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -436,16 +428,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AEEF05702D4692F6002EE9AB /* Build configuration list for PBXNativeTarget "MedsiCheckDev" */;
 			buildPhases = (
-				AEEF05632D4692F6002EE9AB /* [CP] Check Pods Manifest.lock */,
+				5BD88F77346DA42644B9B70A /* [CP] Check Pods Manifest.lock */,
 				AEEF05AC2D4733BB002EE9AB /* Start Packager */,
 				AEEF05642D4692F6002EE9AB /* Sources */,
 				AEEF05672D4692F6002EE9AB /* Frameworks */,
 				AEEF05692D4692F6002EE9AB /* Resources */,
 				AEEF056D2D4692F6002EE9AB /* Bundle React Native code and images */,
-				AEEF056E2D4692F6002EE9AB /* [CP] Embed Pods Frameworks */,
-				AEEF056F2D4692F6002EE9AB /* [CP] Copy Pods Resources */,
 				AEEF05AA2D46C8DC002EE9AB /* Google Analytics Run Script */,
 				AE981F352D47DC8C001E7BD8 /* Embed Frameworks */,
+				A6E9867A0FC0D1CCFDDFCBCB /* [CP] Embed Pods Frameworks */,
+				156D14228926AD5FBB708A0B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -463,15 +455,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AEEF05972D46B9C9002EE9AB /* Build configuration list for PBXNativeTarget "MedsiCheckStaging" */;
 			buildPhases = (
-				AEEF058A2D46B9C9002EE9AB /* [CP] Check Pods Manifest.lock */,
+				7F4725F1329FF7CF2745E405 /* [CP] Check Pods Manifest.lock */,
 				AEEF058B2D46B9C9002EE9AB /* Sources */,
 				AEEF058E2D46B9C9002EE9AB /* Frameworks */,
 				AEEF05902D46B9C9002EE9AB /* Resources */,
 				AEEF05942D46B9C9002EE9AB /* Bundle React Native code and images */,
-				AEEF05952D46B9C9002EE9AB /* [CP] Embed Pods Frameworks */,
-				AEEF05962D46B9C9002EE9AB /* [CP] Copy Pods Resources */,
 				AEEF05A92D46C7A9002EE9AB /* Google Analytics Run Script */,
 				AE9823562D494CA4001E7BD8 /* Embed Frameworks */,
+				86EF29241CD28C9601A7539C /* [CP] Embed Pods Frameworks */,
+				75D557695EF905CB195EC937 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -615,24 +607,63 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+		156D14228926AD5FBB708A0B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
+		2A3FB4E522D161BE140FB077 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3BBD9D5DE35DC690C43ECEFE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MedsiCheckCommonPods-MedsiCheck-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4A796FC8D6012CF0DCCF2D2F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -654,7 +685,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AEEF05632D4692F6002EE9AB /* [CP] Check Pods Manifest.lock */ = {
+		513057A7F483F068C297894F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5BD88F77346DA42644B9B70A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -676,57 +724,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AEEF056D2D4692F6002EE9AB /* Bundle React Native code and images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/.xcode.env",
-			);
-			name = "Bundle React Native code and images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
-		};
-		AEEF056E2D4692F6002EE9AB /* [CP] Embed Pods Frameworks */ = {
+		75D557695EF905CB195EC937 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AEEF056F2D4692F6002EE9AB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AEEF058A2D46B9C9002EE9AB /* [CP] Check Pods Manifest.lock */ = {
+		7F4725F1329FF7CF2745E405 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -748,23 +763,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AEEF05942D46B9C9002EE9AB /* Bundle React Native code and images */ = {
+		809244639797570927E233EC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/.xcode.env",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "Bundle React Native code and images";
-			outputPaths = (
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
-		AEEF05952D46B9C9002EE9AB /* [CP] Embed Pods Frameworks */ = {
+		86EF29241CD28C9601A7539C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -781,22 +797,54 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AEEF05962D46B9C9002EE9AB /* [CP] Copy Pods Resources */ = {
+		A6E9867A0FC0D1CCFDDFCBCB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckStaging/Pods-MedsiCheckCommonPods-MedsiCheckStaging-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckDev/Pods-MedsiCheckCommonPods-MedsiCheckDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		AEEF056D2D4692F6002EE9AB /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
+		AEEF05942D46B9C9002EE9AB /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
 		AEEF05A92D46C7A9002EE9AB /* Google Analytics Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -870,29 +918,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 		};
-		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MedsiCheckCommonPods-MedsiCheck-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
+		ED70481B351E3F760D874307 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -907,40 +933,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheck/Pods-MedsiCheckCommonPods-MedsiCheck-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MedsiCheckCommonPods-MedsiCheckTests/Pods-MedsiCheckCommonPods-MedsiCheckTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1011,7 +1003,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 40E3121E5214B4F76E2225D8 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */;
+			baseConfigurationReference = 3AE22208A03C7AA648176957 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1038,7 +1030,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B64FDB2EBFDCF18DFF97E6E /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */;
+			baseConfigurationReference = EF4DE94AAE6D816A635F27C9 /* Pods-MedsiCheckCommonPods-MedsiCheckTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1062,7 +1054,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FEE7B8B608EB1651E3D9A7CB /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */;
+			baseConfigurationReference = 20CC761B07AD07039267795A /* Pods-MedsiCheckCommonPods-MedsiCheck.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1095,7 +1087,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 796D0380EC568BF8AA3E05E1 /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */;
+			baseConfigurationReference = FD2D6C6289B9F9D9BF14451E /* Pods-MedsiCheckCommonPods-MedsiCheck.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1278,7 +1270,7 @@
 		};
 		AEEF05712D4692F6002EE9AB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA6CFEB5EF1E62F1F7D2EC61 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */;
+			baseConfigurationReference = 803612EF72DA9B5DB02F6F3F /* Pods-MedsiCheckCommonPods-MedsiCheckDev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1316,7 +1308,7 @@
 		};
 		AEEF05722D4692F6002EE9AB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 21A252BE48B65A82ABCEAFEC /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */;
+			baseConfigurationReference = 65BEA54B0BC4BA5F5654F8A3 /* Pods-MedsiCheckCommonPods-MedsiCheckDev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1352,7 +1344,7 @@
 		};
 		AEEF05982D46B9C9002EE9AB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F948343B2444D45EDB4FB6C /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */;
+			baseConfigurationReference = D006229EE49FD2B7191F69D0 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1393,7 +1385,7 @@
 		};
 		AEEF05992D46B9C9002EE9AB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9BF1C230839E62EB838A6A05 /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */;
+			baseConfigurationReference = 63D12EE4E4FD7E98A0AC561A /* Pods-MedsiCheckCommonPods-MedsiCheckStaging.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

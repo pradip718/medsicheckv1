@@ -130,6 +130,7 @@ PODS:
   - hermes-engine (0.76.6):
     - hermes-engine/Pre-built (= 0.76.6)
   - hermes-engine/Pre-built (0.76.6)
+  - Mixpanel (3.6.5)
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
     - nanopb/encode (= 2.30910.0)
@@ -1480,6 +1481,9 @@ PODS:
     - Yoga
   - react-native-keep-awake (4.0.0):
     - React
+  - react-native-mixpanel (1.2.5):
+    - Mixpanel (~> 3.6.0)
+    - React
   - react-native-netinfo (11.4.1):
     - React-Core
   - react-native-pager-view (6.6.1):
@@ -1959,7 +1963,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSentry (6.5.0):
+  - RNSentry (7.8.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1980,7 +1984,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Sentry/HybridSDK (= 8.43.0)
+    - Sentry/HybridSDK (= 8.57.3)
     - Yoga
   - RNShare (10.2.1):
     - React-Core
@@ -2007,9 +2011,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - Sentry/HybridSDK (8.43.0)
+  - Sentry/HybridSDK (8.57.3)
   - SocketRocket (0.7.1)
-  - SSZipArchive (2.5.5)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2069,6 +2072,7 @@ DEPENDENCIES:
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-keep-awake (from `../node_modules/react-native-keep-awake`)
+  - react-native-mixpanel (from `../node_modules/react-native-mixpanel`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -2136,11 +2140,11 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
+    - Mixpanel
     - nanopb
     - PromisesObjC
     - Sentry
     - SocketRocket
-    - SSZipArchive
 
 EXTERNAL SOURCES:
   biosensesignal-react-native-sdk:
@@ -2242,6 +2246,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-keep-awake:
     :path: "../node_modules/react-native-keep-awake"
+  react-native-mixpanel:
+    :path: "../node_modules/react-native-mixpanel"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -2369,6 +2375,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   hermes-engine: 1949ca944b195a8bde7cbf6316b9068e19cf53c6
+  Mixpanel: de8296d8568806ab17bfced0f823c908b808e1e0
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: bf5c0376ffe4dd2cf438dcf86db385df9fdce648
@@ -2412,6 +2419,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-image-picker: df4f6aefbc662b0a5f991065650662c9731977a3
   react-native-keep-awake: afad8a51dfef9fe9655a6344771be32c8596d774
+  react-native-mixpanel: 5d0bcea791fd938c35138be2d00e50e19b9de601
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
   react-native-pager-view: e229770a88b7760aca7293b6c7255099a470ae06
   react-native-safe-area-context: 141eca0fd4e4191288dfc8b96a7c7e1c2983447a
@@ -2460,13 +2468,12 @@ SPEC CHECKSUMS:
   RNPermissions: 5a2dafe37c8e0a3fa1d6e0783a1490b1b7fd92d6
   RNReanimated: 849c4bfc1a185b123ca9a89f2a98d679b3d79b4e
   RNScreens: c7ceced6a8384cb9be5e7a5e88e9e714401fd958
-  RNSentry: e1a16a23ada7d12686dff2f1eeaf55a08738585c
+  RNSentry: bbb2c339e35a1e7d9b59f6e0a651391a019b1ae1
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNSVG: 3271d86d99e0ff3bc1c6cb74f894bab06a261969
   RNVectorIcons: 6382277afab3c54658e9d555ee0faa7a37827136
-  Sentry: 532b281a53b1b45a523fd592f608956fb36e577c
+  Sentry: c643eb180df401dd8c734c5036ddd9dd9218daa6
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  SSZipArchive: c69881e8ac5521f0e622291387add5f60f30f3c4
   Yoga: be6f55a028e86c83ae066f018e9b5d24ffc45436
 
 PODFILE CHECKSUM: 21d5f1ec7bd77391682f7d3c392963af53924f78

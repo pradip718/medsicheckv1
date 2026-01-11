@@ -111,10 +111,27 @@ const OTPRegister = () => {
         password: encryptedPassword,
       });
     },
-    onSuccess: res => {
+    onSuccess: async res => {
       const email = getValues('email');
       const phoneNumber = getValues('formattedPhonenumber');
       const password = getValues('confirmPassword');
+
+      // Identify user immediately and synchronously after registration
+      // This MUST happen before navigation to ensure all subsequent events use user_id
+      if (res?.user_id) {
+        const {identifyUserAndSetProperties, prepareUserProperties} =
+          await import('../../../services/analytics');
+        const userProperties = prepareUserProperties({
+          user_id: res.user_id,
+          email: email,
+          phone_number: phoneNumber,
+        } as Record<string, unknown>);
+        // Call synchronously - identifyUserAndSetProperties is synchronous
+        identifyUserAndSetProperties(res.user_id, userProperties);
+        // Small delay to ensure Mixpanel processes the identify call
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
       if (res?.email_verification_flag && res?.phone_verification_flag) {
         loginAndNavigate();
       } else {

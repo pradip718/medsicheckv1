@@ -6,6 +6,7 @@ import useUserProfileStore from '../../store/profileStore';
 import {MainStackParamList} from '../../types/navigation';
 import {signout} from '../api/auth';
 import {notifyApi} from '../api/user';
+import {resetUser, trackAnalytics, ANALYTICS_EVENTS} from '../services/analytics';
 
 const useSignout = () => {
   const navigation = useNavigation<NavigationProp<MainStackParamList>>();
@@ -16,6 +17,7 @@ const useSignout = () => {
 
   const handleSignout = async () => {
     setIsLoading(true);
+    trackAnalytics(ANALYTICS_EVENTS.USER_LOGOUT);
     try {
       // Try to notify server and sign out
       await notifyApi('logout');
@@ -26,6 +28,8 @@ const useSignout = () => {
     } finally {
       // Always clear local state regardless of API success/failure
       try {
+        // Reset analytics user
+        resetUser();
         // Reset all stores
         resetUserProfileState();
         setUserAuth({

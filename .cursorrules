@@ -1,0 +1,217 @@
+# React Native (Bare) Engineering Rules
+
+You are an expert in **TypeScript, React Native (Bare/CLI), and Mobile UI development**.
+
+---
+
+## Package Management
+
+- **Use Yarn exclusively**.
+- All dependency management must be done via:
+  - `yarn`
+  - `yarn.lock`
+- Do **not** use `npm` or `pnpm`.
+- Commit `yarn.lock` to version control.
+- All project documentation, scripts, and CI pipelines must assume Yarn.
+
+---
+
+## Code Style and Structure
+
+- Write concise, technical **TypeScript** with accurate examples.
+- Use **functional and declarative programming** patterns; avoid classes.
+- Prefer **composition and modularization** over duplication.
+- **Do not write all logic, UI, hooks, and side effects in a single screen or file.**
+- Follow a **React modular approach**:
+  - Screens orchestrate layout and data flow only.
+  - Business logic lives in hooks.
+  - Reusable UI lives in components.
+  - Side effects and integrations live in services.
+- Avoid “god components” and oversized files.
+- Use descriptive variable names with auxiliary verbs  
+  (e.g., `isLoading`, `hasError`, `shouldRetry`).
+
+### File Structure Order (per module)
+
+1. exported component
+2. subcomponents
+3. hooks
+4. helpers
+5. static content
+6. types
+
+- Follow React Native CLI documentation and platform best practices:  
+  https://reactnative.dev/docs/environment-setup
+
+---
+
+## Naming Conventions
+
+- Use lowercase with dashes for directories  
+  (e.g., `components/auth-wizard`)
+- Favor **named exports** for components and utilities.
+- Avoid default exports unless required by tooling.
+
+---
+
+## TypeScript Usage
+
+- Use **TypeScript everywhere**.
+- Prefer `interface` over `type`.
+- Avoid `enum`; use typed object maps instead.
+- Enable **strict mode** in `tsconfig.json`.
+- Use functional components with explicit prop interfaces.
+
+---
+
+## Syntax and Formatting
+
+- Use the `function` keyword for pure functions.
+- Avoid unnecessary curly braces in simple conditionals.
+- Use early returns instead of nested `if/else`.
+- Write declarative JSX.
+- Enforce formatting with **Prettier** and linting with **ESLint**.
+
+---
+
+## UI and Styling
+
+- Use core **react-native components** (`View`, `Text`, `Pressable`, `FlatList`).
+- Implement responsive layouts using:
+  - Flexbox
+  - `useWindowDimensions`
+- Styling options:
+  - `styled-components`
+  - Tailwind via `nativewind`
+- Implement dark mode using `useColorScheme`.
+- Ensure accessibility:
+  - `accessibilityRole`
+  - `accessibilityLabel`
+  - proper hit slop and focus management
+- Use **react-native-reanimated** and **react-native-gesture-handler** for animations and gestures.
+
+---
+
+## Safe Area Management
+
+- Use `SafeAreaProvider` from `react-native-safe-area-context` at the app root.
+- Wrap screens with `SafeAreaView`.
+- For scrollable layouts, manually compose `SafeAreaView + ScrollView`.
+- Never hardcode safe-area padding or margins.
+
+---
+
+## Performance Optimization
+
+- Minimize `useState` and `useEffect`; prefer reducers and context.
+- Avoid unnecessary re-renders:
+  - `React.memo`
+  - `useCallback`
+  - `useMemo`
+- Optimize images:
+  - Use `react-native-fast-image` where appropriate
+  - Provide explicit width/height
+- Lazy-load non-critical screens using `React.lazy` and `Suspense`.
+- Profile using:
+  - React DevTools
+  - Flipper
+  - Android Studio / Xcode profiling tools
+
+---
+
+## Navigation
+
+- Use **React Navigation** exclusively.
+- Follow best practices for:
+  - Stack
+  - Tabs
+  - Drawer
+- Implement:
+  - deep linking
+  - universal links / app links
+- Keep navigation logic isolated from UI components.
+
+---
+
+## State Management
+
+- Global state:
+  - React Context + `useReducer`
+- Server state:
+  - `@tanstack/react-query`
+- Complex state:
+  - Zustand or Redux Toolkit (only if justified)
+- Avoid prop drilling beyond 2 levels.
+
+---
+
+## Error Handling and Validation
+
+- Use **Zod** for runtime validation.
+- Handle errors at function entry points.
+- Prefer `if (error) return` over `else`.
+- Implement global error boundaries.
+- Log production errors with:
+  - Sentry
+  - Firebase Crashlytics
+
+---
+
+## Testing
+
+- Unit tests:
+  - Jest
+  - React Native Testing Library
+- Integration / E2E:
+  - Detox
+- Avoid snapshot-only testing.
+- Test critical user paths (auth, payments, submissions).
+
+---
+
+## Security
+
+- Sanitize user input.
+- Use **react-native-encrypted-storage** or **Keychain/Keystore** for secrets.
+- Enforce HTTPS and certificate pinning when required.
+- Never log sensitive data.
+- Follow platform security best practices:
+  - Android Network Security Config
+  - iOS App Transport Security (ATS)
+
+---
+
+## Internationalization (i18n)
+
+- Use:
+  - `react-native-localize`
+  - `i18next`
+- Support:
+  - RTL layouts
+  - dynamic font scaling
+- Avoid hardcoded strings in components.
+
+---
+
+## Environment & Configuration
+
+- Use:
+  - `react-native-config` for env variables
+- Separate configs for:
+  - development
+  - staging
+  - production
+- Never commit `.env` files.
+
+---
+
+## Key Conventions
+
+1. Prefer **React Native CLI (Bare)** over managed frameworks.
+2. **Use Yarn exclusively** for dependency management.
+3. Follow a **modular React architecture** — never put everything in one screen.
+4. Optimize startup time and frame consistency.
+5. Keep native code minimal and well-documented.
+6. Validate all API responses.
+7. Ensure feature parity on iOS and Android.
+8. Test extensively on physical devices.

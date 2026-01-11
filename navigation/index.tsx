@@ -101,6 +101,7 @@ import useAuthStore from '../store/authStore';
 import useUserProfileStore from '../store/profileStore';
 import {MainStackParamList} from '../types/navigation';
 import {extractQueryParams} from '../utils/methods';
+import {trackAnalytics, ANALYTICS_EVENTS} from '../src/services/analytics';
 import HomePageDrawer from './HomePageDrawer';
 import ReportStack from './ReportStack';
 import UnverifiedUserTab from './UnverifiedUserTab';
@@ -315,6 +316,14 @@ const RootNavigator = () => {
       current: currentRouteName,
       previous: previousRouteName,
     });
+
+    // Track screen view in analytics
+    if (currentRouteName) {
+      trackAnalytics(ANALYTICS_EVENTS.SCREEN_VIEWED, {
+        screen_name: currentRouteName,
+        previous_screen: previousRouteName || undefined,
+      });
+    }
   };
 
   return (

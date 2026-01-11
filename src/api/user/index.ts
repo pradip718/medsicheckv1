@@ -13,6 +13,11 @@ import {
   User,
 } from '../../../types/users/user';
 import {getDeviceLocaleInformation} from '../../../utils/methods';
+import {
+  identifyUserAndSetProperties,
+  prepareUserProperties,
+  setUserProperties,
+} from '../../services/analytics';
 import axiosSessionInstance from '../sessionConfiguration';
 
 async function getUserAttributes() {
@@ -96,6 +101,76 @@ async function getRescanConfigurations() {
   }
 }
 
+/**
+ * Update analytics with admin user properties
+ * Identifies user and sets properties for Mixpanel Users tab
+ * Runs in background (non-blocking)
+ * Works for both new users and admin detail updates
+ */
+async function updateAnalyticsWithAdminAttributes(): Promise<void> {
+  try {
+    const {data: members} = await getMembers();
+    if (!members || !Array.isArray(members)) {
+      return;
+    }
+
+    const admin = members.find(member => member?.relation === 'Admin');
+    if (!admin) {
+      return;
+    }
+
+    const adminProfileId = admin.profile_id || admin.user_id;
+    if (!adminProfileId) {
+      return;
+    }
+
+    const adminAttributes = await getFamilyAttributes(adminProfileId);
+    if (!adminAttributes) {
+      return;
+    }
+
+    // Prepare user properties from admin attributes
+    const userProperties = prepareUserProperties(
+      adminAttributes as Record<string, unknown>,
+    );
+
+    // Use user_id for identification (account-level, stays same across profiles)
+    // This ensures the user appears in Mixpanel Users tab
+    const userId = (adminAttributes as any).user_id;
+    if (userId) {
+      // Identify user and set properties together
+      // This ensures user is properly identified and properties are set in Mixpanel
+      identifyUserAndSetProperties(userId, userProperties);
+
+      if (__DEV__) {
+        console.log(
+          '[Analytics] Identified and updated user properties from admin attributes:',
+          {
+            userId,
+            profileId: userProperties.profile_id,
+            hasEmail: !!userProperties.email,
+          },
+        );
+      }
+    } else {
+      // Fallback: just set properties if user_id not available
+      // This shouldn't happen, but handle gracefully
+      if (__DEV__) {
+        console.warn(
+          '[Analytics] No user_id found in admin attributes, only setting properties',
+        );
+      }
+    }
+  } catch (error) {
+    if (__DEV__) {
+      console.error(
+        '[Analytics] Failed to fetch admin attributes in background:',
+        error,
+      );
+    }
+  }
+}
+
 async function postUserAttributes(payload: User) {
   const locale = getDeviceLocaleInformation();
   const profile_id = useUserProfileStore.getState().currentActiveProfileId;
@@ -112,6 +187,15 @@ async function postUserAttributes(payload: User) {
       }&locale=${locale}`,
       data: payload,
     });
+
+    // Update analytics with admin attributes immediately (blocking for identification)
+    // This ensures user is identified before any more events are tracked
+    if (response?.data) {
+      // Run synchronously to ensure identification happens before returning
+      // This is critical so subsequent events use user_id instead of device_id
+      await updateAnalyticsWithAdminAttributes();
+    }
+
     return response;
   } catch (error) {
     throw error;
@@ -138,7 +222,13 @@ async function postFamilyAttributes(
       }&locale=${locale}`,
       data: payload,
     });
-    return response?.data as PostFamilyAttributesSuccessResponse;
+    const responseData = response?.data as PostFamilyAttributesSuccessResponse;
+    // Update user properties in analytics after successful save
+    if (responseData) {
+      const userProperties = prepareUserProperties(payload);
+      setUserProperties(userProperties);
+    }
+    return responseData;
   } catch (error) {
     if (error instanceof AxiosError) {
       throw error?.response?.data as PostFamilyAttributesFailureResponse;

@@ -21,6 +21,7 @@ import Toast from 'react-native-toast-message';
 import RootNavigator from './navigation';
 import {getLanguage} from './src/api/language';
 import {notifyApi} from './src/api/user';
+import {initializeAnalytics} from './src/services/analytics';
 import AlertModal from './src/components/AlertModal';
 import AppUpdateModal from './src/components/AlertModal/AppUpdateModal';
 import {ErrorFallback} from './src/components/ErrorFallback';
@@ -79,6 +80,8 @@ function App(): JSX.Element {
     };
 
     loadLanguage();
+    // Initialize analytics after language is loaded
+    initializeAnalytics();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

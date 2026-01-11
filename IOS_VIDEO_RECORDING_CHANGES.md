@@ -429,10 +429,45 @@ public async stopVideoRecording(): Promise<string | null> {
 
 After applying these changes:
 
-1. Run `pod install` in the `ios` directory
-2. Rebuild the iOS app: `yarn run ios` or build from Xcode
+1. **IMPORTANT**: Run `pod install` in the `ios` directory
+2. **CRITICAL**: Clean and rebuild the iOS app completely:
+   - Clean build folder in Xcode: `Product > Clean Build Folder` (Shift+Cmd+K)
+   - Or from command line: `cd ios && xcodebuild clean && cd ..`
+   - Rebuild: `yarn run ios` or build from Xcode
+   - **Note**: A simple restart is NOT enough - you must do a full clean rebuild
 3. Check logs for video recording messages
 4. Verify video file is created and uploaded to S3
+
+## Troubleshooting
+
+### Error: "BiosenseSignalReactNativeSDK.startVideoRecording is not a function"
+
+This error occurs when the native module methods are not properly linked. Solutions:
+
+1. **Clean and rebuild** (most common fix):
+
+   ```bash
+   cd ios
+   rm -rf build
+   pod install
+   cd ..
+   yarn run ios
+   ```
+
+2. **Check that all files are in place**:
+
+   - `BiosenseSignalReactNativeSDK.swift` has the `@objc` methods
+   - `BiosenseSignalReactNativeSDK.m` has the `RCT_EXTERN_METHOD` declarations
+   - `SessionManager.swift` has the implementation methods
+
+3. **Verify the module is properly exported**:
+
+   - The class should be marked with `@objc(BiosenseSignalReactNativeSDK)`
+   - The `.m` file should have `RCT_EXTERN_MODULE(BiosenseSignalReactNativeSDK, NSObject)`
+
+4. **Check Xcode build settings**:
+   - Ensure the Swift files are included in the target
+   - Check that the bridging header is properly configured
 
 ---
 
