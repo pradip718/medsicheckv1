@@ -31,6 +31,7 @@ import useHealthRiskStore from '../../../store/healthRisksStore';
 import useLanguageStore from '../../../store/languageStore';
 import useLoaderStore from '../../../store/loaderStore';
 import {useAIReportFacescanStore} from '../../../store/smartReportStore';
+import useVideoUploadStore from '../../../store/videoUploadStore';
 import {MainStackParamList} from '../../../types/navigation';
 import {SCAN_SESSION_STATUS, USER_ACTIVITY} from '../../../types/readings';
 import {shouldEnableVideoRecording} from '../../../utils/methods';
@@ -89,6 +90,8 @@ const FaceScannerCamera = () => {
   const {actionData, executeAction} = useAIReportFacescanStore();
   const {actionData: healthRiskAction, executeAction: executeHealthRiskAction} =
     useHealthRiskStore();
+  const {startUpload, setUploadProgress, completeUpload, resetUpload} =
+    useVideoUploadStore();
 
   const [fakeRecording, setFakeRecording] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -354,10 +357,14 @@ const FaceScannerCamera = () => {
                       },
                     ],
                     binaryStreamOnly: true, // ensures raw bytes only
-                    begin: () => console.log('Video upload started'),
+                    begin: () => {
+                      console.log('Video upload started');
+                      startUpload(reading_id);
+                    },
                     progress: (data: any) => {
                       const uploadProgress =
                         (data.totalBytesSent / fileInfo.size) * 100;
+                      setUploadProgress(uploadProgress);
                       console.log(
                         `Upload progress: ${uploadProgress.toFixed(2)}%`,
                       );
@@ -372,6 +379,7 @@ const FaceScannerCamera = () => {
 
                   const uploadDuration = Date.now() - uploadStartTime;
                   console.log('Video uploaded successfully');
+                  completeUpload();
                   trackAnalytics(
                     ANALYTICS_EVENTS.FACESCAN_VIDEO_UPLOAD_SUCCESS,
                     {
@@ -386,8 +394,14 @@ const FaceScannerCamera = () => {
                     await RNFS.unlink(filePath);
                     console.log('Local video file deleted:', filePath);
                   }
+
+                  // Reset progress bar after a short delay
+                  setTimeout(() => {
+                    resetUpload();
+                  }, 500);
                 } catch (error) {
                   console.error('Error uploading video:', error);
+                  resetUpload();
                   trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_UPLOAD_ERROR, {
                     reading_id: reading_id,
                     error_message: String(error),
@@ -395,6 +409,7 @@ const FaceScannerCamera = () => {
                 }
               } catch (uploadError) {
                 console.error('Error uploading video:', uploadError);
+                resetUpload();
                 trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_UPLOAD_ERROR, {
                   reading_id: reading_id,
                   error_message: String(uploadError),

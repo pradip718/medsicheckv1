@@ -27,6 +27,7 @@ import AppUpdateModal from './src/components/AlertModal/AppUpdateModal';
 import {ErrorFallback} from './src/components/ErrorFallback';
 import FullScreenLoader from './src/components/FullScreenLoader';
 import SignoutModal from './src/components/SignoutModal';
+import VideoUploadProgressBar from './src/components/VideoUploadProgressBar';
 import Maintenance from './src/screens/Maintenance';
 import useLanguageStore from './store/languageStore';
 import useLoaderStore from './store/loaderStore';
@@ -141,6 +142,7 @@ function App(): JSX.Element {
         <PaperProvider>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             {isMaintenanceMode ? <Maintenance /> : <RootNavigator />}
+            <VideoUploadProgressBar />
             <FullScreenLoader visible={visible} />
             <SignoutModal visible={signoutModalVisibility} />
             <AlertModal />
