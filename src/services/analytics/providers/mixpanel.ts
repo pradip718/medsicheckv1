@@ -3,11 +3,13 @@
  * Handles all Mixpanel-specific analytics operations
  */
 
+import Config from 'react-native-config';
 import Mixpanel from 'react-native-mixpanel';
 import useUserProfileStore from '../../../../store/profileStore';
 import {UserProperties} from '../types';
 
-const MIXPANEL_TOKEN = 'e84ec9be35b114614d32c35fffac8a88';
+const MIXPANEL_TOKEN =
+  Config.MIXPANEL_TOKEN || 'e84ec9be35b114614d32c35fffac8a88';
 
 let isInitialized = false;
 

@@ -8,6 +8,7 @@ declare module 'react-native-config' {
     SECRET_ACCESS_KEY: string;
     KMS_ARN: string;
     KMS_ALGORITHM: EncryptionAlgorithmSpec | undefined;
+    MIXPANEL_TOKEN?: string;
   }
 
   export const Config: NativeConfig;

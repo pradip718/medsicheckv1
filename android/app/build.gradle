@@ -93,8 +93,8 @@ android {
         applicationId "mx.medsi.medsicheck"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 117
-        versionName "5.2.5"
+        versionCode 119
+        versionName "5.2.6"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     signingConfigs {
