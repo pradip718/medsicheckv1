@@ -64,9 +64,6 @@
   "initiate_recording_title": "¿Listo para medir tus signos vitales?",
   "initiate_recording_msg": "Siéntate quieto, asegúrate de que tu cara esté iluminada uniformemente y que no hay una fuente de luz en el fondo",
   "measure_button_txt": "Medir Ahora",
-  "enable_video_recording": "true",
-  "minimum_bandwidth_mbps": "5",
-  "minimum_signal_strength": "50",
   "showWalkthrough": "False",
 
   "during_recording_title": "Midiendo tus signos vitales...",
@@ -576,5 +573,10 @@
   "min_weight_kgs_error": "El peso mínimo es de 20 kg.",
   "max_weight_kgs_error": "El peso máximo es de 250 kg.",
   "min_weight_lbs_error": "El peso mínimo es de 44 lbs.",
-  "max_weight_lbs_error": "El peso máximo es de 551 lbs."
+  "max_weight_lbs_error": "El peso máximo es de 551 lbs.",
+
+  "enable_video_recording": "true",
+  "block_cellular_network": "false",
+  "block_expensive_connection": "false",
+  "block_no_connection": "true"
 }

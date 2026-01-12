@@ -64,9 +64,6 @@
   "initiate_recording_title": "Ready to measure your vital signs?",
   "initiate_recording_msg": "Sit still, ensure your face is evenly illuminated and there is no light source in the background",
   "measure_button_txt": "Measure Now",
-  "enable_video_recording": "true",
-  "minimum_bandwidth_mbps": "5",
-  "minimum_signal_strength": "50",
 
   "during_recording_title": "Measuring your vitals...",
   "during_recording_msg": "Hold on, all results will appear in few seconds...",
@@ -774,5 +771,10 @@
   "generating_personalised_title": "Your Personalised AI Report is being created.",
   "generating_personalised_info": "It will be sent to your registered email ID.",
   "generating_lab_title": "... Generating Lab Report ...\nMight Take A While",
-  "generating_lab_info": "We’re working on your lab report now. In just a few minutes, you’ll be able to access it through your registered email and your Health Wallet."
+  "generating_lab_info": "We're working on your lab report now. In just a few minutes, you'll be able to access it through your registered email and your Health Wallet.",
+
+  "enable_video_recording": "true",
+  "block_cellular_network": "false",
+  "block_expensive_connection": "false",
+  "block_no_connection": "true"
 }

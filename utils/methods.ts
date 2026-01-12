@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NetInfo from '@react-native-community/netinfo';
+import NetInfo, {NetInfoState} from '@react-native-community/netinfo';
 import {Sex} from 'biosensesignal-react-native-sdk';
 import {PhoneNumberUtil} from 'google-libphonenumber';
 import {isEqual, isObject, isString, lowerCase} from 'lodash';
@@ -1215,119 +1215,248 @@ export const onShareSymptomFile = async (fileUrl: string, name?: string) => {
   }
 };
 
+interface VideoRecordingConfig {
+  enableVideoRecording: string;
+  readingId?: string;
+  blockCellularNetwork?: string;
+  blockExpensiveConnection?: string;
+  blockNoConnection?: string;
+}
+
+interface NetworkCheckResult {
+  shouldBlock: boolean;
+  reason?: string;
+  analyticsEvent?: string;
+}
+
+interface NetworkDetails {
+  netInfo: NetInfoState;
+  details: Record<string, unknown> | undefined;
+  allNetInfoDetails: Record<string, unknown>;
+  softMetrics: Record<string, unknown>;
+}
+
+function isFeatureEnabled(flag: string): boolean {
+  return flag === 'true';
+}
+
+function shouldBlockByFlag(flag?: string): boolean {
+  return flag !== 'false';
+}
+
+function extractNetworkDetails(netInfo: NetInfoState): NetworkDetails {
+  const details =
+    netInfo.details && typeof netInfo.details === 'object'
+      ? (netInfo.details as Record<string, unknown>)
+      : undefined;
+
+  const allNetInfoDetails: Record<string, unknown> = {
+    network_type: netInfo.type,
+    is_connected: netInfo.isConnected,
+    is_internet_reachable: netInfo.isInternetReachable,
+    ...(details || {}),
+  };
+
+  const softMetrics: Record<string, unknown> = {};
+
+  if (details) {
+    if ('linkSpeed' in details && typeof details.linkSpeed === 'number') {
+      softMetrics.link_speed = details.linkSpeed;
+    }
+    if ('txLinkSpeed' in details && typeof details.txLinkSpeed === 'number') {
+      softMetrics.tx_link_speed = details.txLinkSpeed;
+    }
+    if ('rxLinkSpeed' in details && typeof details.rxLinkSpeed === 'number') {
+      softMetrics.rx_link_speed = details.rxLinkSpeed;
+    }
+    if (
+      'strength' in details &&
+      details.strength !== null &&
+      details.strength !== undefined &&
+      typeof details.strength === 'number'
+    ) {
+      softMetrics.signal_strength = details.strength;
+    }
+    if (
+      'downlink' in details &&
+      details.downlink !== null &&
+      details.downlink !== undefined &&
+      typeof details.downlink === 'number'
+    ) {
+      softMetrics.downlink = details.downlink;
+    }
+  }
+
+  return {
+    netInfo,
+    details,
+    allNetInfoDetails,
+    softMetrics,
+  };
+}
+
+function checkNoConnection(
+  netInfo: NetInfoState,
+  shouldBlock: boolean,
+): NetworkCheckResult {
+  if (!netInfo.isConnected && shouldBlock) {
+    return {
+      shouldBlock: true,
+      reason: 'no_connection',
+      analyticsEvent:
+        ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_CELLULAR,
+    };
+  }
+  return {shouldBlock: false};
+}
+
+function checkCellularNetwork(
+  netInfo: NetInfoState,
+  shouldBlock: boolean,
+): NetworkCheckResult {
+  if (netInfo.type === 'cellular' && shouldBlock) {
+    return {
+      shouldBlock: true,
+      reason: 'cellular',
+      analyticsEvent:
+        ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_CELLULAR,
+    };
+  }
+  return {shouldBlock: false};
+}
+
+function checkExpensiveConnection(
+  details: Record<string, unknown> | undefined,
+  shouldBlock: boolean,
+): NetworkCheckResult {
+  if (
+    shouldBlock &&
+    details &&
+    'isConnectionExpensive' in details &&
+    details.isConnectionExpensive === true
+  ) {
+    return {
+      shouldBlock: true,
+      reason: 'expensive',
+      analyticsEvent:
+        ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_EXPENSIVE,
+    };
+  }
+  return {shouldBlock: false};
+}
+
+function trackBlockingEvent(
+  event: string,
+  readingId: string,
+  networkDetails: NetworkDetails,
+  additionalProps?: Record<string, unknown>,
+): void {
+  trackAnalytics(event as any, {
+    reading_id: readingId,
+    ...networkDetails.allNetInfoDetails,
+    ...networkDetails.softMetrics,
+    ...additionalProps,
+  });
+}
+
+function trackEnabledEvent(
+  readingId: string,
+  networkDetails: NetworkDetails,
+  error?: Error,
+): void {
+  const props: Record<string, unknown> = {
+    reading_id: readingId,
+    ...networkDetails.allNetInfoDetails,
+    ...networkDetails.softMetrics,
+  };
+
+  if (error) {
+    props.error = error.message;
+    props.failed_open = true;
+  }
+
+  trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_ENABLED, props);
+}
+
+/**
+ * Determines if video recording should be enabled based on network conditions.
+ * Hard gates: feature flag, no connection, cellular (if enabled), expensive connection (if enabled).
+ * Soft signals (telemetry only): PHY metrics, RSSI, downlink - logged but never block.
+ * Fails open on errors. iOS-safe (details may be undefined).
+ */
 export async function shouldEnableVideoRecording(
-  enableVideoRecording: string,
-  minimumBandwidthMbps: string,
-  minimumSignalStrength: string,
-  readingId?: string,
+  config: VideoRecordingConfig,
 ): Promise<boolean> {
-  if (enableVideoRecording !== 'true') {
+  if (!isFeatureEnabled(config.enableVideoRecording)) {
     return false;
   }
 
+  const readingId = config.readingId || 'unknown';
+
   try {
     const netInfo = await NetInfo.fetch();
-    const details = netInfo.details as Record<string, unknown> | undefined;
+    const networkDetails = extractNetworkDetails(netInfo);
 
-    const minBandwidth = parseFloat(minimumBandwidthMbps) || 5;
-    const minSignalStrength = parseFloat(minimumSignalStrength) || 50;
-
-    const allNetInfoDetails = {
-      network_type: netInfo.type,
-      is_connected: netInfo.isConnected,
-      is_internet_reachable: netInfo.isInternetReachable,
-      ...(details || {}),
-    };
-
-    if (netInfo.type === 'cellular') {
-      trackAnalytics(
-        ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_CELLULAR,
+    const noConnectionCheck = checkNoConnection(
+      netInfo,
+      shouldBlockByFlag(config.blockNoConnection),
+    );
+    if (noConnectionCheck.shouldBlock) {
+      trackBlockingEvent(
+        noConnectionCheck.analyticsEvent!,
+        readingId,
+        networkDetails,
         {
-          reading_id: readingId || 'unknown',
-          ...allNetInfoDetails,
+          disabled_reason: noConnectionCheck.reason,
         },
       );
       return false;
     }
 
-    if (details && 'isConnectionExpensive' in details) {
-      const isExpensive = details.isConnectionExpensive;
-      if (isExpensive === true) {
-        trackAnalytics(
-          ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_EXPENSIVE,
-          {
-            reading_id: readingId || 'unknown',
-            ...allNetInfoDetails,
-          },
-        );
-        return false;
-      }
+    const cellularCheck = checkCellularNetwork(
+      netInfo,
+      shouldBlockByFlag(config.blockCellularNetwork),
+    );
+    if (cellularCheck.shouldBlock) {
+      trackBlockingEvent(
+        cellularCheck.analyticsEvent!,
+        readingId,
+        networkDetails,
+      );
+      return false;
     }
 
-    if (details) {
-      const linkSpeed =
-        (details.linkSpeed as number) ||
-        (details.rxLinkSpeed as number) ||
-        (details.txLinkSpeed as number);
-
-      if (linkSpeed && linkSpeed < minBandwidth) {
-        trackAnalytics(
-          ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_LOW_LINK_SPEED,
-          {
-            reading_id: readingId || 'unknown',
-            link_speed: linkSpeed,
-            minimum_bandwidth: minBandwidth,
-            ...allNetInfoDetails,
-          },
-        );
-        return false;
-      }
-
-      if (
-        'strength' in details &&
-        details.strength !== null &&
-        details.strength !== undefined
-      ) {
-        const signalStrength = details.strength as number;
-        if (signalStrength < minSignalStrength) {
-          trackAnalytics(
-            ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_LOW_SIGNAL,
-            {
-              reading_id: readingId || 'unknown',
-              signal_strength: signalStrength,
-              minimum_signal_strength: minSignalStrength,
-              ...allNetInfoDetails,
-            },
-          );
-          return false;
-        }
-      }
-
-      if ('downlink' in details && details.downlink) {
-        const currentBandwidth = details.downlink as number;
-        if (currentBandwidth < minBandwidth) {
-          trackAnalytics(
-            ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_DISABLED_LOW_BANDWIDTH,
-            {
-              reading_id: readingId || 'unknown',
-              bandwidth: currentBandwidth,
-              minimum_bandwidth: minBandwidth,
-              ...allNetInfoDetails,
-            },
-          );
-          return false;
-        }
-      }
+    const expensiveCheck = checkExpensiveConnection(
+      networkDetails.details,
+      shouldBlockByFlag(config.blockExpensiveConnection),
+    );
+    if (expensiveCheck.shouldBlock) {
+      trackBlockingEvent(
+        expensiveCheck.analyticsEvent!,
+        readingId,
+        networkDetails,
+      );
+      return false;
     }
 
-    trackAnalytics(ANALYTICS_EVENTS.FACESCAN_VIDEO_RECORDING_ENABLED, {
-      reading_id: readingId || 'unknown',
-      ...allNetInfoDetails,
-    });
-
+    trackEnabledEvent(readingId, networkDetails);
     return true;
   } catch (error) {
-    console.error('Error checking network info:', error);
+    console.error(
+      '[NetworkCheck] Error checking network info, failing open:',
+      error,
+    );
+    const networkDetails = extractNetworkDetails({
+      type: 'unknown',
+      isConnected: null,
+      isInternetReachable: null,
+      details: null,
+    } as NetInfoState);
+    trackEnabledEvent(
+      readingId,
+      networkDetails,
+      error instanceof Error ? error : new Error(String(error)),
+    );
     return true;
   }
 }

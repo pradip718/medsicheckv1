@@ -137,12 +137,13 @@ const FaceScannerCamera = () => {
       return;
     }
 
-    const isVideoRecordingEnabled = await shouldEnableVideoRecording(
-      languages?.enable_video_recording || 'false',
-      languages?.minimum_bandwidth_mbps || '5',
-      languages?.minimum_signal_strength || '50',
-      reading_id,
-    );
+    const isVideoRecordingEnabled = await shouldEnableVideoRecording({
+      enableVideoRecording: languages?.enable_video_recording || 'false',
+      readingId: reading_id,
+      blockCellularNetwork: languages?.block_cellular_network,
+      blockExpensiveConnection: languages?.block_expensive_connection,
+      blockNoConnection: languages?.block_no_connection,
+    });
     if (!isVideoRecordingEnabled) {
       return;
     }
@@ -278,12 +279,13 @@ const FaceScannerCamera = () => {
           return;
         }
 
-        const isVideoRecordingEnabled = await shouldEnableVideoRecording(
-          languages?.enable_video_recording || 'false',
-          languages?.minimum_bandwidth_mbps || '5',
-          languages?.minimum_signal_strength || '50',
-          reading_id,
-        );
+        const isVideoRecordingEnabled = await shouldEnableVideoRecording({
+          enableVideoRecording: languages?.enable_video_recording || 'false',
+          readingId: reading_id,
+          blockCellularNetwork: languages?.block_cellular_network,
+          blockExpensiveConnection: languages?.block_expensive_connection,
+          blockNoConnection: languages?.block_no_connection,
+        });
         if (!isVideoRecordingEnabled) {
           console.log(
             'Video recording is disabled due to network conditions, skipping...',
@@ -559,12 +561,13 @@ const FaceScannerCamera = () => {
           scan_duration: binahConfig?.scan_duration,
         });
 
-        const isVideoRecordingEnabled = await shouldEnableVideoRecording(
-          languages?.enable_video_recording || 'false',
-          languages?.minimum_bandwidth_mbps || '5',
-          languages?.minimum_signal_strength || '50',
+        const isVideoRecordingEnabled = await shouldEnableVideoRecording({
+          enableVideoRecording: languages?.enable_video_recording || 'false',
           readingId,
-        );
+          blockCellularNetwork: languages?.block_cellular_network,
+          blockExpensiveConnection: languages?.block_expensive_connection,
+          blockNoConnection: languages?.block_no_connection,
+        });
         if (isVideoRecordingEnabled) {
           try {
             console.log('Starting video recording for reading:', readingId);
